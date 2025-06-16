@@ -24,7 +24,7 @@ if (-not (Get-Command ts-node -ErrorAction SilentlyContinue)) {
     Write-Host "ts-node not found, installing it globally..."
     npm install -g ts-node
 }
-npx ts-node scripts/init-db.ts
+npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/init-db.ts
 
 # --- 4. Run Application ---
 Write-Host "Starting backend and frontend servers in new windows..."
