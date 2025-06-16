@@ -6,6 +6,18 @@ async function initializeDatabase() {
   try {
     console.log('Initializing database...');
 
+    // Delete existing database file to ensure a clean start
+    const dbPath = db.client.config.connection.filename;
+    try {
+      await fs.unlink(dbPath);
+      console.log('Existing database file removed.');
+    } catch (err) {
+      if (err.code !== 'ENOENT') { // Ignore "file not found" error
+        throw err;
+      }
+      console.log('No existing database file found. Proceeding to create a new one.');
+    }
+
     // Ensure the database directory exists (Knex might do this, but good to be sure)
     const dbDirectory = path.dirname(db.client.config.connection.filename);
     try {
