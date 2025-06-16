@@ -15,6 +15,7 @@ out/
 public/build/ # Vite's default build output in public
 client/dist/
 server/dist/
+server/knexfile.js
 
 # Logs
 logs
