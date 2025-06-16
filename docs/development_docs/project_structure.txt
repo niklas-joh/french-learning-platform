@@ -1,0 +1,87 @@
+french-learning-platform/
+├── README.md
+├── package.json
+├── .gitignore
+├── .env.example
+├── vercel.json
+│
+├── client/                          # React Frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── auth/
+│   │   │   ├── dashboard/
+│   │   │   ├── quiz/
+│   │   │   ├── admin/
+│   │   │   └── common/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   ├── services/               # API calls
+│   │   ├── types/                  # TypeScript interfaces
+│   │   ├── utils/
+│   │   └── styles/
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── server/                          # Node.js Backend
+│   ├── src/
+│   │   ├── controllers/
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── user.controller.ts
+│   │   │   ├── content.controller.ts
+│   │   │   ├── quiz.controller.ts
+│   │   │   └── admin.controller.ts
+│   │   ├── middleware/
+│   │   │   ├── auth.middleware.ts
+│   │   │   ├── admin.middleware.ts
+│   │   │   └── rateLimit.middleware.ts
+│   │   ├── models/
+│   │   │   ├── User.ts
+│   │   │   ├── Content.ts
+│   │   │   ├── UserResponse.ts
+│   │   │   └── SpacedRepetition.ts
+│   │   ├── services/
+│   │   │   ├── ai/
+│   │   │   │   ├── claude.service.ts
+│   │   │   │   ├── openai.service.ts
+│   │   │   │   └── ai-router.service.ts
+│   │   │   ├── learning/
+│   │   │   │   ├── spaced-repetition.service.ts
+│   │   │   │   ├── progress.service.ts
+│   │   │   │   └── recommendation.service.ts
+│   │   │   └── database/
+│   │   │       ├── connection.ts
+│   │   │       └── migrations/
+│   │   ├── routes/
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── user.routes.ts
+│   │   │   ├── content.routes.ts
+│   │   │   └── admin.routes.ts
+│   │   ├── types/
+│   │   ├── utils/
+│   │   └── app.ts
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── database/
+│   ├── migrations/
+│   ├── seeds/
+│   └── schema.sql
+│
+├── content/                         # Content Storage
+│   ├── topics/
+│   │   ├── subjunctive/
+│   │   ├── vocabulary/
+│   │   └── grammar/
+│   ├── templates/
+│   └── uploads/
+│
+├── docs/                           # Documentation
+│   ├── api.md
+│   ├── deployment.md
+│   └── content-format.md
+│
+└── scripts/                        # Utility Scripts
+    ├── setup.sh
+    ├── deploy.sh
+    └── seed-data.js
