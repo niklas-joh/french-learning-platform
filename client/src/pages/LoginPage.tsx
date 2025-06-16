@@ -17,8 +17,7 @@ const LoginPage: React.FC = () => {
       // For now, assuming the service or backend can handle 'password' or we adjust the service.
       // Let's assume the service's LoginPayload should be { email: string, password_hash: string }
       // but we are sending { email: string, password: string } to the backend endpoint.
-      // We will send `password` as `password_hash` to match the service interface for now.
-      const response = await login({ email, password_hash: password });
+      const response = await login({ email, password });
       console.log('Login successful:', response);
       // Token is stored by authService, navigate to dashboard
       navigate('/dashboard');

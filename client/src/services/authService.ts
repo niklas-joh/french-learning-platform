@@ -16,14 +16,14 @@ const apiClient = axios.create({
 
 interface LoginPayload {
   email: string;
-  password_hash: string; // Or 'password' if your backend expects plain text temporarily
+  password?: string;
 }
 
 interface RegisterPayload {
   email: string;
-  password_hash: string; // Or 'password'
-  username: string;
-  // Add other fields as required by your backend's User model (e.g., first_name, last_name)
+  password?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 interface AuthResponse {

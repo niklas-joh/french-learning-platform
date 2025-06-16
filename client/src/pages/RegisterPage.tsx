@@ -3,12 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { register } from '../services/authService'; // Import the register service
 
 const RegisterPage: React.FC = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState(''); // Changed from firstName for clarity, maps to username
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  // const [firstName, setFirstName] = useState(''); // Replaced by username
-  const [lastName, setLastName] = useState(''); // Kept lastName, though not in RegisterPayload currently
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -22,16 +21,11 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      // The authService RegisterPayload expects: email, password_hash, username.
-      // We'll use the `username` state for the username field.
-      // `password` will be sent as `password_hash`.
-      // `lastName` is not currently part of the RegisterPayload in authService.ts,
-      // it might need to be added if the backend expects it.
       const response = await register({
         email,
-        password_hash: password,
-        username, // Using the username state
-        // lastName, // If needed, add to RegisterPayload and backend
+        password,
+        firstName,
+        lastName,
       });
       console.log('Registration successful:', response);
       // Token is stored by authService, navigate to dashboard
@@ -54,29 +48,29 @@ const RegisterPage: React.FC = () => {
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="username" className="sr-only">Username</label>
+              <label htmlFor="firstName" className="sr-only">First Name</label>
               <input
-                id="username"
-                name="username"
+                id="firstName"
+                name="firstName"
                 type="text"
-                autoComplete="username"
+                autoComplete="given-name"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="First Name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="lastName" className="sr-only">Last Name (Optional)</label>
+              <label htmlFor="lastName" className="sr-only">Last Name</label>
               <input
                 id="lastName"
                 name="lastName"
                 type="text"
                 autoComplete="family-name"
-                // Not making this required as it's not in the core RegisterPayload yet
+                required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Last Name (Optional)"
+                placeholder="Last Name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />

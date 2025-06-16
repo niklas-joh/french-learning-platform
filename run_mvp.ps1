@@ -26,18 +26,18 @@ if (-not (Get-Command ts-node -ErrorAction SilentlyContinue)) {
 }
 npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/init-db.ts
 
-# --- 4. Run Application ---
-Write-Host "Starting backend and frontend servers in new windows..."
-
-# Start Server
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location -Path '$scriptDir\server'; npm run dev"
-
-# Start Client
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location -Path '$scriptDir\client'; npm run dev"
-
-# --- 5. Open Application in Browser ---
-Write-Host "Opening application in the default browser..."
-Start-Sleep -Seconds 5 # Wait a few seconds for the dev server to be ready
-Start-Process "http://localhost:5173"
-
-Write-Host "Setup complete. The application is starting."
+# --- 4. Manual Startup Instructions ---
+Write-Host "--------------------------------------------------" -ForegroundColor Green
+Write-Host "Setup complete. Please start the servers manually." -ForegroundColor Green
+Write-Host "--------------------------------------------------" -ForegroundColor Green
+Write-Host ""
+Write-Host "Open a NEW PowerShell terminal and run:" -ForegroundColor Yellow
+Write-Host "cd '$scriptDir\server'"
+Write-Host "npm run dev"
+Write-Host ""
+Write-Host "Open ANOTHER new PowerShell terminal and run:" -ForegroundColor Yellow
+Write-Host "cd '$scriptDir\client'"
+Write-Host "npm run dev"
+Write-Host ""
+Write-Host "After the servers start, open your browser to http://localhost:5173"
+Write-Host "If you see any errors, please copy and paste the full output from both terminals."
