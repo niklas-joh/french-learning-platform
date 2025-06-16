@@ -35,4 +35,9 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location -Pat
 # Start Client
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "Set-Location -Path '$scriptDir\client'; npm run dev"
 
+# --- 5. Open Application in Browser ---
+Write-Host "Opening application in the default browser..."
+Start-Sleep -Seconds 5 # Wait a few seconds for the dev server to be ready
+Start-Process "http://localhost:5173"
+
 Write-Host "Setup complete. The application is starting."
