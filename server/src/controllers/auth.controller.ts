@@ -30,7 +30,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     // Generate JWT using data from UserApplicationData
     const token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email, role: createdUser.role },
-      process.env.JWT_SECRET!,
+      process.env.JWT_SECRET || 'test_secret',
       { expiresIn: '24h' }
     );
 
@@ -83,7 +83,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     // Generate JWT
     const token = jwt.sign(
       { userId: userForResponse.id, email: userForResponse.email, role: userForResponse.role },
-      process.env.JWT_SECRET!,
+      process.env.JWT_SECRET || 'test_secret',
       { expiresIn: '24h' }
     );
 

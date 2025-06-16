@@ -5,8 +5,8 @@
 - [✅] Project setup with React + Node.js + TypeScript
 - [✅] Basic authentication system (register/login) - Frontend UI, API service layer, and component integration complete.
 - [✅] SQLite database setup with core tables
-- [ ] Simple quiz interface (multiple choice only)
-- [🚧] Basic user dashboard (User info fetched. Next: Display quizzes)
+- [✅] Simple quiz interface (multiple choice only)
+- [✅] Basic user dashboard (quizzes displayed)
 - [✅] Content storage system (JSON files)
 
 ### **Deliverables**

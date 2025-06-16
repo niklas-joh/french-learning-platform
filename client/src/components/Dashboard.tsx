@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Paper, CircularProgress, Alert } from '@mui/material';
-import { getUserProfile, UserProfileData } from '../services/authService'; // Import service and type
+import { Container, Typography, Paper, CircularProgress, Alert, Box } from '@mui/material';
+import { getUserProfile, UserProfileData } from '../services/authService';
+import { fetchSampleQuiz } from '../services/contentService';
+import Quiz, { QuizData } from './Quiz';
 
 // Use UserProfileData from authService to ensure consistency
 // If UserProfileData needs optional email, it should be defined there.
@@ -11,6 +13,7 @@ const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [quizData, setQuizData] = useState<QuizData[] | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -18,6 +21,8 @@ const Dashboard: React.FC = () => {
         setLoading(true);
         const userData = await getUserProfile();
         setUser(userData);
+        const quiz = await fetchSampleQuiz();
+        setQuizData(quiz);
       } catch (err: any) { // Explicitly type err as any or a more specific error type
         console.error("Failed to fetch user data:", err);
         const message = err.message || 'Failed to load user information. Please try again later.';
@@ -55,6 +60,11 @@ const Dashboard: React.FC = () => {
         <Typography variant="body1">
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.
         </Typography>
+        {quizData && (
+          <Box sx={{ mt: 4 }}>
+            <Quiz quizData={quizData[0]} />
+          </Box>
+        )}
       </Paper>
     </Container>
   );
