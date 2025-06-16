@@ -14,6 +14,13 @@ const apiClient = axios.create({
 // Define types for request payloads and responses (optional but good practice)
 // These should align with your backend's expected request/response structures.
 
+export interface UserProfileData { // Exporting for use in components
+  id: number;
+  username: string;
+  email?: string; // Made email optional as it's not strictly required by Dashboard welcome message
+  // Add other properties if your backend /users/me returns more
+}
+
 interface LoginPayload {
   email: string;
   password?: string;
@@ -106,6 +113,25 @@ export const getToken = (): string | null => {
  */
 export const isAuthenticated = (): boolean => {
   return getToken() !== null;
+};
+
+/**
+ * Fetches the current user's profile from the backend.
+ * @returns A promise that resolves with the user's profile data.
+ */
+export const getUserProfile = async (): Promise<UserProfileData> => {
+  try {
+    const response = await apiClient.get<UserProfileData>('/users/me');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      // Log the detailed error for debugging on the client-side if needed
+      console.error('Error fetching user profile:', error.response.data);
+      throw error.response.data as ErrorResponse;
+    }
+    console.error('Unexpected error fetching user profile:', error);
+    throw { message: 'An unexpected error occurred while fetching your profile.' } as ErrorResponse;
+  }
 };
 
 // You can also add an interceptor to automatically include the auth token in requests

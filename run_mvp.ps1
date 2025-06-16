@@ -26,18 +26,24 @@ if (-not (Get-Command ts-node -ErrorAction SilentlyContinue)) {
 }
 npx ts-node --compiler-options '{\"module\":\"CommonJS\"}' scripts/init-db.ts
 
-# --- 4. Manual Startup Instructions ---
-Write-Host "--------------------------------------------------" -ForegroundColor Green
-Write-Host "Setup complete. Please start the servers manually." -ForegroundColor Green
-Write-Host "--------------------------------------------------" -ForegroundColor Green
-Write-Host ""
-Write-Host "Open a NEW PowerShell terminal and run:" -ForegroundColor Yellow
-Write-Host "cd '$scriptDir\server'"
-Write-Host "npm run dev"
-Write-Host ""
-Write-Host "Open ANOTHER new PowerShell terminal and run:" -ForegroundColor Yellow
-Write-Host "cd '$scriptDir\client'"
-Write-Host "npm run dev"
-Write-Host ""
-Write-Host "After the servers start, open your browser to http://localhost:5173"
-Write-Host "If you see any errors, please copy and paste the full output from both terminals."
+# --- 4. Start Server ---
+Write-Host "Starting server in a new window..."
+Set-Location -Path "$scriptDir\server"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "npm run dev"
+
+# --- 5. Start Client ---
+Write-Host "Starting client in a new window..."
+Set-Location -Path "$scriptDir\client"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "npm run dev"
+
+# --- 6. Open in Browser ---
+Write-Host "Waiting for servers to start..."
+Start-Sleep -Seconds 10 # Adjust this delay if servers take longer to start
+Write-Host "Opening http://localhost:5173 in your default browser."
+Start-Process "http://localhost:5173"
+
+Write-Host "--------------------------------------------------------------------" -ForegroundColor Green
+Write-Host "Server and Client are starting in separate PowerShell windows." -ForegroundColor Green
+Write-Host "You can monitor their logs in those windows." -ForegroundColor Green
+Write-Host "The application should open in your browser shortly." -ForegroundColor Green
+Write-Host "--------------------------------------------------------------------" -ForegroundColor Green

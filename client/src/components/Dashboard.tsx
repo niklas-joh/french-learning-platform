@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Paper, CircularProgress, Alert } from '@mui/material';
+import { getUserProfile, UserProfileData } from '../services/authService'; // Import service and type
 
-interface UserProfile {
-  id: string;
-  username: string;
-  email?: string;
-}
+// Use UserProfileData from authService to ensure consistency
+// If UserProfileData needs optional email, it should be defined there.
+// For now, assuming email is always present or UserProfileData handles optionality.
+// type UserProfile = UserProfileData; // Alias if preferred, or use UserProfileData directly
 
 const Dashboard: React.FC = () => {
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<UserProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,14 +16,12 @@ const Dashboard: React.FC = () => {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        // TODO: Replace mock data with actual API call
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-        const mockUser: UserProfile = { id: '1', username: 'ExempleUtilisateur' }; // Mock user data
-        setUser(mockUser);
-
-      } catch (err) {
+        const userData = await getUserProfile();
+        setUser(userData);
+      } catch (err: any) { // Explicitly type err as any or a more specific error type
         console.error("Failed to fetch user data:", err);
-        setError('Failed to load user information. Please try again later.');
+        const message = err.message || 'Failed to load user information. Please try again later.';
+        setError(message);
       } finally {
         setLoading(false);
       }

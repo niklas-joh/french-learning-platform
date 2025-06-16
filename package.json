@@ -12,7 +12,8 @@
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.10.0",
-    "react-router-dom": "^7.6.2"
+    "react-router-dom": "^7.6.2",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
