@@ -5,19 +5,20 @@ import { UserSchema } from '../models/User'; // Use UserSchema for DB operations
 // Extend Express Request type to include user property
 interface AuthenticatedRequest extends Request {
   user?: {
-    id: number;
-    // Add other user properties if needed
+    userId: number; // Changed to userId for consistency with auth.middleware.ts
+    email?: string; // Added for completeness, though not strictly used by getCurrentUserProfile directly
+    role?: string;  // Added for completeness
   };
 }
 
 export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    if (!req.user || !req.user.id) {
-      res.status(401).json({ message: 'User not authenticated' });
+    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) { // Check for userId and its validity
+      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
       return;
     }
 
-    const userId = req.user.id;
+    const userId = req.user.userId; // Use userId
     const user = await knex('users').where({ id: userId }).first();
 
     if (!user) {
@@ -37,12 +38,12 @@ export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Resp
 
 export const updateUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    if (!req.user || !req.user.id) {
-      res.status(401).json({ message: 'User not authenticated' });
+    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) { // Check for userId and its validity
+      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
       return;
     }
 
-    const userId = req.user.id;
+    const userId = req.user.userId; // Use userId
     const { email, first_name, last_name, preferences, password } = req.body;
 
     if (password) {
