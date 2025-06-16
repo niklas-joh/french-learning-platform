@@ -1,4 +1,5 @@
-import db from '../server/src/config/db'; // Adjust path to Knex instance
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const db = require('../server/src/config/db').default; // Adjust path and get default export for Knex instance
 
 const ADMIN_EMAIL = 'admin@example.com';
 
