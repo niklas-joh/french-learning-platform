@@ -12,7 +12,7 @@ async function initializeDatabase() {
       await fs.unlink(dbPath);
       console.log('Existing database file removed.');
     } catch (err) {
-      if (err.code !== 'ENOENT') { // Ignore "file not found" error
+      if (typeof err === 'object' && err !== null && 'code' in err && err.code !== 'ENOENT') {
         throw err;
       }
       console.log('No existing database file found. Proceeding to create a new one.');
