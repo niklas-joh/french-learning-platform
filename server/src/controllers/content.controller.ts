@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import path from 'path';
+import fs from 'fs/promises';
 import knex from '../config/db';
-import { TopicSchema } from '../models/Topic'; 
+import { TopicSchema } from '../models/Topic';
 import { ContentSchema } from '../models/Content';
 
 export const getAllTopics = async (req: Request, res: Response): Promise<void> => {
@@ -39,5 +41,18 @@ export const getContentForTopic = async (req: Request, res: Response): Promise<v
   } catch (error: any) {
     console.error('Error fetching content for topic:', error);
     res.status(500).json({ message: 'Failed to fetch content for topic' });
+  }
+};
+
+// Simple endpoint to return a sample quiz from the JSON content directory
+export const getSampleQuiz = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const filePath = path.resolve(__dirname, '../../../content/topics/subjunctive/certainty-vs-doubt.json');
+    const fileData = await fs.readFile(filePath, 'utf-8');
+    const quiz = JSON.parse(fileData);
+    res.json(quiz);
+  } catch (error: any) {
+    console.error('Error loading sample quiz:', error);
+    res.status(500).json({ message: 'Failed to load sample quiz' });
   }
 };

@@ -106,4 +106,14 @@ describe('Content API Endpoints', () => {
       // Clean up the added topic - this will be handled by afterAll drop tables
     });
   });
+
+  describe('GET /api/content/sample-quiz', () => {
+    it('should return the sample quiz JSON', async () => {
+      const response = await request(app).get('/api/content/sample-quiz');
+      expect(response.status).toBe(200);
+      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body[0]).toHaveProperty('id');
+      expect(response.body[0]).toHaveProperty('question');
+    });
+  });
 });
