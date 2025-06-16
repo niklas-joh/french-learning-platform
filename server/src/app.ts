@@ -30,8 +30,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  // Only log when not in test environment
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(`🚀 Server running on port ${PORT}`);
+  }
 });
 
-export default app;
+export { app, server };

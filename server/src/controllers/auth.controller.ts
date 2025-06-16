@@ -3,14 +3,15 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getUserByEmail, createUser, getInternalUserByEmail, UserApplicationData } from '../models/User';
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, firstName, lastName } = req.body;
 
     // Check if user exists using the public-facing getUserByEmail
     const existingUserPublic = await getUserByEmail(email);
     if (existingUserPublic) {
-      return res.status(400).json({ message: 'User already exists' });
+      res.status(400).json({ message: 'User already exists' });
+      return;
     }
 
     // Hash password
@@ -50,20 +51,22 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
     // Find user internally to get password_hash
     const internalUser = await getInternalUserByEmail(email);
     if (!internalUser) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: 'Invalid credentials' });
+      return;
     }
 
     // Check password
     const isValidPassword = await bcrypt.compare(password, internalUser.password_hash);
     if (!isValidPassword) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      res.status(401).json({ message: 'Invalid credentials' });
+      return;
     }
 
     // User is valid, prepare application data for JWT and response

@@ -6,6 +6,7 @@ CREATE TABLE users (
     last_name TEXT,
     role TEXT DEFAULT 'user',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     preferences JSON
 );
 
