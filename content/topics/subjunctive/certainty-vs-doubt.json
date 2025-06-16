@@ -1,0 +1,19 @@
+[
+  {
+    "id": "subj_001",
+    "type": "multiple_choice",
+    "topic": "subjunctive",
+    "difficulty": "B1",
+    "tags": ["certainty_vs_doubt"],
+    "question": {
+      "text": "Il me semble qu'elle _____ raison. (avoir)",
+      "explanation": "Testing certainty expressions"
+    },
+    "options": ["a", "ait", "aura"],
+    "correct_answer": 0,
+    "feedback": {
+      "correct": "Correct! 'Il me semble que' expresses opinion as fact → indicative",
+      "incorrect": "'Il me semble que' shows the speaker's strong impression → indicative 'a'"
+    }
+  }
+]

@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment variables
+.env
+*/.env
+*.env.local
+*.env.*.local
+
+# Build output
+dist/
+build/
+out/
+public/build/ # Vite's default build output in public
+client/dist/
+server/dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+._*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# SQLite database file
+# It's often better to manage schema via migrations and seed data via scripts.
+# If the .db file contains essential seed data that isn't easily scriptable,
+# you might consider versioning it, but generally, it's excluded.
+server/database/french_learning.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Coverage directory
+coverage/
+
+# Cline temporary files
+Cline/
