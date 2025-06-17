@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Define the base URL for the API. This should ideally come from an environment variable.
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 // Create an Axios instance
 const apiClient = axios.create({
@@ -16,9 +16,11 @@ const apiClient = axios.create({
 
 export interface UserProfileData { // Exporting for use in components
   id: number;
-  username: string;
-  email?: string; // Made email optional as it's not strictly required by Dashboard welcome message
-  // Add other properties if your backend /users/me returns more
+  email: string; // email is part of UserApplicationData from backend
+  firstName?: string | null;
+  lastName?: string | null;
+  role: string;
+  // Add other properties if your backend /users/me returns more (e.g., createdAt, preferences)
 }
 
 interface LoginPayload {
@@ -38,8 +40,10 @@ interface AuthResponse {
   user: {
     id: number;
     email: string;
-    username: string;
-    // other user properties
+    firstName?: string | null; // Align with backend UserApplicationData
+    lastName?: string | null;  // Align with backend UserApplicationData
+    role: string;             // Add role
+    // other user properties if any (e.g., createdAt, preferences)
   };
   message?: string; // Optional message from backend
 }
@@ -58,8 +62,9 @@ export const login = async (credentials: LoginPayload): Promise<AuthResponse> =>
   try {
     const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
     // Store the token if needed (e.g., in localStorage)
-    if (response.data.token) {
+    if (response.data.token && response.data.user) {
       localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('currentUser', JSON.stringify(response.data.user)); // Store user object
     }
     return response.data;
   } catch (error) {
@@ -79,8 +84,9 @@ export const register = async (userData: RegisterPayload): Promise<AuthResponse>
   try {
     const response = await apiClient.post<AuthResponse>('/auth/register', userData);
     // Store the token if needed (e.g., in localStorage)
-    if (response.data.token) {
+    if (response.data.token && response.data.user) {
       localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('currentUser', JSON.stringify(response.data.user)); // Store user object
     }
     return response.data;
   } catch (error) {
@@ -96,6 +102,7 @@ export const register = async (userData: RegisterPayload): Promise<AuthResponse>
  */
 export const logout = (): void => {
   localStorage.removeItem('authToken');
+  localStorage.removeItem('currentUser'); // Remove user object on logout
   // Optionally, notify the backend about logout if needed
 };
 
@@ -113,6 +120,24 @@ export const getToken = (): string | null => {
  */
 export const isAuthenticated = (): boolean => {
   return getToken() !== null;
+};
+
+/**
+ * Gets the current user object from localStorage.
+ * @returns The user object or null if not found.
+ */
+export const getCurrentUser = (): UserProfileData | null => { // Use UserProfileData as it's the shape of user data
+  const userStr = localStorage.getItem('currentUser');
+  if (userStr) {
+    try {
+      return JSON.parse(userStr) as UserProfileData;
+    } catch (e) {
+      console.error("Error parsing current user from localStorage", e);
+      localStorage.removeItem('currentUser'); // Clear corrupted data
+      return null;
+    }
+  }
+  return null;
 };
 
 /**

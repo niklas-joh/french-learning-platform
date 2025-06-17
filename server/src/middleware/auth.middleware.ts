@@ -4,8 +4,10 @@ import jwt from 'jsonwebtoken';
 // Extend Express Request type to include user property
 interface AuthenticatedRequest extends Request {
   user?: {
-    id: number;
-    // Add other properties from JWT payload if needed (e.g., role)
+    userId: number; // Changed from id to userId for consistency
+    email?: string;
+    role?: string;
+    // Add other properties from JWT payload if needed
   };
 }
 
@@ -25,13 +27,18 @@ export const protect = (req: AuthenticatedRequest, res: Response, next: NextFunc
       console.log('Decoded JWT payload in middleware:', decoded); // Log the entire decoded payload
       console.log('Value of decoded.userId:', decoded.userId, 'Type:', typeof decoded.userId); // Log userId and its type
 
-      // Attach user to request object, mapping userId from token to id on req.user
+      // Attach user to request object
       if (typeof decoded.userId !== 'number' || decoded.userId <= 0) {
         console.error('Invalid userId in token:', decoded.userId);
-        // This case should ideally lead to "token failed" or a more specific error
-        // but for now, let's see if it's the cause of req.user.id being falsy later
+        res.status(401).json({ message: 'Not authorized, token invalid (userId)' });
+        return;
       }
-      req.user = { id: decoded.userId }; 
+      // Populate req.user with details from the token
+      req.user = { 
+        userId: decoded.userId,
+        email: decoded.email,
+        role: decoded.role 
+      }; 
 
       next();
     } catch (error) {
