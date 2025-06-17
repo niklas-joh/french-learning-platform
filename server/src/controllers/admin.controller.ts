@@ -7,6 +7,10 @@ interface AnalyticsSummary {
   totalContentItems: number;
 }
 
+export const adminTestController = (req: Request, res: Response): void => {
+  res.status(200).json({ message: 'Admin route test successful!' });
+};
+
 export const getAnalyticsSummary = async (req: Request, res: Response): Promise<void> => {
   try {
     // 1. Get total number of users
