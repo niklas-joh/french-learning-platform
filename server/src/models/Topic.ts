@@ -29,6 +29,11 @@ export const getTopicById = async (id: number): Promise<TopicSchema | null> => {
   return topic || null;
 };
 
+export const getTopicByName = async (name: string): Promise<TopicSchema | null> => {
+  const topic: TopicSchema | undefined = await db<TopicSchema>('topics').where({ name }).first();
+  return topic || null;
+};
+
 export const createTopic = async (topicData: NewTopic): Promise<TopicSchema> => {
   const [insertedTopic] = await db<TopicSchema>('topics').insert({
     ...topicData,

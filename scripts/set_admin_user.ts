@@ -30,3 +30,5 @@ async function setAdminUser() {
 }
 
 setAdminUser();
+
+export {}; // Treat this file as a module for TypeScript's checker

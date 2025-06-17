@@ -7,7 +7,10 @@
     "start": "ts-node src/app.ts",
     "build": "tsc",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "db:migrate:latest": "knex migrate:latest --knexfile knexfile.ts",
+    "db:migrate:rollback": "knex migrate:rollback --knexfile knexfile.ts",
+    "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts"
   },
   "keywords": [],
   "author": "",
