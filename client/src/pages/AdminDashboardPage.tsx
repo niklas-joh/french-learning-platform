@@ -1,104 +1,66 @@
+// client/src/pages/AdminDashboardPage.tsx
 import React, { useEffect, useState } from 'react';
-import {
-  Container, Typography, Paper, Alert, CircularProgress, Grid, Card, CardContent, List, ListItem, ListItemText, Divider
-} from '@mui/material';
-// Removed apiClient import as we'll use the specific service
-import { getAdminAnalyticsSummary, AnalyticsSummary } from '../services/adminService';
+// import { getAdminAnalytics } from '../services/adminService'; // Assuming you'll create this
+
+interface AdminData {
+  totalUsers?: number;
+  // Add other expected data fields
+}
 
 const AdminDashboardPage: React.FC = () => {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsSummary | null>(null);
+  const [data, setData] = useState<AdminData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchAnalytics = async () => {
-      setLoading(true);
-      setError('');
+    const fetchData = async () => {
       try {
-        const data = await getAdminAnalyticsSummary();
-        setAnalyticsData(data);
-      } catch (err: any) {
-        console.error("Error fetching admin analytics:", err);
-        setError(err.message || 'Failed to fetch admin analytics. Ensure you are logged in as admin and the server is running.');
+        setLoading(true);
+        // const response = await getAdminAnalytics(); // Replace with actual API call
+        // For now, using placeholder data.
+        // You'll need to implement adminService.ts and the corresponding backend endpoint.
+        const placeholderData: AdminData = {
+          totalUsers: 100, // Example data
+        };
+        // setData(response.data); // When API call is ready
+        setData(placeholderData);
+        setError(null);
+      } catch (err) {
+        setError('Failed to fetch admin data.');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAnalytics();
+    fetchData();
   }, []);
 
+  if (loading) return <div className="p-4">Loading admin dashboard...</div>;
+  if (error) return <div className="p-4 text-red-500">{error}</div>;
+  if (!data) return <div className="p-4">No admin data available.</div>;
+
   return (
-    <Container maxWidth="lg">
-      <Paper elevation={3} sx={{ padding: 3, marginTop: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Admin Dashboard
-        </Typography>
-
-        {loading && (
-          <Grid container justifyContent="center" sx={{ marginY: 4 }}>
-            <CircularProgress />
-          </Grid>
-        )}
-
-        {error && <Alert severity="error" sx={{ marginBottom: 2 }}>{error}</Alert>}
-
-        {analyticsData && !loading && (
-          <div style={{ marginTop: '16px' }}>
-            <Card sx={{ marginBottom: 2 }}>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  Total Users
-                </Typography>
-                <Typography variant="h3" component="div">
-                  {analyticsData.totalUsers}
-                </Typography>
-              </CardContent>
-            </Card>
-
-            <Card sx={{ marginBottom: 2 }}>
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  Total Content Items
-                </Typography>
-                <Typography variant="h3" component="div">
-                  {analyticsData.totalContentItems}
-                </Typography>
-                <Typography variant="caption" display="block" gutterBottom>
-                  (Based on .json files in content/topics)
-                </Typography>
-              </CardContent>
-            </Card>
-
-            <Card sx={{ marginBottom: 2 }}>
-              <CardContent>
-                <Typography variant="h6" component="div" gutterBottom>
-                  Users by Role
-                </Typography>
-                <List dense>
-                  {analyticsData.usersByRole.map((roleStat) => (
-                    <React.Fragment key={roleStat.role}>
-                      <ListItem>
-                        <ListItemText
-                          primary={roleStat.role.charAt(0).toUpperCase() + roleStat.role.slice(1)}
-                          secondary={roleStat.count}
-                        />
-                      </ListItem>
-                      <Divider component="li" />
-                    </React.Fragment>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-        {!loading && !analyticsData && !error && (
-            <Typography variant="body1" sx={{marginTop: 2}}>
-                No analytics data available.
-            </Typography>
-        )}
-      </Paper>
-    </Container>
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-2">Total Users</h2>
+          <p className="text-3xl">{data.totalUsers || 'N/A'}</p>
+        </div>
+        {/* Add more cards for other analytics */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-2">Content Management</h2>
+          <p>Manage topics, lessons, quizzes.</p>
+          {/* Links or buttons to content management sections */}
+        </div>
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-2">User Management</h2>
+          <p>View users, manage roles.</p>
+          {/* Links or buttons to user management sections */}
+        </div>
+      </div>
+    </div>
   );
 };
 
