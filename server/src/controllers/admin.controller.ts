@@ -36,7 +36,8 @@ export const getAnalyticsSummary = async (req: Request, res: Response): Promise<
     // This is NOT a robust solution for production.
     const fs = require('fs').promises;
     const path = require('path');
-    const topicsDir = path.join(__dirname, '../../../../content/topics');
+    // Corrected path: from server/src/controllers, go up 3 levels to french-learning-platform, then content/topics
+    const topicsDir = path.join(__dirname, '../../../content/topics');
     let totalContentItems = 0;
     try {
       const topicFolders = await fs.readdir(topicsDir);
