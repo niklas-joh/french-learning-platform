@@ -14,4 +14,14 @@ export const fetchSampleQuiz = async () => {
   return response.data;
 };
 
+export const getTopics = async () => {
+  const response = await apiClient.get('/content/topics');
+  return response.data;
+};
+
+export const getContentForTopic = async (topicId: number | string) => {
+  const response = await apiClient.get(`/content/topics/${topicId}/content`);
+  return response.data;
+};
+
 export default apiClient;
