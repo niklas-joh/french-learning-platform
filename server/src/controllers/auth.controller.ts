@@ -57,13 +57,22 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
     // Find user internally to get password_hash
     const internalUser = await getInternalUserByEmail(email);
+
     if (!internalUser) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
+    if (!internalUser.password_hash) {
+        // This case should ideally not happen if user creation enforces password_hash
+        console.error(`Critical: User ${internalUser.email} (ID: ${internalUser.id}) has no password_hash.`);
+        res.status(500).json({ message: 'User account configuration error.' });
+        return;
+    }
+    
     // Check password
     const isValidPassword = await bcrypt.compare(password, internalUser.password_hash);
+    
     if (!isValidPassword) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;

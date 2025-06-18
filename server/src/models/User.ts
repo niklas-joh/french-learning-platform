@@ -55,7 +55,9 @@ export const getUserByEmail = async (email: string): Promise<UserApplicationData
 
 // For internal use, e.g., authentication, where password_hash is needed
 export const getInternalUserByEmail = async (email: string): Promise<UserSchema | null> => {
-  const user: UserSchema | undefined = await db<UserSchema>('users').where({ email }).first();
+  const user: UserSchema | undefined = await db<UserSchema>('users')
+    .whereRaw('LOWER(email) = LOWER(?)', [email.trim()]) // Trim email and make lookup case-insensitive
+    .first();
   return user || null;
 };
 
