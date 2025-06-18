@@ -17,13 +17,19 @@ const LoginPage: React.FC = () => {
       // For now, assuming the service or backend can handle 'password' or we adjust the service.
       // Let's assume the service's LoginPayload should be { email: string, password_hash: string }
       // but we are sending { email: string, password: string } to the backend endpoint.
-      const response = await login({ email, password });
+      const trimmedEmail = email.trim(); // Trim whitespace from email
+      const response = await login({ email: trimmedEmail, password });
       console.log('Login successful:', response);
       // Token is stored by authService, navigate to dashboard
       navigate('/dashboard');
     } catch (apiError: any) {
-      console.error('Login failed:', apiError);
-      setError(apiError.message || 'Login failed. Please check your credentials.');
+      // Log the actual error object to see its structure if it's not what's expected
+      console.error('Login failed raw error:', apiError); 
+      // Ensure apiError has a message property, otherwise provide a default
+      const errorMessage = apiError && apiError.message 
+        ? apiError.message 
+        : 'Login failed. Please check your credentials or contact support.';
+      setError(errorMessage);
     }
   };
 
