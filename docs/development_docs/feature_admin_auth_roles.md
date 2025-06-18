@@ -31,7 +31,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   [✅] Corrected `userId` usage in `server/src/controllers/user.controller.ts`.
 
 ### 4. Role-Based Access Control (RBAC) Middleware
-*   **Task:** Create middleware to protect admin-only API routes. [🚧 IN PROGRESS / NEXT]
+*   **Task:** Create middleware to protect admin-only API routes. [✅ COMPLETED]
 *   **Details:**
     *   The middleware (e.g., `admin.middleware.ts`) will execute after the existing `auth.middleware.ts`.
     *   It will verify if the authenticated user's JWT contains the 'admin' role.
@@ -40,7 +40,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   Create `server/src/middleware/admin.middleware.ts`.
 
 ### 5. Placeholder Admin API Routes
-*   **Task:** Create basic admin-only API endpoints for testing and initial development. [🚧 IN PROGRESS / NEXT]
+*   **Task:** Create basic admin-only API endpoints for testing and initial development. [✅ COMPLETED]
 *   **Details:**
     *   Example: `/api/admin/test` (GET) that returns a success message if accessed by an admin.
     *   These routes will be protected by the new RBAC middleware.
@@ -60,7 +60,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   [✅] Modified the authentication context/state management logic (implicitly via `currentUser` in `localStorage`).
 
 ### 2. Protected Admin Routes/Components
-*   **Task:** Restrict access to admin-specific UI sections. [🚧 IN PROGRESS / NEXT]
+*   **Task:** Restrict access to admin-specific UI sections. [✅ COMPLETED]
 *   **Proposal:**
     *   Develop an `<AdminRoute />` higher-order component or wrapper.
     *   This component will check if the current user has an 'admin' role.
@@ -69,7 +69,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   Create `client/src/components/AdminRoute.tsx` (or similar).
 
 ### 3. Basic Admin Dashboard UI
-*   **Task:** Create a placeholder page for the admin dashboard. [🚧 IN PROGRESS / NEXT]
+*   **Task:** Create a placeholder page for the admin dashboard. [✅ COMPLETED]
 *   **Details:**
     *   This page (e.g., `AdminDashboardPage.tsx`) will be protected by the `<AdminRoute />`.
     *   Initially, it can display a simple welcome message or attempt to fetch data from a placeholder admin API endpoint.
@@ -78,7 +78,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   Update client-side routing in `client/src/App.tsx` to include this new page and protect it.
 
 ### 4. Conditional UI for Admin Access
-*   **Task:** Provide a clear way for admin users to navigate to the admin dashboard. [🚧 IN PROGRESS / NEXT]
+*   **Task:** Provide a clear way for admin users to navigate to the admin dashboard. [✅ COMPLETED]
 *   **Proposal:**
     *   Add a conditional link/button (e.g., "Admin Panel") in the main navigation or user profile dropdown.
     *   This element should only be visible if the logged-in user is an admin.
@@ -109,18 +109,18 @@ This document outlines the implementation plan for adding admin authentication a
 *   [✅] `server/src/models/User.ts`
 *   [✅] `server/src/controllers/auth.controller.ts`
 *   [✅] `server/src/controllers/user.controller.ts` (Fix for userId)
-*   `server/src/middleware/admin.middleware.ts` (New - Next Step)
-*   `server/src/routes/admin.routes.ts` (New - Next Step)
-*   `server/src/app.ts` (To include admin routes - Next Step)
+*   [✅] `server/src/middleware/admin.middleware.ts`
+*   [✅] `server/src/routes/admin.routes.ts`
+*   [✅] `server/src/app.ts` (To include admin routes)
 *   [✅] (Potentially) A new script for admin user provisioning. (`scripts/set_admin_user.ts` created and used)
 
 ### Frontend:
 *   [✅] `client/src/services/authService.ts`
 *   [✅] Authentication context/state management files (e.g., `client/src/context/AuthContext.tsx`) (Implicitly via `currentUser` in `localStorage`)
-*   `client/src/components/AdminRoute.tsx` (New - Next Step)
-*   `client/src/pages/AdminDashboardPage.tsx` (New - Next Step)
-*   `client/src/App.tsx` (for routing - Next Step)
-*   Navigation component(s) (e.g., `client/src/components/Navbar.tsx`) (Next Step)
+*   [✅] `client/src/components/AdminRoute.tsx`
+*   [✅] `client/src/pages/AdminDashboardPage.tsx`
+*   [✅] `client/src/App.tsx` (for routing & admin nav link)
+*   [✅] Navigation component(s) (e.g., `client/src/components/Navbar.tsx` or `App.tsx` for admin nav link)
 >>>>>>> REPLACE
 *   **Details:**
     *   When a user logs in via `/api/auth/login`, the generated JWT will contain a `role` claim.
