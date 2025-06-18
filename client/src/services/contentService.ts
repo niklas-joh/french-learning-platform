@@ -26,7 +26,7 @@ export interface Topic {
 export const getTopics = async (): Promise<Topic[]> => {
   // Ensure the token is included if the endpoint is protected
   const token = localStorage.getItem('token');
-  const response = await apiClient.get('/topics', { // Assuming the endpoint is /api/topics
+  const response = await apiClient.get('/content/topics', { // Corrected endpoint
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   return response.data;
