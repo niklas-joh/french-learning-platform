@@ -12,10 +12,10 @@ const config: { [key: string]: Knex.Config } = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: path.resolve(__dirname, '../database/migrations'),
+      directory: path.resolve(__dirname, '../..', 'database', 'migrations'),
     },
     seeds: {
-      directory: path.resolve(__dirname, '../database/seeds'),
+      directory: path.resolve(__dirname, '../..', 'database', 'seeds'),
     },
   },
 
@@ -26,10 +26,10 @@ const config: { [key: string]: Knex.Config } = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: path.resolve(__dirname, '../database/migrations'),
+      directory: path.resolve(__dirname, '../..', 'database', 'migrations'),
     },
     seeds: {
-      directory: path.resolve(__dirname, '../database/seeds'),
+      directory: path.resolve(__dirname, '../..', 'database', 'seeds'),
     },
   },
 };
