@@ -43,3 +43,30 @@ export const getAnalyticsSummary = async (req: Request, res: Response): Promise<
     res.status(500).json({ message: 'Failed to fetch analytics summary' });
   }
 };
+
+export const getAllTopics = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const topics = await knex('topics').select('*');
+    res.status(200).json(topics);
+  } catch (error) {
+    console.error('Error fetching topics:', error);
+    res.status(500).json({ message: 'Failed to fetch topics' });
+  }
+};
+
+export const createTopic = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, description } = req.body;
+
+    if (!name) {
+      res.status(400).json({ message: 'Name is required' });
+      return;
+    }
+
+    const [newTopic] = await knex('topics').insert({ name, description }).returning('*');
+    res.status(201).json(newTopic);
+  } catch (error) {
+    console.error('Error creating topic:', error);
+    res.status(500).json({ message: 'Failed to create topic' });
+  }
+};

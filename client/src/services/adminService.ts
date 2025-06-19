@@ -1,7 +1,7 @@
 import apiClient from './authService'; // Reusing the configured Axios instance
 import axios from 'axios'; // For type checking like axios.isAxiosError
-import { Topic } from '../components/admin/TopicManager'; // Import Topic type
-import { Content } from '../components/admin/ContentManager'; // Import Content type
+import { Topic } from '../types/Topic'; // Import Topic type
+import { Content } from '../types/Content'; // Import Content type
 
 // Interface for the analytics data, matching the backend's AnalyticsSummary
 export interface AdminAnalyticsData {
@@ -44,26 +44,15 @@ export const getAdminAnalytics = async (): Promise<AdminAnalyticsData> => {
  * @returns A promise that resolves with an array of topics.
  */
 export const getTopics = async (): Promise<Topic[]> => {
-  // Placeholder implementation. This will be replaced with an actual API call.
-  console.warn('getTopics is using placeholder data.');
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, name: 'Subjunctive Present', category: 'Grammar', active: true },
-        { id: 2, name: 'Passé Composé vs. Imparfait', category: 'Grammar', active: true },
-        { id: 3, name: 'Common Idioms', category: 'Vocabulary', active: false },
-      ]);
-    }, 500);
-  });
-  // try {
-  //   const response = await apiClient.get<Topic[]>('/admin/topics');
-  //   return response.data;
-  // } catch (error) {
-  //   if (axios.isAxiosError(error) && error.response) {
-  //     throw error.response.data as ErrorResponse;
-  //   }
-  //   throw { message: 'An unexpected error occurred while fetching topics.' } as ErrorResponse;
-  // }
+  try {
+    const response = await apiClient.get<Topic[]>('/admin/topics');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while fetching topics.' } as ErrorResponse;
+  }
 };
 
 /**
@@ -72,18 +61,15 @@ export const getTopics = async (): Promise<Topic[]> => {
  * @returns A promise that resolves with the created topic.
  */
 export const createTopic = async (topicData: Omit<Topic, 'id'>): Promise<Topic> => {
-  console.warn('createTopic is a placeholder and does not send data to the backend.');
-  // Placeholder: In a real implementation, you would post to the backend.
-  return new Promise(resolve => setTimeout(() => resolve({ id: Math.random(), ...topicData }), 500));
-  // try {
-  //   const response = await apiClient.post<Topic>('/admin/topics', topicData);
-  //   return response.data;
-  // } catch (error) {
-  //   if (axios.isAxiosError(error) && error.response) {
-  //     throw error.response.data as ErrorResponse;
-  //   }
-  //   throw { message: 'An unexpected error occurred while creating the topic.' } as ErrorResponse;
-  // }
+  try {
+    const response = await apiClient.post<Topic>('/admin/topics', topicData);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while creating the topic.' } as ErrorResponse;
+  }
 };
 
 /**
