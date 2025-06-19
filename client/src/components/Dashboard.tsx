@@ -43,10 +43,16 @@ const Dashboard: React.FC = () => {
       setSelectedTopicId(topicId);
       setLoading(true);
       const content: ApiContentItem[] = await getContentForTopic(topicId);
+      console.log('Raw content from API:', content);
+
       const quizzesOnly = content.filter(
-        (item) => item.type === 'multiple-choice' || item.type === 'quiz'
+        (item) => item.type.trim().toLowerCase() === 'multiple_choice' || item.type.trim().toLowerCase() === 'quiz'
       );
+      console.log('Filtered quizzes:', quizzesOnly);
+
       const mapped = quizzesOnly.map(mapApiContentToQuizData);
+      console.log('Mapped quiz data:', mapped);
+      
       setQuizzes(mapped);
     } catch (err: any) {
       console.error('Error fetching topic content:', err);
@@ -76,7 +82,7 @@ const Dashboard: React.FC = () => {
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Welcome, {user?.username || 'User'}!
+          Welcome, {user?.firstName || 'User'}!
         </Typography>
         <Typography variant="body1">
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.

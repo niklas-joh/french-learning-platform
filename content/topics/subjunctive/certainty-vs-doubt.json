@@ -6,7 +6,7 @@
     "difficulty": "B1",
     "tags": ["certainty_vs_doubt"],
     "question": {
-      "text": "Il me semble qu'elle _____ raison. (avoir)",
+      "text": "Il me semble qu'il _____ raison. (avoir)",
       "explanation": "Testing certainty expressions"
     },
     "options": ["a", "ait", "aura"],
