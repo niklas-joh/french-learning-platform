@@ -1,27 +1,34 @@
-import apiClient from './authService'; // Use the configured axios client
-import { AxiosError } from 'axios';
+import apiClient from './authService'; // Reusing the configured Axios instance
+import axios from 'axios'; // For type checking like axios.isAxiosError
 
-export interface AnalyticsSummary {
+// Interface for the analytics data, matching the backend's AnalyticsSummary
+export interface AdminAnalyticsData {
   totalUsers: number;
   usersByRole: { role: string; count: number }[];
   totalContentItems: number;
 }
 
-interface AdminErrorResponse { // Consistent error response type
+interface ErrorResponse {
   message: string;
   errors?: Array<{ field: string; message: string }>;
 }
 
-export const getAdminAnalyticsSummary = async (): Promise<AnalyticsSummary> => {
+/**
+ * Fetches the admin analytics summary from the backend.
+ * @returns A promise that resolves with the admin analytics data.
+ */
+export const getAdminAnalytics = async (): Promise<AdminAnalyticsData> => {
   try {
-    // No need to manually get/set token, axios interceptor in authService handles it
-    const response = await apiClient.get<AnalyticsSummary>('/admin/analytics/summary');
+    // The apiClient already has an interceptor to include the auth token.
+    const response = await apiClient.get<AdminAnalyticsData>('/admin/analytics');
     return response.data;
   } catch (error) {
-    const axiosError = error as AxiosError<AdminErrorResponse>;
-    if (axiosError.response && axiosError.response.data) {
-      throw axiosError.response.data;
+    if (axios.isAxiosError(error) && error.response) {
+      // Log the detailed error for debugging on the client-side if needed
+      console.error('Error fetching admin analytics:', error.response.data);
+      throw error.response.data as ErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while fetching admin analytics.' } as AdminErrorResponse;
+    console.error('Unexpected error fetching admin analytics:', error);
+    throw { message: 'An unexpected error occurred while fetching admin analytics.' } as ErrorResponse;
   }
 };
