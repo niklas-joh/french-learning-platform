@@ -17,6 +17,7 @@ erDiagram
         string category "nullable"
         boolean active "default: 1"
         datetime created_at
+        datetime updated_at
     }
 
     content {
@@ -24,23 +25,77 @@ erDiagram
         int topic_id FK "nullable"
         string name
         string type
-        string question_data "JSON"
-        string correct_answer "JSON"
-        string options "nullable, JSON"
-        string difficulty_level "nullable"
-        string tags "nullable, JSON"
-        boolean active "default: 1"
+        json question_data
+        json correct_answer
+        json options
+        string difficulty_level
+        json tags
+        boolean active
         datetime created_at
+        boolean active
     }
 
-    user_content_assignments {
+    USER_RESPONSES {
         int id PK
         int user_id FK
         int content_id FK
-        datetime assigned_at
-        varchar status
+        json user_answer
+        boolean is_correct
+        int time_taken_seconds
+        datetime answered_at
+        json ai_feedback
+        float confidence_score
     }
 
-    content }o--|| topics : "belongs to"
-    users ||--o{ user_content_assignments : "has assigned"
-    content ||--o{ user_content_assignments : "is assigned"
+    LEARNING_JOURNEYS {
+        int id PK
+        int user_id FK
+        string name
+        json content_sequence
+        json progress_data
+        string status
+        datetime created_at
+        datetime completed_at
+    }
+
+    SPACED_REPETITION {
+        int id PK
+        int user_id FK
+        int content_id FK
+        float easiness_factor
+        int repetition_count
+        int interval_days
+        datetime next_review
+        datetime last_reviewed
+        string performance_trend
+    }
+
+    AI_USAGE_LOG {
+        int id PK
+        string api_provider
+        string endpoint_used
+        int user_id FK
+        json request_data
+        json response_data
+        float cost_estimate
+        datetime created_at
+    }
+
+    ADMIN_SETTINGS {
+        int id PK
+        string setting_key UK
+        json setting_value
+        string description
+        datetime updated_at
+        int updated_by FK
+    }
+
+    USERS ||--o{ USER_RESPONSES : "completes"
+    USERS ||--o{ LEARNING_JOURNEYS : "follows"
+    USERS ||--o{ SPACED_REPETITION : "reviews"
+    USERS ||--o{ AI_USAGE_LOG : "triggers"
+    TOPICS ||--o{ CONTENT : "contains"
+    CONTENT ||--o{ USER_RESPONSES : "answered_in"
+    CONTENT ||--o{ SPACED_REPETITION : "scheduled_for"
+    USERS ||--o{ CONTENT : "creates"
+    USERS ||--o{ ADMIN_SETTINGS : "updates"
