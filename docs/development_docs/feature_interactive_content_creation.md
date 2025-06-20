@@ -49,11 +49,12 @@ This document outlines the plan to enhance the admin content management interfac
 **Objective:** Replace the JSON text area with a dynamic form that changes based on the selected content "Type".
 
 ### Frontend Tasks
-- [ ] **`ContentForm.tsx` Logic:**
+- [✅] **`ContentForm.tsx` Logic:**
     - Add a state variable to track the selected content type.
     - Conditionally render different form fields based on the selected type.
-- [ ] **Sub-components:**
+- [✅] **Sub-components:**
     - Create a separate form component for each content type (e.g., `MultipleChoiceForm.tsx`, `FillInTheBlankForm.tsx`).
+- [ ] **Sub-component Implementation:**
     - These components will be responsible for managing their specific fields (e.g., question, options, answer).
 - [ ] **Data Handling:**
     - When the main `ContentForm` is submitted, it will gather the data from the currently active sub-component and format it into the required `questionData` JSON structure before sending it to the backend.
