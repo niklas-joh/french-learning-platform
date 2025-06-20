@@ -28,7 +28,7 @@
     - Security: Secure all endpoints with admin-only access (`protect` and `isAdmin` middleware).
     - Validation: Implement input validation for all API requests.
 - [ ] **Frontend Admin UI:** Design and implement React components and pages for administrators to:
-    - [ ] View, create, edit, and delete topics/categories.
+    - [ ] View, create, edit, and delete topics/categories. (Create: ✅, Read: ✅, Update: 🚧, Delete: ❌)
     - [ ] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries).
     - [ ] Associate content items with relevant topics/categories.
     - [ ] Manage content metadata (e.g., difficulty, tags).

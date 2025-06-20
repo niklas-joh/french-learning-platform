@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getTopics, createTopic } from '../../services/adminService';
+import { getTopics, createTopic, updateTopic } from '../../services/adminService';
 import { 
   Button, 
   Table, 
@@ -52,10 +52,14 @@ const TopicManager: React.FC = () => {
 
   const handleFormSubmit = async (topicData: Omit<Topic, 'id'> | Topic) => {
     try {
-      // Here you would differentiate between create and update
-      // For now, let's just implement create
-      await createTopic(topicData as Omit<Topic, 'id'>);
-      fetchTopics(); // Refetch topics to show the new one
+      if ('id' in topicData) {
+        // This is an update
+        await updateTopic(topicData.id, topicData);
+      } else {
+        // This is a create
+        await createTopic(topicData);
+      }
+      fetchTopics(); // Refetch topics to show the changes
       handleCloseDialog();
     } catch (err: any) {
       setError(err.message || 'Failed to save topic.');

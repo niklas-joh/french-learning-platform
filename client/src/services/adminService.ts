@@ -79,18 +79,15 @@ export const createTopic = async (topicData: Omit<Topic, 'id'>): Promise<Topic> 
  * @returns A promise that resolves with the updated topic.
  */
 export const updateTopic = async (topicId: number, topicData: Partial<Topic>): Promise<Topic> => {
-  console.warn('updateTopic is a placeholder and does not send data to the backend.');
-  // Placeholder: In a real implementation, you would put/patch to the backend.
-  return new Promise(resolve => setTimeout(() => resolve({ id: topicId, name: 'Updated Topic', ...topicData } as Topic), 500));
-  // try {
-  //   const response = await apiClient.put<Topic>(`/admin/topics/${topicId}`, topicData);
-  //   return response.data;
-  // } catch (error) {
-  //   if (axios.isAxiosError(error) && error.response) {
-  //     throw error.response.data as ErrorResponse;
-  //   }
-  //   throw { message: 'An unexpected error occurred while updating the topic.' } as ErrorResponse;
-  // }
+  try {
+    const response = await apiClient.put<Topic>(`/admin/topics/${topicId}`, topicData);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while updating the topic.' } as ErrorResponse;
+  }
 };
 
 /**
