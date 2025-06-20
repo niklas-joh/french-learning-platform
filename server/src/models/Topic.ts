@@ -52,3 +52,13 @@ export const createTopic = async (topicData: NewTopic): Promise<TopicSchema> => 
   }
   return newTopic;
 };
+export const updateTopic = async (id: number, updateData: Partial<NewTopic>): Promise<TopicSchema | null> => {
+  await db<TopicSchema>('topics').where({ id }).update(updateData);
+  const updated = await db<TopicSchema>('topics').where({ id }).first();
+  return updated || null;
+};
+
+export const deleteTopic = async (id: number): Promise<boolean> => {
+  const rowsDeleted = await db<TopicSchema>('topics').where({ id }).del();
+  return rowsDeleted > 0;
+};
