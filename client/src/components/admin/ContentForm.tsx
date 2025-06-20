@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { Content } from '../../types/Content';
 import { Topic } from '../../types/Topic';
+import { ContentType, getContentTypes } from '../../services/adminService';
 
 interface ContentFormProps {
   open: boolean;
@@ -32,20 +33,38 @@ const ContentForm: React.FC<ContentFormProps> = ({
   content,
   topics,
 }) => {
+  const [name, setName] = useState('');
   const [topicId, setTopicId] = useState<number | ''>('');
   const [type, setType] = useState('');
+  const [contentTypes, setContentTypes] = useState<ContentType[]>([]);
   const [questionData, setQuestionData] = useState('');
   const [active, setActive] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const types = await getContentTypes();
+        setContentTypes(types);
+      } catch (err) {
+        console.error('Failed to fetch content types:', err);
+        setError('Failed to load content types.');
+      }
+    };
+
+    if (open) {
+      fetchTypes();
+    }
+
     if (content) {
+      setName(content.name);
       setTopicId(content.topicId);
       setType(content.type);
       setQuestionData(JSON.stringify(content.questionData, null, 2));
       setActive(content.active);
       setError('');
     } else {
+      setName('');
       setTopicId('');
       setType('');
       setQuestionData('');
@@ -71,6 +90,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
     }
 
     const contentData = {
+      name,
       topicId: Number(topicId),
       type,
       questionData: parsedQuestionData,
@@ -89,6 +109,18 @@ const ContentForm: React.FC<ContentFormProps> = ({
       <DialogTitle>{content ? 'Edit Content' : 'Add New Content'}</DialogTitle>
       <Box component="form" onSubmit={handleSubmit}>
         <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Content Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
           <FormControl fullWidth margin="dense" required>
             <InputLabel id="topic-select-label">Topic</InputLabel>
             <Select
@@ -105,17 +137,22 @@ const ContentForm: React.FC<ContentFormProps> = ({
               ))}
             </Select>
           </FormControl>
-          <TextField
-            margin="dense"
-            id="type"
-            label="Content Type"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            required
-          />
+          <FormControl fullWidth margin="dense" required>
+            <InputLabel id="content-type-select-label">Content Type</InputLabel>
+            <Select
+              labelId="content-type-select-label"
+              id="type"
+              value={type}
+              label="Content Type"
+              onChange={(e) => setType(e.target.value as string)}
+            >
+              {contentTypes.map((contentType) => (
+                <MenuItem key={contentType.id} value={contentType.name}>
+                  {contentType.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             margin="dense"
             id="questionData"

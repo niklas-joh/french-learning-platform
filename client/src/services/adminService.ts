@@ -110,6 +110,27 @@ export const deleteTopic = async (topicId: number): Promise<void> => {
 // CONTENT MANAGEMENT
 // =============================================================================
 
+export interface ContentType {
+  id: number;
+  name: string;
+}
+
+/**
+ * Fetches all content types from the backend.
+ * @returns A promise that resolves with an array of content types.
+ */
+export const getContentTypes = async (): Promise<ContentType[]> => {
+  try {
+    const response = await apiClient.get<ContentType[]>('/admin/content-types');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while fetching content types.' } as ErrorResponse;
+  }
+};
+
 /**
  * Fetches all content items from the backend.
  * @returns A promise that resolves with an array of content items.

@@ -142,6 +142,7 @@ const ContentManager: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
+                <TableCell>Name</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Topic</TableCell>
                 <TableCell>Status</TableCell>
@@ -155,6 +156,7 @@ const ContentManager: React.FC = () => {
                 return (
                   <TableRow key={item.id}>
                     <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.name}</TableCell>
                     <TableCell>{item.type}</TableCell>
                     <TableCell>{topicName}</TableCell>
                     <TableCell>{item.active ? 'Active' : 'Inactive'}</TableCell>

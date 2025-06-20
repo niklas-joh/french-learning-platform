@@ -5,6 +5,7 @@ import db from '../config/db'; // Knex instance
 // They will need to be parsed/stringified in application logic.
 export interface ContentSchema {
   id?: number;
+  name: string; // The name of the content item for easy identification
   topic_id?: number | null; // Foreign key, can be null if content is not topic-specific
   type: string; // e.g., 'multiple-choice', 'fill-in-the-blank'
   question_data: string; // JSON string
@@ -29,6 +30,7 @@ export type NewContent = Omit<ContentSchema, 'id' | 'created_at' | 'active'> & {
 // Type for content data returned to application, with JSON fields parsed
 export interface ContentApplicationData {
   id: number;
+  name: string;
   topicId?: number | null;
   type: string;
   questionData: any; // Parsed JSON
@@ -57,6 +59,7 @@ function mapContentToApplicationData(content: ContentSchema): ContentApplication
 
   return {
     id: content.id!,
+    name: content.name,
     topicId: content.topic_id,
     type: content.type,
     questionData: fullQuestionData,
@@ -89,6 +92,7 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
   const { correctAnswer, options, ...restOfQuestionData } = contentData.questionData || {};
 
   const contentToInsert: Partial<ContentSchema> = {
+    name: contentData.name,
     topic_id: contentData.topicId,
     type: contentData.type,
     question_data: JSON.stringify(restOfQuestionData),
@@ -119,6 +123,7 @@ export const getAllContent = async (): Promise<ContentApplicationData[]> => {
 export const updateContent = async (id: number, updateData: any): Promise<ContentApplicationData | null> => {
   const dataToUpdate: Partial<ContentSchema> = {};
 
+  if (updateData.name !== undefined) dataToUpdate.name = updateData.name;
   if (updateData.topicId !== undefined) dataToUpdate.topic_id = updateData.topicId;
   if (updateData.type !== undefined) dataToUpdate.type = updateData.type;
   if (updateData.active !== undefined) dataToUpdate.active = updateData.active;

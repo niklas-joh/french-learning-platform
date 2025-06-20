@@ -118,10 +118,23 @@ export const deleteTopicById = async (req: Request, res: Response): Promise<void
   }
 };
 
-
+export const getAllContentTypes = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const types = await knex('content_types').select('*');
+    res.status(200).json(types);
+  } catch (error) {
+    console.error('Error fetching content types:', error);
+    res.status(500).json({ message: 'Failed to fetch content types' });
+  }
+};
 
 export const createContentItem = async (req: Request, res: Response): Promise<void> => {
   try {
+    const { name } = req.body;
+    if (!name) {
+      res.status(400).json({ message: 'Name is required for content.' });
+      return;
+    }
     const newItem = await createContent(req.body);
     res.status(201).json(newItem);
   } catch (error) {

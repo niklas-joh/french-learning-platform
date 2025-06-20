@@ -11,6 +11,7 @@ import {
     deleteTopicById,
     createContentItem,
     getAllContentItems,
+    getAllContentTypes,
     getContentItemById,
     updateContentItemById,
     deleteContentItemById
@@ -30,6 +31,9 @@ router.post('/topics', protect, isAdmin, createTopic);
 router.get('/topics/:id', protect, isAdmin, getTopicById);
 router.put('/topics/:id', protect, isAdmin, updateTopicById);
 router.delete('/topics/:id', protect, isAdmin, deleteTopicById);
+
+// Content Types
+router.get('/content-types', protect, isAdmin, getAllContentTypes);
 
 // Content management routes
 router.get('/content', protect, isAdmin, getAllContentItems);

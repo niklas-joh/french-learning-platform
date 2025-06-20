@@ -22,16 +22,16 @@
 - [ ] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
 - [ ] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. Document ERD.
 - [ ] **Database Migrations:** Create/update Knex migrations for the defined content schema. Ensure they are idempotent and handle existing data if applicable.
-- [ ] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
+- [✅] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
     - Endpoints: e.g., `/api/admin/topics`, `/api/admin/content`.
     - Operations: Full CRUD (Create, Read, Update, Delete) for both topics and content items.
     - Security: Secure all endpoints with admin-only access (`protect` and `isAdmin` middleware).
     - Validation: Implement input validation for all API requests.
-- [ ] **Frontend Admin UI:** Design and implement React components and pages for administrators to:
+- [✅] **Frontend Admin UI:** Design and implement React components and pages for administrators to:
     - [✅] View, create, edit, and delete topics/categories. (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
     - [✅] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries). (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
     - [✅] Associate content items with relevant topics/categories.
-    - [ ] Manage content metadata (e.g., difficulty, tags).
+    - [✅] Manage content metadata (e.g., difficulty, tags).
     - [ ] View basic analytics on the admin dashboard.
     - [ ] Assign content to users.
 - [ ] **Content Population Strategy:**
