@@ -96,17 +96,14 @@ export const updateTopic = async (topicId: number, topicData: Partial<Topic>): P
  * @returns A promise that resolves when the topic is deleted.
  */
 export const deleteTopic = async (topicId: number): Promise<void> => {
-  console.warn('deleteTopic is a placeholder and does not send data to the backend.');
-  // Placeholder: In a real implementation, you would delete from the backend.
-  return new Promise(resolve => setTimeout(resolve, 500));
-  // try {
-  //   await apiClient.delete(`/admin/topics/${topicId}`);
-  // } catch (error) {
-  //   if (axios.isAxiosError(error) && error.response) {
-  //     throw error.response.data as ErrorResponse;
-  //   }
-  //   throw { message: 'An unexpected error occurred while deleting the topic.' } as ErrorResponse;
-  // }
+  try {
+    await apiClient.delete(`/admin/topics/${topicId}`);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while deleting the topic.' } as ErrorResponse;
+  }
 };
 
 // =============================================================================

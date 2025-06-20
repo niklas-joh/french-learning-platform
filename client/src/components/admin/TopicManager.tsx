@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getTopics, createTopic, updateTopic } from '../../services/adminService';
+import { getTopics, createTopic, updateTopic, deleteTopic } from '../../services/adminService';
 import { 
   Button, 
   Table, 
@@ -13,6 +13,7 @@ import {
   Typography 
 } from '@mui/material';
 import TopicForm from './TopicForm';
+import ConfirmationDialog from './ConfirmationDialog';
 import { Topic } from '../../types/Topic';
 
 const TopicManager: React.FC = () => {
@@ -21,6 +22,8 @@ const TopicManager: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingTopic, setEditingTopic] = useState<Topic | null>(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [topicToDelete, setTopicToDelete] = useState<number | null>(null);
 
   const fetchTopics = async () => {
     try {
@@ -67,6 +70,26 @@ const TopicManager: React.FC = () => {
     }
   };
 
+  const handleDelete = (topicId: number) => {
+    setTopicToDelete(topicId);
+    setConfirmDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (topicToDelete !== null) {
+      try {
+        await deleteTopic(topicToDelete);
+        fetchTopics(); // Refetch topics to show the changes
+      } catch (err: any) {
+        setError(err.message || 'Failed to delete topic.');
+        console.error(err);
+      } finally {
+        setTopicToDelete(null);
+        setConfirmDialogOpen(false);
+      }
+    }
+  };
+
   return (
     <Paper elevation={3} sx={{ p: 2, mt: 4 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -94,7 +117,7 @@ const TopicManager: React.FC = () => {
                   <TableCell>{topic.description}</TableCell>
                   <TableCell>
                     <Button size="small" sx={{ mr: 1 }} onClick={() => handleOpenDialog(topic)}>Edit</Button>
-                    <Button size="small" color="error">Delete</Button>
+                    <Button size="small" color="error" onClick={() => handleDelete(topic.id)}>Delete</Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -108,6 +131,14 @@ const TopicManager: React.FC = () => {
         onClose={handleCloseDialog}
         onSubmit={handleFormSubmit}
         topic={editingTopic}
+      />
+
+      <ConfirmationDialog
+        open={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this topic? This action cannot be undone."
       />
     </Paper>
   );
