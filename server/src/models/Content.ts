@@ -92,3 +92,29 @@ export const createContent = async (contentData: NewContent): Promise<ContentApp
   }
   throw new Error('Content creation failed, ID not returned.');
 };
+
+export const getAllContent = async (): Promise<ContentApplicationData[]> => {
+  const items: ContentSchema[] = await db<ContentSchema>('content').select('*');
+  return items.map(mapContentToApplicationData);
+};
+
+export const updateContent = async (id: number, updateData: Partial<NewContent>): Promise<ContentApplicationData | null> => {
+  const dataToUpdate: Partial<ContentSchema> = {};
+  if (updateData.topic_id !== undefined) dataToUpdate.topic_id = updateData.topic_id;
+  if (updateData.type !== undefined) dataToUpdate.type = updateData.type;
+  if (updateData.question_data !== undefined) dataToUpdate.question_data = JSON.stringify(updateData.question_data);
+  if (updateData.correct_answer !== undefined) dataToUpdate.correct_answer = JSON.stringify(updateData.correct_answer);
+  if (updateData.options !== undefined) dataToUpdate.options = updateData.options ? JSON.stringify(updateData.options) : null;
+  if (updateData.difficulty_level !== undefined) dataToUpdate.difficulty_level = updateData.difficulty_level;
+  if (updateData.tags !== undefined) dataToUpdate.tags = updateData.tags ? JSON.stringify(updateData.tags) : null;
+  if (updateData.active !== undefined) dataToUpdate.active = updateData.active;
+
+  await db<ContentSchema>('content').where({ id }).update(dataToUpdate);
+  const updated = await db<ContentSchema>('content').where({ id }).first();
+  return updated ? mapContentToApplicationData(updated) : null;
+};
+
+export const deleteContent = async (id: number): Promise<boolean> => {
+  const count = await db<ContentSchema>('content').where({ id }).del();
+  return count > 0;
+};
