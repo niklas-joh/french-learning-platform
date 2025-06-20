@@ -13,10 +13,14 @@ import {
   InputLabel,
   Switch,
   FormControlLabel,
+  Typography,
 } from '@mui/material';
 import { Content } from '../../types/Content';
 import { Topic } from '../../types/Topic';
 import { ContentType, getContentTypes } from '../../services/adminService';
+import MultipleChoiceSpecificForm from './content_type_forms/MultipleChoiceSpecificForm';
+import FillInTheBlankSpecificForm from './content_type_forms/FillInTheBlankSpecificForm';
+import TrueFalseSpecificForm from './content_type_forms/TrueFalseSpecificForm';
 
 interface ContentFormProps {
   open: boolean;
@@ -37,7 +41,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
   const [topicId, setTopicId] = useState<number | ''>('');
   const [type, setType] = useState('');
   const [contentTypes, setContentTypes] = useState<ContentType[]>([]);
-  const [questionData, setQuestionData] = useState('');
+  const [questionData, setQuestionData] = useState<any>({});
   const [active, setActive] = useState(true);
   const [error, setError] = useState('');
 
@@ -60,14 +64,26 @@ const ContentForm: React.FC<ContentFormProps> = ({
       setName(content.name);
       setTopicId(content.topicId);
       setType(content.type);
-      setQuestionData(JSON.stringify(content.questionData, null, 2));
+      // Handle both object and stringified JSON for backward compatibility
+      if (typeof content.questionData === 'string') {
+        try {
+          setQuestionData(JSON.parse(content.questionData));
+        } catch (e) {
+          console.error('Failed to parse questionData JSON:', e);
+          setQuestionData({});
+          setError('Failed to parse existing question data.');
+        }
+      } else {
+        setQuestionData(content.questionData || {});
+      }
       setActive(content.active);
       setError('');
     } else {
+      // Reset for new content form
       setName('');
       setTopicId('');
       setType('');
-      setQuestionData('');
+      setQuestionData({});
       setActive(true);
       setError('');
     }
@@ -75,17 +91,13 @@ const ContentForm: React.FC<ContentFormProps> = ({
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    let parsedQuestionData;
-    try {
-      parsedQuestionData = JSON.parse(questionData);
-      setError('');
-    } catch (err) {
-      setError('Invalid JSON in Question Data field.');
-      return;
-    }
 
     if (!topicId) {
       setError('Topic is required.');
+      return;
+    }
+    if (!type) {
+      setError('Content Type is required.');
       return;
     }
 
@@ -93,7 +105,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
       name,
       topicId: Number(topicId),
       type,
-      questionData: parsedQuestionData,
+      questionData: questionData, // questionData is now an object
       active,
     };
 
@@ -153,21 +165,45 @@ const ContentForm: React.FC<ContentFormProps> = ({
               ))}
             </Select>
           </FormControl>
-          <TextField
-            margin="dense"
-            id="questionData"
-            label="Question Data (JSON format)"
-            type="text"
-            fullWidth
-            multiline
-            rows={10}
-            variant="outlined"
-            value={questionData}
-            onChange={(e) => setQuestionData(e.target.value)}
-            required
-            error={!!error}
-            helperText={error}
-          />
+
+          {/* Interactive Content Form Area */}
+          <Box sx={{ mt: 2, mb: 1 }}>
+            {(() => {
+              switch (type) {
+                case 'Multiple Choice':
+                  return (
+                    <MultipleChoiceSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                case 'Fill in the Blank':
+                  return (
+                    <FillInTheBlankSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                case 'True/False':
+                  return (
+                    <TrueFalseSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                default:
+                  if (type) {
+                    return (
+                      <Typography variant="caption" color="textSecondary">
+                        Interactive form for type '{type}' is not yet implemented.
+                      </Typography>
+                    );
+                  }
+                  return null; // Nothing selected yet
+              }
+            })()}
+          </Box>
+
           <FormControlLabel
             control={
               <Switch
