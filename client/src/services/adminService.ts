@@ -115,16 +115,15 @@ export const deleteTopic = async (topicId: number): Promise<void> => {
  * @returns A promise that resolves with an array of content items.
  */
 export const getContentItems = async (): Promise<Content[]> => {
-  // Placeholder implementation.
-  console.warn('getContentItems is using placeholder data.');
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve([
-        { id: 1, topicId: 1, type: 'multiple-choice', questionData: { q: 'Which is correct?' }, active: true },
-        { id: 2, topicId: 2, type: 'fill-in-the-blank', questionData: { q: 'Je ___ (être) content.' }, active: true },
-      ]);
-    }, 500);
-  });
+  try {
+    const response = await apiClient.get<Content[]>('/admin/content');
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while fetching content.' } as ErrorResponse;
+  }
 };
 
 /**
@@ -133,8 +132,15 @@ export const getContentItems = async (): Promise<Content[]> => {
  * @returns A promise that resolves with the created content item.
  */
 export const createContentItem = async (contentData: Omit<Content, 'id'>): Promise<Content> => {
-  console.warn('createContentItem is a placeholder.');
-  return new Promise(resolve => setTimeout(() => resolve({ id: Math.random(), ...contentData }), 500));
+  try {
+    const response = await apiClient.post<Content>('/admin/content', contentData);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while creating the content item.' } as ErrorResponse;
+  }
 };
 
 /**
@@ -144,8 +150,15 @@ export const createContentItem = async (contentData: Omit<Content, 'id'>): Promi
  * @returns A promise that resolves with the updated content item.
  */
 export const updateContentItem = async (contentId: number, contentData: Partial<Content>): Promise<Content> => {
-  console.warn('updateContentItem is a placeholder.');
-  return new Promise(resolve => setTimeout(() => resolve({ id: contentId, type: 'Updated', ...contentData } as Content), 500));
+  try {
+    const response = await apiClient.put<Content>(`/admin/content/${contentId}`, contentData);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while updating the content item.' } as ErrorResponse;
+  }
 };
 
 /**
@@ -154,6 +167,12 @@ export const updateContentItem = async (contentId: number, contentData: Partial<
  * @returns A promise that resolves when the content item is deleted.
  */
 export const deleteContentItem = async (contentId: number): Promise<void> => {
-  console.warn('deleteContentItem is a placeholder.');
-  return new Promise(resolve => setTimeout(resolve, 500));
+  try {
+    await apiClient.delete(`/admin/content/${contentId}`);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as ErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while deleting the content item.' } as ErrorResponse;
+  }
 };

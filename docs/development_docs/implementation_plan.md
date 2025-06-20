@@ -28,9 +28,9 @@
     - Security: Secure all endpoints with admin-only access (`protect` and `isAdmin` middleware).
     - Validation: Implement input validation for all API requests.
 - [ ] **Frontend Admin UI:** Design and implement React components and pages for administrators to:
-    - [ ] View, create, edit, and delete topics/categories. (Create: ✅, Read: ✅, Update: 🚧, Delete: ❌)
-    - [ ] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries).
-    - [ ] Associate content items with relevant topics/categories.
+    - [✅] View, create, edit, and delete topics/categories. (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
+    - [✅] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries). (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
+    - [✅] Associate content items with relevant topics/categories.
     - [ ] Manage content metadata (e.g., difficulty, tags).
     - [ ] View basic analytics on the admin dashboard.
     - [ ] Assign content to users.
@@ -130,8 +130,9 @@
 - [ ] Content Schema: Define and document content/topic database schema.
 - [ ] Content Migrations: Implement database migrations for the new/updated content schema.
 - [ ] Content Backend API: Build CRUD APIs for topics and content items.
-- [ ] Content Admin UI: Develop frontend interface for managing topics and content.
+- [✅] Content Admin UI: Develop frontend interface for managing topics and content.
 - [ ] Content Population Script: Create script to populate content and topics tables from JSON files.
+- [ ] **Enhanced Content Management:** Implement interactive content creation and management features. See [Interactive Content Creation Plan](./feature_interactive_content_creation.md).
 ```
 
 ### **Week 5-6 Checklist**
