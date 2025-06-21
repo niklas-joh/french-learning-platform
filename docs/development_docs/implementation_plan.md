@@ -33,7 +33,8 @@
     - [✅] Associate content items with relevant topics/categories.
     - [✅] Manage content metadata (e.g., difficulty, tags).
     - [✅] View basic analytics on the admin dashboard.
-    - [✅] Assign content to users.
+    - [✅] Assign content to users (Admin UI).
+    - [✅] Display assigned content on user dashboard.
 - [✅] **Content Population Strategy:**
     - [✅] **Initial Population Script:** A script to bulk-populate the `content` and `topics` tables from existing JSON files has been created and executed, populating the initial dataset.
     - [ ] **Admin UI Population:** Enable content creation and management directly through the new Admin UI as an ongoing process.
