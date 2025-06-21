@@ -35,7 +35,7 @@
     - [ ] View basic analytics on the admin dashboard.
     - [ ] Assign content to users.
 - [ ] **Content Population Strategy:**
-    - [ ] **Initial Population Script:** Develop a script to bulk-populate the `content` and `topics` tables from existing JSON files (e.g., `content/topics/**/*.json`). This is the immediate next task to get initial data into the system.
+    - [✅] **Initial Population Script:** Develop a script to bulk-populate the `content` and `topics` tables from existing JSON files (e.g., `content/topics/**/*.json`). This is the immediate next task to get initial data into the system.
     - [ ] **Admin UI Population:** Enable content creation and management directly through the new Admin UI as an ongoing process.
 - [ ] **Enhanced User Features**
 - [ ] Multiple content types (grammar, vocabulary, etc.)
@@ -131,7 +131,7 @@
 - [ ] Content Migrations: Implement database migrations for the new/updated content schema.
 - [ ] Content Backend API: Build CRUD APIs for topics and content items.
 - [✅] Content Admin UI: Develop frontend interface for managing topics and content.
-- [ ] Content Population Script: Create script to populate content and topics tables from JSON files.
+- [✅] Content Population Script: Create script to populate content and topics tables from JSON files.
 - [ ] **Enhanced Content Management:** Implement interactive content creation and management features. See [Interactive Content Creation Plan](./feature_interactive_content_creation.md).
 ```
 
