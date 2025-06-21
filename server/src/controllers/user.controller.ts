@@ -116,3 +116,64 @@ export const getAssignedContent = async (req: AuthenticatedRequest, res: Respons
     res.status(500).json({ message: 'Failed to fetch assigned content' });
   }
 };
+
+export const getUserProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
+      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+      return;
+    }
+    const userId = req.user.userId;
+
+    // 1. Get all topics
+    const topics = await knex('topics').select('id', 'name');
+    if (!topics || topics.length === 0) {
+      res.json([]);
+      return;
+    }
+
+    // 2. Get total content count for each topic
+    const totalCountsQuery = knex('content')
+      .select('topic_id')
+      .count('* as totalCount')
+      .groupBy('topic_id');
+    
+    // 3. Get completed content count for the user for each topic
+    const completedCountsQuery = knex('user_content_assignments')
+      .join('content', 'user_content_assignments.content_id', 'content.id')
+      .where({
+        'user_content_assignments.user_id': userId,
+        'user_content_assignments.status': 'completed',
+      })
+      .select('content.topic_id')
+      .count('* as completedCount')
+      .groupBy('content.topic_id');
+
+    const [totalCounts, completedCounts] = await Promise.all([
+      totalCountsQuery,
+      completedCountsQuery,
+    ]);
+
+    // 4. Map counts to topics for a more robust result
+    const progressData = topics.map(topic => {
+      const total = totalCounts.find(c => c.topic_id === topic.id);
+      const completed = completedCounts.find(c => c.topic_id === topic.id);
+
+      const totalCount = total ? Number(total.totalCount) : 0;
+      const completedCount = completed ? Number(completed.completedCount) : 0;
+
+      return {
+        topicId: topic.id,
+        topicName: topic.name,
+        completedCount,
+        totalCount,
+        percentage: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
+      };
+    });
+
+    res.json(progressData);
+  } catch (error: any) {
+    console.error('Error fetching user progress:', error);
+    res.status(500).json({ message: 'Failed to fetch user progress' });
+  }
+};

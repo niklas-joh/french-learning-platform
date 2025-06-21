@@ -1,7 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+} from '@mui/material';
 import { User } from '../../types/User';
 import { Content } from '../../types/Content';
-import { UserContentAssignment, getAssignmentsForUser, assignContentToUser, unassignContentFromUser } from '../../services/adminService';
+import { UserContentAssignmentWithContent, getAssignmentsForUser, assignContentToUser, unassignContentFromUser } from '../../services/adminService';
 import { getUsers } from '../../services/userService';
 import { getContentItems } from '../../services/adminService';
 
@@ -10,7 +27,7 @@ const AssignmentManager: React.FC = () => {
   const [content, setContent] = useState<Content[]>([]);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedContent, setSelectedContent] = useState<number | null>(null);
-  const [assignments, setAssignments] = useState<UserContentAssignment[]>([]);
+  const [assignments, setAssignments] = useState<UserContentAssignmentWithContent[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -86,49 +103,72 @@ const AssignmentManager: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Manage Content Assignments</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <Box>
+      <Typography variant="h4" gutterBottom>Manage Content Assignments</Typography>
+      {error && <Typography color="error">{error}</Typography>}
       
-      <div>
-        <label>Select User:</label>
-        <select onChange={(e) => setSelectedUser(Number(e.target.value))} value={selectedUser || ''}>
-          <option value="">--Select a User--</option>
-          {users.map(user => (
-            <option key={user.id} value={user.id}>{user.first_name} {user.last_name}</option>
-          ))}
-        </select>
-      </div>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>Select User</InputLabel>
+          <Select onChange={(e) => setSelectedUser(Number(e.target.value))} value={selectedUser || ''}>
+            <MenuItem value="">--Select a User--</MenuItem>
+            {users.map(user => (
+              <MenuItem key={user.id} value={user.id}>{user.first_name} {user.last_name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <div>
-        <label>Select Content:</label>
-        <select onChange={(e) => setSelectedContent(Number(e.target.value))} value={selectedContent || ''}>
-          <option value="">--Select Content--</option>
-          {content.map(item => (
-            <option key={item.id} value={item.id}>{item.name}</option>
-          ))}
-        </select>
-      </div>
+        <FormControl sx={{ minWidth: 200 }}>
+          <InputLabel>Select Content</InputLabel>
+          <Select onChange={(e) => setSelectedContent(Number(e.target.value))} value={selectedContent || ''}>
+            <MenuItem value="">--Select Content--</MenuItem>
+            {content.map(item => (
+              <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-      <button onClick={handleAssign} disabled={loading || !selectedUser || !selectedContent}>
-        {loading ? 'Assigning...' : 'Assign Content'}
-      </button>
+        <Button onClick={handleAssign} disabled={loading || !selectedUser || !selectedContent} variant="contained">
+          {loading ? <CircularProgress size={24} /> : 'Assign Content'}
+        </Button>
+      </Box>
 
-      <hr />
-
-      <h3>Assigned Content for Selected User</h3>
-      {loading && <p>Loading assignments...</p>}
-      <ul>
-        {assignments.map(assignment => (
-          <li key={assignment.id}>
-            Content ID: {assignment.content_id} - Status: {assignment.status}
-            <button onClick={() => handleUnassign(assignment.id)} disabled={loading}>
-              Unassign
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
+      <Typography variant="h5" gutterBottom>Assigned Content for Selected User</Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Content Name</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell align="right">Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            ) : (
+              assignments.map(assignment => (
+                <TableRow key={assignment.id}>
+                  <TableCell>{assignment.content.name}</TableCell>
+                  <TableCell>{assignment.content.type}</TableCell>
+                  <TableCell>{assignment.status}</TableCell>
+                  <TableCell align="right">
+                    <Button onClick={() => handleUnassign(assignment.id)} disabled={loading} color="secondary">
+                      Unassign
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

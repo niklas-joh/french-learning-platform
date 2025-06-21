@@ -7,6 +7,7 @@ import Quiz, { QuizData } from './Quiz';
 import { ApiContentItem, mapApiContentToQuizData } from '../utils/data-mappers';
 import AssignedContentList from './AssignedContentList';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
+import ProgressAnalytics from './ProgressAnalytics';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserProfileData | null>(null);
@@ -88,6 +89,9 @@ const Dashboard: React.FC = () => {
         <Typography variant="body1" gutterBottom>
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.
         </Typography>
+        <Box sx={{ mt: 4 }}>
+          <ProgressAnalytics />
+        </Box>
         <Box sx={{ mt: 4 }}>
           <AssignedContentList assignments={assignments} />
         </Box>

@@ -11,7 +11,7 @@ export interface UserContentAssignment {
 }
 
 export interface UserContentAssignmentWithContent extends UserContentAssignment {
-  content: Content;
+  content: Partial<Content> & { type: string };
 }
 
 const UserContentAssignmentModel = {
@@ -29,25 +29,29 @@ const UserContentAssignmentModel = {
     const assignments = await db('user_content_assignments')
       .where({ 'user_content_assignments.user_id': userId })
       .join('content', 'user_content_assignments.content_id', 'content.id')
+      .join('content_types', 'content.content_type_id', 'content_types.id')
       .select(
         'user_content_assignments.*',
         'content.name as content_name',
-        'content.type as content_type',
         'content.question_data as content_question_data',
-        'content.id as content_id_alias'
+        'content.id as content_id_alias',
+        'content_types.name as content_type_name',
+        'content.content_type_id as content_type_id'
       );
 
     return assignments.map(assignment => {
-      const { content_name, content_type, content_question_data, content_id_alias, ...assignmentData } = assignment;
+      const { content_name, content_question_data, content_id_alias, content_type_id, content_type_name, ...assignmentData } = assignment;
       return {
         ...assignmentData,
         content: {
           id: content_id_alias,
           name: content_name,
-          type: content_type,
           question_data: content_question_data,
-          // Add other necessary content fields here, with default or null values
-          correct_answer: '', // Or fetch if needed
+          content_type_id: content_type_id,
+          type: content_type_name,
+          // Create a minimal valid Content object.
+          // Most fields are missing, but it satisfies the type for now.
+          correct_answer: '',
         },
       };
     });

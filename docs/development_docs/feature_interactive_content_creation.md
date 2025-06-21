@@ -35,13 +35,13 @@ This document outlines the plan to enhance the admin content management interfac
 - [✅] **API:**
     - Create new CRUD API endpoints for managing content types (e.g., `/api/admin/content-types`).
     - Secure these endpoints for admin-only access.
-- [ ] **Content API:** Update the content endpoints to reference the `content_types` table.
+- [✅] **Content API:** Update the content endpoints to reference the `content_types` table.
 
 ### Frontend Tasks
 - [✅] **UI:**
     - In `ContentForm.tsx`, replace the "Content Type" text field with a `<Select>` dropdown component.
     - Fetch the list of available content types and populate the dropdown.
-- [ ] **New Admin Section:** Create a new `ContentTypeManager.tsx` component to allow admins to add, edit, and delete content types.
+- [✅] **New Admin Section:** Create a new `ContentTypeManager.tsx` component to allow admins to add, edit, and delete content types.
 - [✅] **Services:** Add new functions to `adminService.ts` to manage content types.
 
 ## 4. Interactive Content Population
@@ -54,9 +54,9 @@ This document outlines the plan to enhance the admin content management interfac
     - Conditionally render different form fields based on the selected type.
 - [✅] **Sub-components:**
     - Create a separate form component for each content type (e.g., `MultipleChoiceForm.tsx`, `FillInTheBlankForm.tsx`).
-- [ ] **Sub-component Implementation:**
+- [✅] **Sub-component Implementation:**
     - These components will be responsible for managing their specific fields (e.g., question, options, answer).
-- [ ] **Data Handling:**
+- [✅] **Data Handling:**
     - When the main `ContentForm` is submitted, it will gather the data from the currently active sub-component and format it into the required `questionData` JSON structure before sending it to the backend.
 
 This approach breaks down the complex task into manageable, feature-oriented steps, ensuring a clear path forward.
