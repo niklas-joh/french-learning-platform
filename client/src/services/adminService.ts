@@ -1,37 +1,30 @@
 import apiClient from './authService'; // Reusing the configured Axios instance
-import axios from 'axios'; // For type checking like axios.isAxiosError
+import axios, { AxiosError } from 'axios'; // For type checking like axios.isAxiosError
 import { Topic } from '../types/Topic'; // Import Topic type
 import { Content } from '../types/Content'; // Import Content type
 
-// Interface for the analytics data, matching the backend's AnalyticsSummary
-export interface AdminAnalyticsData {
+export interface AnalyticsSummary {
   totalUsers: number;
   usersByRole: { role: string; count: number }[];
   totalContentItems: number;
 }
 
-interface ErrorResponse {
+interface AdminErrorResponse { // Consistent error response type
   message: string;
   errors?: Array<{ field: string; message: string }>;
 }
 
-/**
- * Fetches the admin analytics summary from the backend.
- * @returns A promise that resolves with the admin analytics data.
- */
-export const getAdminAnalytics = async (): Promise<AdminAnalyticsData> => {
+export const getAdminAnalyticsSummary = async (): Promise<AnalyticsSummary> => {
   try {
-    // The apiClient already has an interceptor to include the auth token.
-    const response = await apiClient.get<AdminAnalyticsData>('/admin/analytics');
+    // No need to manually get/set token, axios interceptor in authService handles it
+    const response = await apiClient.get<AnalyticsSummary>('/admin/analytics/summary');
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      // Log the detailed error for debugging on the client-side if needed
-      console.error('Error fetching admin analytics:', error.response.data);
-      throw error.response.data as ErrorResponse;
+    const axiosError = error as AxiosError<AdminErrorResponse>;
+    if (axiosError.response && axiosError.response.data) {
+      throw axiosError.response.data;
     }
-    console.error('Unexpected error fetching admin analytics:', error);
-    throw { message: 'An unexpected error occurred while fetching admin analytics.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while fetching admin analytics.' } as AdminErrorResponse;
   }
 };
 
@@ -49,9 +42,9 @@ export const getTopics = async (): Promise<Topic[]> => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while fetching topics.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while fetching topics.' } as AdminErrorResponse;
   }
 };
 
@@ -66,9 +59,9 @@ export const createTopic = async (topicData: Omit<Topic, 'id'>): Promise<Topic> 
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while creating the topic.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while creating the topic.' } as AdminErrorResponse;
   }
 };
 
@@ -84,9 +77,9 @@ export const updateTopic = async (topicId: number, topicData: Partial<Topic>): P
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while updating the topic.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while updating the topic.' } as AdminErrorResponse;
   }
 };
 
@@ -100,9 +93,9 @@ export const deleteTopic = async (topicId: number): Promise<void> => {
     await apiClient.delete(`/admin/topics/${topicId}`);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while deleting the topic.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while deleting the topic.' } as AdminErrorResponse;
   }
 };
 
@@ -125,9 +118,9 @@ export const getContentTypes = async (): Promise<ContentType[]> => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while fetching content types.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while fetching content types.' } as AdminErrorResponse;
   }
 };
 
@@ -141,9 +134,9 @@ export const getContentItems = async (): Promise<Content[]> => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while fetching content.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while fetching content.' } as AdminErrorResponse;
   }
 };
 
@@ -158,9 +151,9 @@ export const createContentItem = async (contentData: Omit<Content, 'id'>): Promi
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while creating the content item.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while creating the content item.' } as AdminErrorResponse;
   }
 };
 
@@ -176,9 +169,9 @@ export const updateContentItem = async (contentId: number, contentData: Partial<
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while updating the content item.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while updating the content item.' } as AdminErrorResponse;
   }
 };
 
@@ -192,8 +185,8 @@ export const deleteContentItem = async (contentId: number): Promise<void> => {
     await apiClient.delete(`/admin/content/${contentId}`);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as ErrorResponse;
+      throw error.response.data as AdminErrorResponse;
     }
-    throw { message: 'An unexpected error occurred while deleting the content item.' } as ErrorResponse;
+    throw { message: 'An unexpected error occurred while deleting the content item.' } as AdminErrorResponse;
   }
 };

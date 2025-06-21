@@ -37,7 +37,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   It will verify if the authenticated user's JWT contains the 'admin' role.
     *   If not an admin, return a 403 Forbidden error.
 *   **Actions:**
-    *   Create `server/src/middleware/admin.middleware.ts`.
+    *   [✅] Create `server/src/middleware/admin.middleware.ts`.
 
 ### 5. Placeholder Admin API Routes
 *   **Task:** Create basic admin-only API endpoints for testing and initial development. [✅ COMPLETED]
@@ -45,8 +45,8 @@ This document outlines the implementation plan for adding admin authentication a
     *   Example: `/api/admin/test` (GET) that returns a success message if accessed by an admin.
     *   These routes will be protected by the new RBAC middleware.
 *   **Actions:**
-    *   Create a new admin routes file (e.g., `server/src/routes/admin.routes.ts`).
-    *   Integrate these routes into `server/src/app.ts`.
+    *   [✅] Create a new admin routes file (e.g., `server/src/routes/admin.routes.ts`).
+    *   [✅] Integrate these routes into `server/src/app.ts`.
 
 ## II. Frontend Implementation (React & TypeScript)
 
@@ -66,7 +66,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   This component will check if the current user has an 'admin' role.
     *   If not an admin, redirect the user (e.g., to the home page or login page).
 *   **Actions:**
-    *   Create `client/src/components/AdminRoute.tsx` (or similar).
+    *   [✅] Create `client/src/components/AdminRoute.tsx` (or similar).
 
 ### 3. Basic Admin Dashboard UI
 *   **Task:** Create a placeholder page for the admin dashboard. [✅ COMPLETED]
@@ -74,8 +74,8 @@ This document outlines the implementation plan for adding admin authentication a
     *   This page (e.g., `AdminDashboardPage.tsx`) will be protected by the `<AdminRoute />`.
     *   Initially, it can display a simple welcome message or attempt to fetch data from a placeholder admin API endpoint.
 *   **Actions:**
-    *   Create `client/src/pages/AdminDashboardPage.tsx`.
-    *   Update client-side routing in `client/src/App.tsx` to include this new page and protect it.
+    *   [✅] Create `client/src/pages/AdminDashboardPage.tsx`.
+    *   [✅] Update client-side routing in `client/src/App.tsx` to include this new page and protect it.
 
 ### 4. Conditional UI for Admin Access
 *   **Task:** Provide a clear way for admin users to navigate to the admin dashboard. [✅ COMPLETED]
@@ -83,7 +83,7 @@ This document outlines the implementation plan for adding admin authentication a
     *   Add a conditional link/button (e.g., "Admin Panel") in the main navigation or user profile dropdown.
     *   This element should only be visible if the logged-in user is an admin.
 *   **Actions:**
-    *   Modify the relevant navigation component (e.g., `Navbar.tsx`, `Header.tsx`, or within `App.tsx`).
+    *   [✅] Modify the relevant navigation component (e.g., `Navbar.tsx`, `Header.tsx`, or within `App.tsx`).
 
 ## III. Workflow & Testing
 
