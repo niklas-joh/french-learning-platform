@@ -24,4 +24,17 @@ export const getContentForTopic = async (topicId: number | string) => {
   return response.data;
 };
 
+export const getAssignedContent = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token found');
+  }
+  const response = await apiClient.get('/users/me/assignments', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export default apiClient;
