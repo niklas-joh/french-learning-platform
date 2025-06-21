@@ -154,6 +154,53 @@ export const getAllContentTypes = async (req: Request, res: Response): Promise<v
   }
 };
 
+export const createContentType = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { name, description } = req.body;
+    if (!name) {
+      res.status(400).json({ message: 'Name is required' });
+      return;
+    }
+    const [newType] = await knex('content_types').insert({ name, description }).returning('*');
+    res.status(201).json(newType);
+  } catch (error) {
+    console.error('Error creating content type:', error);
+    res.status(500).json({ message: 'Failed to create content type' });
+  }
+};
+
+export const updateContentType = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    const updated = await knex('content_types').where({ id }).update({ name, description });
+    if (!updated) {
+      res.status(404).json({ message: 'Content type not found' });
+      return;
+    }
+    const updatedType = await knex('content_types').where({ id }).first();
+    res.status(200).json(updatedType);
+  } catch (error) {
+    console.error('Error updating content type:', error);
+    res.status(500).json({ message: 'Failed to update content type' });
+  }
+};
+
+export const deleteContentType = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const deleted = await knex('content_types').where({ id }).del();
+    if (!deleted) {
+      res.status(404).json({ message: 'Content type not found' });
+      return;
+    }
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting content type:', error);
+    res.status(500).json({ message: 'Failed to delete content type' });
+  }
+};
+
 export const createContentItem = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name } = req.body;

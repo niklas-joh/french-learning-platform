@@ -39,7 +39,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [topicId, setTopicId] = useState<number | ''>('');
-  const [type, setType] = useState('');
+  const [contentTypeId, setContentTypeId] = useState<number | ''>('');
   const [contentTypes, setContentTypes] = useState<ContentType[]>([]);
   const [questionData, setQuestionData] = useState<any>({});
   const [active, setActive] = useState(true);
@@ -63,7 +63,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
     if (content) {
       setName(content.name);
       setTopicId(content.topicId);
-      setType(content.type);
+      setContentTypeId(content.contentTypeId);
       // Handle both object and stringified JSON for backward compatibility
       if (typeof content.questionData === 'string') {
         try {
@@ -82,7 +82,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
       // Reset for new content form
       setName('');
       setTopicId('');
-      setType('');
+      setContentTypeId('');
       setQuestionData({});
       setActive(true);
       setError('');
@@ -96,15 +96,18 @@ const ContentForm: React.FC<ContentFormProps> = ({
       setError('Topic is required.');
       return;
     }
-    if (!type) {
+    if (!contentTypeId) {
       setError('Content Type is required.');
       return;
     }
 
+    const selectedType = contentTypes.find(ct => ct.id === contentTypeId);
+
     const contentData = {
       name,
       topicId: Number(topicId),
-      type,
+      contentTypeId: Number(contentTypeId),
+      type: selectedType ? selectedType.name : '',
       questionData: questionData, // questionData is now an object
       active,
     };
@@ -153,13 +156,13 @@ const ContentForm: React.FC<ContentFormProps> = ({
             <InputLabel id="content-type-select-label">Content Type</InputLabel>
             <Select
               labelId="content-type-select-label"
-              id="type"
-              value={type}
+              id="contentTypeId"
+              value={contentTypeId}
               label="Content Type"
-              onChange={(e) => setType(e.target.value as string)}
+              onChange={(e) => setContentTypeId(e.target.value as number)}
             >
               {contentTypes.map((contentType) => (
-                <MenuItem key={contentType.id} value={contentType.name}>
+                <MenuItem key={contentType.id} value={contentType.id}>
                   {contentType.name}
                 </MenuItem>
               ))}
@@ -169,22 +172,25 @@ const ContentForm: React.FC<ContentFormProps> = ({
           {/* Interactive Content Form Area */}
           <Box sx={{ mt: 2, mb: 1 }}>
             {(() => {
-              switch (type) {
-                case 'Multiple Choice':
+              const selectedType = contentTypes.find(ct => ct.id === contentTypeId);
+              if (!selectedType) return null;
+
+              switch (selectedType.name) {
+                case 'multiple-choice':
                   return (
                     <MultipleChoiceSpecificForm
                       data={questionData}
                       onChange={setQuestionData}
                     />
                   );
-                case 'Fill in the Blank':
+                case 'fill-in-the-blank':
                   return (
                     <FillInTheBlankSpecificForm
                       data={questionData}
                       onChange={setQuestionData}
                     />
                   );
-                case 'True/False':
+                case 'true-false':
                   return (
                     <TrueFalseSpecificForm
                       data={questionData}
@@ -192,10 +198,10 @@ const ContentForm: React.FC<ContentFormProps> = ({
                     />
                   );
                 default:
-                  if (type) {
+                  if (selectedType.name) {
                     return (
                       <Typography variant="caption" color="textSecondary">
-                        Interactive form for type '{type}' is not yet implemented.
+                        Interactive form for type '{selectedType.name}' is not yet implemented.
                       </Typography>
                     );
                   }

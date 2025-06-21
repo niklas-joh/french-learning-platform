@@ -12,6 +12,9 @@ import {
     createContentItem,
     getAllContentItems,
     getAllContentTypes,
+    createContentType,
+    updateContentType,
+    deleteContentType,
     getContentItemById,
     updateContentItemById,
     deleteContentItemById
@@ -39,6 +42,9 @@ router.delete('/topics/:id', protect, isAdmin, deleteTopicById);
 
 // Content Types
 router.get('/content-types', protect, isAdmin, getAllContentTypes);
+router.post('/content-types', protect, isAdmin, createContentType);
+router.put('/content-types/:id', protect, isAdmin, updateContentType);
+router.delete('/content-types/:id', protect, isAdmin, deleteContentType);
 
 // Content management routes
 router.get('/content', protect, isAdmin, getAllContentItems);

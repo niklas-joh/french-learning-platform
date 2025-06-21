@@ -7,7 +7,7 @@ export interface ContentSchema {
   id?: number;
   name: string; // The name of the content item for easy identification
   topic_id?: number | null; // Foreign key, can be null if content is not topic-specific
-  type: string; // e.g., 'multiple-choice', 'fill-in-the-blank'
+  content_type_id: number; // Foreign key to content_types table
   question_data: string; // JSON string
   correct_answer: string; // JSON string
   options?: string | null; // JSON string, optional
@@ -32,7 +32,8 @@ export interface ContentApplicationData {
   id: number;
   name: string;
   topicId?: number | null;
-  type: string;
+  type: string; // The name of the content type, e.g., 'multiple-choice'
+  contentTypeId: number;
   questionData: any; // Parsed JSON
   correctAnswer: any; // Parsed JSON
   options?: any | null; // Parsed JSON
@@ -43,7 +44,7 @@ export interface ContentApplicationData {
 }
 
 // Helper to map DB schema to application data format
-function mapContentToApplicationData(content: ContentSchema): ContentApplicationData {
+function mapContentToApplicationData(content: any): ContentApplicationData {
   const questionData = JSON.parse(content.question_data);
   const correctAnswer = JSON.parse(content.correct_answer);
   const options = content.options ? JSON.parse(content.options) : null;
@@ -61,7 +62,8 @@ function mapContentToApplicationData(content: ContentSchema): ContentApplication
     id: content.id!,
     name: content.name,
     topicId: content.topic_id,
-    type: content.type,
+    type: content.typeName, // Joined from content_types table
+    contentTypeId: content.content_type_id,
     questionData: fullQuestionData,
     // The fields below are now part of questionData, but we can keep them for now
     // for compatibility, though the frontend should primarily use questionData.
@@ -74,8 +76,14 @@ function mapContentToApplicationData(content: ContentSchema): ContentApplication
   };
 }
 
+const contentQuery = () => 
+  db('content')
+    .select('content.*', 'content_types.name as typeName')
+    .leftJoin('content_types', 'content.content_type_id', 'content_types.id');
+
+
 export const getContentById = async (id: number): Promise<ContentApplicationData | null> => {
-  const contentItem: ContentSchema | undefined = await db<ContentSchema>('content').where({ id }).first();
+  const contentItem = await contentQuery().where('content.id', id).first();
   if (!contentItem) {
     return null;
   }
@@ -83,7 +91,7 @@ export const getContentById = async (id: number): Promise<ContentApplicationData
 };
 
 export const getContentByTopicId = async (topicId: number): Promise<ContentApplicationData[]> => {
-  const contentItems: ContentSchema[] = await db<ContentSchema>('content').where({ topic_id: topicId });
+  const contentItems = await contentQuery().where({ topic_id: topicId });
   return contentItems.map(mapContentToApplicationData);
 };
 
@@ -94,7 +102,7 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
   const contentToInsert: Partial<ContentSchema> = {
     name: contentData.name,
     topic_id: contentData.topicId,
-    type: contentData.type,
+    content_type_id: contentData.contentTypeId,
     question_data: JSON.stringify(restOfQuestionData),
     correct_answer: JSON.stringify(correctAnswer),
     options: options ? JSON.stringify(options) : null,
@@ -104,9 +112,8 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
   const [insertedContent] = await db<ContentSchema>('content').insert(contentToInsert).returning('*');
   
   if (insertedContent && insertedContent.id) {
-    // Knex for SQLite might not return all fields with returning('*') for inserts.
-    // Fetch the full record to ensure all data, especially defaults like created_at, is present.
-    const fullContent = await db<ContentSchema>('content').where({ id: insertedContent.id }).first();
+    // Fetch the full record with the join to get all data for mapping
+    const fullContent = await contentQuery().where('content.id', insertedContent.id).first();
     if (!fullContent) {
         throw new Error('Failed to retrieve content after creation.');
     }
@@ -116,7 +123,7 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
 };
 
 export const getAllContent = async (): Promise<ContentApplicationData[]> => {
-  const items: ContentSchema[] = await db<ContentSchema>('content').select('*');
+  const items = await contentQuery();
   return items.map(mapContentToApplicationData);
 };
 
@@ -125,7 +132,7 @@ export const updateContent = async (id: number, updateData: any): Promise<Conten
 
   if (updateData.name !== undefined) dataToUpdate.name = updateData.name;
   if (updateData.topicId !== undefined) dataToUpdate.topic_id = updateData.topicId;
-  if (updateData.type !== undefined) dataToUpdate.type = updateData.type;
+  if (updateData.contentTypeId !== undefined) dataToUpdate.content_type_id = updateData.contentTypeId;
   if (updateData.active !== undefined) dataToUpdate.active = updateData.active;
 
   // Handle nested questionData
@@ -141,7 +148,7 @@ export const updateContent = async (id: number, updateData: any): Promise<Conten
   }
   
   await db<ContentSchema>('content').where({ id }).update(dataToUpdate);
-  const updated = await db<ContentSchema>('content').where({ id }).first();
+  const updated = await contentQuery().where('content.id', id).first();
   return updated ? mapContentToApplicationData(updated) : null;
 };
 

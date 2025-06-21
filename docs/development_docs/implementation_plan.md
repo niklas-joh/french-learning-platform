@@ -21,7 +21,7 @@
 ### **Core Content System**
 - [✅] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
 - [✅] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. See [ERD](./database_schema.mermaid).
-- [ ] **Database Migrations:** Create/update Knex migrations for the defined content schema. Ensure they are idempotent and handle existing data if applicable.
+- [✅] **Database Migrations:** Create/update Knex migrations for the defined content schema. Ensure they are idempotent and handle existing data if applicable.
 - [✅] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
     - Endpoints: e.g., `/api/admin/topics`, `/api/admin/content`.
     - Operations: Full CRUD (Create, Read, Update, Delete) for both topics and content items.
@@ -133,7 +133,7 @@
 - [✅] Content Backend API: Build CRUD APIs for topics and content items.
 - [✅] Content Admin UI: Develop frontend interface for managing topics and content.
 - [✅] Content Population Script: Script to populate content and topics tables from JSON files has been run.
-- [ ] **Enhanced Content Management:** Implement interactive content creation and management features. See [Interactive Content Creation Plan](./feature_interactive_content_creation.md).
+- [✅] **Enhanced Content Management:** Implement interactive content creation and management features. See [Interactive Content Creation Plan](./feature_interactive_content_creation.md).
 ```
 
 ### **Week 5-6 Checklist**

@@ -106,6 +106,7 @@ export const deleteTopic = async (topicId: number): Promise<void> => {
 export interface ContentType {
   id: number;
   name: string;
+  description?: string;
 }
 
 /**
@@ -121,6 +122,41 @@ export const getContentTypes = async (): Promise<ContentType[]> => {
       throw error.response.data as AdminErrorResponse;
     }
     throw { message: 'An unexpected error occurred while fetching content types.' } as AdminErrorResponse;
+  }
+};
+
+export const createContentType = async (data: { name: string; description?: string }): Promise<ContentType> => {
+  try {
+    const response = await apiClient.post<ContentType>('/admin/content-types', data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AdminErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while creating content type.' } as AdminErrorResponse;
+  }
+};
+
+export const updateContentType = async (id: number, data: { name: string; description?: string }): Promise<ContentType> => {
+  try {
+    const response = await apiClient.put<ContentType>(`/admin/content-types/${id}`, data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AdminErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while updating content type.' } as AdminErrorResponse;
+  }
+};
+
+export const deleteContentType = async (id: number): Promise<void> => {
+  try {
+    await apiClient.delete(`/admin/content-types/${id}`);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AdminErrorResponse;
+    }
+    throw { message: 'An unexpected error occurred while deleting content type.' } as AdminErrorResponse;
   }
 };
 
