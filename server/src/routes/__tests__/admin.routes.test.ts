@@ -1,109 +1,198 @@
 import request from 'supertest';
-import express, { Express, Request, Response, NextFunction } from 'express';
-import adminRoutes from '../admin.routes'; // The router we are testing
-import { adminTestController, getAnalyticsSummary } from '../../controllers/admin.controller'; // To potentially mock parts of controllers if needed
+import express from 'express';
+import adminRoutes from '../admin.routes';
+import authRoutes from '../auth.routes';
+import knex from '../../config/db';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
-// Mock the actual controllers to prevent unintended side effects (like DB calls) during route tests
-// We are testing routing and middleware integration here, not controller logic itself (that's for controller unit tests)
-jest.mock('../../controllers/admin.controller', () => ({
-  adminTestController: jest.fn((req: Request, res: Response) => res.status(200).json({ message: 'Mocked Admin Test OK' })),
-  getAnalyticsSummary: jest.fn((req: Request, res: Response) => res.status(200).json({ summary: 'Mocked Analytics OK' })),
-}));
-
-// Mock middleware
-// Mock protect from auth.middleware.ts
-let mockUser: { userId: number; role?: string } | null = null;
-jest.mock('../../middleware/auth.middleware', () => ({
-  protect: (req: Request, res: Response, next: NextFunction) => {
-    if (mockUser) {
-      (req as any).user = mockUser;
-      next();
-    } else {
-      // Simulate scenario where protect would deny access
-      res.status(401).json({ message: 'Unauthorized by mock protect' });
-    }
-  },
-}));
-
-// isAdmin is already unit-tested. For integration, we rely on the actual isAdmin.
-// If we wanted to mock isAdmin as well:
-// jest.mock('../../middleware/admin.middleware', () => ({
-//   isAdmin: (req: Request, res: Response, next: NextFunction) => {
-//     // Mock logic for isAdmin if needed, e.g., always allow or check a specific flag
-//     next(); 
-//   }
-// }));
-
-
-const app: Express = express();
+// Setup express app
+const app = express();
 app.use(express.json());
-app.use('/api/admin', adminRoutes); // Mount the admin routes under /api/admin
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
 
-describe('Admin Routes Integration Tests', () => {
-  afterEach(() => {
-    mockUser = null; // Reset mock user state
-    // Clear mocks for controllers
-    (adminTestController as jest.Mock).mockClear();
-    (getAnalyticsSummary as jest.Mock).mockClear();
+let adminToken: string;
+let userToken: string;
+let adminUserId: number;
+let regularUserId: number;
+
+const setupDatabase = async () => {
+  await knex.migrate.latest();
+  // Clean up before seeding
+  await knex('users').delete();
+  await knex('topics').delete();
+  await knex('content').delete();
+
+  const hashedPassword = await bcrypt.hash('password123', 10);
+  const [admin] = await knex('users').insert({
+    email: 'admin@test.com',
+    password: hashedPassword,
+    role: 'admin'
+  }).returning('id');
+  adminUserId = admin.id;
+
+  const [user] = await knex('users').insert({
+    email: 'user@test.com',
+    password: hashedPassword,
+    role: 'user'
+  }).returning('id');
+  regularUserId = user.id;
+
+  adminToken = jwt.sign({ userId: adminUserId, role: 'admin' }, process.env.JWT_SECRET || 'fallback_secret', { expiresIn: '1h' });
+  userToken = jwt.sign({ userId: regularUserId, role: 'user' }, process.env.JWT_SECRET || 'fallback_secret', { expiresIn: '1h' });
+};
+
+beforeAll(async () => {
+  await setupDatabase();
+});
+
+afterAll(async () => {
+  await knex.destroy();
+});
+
+describe('Admin Routes', () => {
+  describe('Authorization', () => {
+    it('should deny access to /api/admin/test without a token', async () => {
+      const res = await request(app).get('/api/admin/test');
+      expect(res.status).toBe(401);
+    });
+
+    it('should deny access to /api/admin/test for non-admin users', async () => {
+      const res = await request(app)
+        .get('/api/admin/test')
+        .set('Authorization', `Bearer ${userToken}`);
+      expect(res.status).toBe(403);
+    });
+
+    it('should allow access to /api/admin/test for admin users', async () => {
+      const res = await request(app)
+        .get('/api/admin/test')
+        .set('Authorization', `Bearer ${adminToken}`);
+      expect(res.status).toBe(200);
+      expect(res.body.message).toBe('Admin route test successful!');
+    });
   });
 
-  describe('GET /api/admin/test', () => {
-    test('should allow access for admin user and call adminTestController', async () => {
-      mockUser = { userId: 1, role: 'admin' };
-      const response = await request(app).get('/api/admin/test');
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({ message: 'Mocked Admin Test OK' }); // From mocked controller
-      expect(adminTestController).toHaveBeenCalledTimes(1);
+  describe('Topic Management (/api/admin/topics)', () => {
+    let topicId: number;
+
+    it('POST / - should create a new topic', async () => {
+      const res = await request(app)
+        .post('/api/admin/topics')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ name: 'New Test Topic', description: 'Description for test topic' });
+      
+      expect(res.status).toBe(201);
+      expect(res.body).toHaveProperty('id');
+      expect(res.body.name).toBe('New Test Topic');
+      topicId = res.body.id;
     });
 
-    test('should deny access for non-admin user', async () => {
-      mockUser = { userId: 2, role: 'user' };
-      const response = await request(app).get('/api/admin/test');
-      expect(response.status).toBe(403); // isAdmin middleware should return 403
-      expect(response.body).toEqual({ message: 'Forbidden: Admin access required.' });
-      expect(adminTestController).not.toHaveBeenCalled();
+    it('GET / - should get all topics', async () => {
+      const res = await request(app)
+        .get('/api/admin/topics')
+        .set('Authorization', `Bearer ${adminToken}`);
+      
+      expect(res.status).toBe(200);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body.length).toBeGreaterThan(0);
     });
 
-    test('should deny access if user role is undefined', async () => {
-      mockUser = { userId: 3 }; // Role undefined
-      const response = await request(app).get('/api/admin/test');
-      expect(response.status).toBe(403);
-      expect(response.body).toEqual({ message: 'Forbidden: Admin access required.' });
-      expect(adminTestController).not.toHaveBeenCalled();
+    it('GET /:id - should get a single topic', async () => {
+      const res = await request(app)
+        .get(`/api/admin/topics/${topicId}`)
+        .set('Authorization', `Bearer ${adminToken}`);
+
+      expect(res.status).toBe(200);
+      expect(res.body.id).toBe(topicId);
     });
-    
-    test('should deny access if not authenticated (mock protect denies)', async () => {
-      mockUser = null; // Simulate protect middleware denying access
-      const response = await request(app).get('/api/admin/test');
-      expect(response.status).toBe(401); // From our mock protect
-      expect(response.body).toEqual({ message: 'Unauthorized by mock protect' });
-      expect(adminTestController).not.toHaveBeenCalled();
+
+    it('PUT /:id - should update a topic', async () => {
+      const res = await request(app)
+        .put(`/api/admin/topics/${topicId}`)
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({ name: 'Updated Test Topic' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.name).toBe('Updated Test Topic');
+    });
+
+    it('DELETE /:id - should delete a topic', async () => {
+      const res = await request(app)
+        .delete(`/api/admin/topics/${topicId}`)
+        .set('Authorization', `Bearer ${adminToken}`);
+      
+      expect(res.status).toBe(204);
     });
   });
 
-  describe('GET /api/admin/analytics', () => {
-    test('should allow access for admin user and call getAnalyticsSummary', async () => {
-      mockUser = { userId: 1, role: 'admin' };
-      const response = await request(app).get('/api/admin/analytics');
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({ summary: 'Mocked Analytics OK' }); // From mocked controller
-      expect(getAnalyticsSummary).toHaveBeenCalledTimes(1);
+  describe('Content Management (/api/admin/content)', () => {
+    let contentId: number;
+    let topicId: number;
+
+    beforeAll(async () => {
+        // Create a topic to associate content with
+        const topicRes = await request(app)
+            .post('/api/admin/topics')
+            .set('Authorization', `Bearer ${adminToken}`)
+            .send({ name: 'Content Topic', description: 'Topic for content tests' });
+        topicId = topicRes.body.id;
     });
 
-    test('should deny access for non-admin user', async () => {
-      mockUser = { userId: 2, role: 'user' };
-      const response = await request(app).get('/api/admin/analytics');
-      expect(response.status).toBe(403);
-      expect(response.body).toEqual({ message: 'Forbidden: Admin access required.' });
-      expect(getAnalyticsSummary).not.toHaveBeenCalled();
+    it('POST / - should create new content', async () => {
+      const res = await request(app)
+        .post('/api/admin/content')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send({
+          topic_id: topicId,
+          type: 'multiple-choice',
+          question_data: { question: 'What is 2+2?' },
+          correct_answer: { answer: '4' },
+          options: { choices: ['3', '4', '5'] }
+        });
+
+      expect(res.status).toBe(201);
+      expect(res.body).toHaveProperty('id');
+      expect(res.body.type).toBe('multiple-choice');
+      contentId = res.body.id;
     });
 
-    test('should deny access if not authenticated (mock protect denies)', async () => {
-      mockUser = null;
-      const response = await request(app).get('/api/admin/analytics');
-      expect(response.status).toBe(401);
-      expect(response.body).toEqual({ message: 'Unauthorized by mock protect' });
-      expect(getAnalyticsSummary).not.toHaveBeenCalled();
+    it('GET / - should get all content', async () => {
+        const res = await request(app)
+          .get('/api/admin/content')
+          .set('Authorization', `Bearer ${adminToken}`);
+        
+        expect(res.status).toBe(200);
+        expect(Array.isArray(res.body)).toBe(true);
+        expect(res.body.length).toBeGreaterThan(0);
+    });
+
+    it('GET /:id - should get single content', async () => {
+        const res = await request(app)
+          .get(`/api/admin/content/${contentId}`)
+          .set('Authorization', `Bearer ${adminToken}`);
+  
+        expect(res.status).toBe(200);
+        expect(res.body.id).toBe(contentId);
+    });
+
+    it('PUT /:id - should update content', async () => {
+        const res = await request(app)
+          .put(`/api/admin/content/${contentId}`)
+          .set('Authorization', `Bearer ${adminToken}`)
+          .send({ difficulty_level: 'easy' });
+  
+        expect(res.status).toBe(200);
+        expect(res.body.difficultyLevel).toBe('easy');
+    });
+
+    it('DELETE /:id - should delete content', async () => {
+        const res = await request(app)
+          .delete(`/api/admin/content/${contentId}`)
+          .set('Authorization', `Bearer ${adminToken}`);
+        
+        expect(res.status).toBe(204);
     });
   });
 });
