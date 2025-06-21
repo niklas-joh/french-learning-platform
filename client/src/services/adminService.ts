@@ -239,6 +239,10 @@ export interface UserContentAssignment {
   status: string;
 }
 
+export interface UserContentAssignmentWithContent extends UserContentAssignment {
+  content: Partial<Content> & { name: string; type: string; };
+}
+
 /**
  * Assigns a piece of content to a user.
  * @param userId - The ID of the user.
@@ -262,9 +266,9 @@ export const assignContentToUser = async (userId: number, contentId: number): Pr
  * @param userId - The ID of the user.
  * @returns A promise that resolves with an array of assignments.
  */
-export const getAssignmentsForUser = async (userId: number): Promise<UserContentAssignment[]> => {
+export const getAssignmentsForUser = async (userId: number): Promise<UserContentAssignmentWithContent[]> => {
   try {
-    const response = await apiClient.get<UserContentAssignment[]>(`/admin/assignments/user/${userId}`);
+    const response = await apiClient.get<UserContentAssignmentWithContent[]>(`/admin/assignments/user/${userId}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {

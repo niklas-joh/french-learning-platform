@@ -129,7 +129,7 @@
 - [✅] Admin role system: Finalize RBAC middleware and protected routes for all admin functionalities.
 - [✅] Basic admin dashboard: Analytics display implemented.
 - [✅] Content Schema: Define and document content/topic database schema. See [ERD](./database_schema.mermaid).
-- [ ] Content Migrations: Implement database migrations for the new/updated content schema.
+- [✅] Content Migrations: Implement database migrations for the new/updated content schema.
 - [✅] Content Backend API: Build CRUD APIs for topics and content items.
 - [✅] Content Admin UI: Develop frontend interface for managing topics and content.
 - [✅] Content Population Script: Script to populate content and topics tables from JSON files has been run.
