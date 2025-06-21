@@ -19,7 +19,7 @@
 
 ## **Phase 2: Content Management Module (Weeks 3-4)**
 ### **Core Content System**
-- [ ] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
+- [✅] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
 - [ ] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. Document ERD.
 - [ ] **Database Migrations:** Create/update Knex migrations for the defined content schema. Ensure they are idempotent and handle existing data if applicable.
 - [✅] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
@@ -32,7 +32,7 @@
     - [✅] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries). (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
     - [✅] Associate content items with relevant topics/categories.
     - [✅] Manage content metadata (e.g., difficulty, tags).
-    - [ ] View basic analytics on the admin dashboard.
+    - [✅] View basic analytics on the admin dashboard.
     - [ ] Assign content to users.
 - [✅] **Content Population Strategy:**
     - [✅] **Initial Population Script:** A script to bulk-populate the `content` and `topics` tables from existing JSON files has been created and executed, populating the initial dataset.
@@ -125,11 +125,11 @@
 
 ### **Week 3-4 Checklist**
 ```bash
-- [ ] Admin role system: Finalize RBAC middleware and protected routes for all admin functionalities.
+- [✅] Admin role system: Finalize RBAC middleware and protected routes for all admin functionalities.
 - [✅] Basic admin dashboard: Analytics display implemented.
 - [ ] Content Schema: Define and document content/topic database schema.
 - [ ] Content Migrations: Implement database migrations for the new/updated content schema.
-- [ ] Content Backend API: Build CRUD APIs for topics and content items.
+- [✅] Content Backend API: Build CRUD APIs for topics and content items.
 - [✅] Content Admin UI: Develop frontend interface for managing topics and content.
 - [✅] Content Population Script: Script to populate content and topics tables from JSON files has been run.
 - [ ] **Enhanced Content Management:** Implement interactive content creation and management features. See [Interactive Content Creation Plan](./feature_interactive_content_creation.md).
