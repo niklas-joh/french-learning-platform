@@ -33,4 +33,14 @@ erDiagram
         datetime created_at
     }
 
+    user_content_assignments {
+        int id PK
+        int user_id FK
+        int content_id FK
+        datetime assigned_at
+        varchar status
+    }
+
     content }o--|| topics : "belongs to"
+    users ||--o{ user_content_assignments : "has assigned"
+    content ||--o{ user_content_assignments : "is assigned"

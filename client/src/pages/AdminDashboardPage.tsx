@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAdminAnalyticsSummary, AnalyticsSummary } from '../services/adminService';
 import TopicManager from '../components/admin/TopicManager';
 import ContentManager from '../components/admin/ContentManager';
+import AssignmentManager from '../components/admin/AssignmentManager';
 import { Container, Box, Paper, Typography, CircularProgress, Alert } from '@mui/material';
 
 const AdminDashboardPage: React.FC = () => {
@@ -63,6 +64,9 @@ const AdminDashboardPage: React.FC = () => {
 
       <TopicManager />
       <ContentManager />
+      <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
+        <AssignmentManager />
+      </Paper>
     </Container>
   );
 };
