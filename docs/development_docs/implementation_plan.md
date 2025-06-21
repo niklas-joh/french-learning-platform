@@ -20,7 +20,7 @@
 ## **Phase 2: Content Management Module (Weeks 3-4)**
 ### **Core Content System**
 - [✅] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
-- [ ] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. Document ERD.
+- [✅] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. See [ERD](./database_schema.mermaid).
 - [ ] **Database Migrations:** Create/update Knex migrations for the defined content schema. Ensure they are idempotent and handle existing data if applicable.
 - [✅] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
     - Endpoints: e.g., `/api/admin/topics`, `/api/admin/content`.
@@ -127,7 +127,7 @@
 ```bash
 - [✅] Admin role system: Finalize RBAC middleware and protected routes for all admin functionalities.
 - [✅] Basic admin dashboard: Analytics display implemented.
-- [ ] Content Schema: Define and document content/topic database schema.
+- [✅] Content Schema: Define and document content/topic database schema. See [ERD](./database_schema.mermaid).
 - [ ] Content Migrations: Implement database migrations for the new/updated content schema.
 - [✅] Content Backend API: Build CRUD APIs for topics and content items.
 - [✅] Content Admin UI: Develop frontend interface for managing topics and content.
