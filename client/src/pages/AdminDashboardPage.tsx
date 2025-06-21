@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getAdminAnalytics, AdminAnalyticsData } from '../services/adminService';
+import { getAdminAnalyticsSummary, AnalyticsSummary } from '../services/adminService';
 import TopicManager from '../components/admin/TopicManager';
 import ContentManager from '../components/admin/ContentManager';
 import { Container, Box, Paper, Typography, CircularProgress, Alert } from '@mui/material';
 
 const AdminDashboardPage: React.FC = () => {
-  const [data, setData] = useState<AdminAnalyticsData | null>(null);
+  const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,11 +13,11 @@ const AdminDashboardPage: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await getAdminAnalytics();
+        const response = await getAdminAnalyticsSummary();
         setData(response);
         setError(null);
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch admin data.');
+      } catch (err) {
+        setError('Failed to fetch admin data.');
         console.error(err);
       } finally {
         setLoading(false);
@@ -45,7 +45,7 @@ const AdminDashboardPage: React.FC = () => {
           <Typography variant="h6">Users by Role</Typography>
           {data.usersByRole && data.usersByRole.length > 0 ? (
             <ul>
-              {data.usersByRole.map(roleInfo => (
+              {data.usersByRole.map((roleInfo: { role: string; count: number }) => (
                 <li key={roleInfo.role}>
                   <Typography>{roleInfo.role}: {roleInfo.count}</Typography>
                 </li>
