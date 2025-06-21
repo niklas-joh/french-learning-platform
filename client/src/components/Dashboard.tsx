@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Paper, CircularProgress, Alert, Box } from '@mui/material';
+import { Container, Typography, Paper, CircularProgress, Alert, Box, List, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { getUserProfile, UserProfileData } from '../services/authService';
-import { getTopics, getContentForTopic } from '../services/contentService';
+import { getTopics, getContentForTopic, getAssignedContent } from '../services/contentService';
+import { Topic } from '../types/Topic';
 import Quiz, { QuizData } from './Quiz';
 import { ApiContentItem, mapApiContentToQuizData } from '../utils/data-mappers';
-
-// Use UserProfileData from authService to ensure consistency
-// If UserProfileData needs optional email, it should be defined there.
-// For now, assuming email is always present or UserProfileData handles optionality.
-// type UserProfile = UserProfileData; // Alias if preferred, or use UserProfileData directly
+import AssignedContentList from './AssignedContentList';
+import { UserContentAssignmentWithContent } from '../types/Assignment';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [topics, setTopics] = useState<Array<{ id: number; name: string }>>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [quizzes, setQuizzes] = useState<QuizData[]>([]);
   const [selectedTopicId, setSelectedTopicId] = useState<number | null>(null);
+  const [assignments, setAssignments] = useState<UserContentAssignmentWithContent[]>([]);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -26,6 +25,8 @@ const Dashboard: React.FC = () => {
         setUser(userData);
         const topicList = await getTopics();
         setTopics(topicList);
+        const assignedContent = await getAssignedContent();
+        setAssignments(assignedContent);
       } catch (err: any) {
         console.error('Failed to fetch dashboard data:', err);
         const message = err.message || 'Failed to load user information. Please try again later.';
@@ -82,12 +83,18 @@ const Dashboard: React.FC = () => {
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Welcome, {user?.firstName || 'User'}!
+          Welcome, {user?.firstName || user?.email || 'User'}!
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body1" gutterBottom>
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.
         </Typography>
         <Box sx={{ mt: 4 }}>
+          <AssignedContentList assignments={assignments} />
+        </Box>
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h5" component="h2" gutterBottom>
+            Explore Topics
+          </Typography>
           {topics.map((topic) => (
             <Typography
               key={topic.id}

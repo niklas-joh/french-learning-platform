@@ -8,8 +8,9 @@
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "db:migrate:latest": "knex migrate:latest --knexfile knexfile.ts",
-    "db:migrate:rollback": "knex migrate:rollback --knexfile knexfile.ts",
+    "db:migrate": "knex migrate:latest --knexfile knexfile.ts",
+    "db:rollback": "knex migrate:rollback --knexfile knexfile.ts",
+    "db:seed": "knex seed:run --knexfile knexfile.ts",
     "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts"
   },
   "keywords": [],
@@ -28,6 +29,8 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-typescript": "^7.27.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
