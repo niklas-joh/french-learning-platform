@@ -25,7 +25,7 @@ export const getContentForTopic = async (topicId: number | string) => {
 };
 
 export const getAssignedContent = async () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken');
   if (!token) {
     throw new Error('No token found');
   }
