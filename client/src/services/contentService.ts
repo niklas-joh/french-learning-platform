@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Topic } from '../types/Topic';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
@@ -14,13 +15,29 @@ export const fetchSampleQuiz = async () => {
   return response.data;
 };
 
-export const getTopics = async () => {
-  const response = await apiClient.get('/content/topics');
+export const getTopics = async (): Promise<Topic[]> => {
+  const token = localStorage.getItem('token');
+  const response = await apiClient.get('/content/topics', {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
   return response.data;
 };
 
 export const getContentForTopic = async (topicId: number | string) => {
   const response = await apiClient.get(`/content/topics/${topicId}/content`);
+  return response.data;
+};
+
+export const getAssignedContent = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token found');
+  }
+  const response = await apiClient.get('/users/me/assignments', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return response.data;
 };
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import knex from '../config/db';
 import { UserSchema } from '../models/User'; // Use UserSchema for DB operations
+import UserContentAssignmentModel from '../models/UserContentAssignment';
 
 // Extend Express Request type to include user property
 interface AuthenticatedRequest extends Request {
@@ -87,5 +88,31 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
         return;
     }
     res.status(500).json({ message: 'Failed to update user profile' });
+  }
+};
+
+export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const users = await knex('users').select('id', 'first_name', 'last_name', 'email', 'role');
+    res.json(users);
+  } catch (error: any) {
+    console.error('Error fetching all users:', error);
+    res.status(500).json({ message: 'Failed to fetch users' });
+  }
+};
+
+export const getAssignedContent = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
+      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+      return;
+    }
+
+    const userId = req.user.userId;
+    const assignments = await UserContentAssignmentModel.findByUserId(userId);
+    res.json(assignments);
+  } catch (error: any) {
+    console.error('Error fetching assigned content:', error);
+    res.status(500).json({ message: 'Failed to fetch assigned content' });
   }
 };

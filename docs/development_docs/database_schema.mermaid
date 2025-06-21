@@ -1,35 +1,37 @@
 erDiagram
-    USERS {
+    users {
         int id PK
         string email UK
         string password_hash
-        string first_name
-        string last_name
-        string role
+        string first_name "nullable"
+        string last_name "nullable"
+        string role "default: 'user'"
         datetime created_at
-        datetime updated_at
-        json preferences
+        string preferences "nullable, JSON"
     }
 
-    TOPICS {
+    topics {
         int id PK
         string name UK
-        string description
-        string category
-        boolean active
+        string description "nullable"
+        string category "nullable"
+        boolean active "default: 1"
         datetime created_at
         datetime updated_at
     }
 
-    CONTENT {
+    content {
         int id PK
-        int topic_id FK
+        int topic_id FK "nullable"
+        string name
         string type
         json question_data
         json correct_answer
         json options
         string difficulty_level
         json tags
+        boolean active
+        datetime created_at
         boolean active
         datetime created_at
         datetime updated_at

@@ -19,23 +19,24 @@
 
 ## **Phase 2: Content Management Module (Weeks 3-4)**
 ### **Core Content System**
-- [ ] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
-- [ ] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. Document ERD.
+- [✅] **Admin Authentication:** Finalize admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending).
+- [✅] **Define/Refine Database Schema:** Detailed schema for `content`, `topics`, `categories` (if distinct from topics), and their relationships. See [ERD](./database_schema.mermaid).
 - [ ] **Database Migrations:** Create/update Knex migrations for the defined content schema. Ensure they are idempotent and handle existing data if applicable.
-- [ ] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
+- [✅] **Backend API (CRUD):** Develop robust RESTful API endpoints for managing topics and content items.
     - Endpoints: e.g., `/api/admin/topics`, `/api/admin/content`.
     - Operations: Full CRUD (Create, Read, Update, Delete) for both topics and content items.
     - Security: Secure all endpoints with admin-only access (`protect` and `isAdmin` middleware).
     - Validation: Implement input validation for all API requests.
-- [ ] **Frontend Admin UI:** Design and implement React components and pages for administrators to:
-    - [ ] View, create, edit, and delete topics/categories.
-    - [ ] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries).
-    - [ ] Associate content items with relevant topics/categories.
-    - [ ] Manage content metadata (e.g., difficulty, tags).
-    - [ ] View basic analytics on the admin dashboard.
-    - [ ] Assign content to users.
-- [ ] **Content Population Strategy:**
-    - [ ] **Initial Population Script:** Develop a script to bulk-populate the `content` and `topics` tables from existing JSON files (e.g., `content/topics/**/*.json`). This is the immediate next task to get initial data into the system.
+- [✅] **Frontend Admin UI:** Design and implement React components and pages for administrators to:
+    - [✅] View, create, edit, and delete topics/categories. (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
+    - [✅] View, create, edit, and delete content items (e.g., individual questions, grammar rules, vocabulary entries). (Create: ✅, Read: ✅, Update: ✅, Delete: ✅)
+    - [✅] Associate content items with relevant topics/categories.
+    - [✅] Manage content metadata (e.g., difficulty, tags).
+    - [✅] View basic analytics on the admin dashboard.
+    - [✅] Assign content to users (Admin UI).
+    - [✅] Display assigned content on user dashboard.
+- [✅] **Content Population Strategy:**
+    - [✅] **Initial Population Script:** A script to bulk-populate the `content` and `topics` tables from existing JSON files has been created and executed, populating the initial dataset.
     - [ ] **Admin UI Population:** Enable content creation and management directly through the new Admin UI as an ongoing process.
 - [ ] **Enhanced User Features**
 - [ ] Multiple content types (grammar, vocabulary, etc.)
@@ -125,13 +126,14 @@
 
 ### **Week 3-4 Checklist**
 ```bash
-- [ ] Admin role system: Finalize RBAC middleware and protected routes for all admin functionalities.
+- [✅] Admin role system: Finalize RBAC middleware and protected routes for all admin functionalities.
 - [✅] Basic admin dashboard: Analytics display implemented.
-- [ ] Content Schema: Define and document content/topic database schema.
+- [✅] Content Schema: Define and document content/topic database schema. See [ERD](./database_schema.mermaid).
 - [ ] Content Migrations: Implement database migrations for the new/updated content schema.
-- [ ] Content Backend API: Build CRUD APIs for topics and content items.
-- [ ] Content Admin UI: Develop frontend interface for managing topics and content.
-- [ ] Content Population Script: Create script to populate content and topics tables from JSON files.
+- [✅] Content Backend API: Build CRUD APIs for topics and content items.
+- [✅] Content Admin UI: Develop frontend interface for managing topics and content.
+- [✅] Content Population Script: Script to populate content and topics tables from JSON files has been run.
+- [ ] **Enhanced Content Management:** Implement interactive content creation and management features. See [Interactive Content Creation Plan](./feature_interactive_content_creation.md).
 ```
 
 ### **Week 5-6 Checklist**

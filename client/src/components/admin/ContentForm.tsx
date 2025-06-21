@@ -1,0 +1,232 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Switch,
+  FormControlLabel,
+  Typography,
+} from '@mui/material';
+import { Content } from '../../types/Content';
+import { Topic } from '../../types/Topic';
+import { ContentType, getContentTypes } from '../../services/adminService';
+import MultipleChoiceSpecificForm from './content_type_forms/MultipleChoiceSpecificForm';
+import FillInTheBlankSpecificForm from './content_type_forms/FillInTheBlankSpecificForm';
+import TrueFalseSpecificForm from './content_type_forms/TrueFalseSpecificForm';
+
+interface ContentFormProps {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (content: Omit<Content, 'id'> | Content) => void;
+  content?: Content | null;
+  topics: Topic[];
+}
+
+const ContentForm: React.FC<ContentFormProps> = ({
+  open,
+  onClose,
+  onSubmit,
+  content,
+  topics,
+}) => {
+  const [name, setName] = useState('');
+  const [topicId, setTopicId] = useState<number | ''>('');
+  const [type, setType] = useState('');
+  const [contentTypes, setContentTypes] = useState<ContentType[]>([]);
+  const [questionData, setQuestionData] = useState<any>({});
+  const [active, setActive] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchTypes = async () => {
+      try {
+        const types = await getContentTypes();
+        setContentTypes(types);
+      } catch (err) {
+        console.error('Failed to fetch content types:', err);
+        setError('Failed to load content types.');
+      }
+    };
+
+    if (open) {
+      fetchTypes();
+    }
+
+    if (content) {
+      setName(content.name);
+      setTopicId(content.topicId);
+      setType(content.type);
+      // Handle both object and stringified JSON for backward compatibility
+      if (typeof content.questionData === 'string') {
+        try {
+          setQuestionData(JSON.parse(content.questionData));
+        } catch (e) {
+          console.error('Failed to parse questionData JSON:', e);
+          setQuestionData({});
+          setError('Failed to parse existing question data.');
+        }
+      } else {
+        setQuestionData(content.questionData || {});
+      }
+      setActive(content.active);
+      setError('');
+    } else {
+      // Reset for new content form
+      setName('');
+      setTopicId('');
+      setType('');
+      setQuestionData({});
+      setActive(true);
+      setError('');
+    }
+  }, [content, open]);
+
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!topicId) {
+      setError('Topic is required.');
+      return;
+    }
+    if (!type) {
+      setError('Content Type is required.');
+      return;
+    }
+
+    const contentData = {
+      name,
+      topicId: Number(topicId),
+      type,
+      questionData: questionData, // questionData is now an object
+      active,
+    };
+
+    if (content) {
+      onSubmit({ ...content, ...contentData });
+    } else {
+      onSubmit(contentData);
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle>{content ? 'Edit Content' : 'Add New Content'}</DialogTitle>
+      <Box component="form" onSubmit={handleSubmit}>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Content Name"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <FormControl fullWidth margin="dense" required>
+            <InputLabel id="topic-select-label">Topic</InputLabel>
+            <Select
+              labelId="topic-select-label"
+              id="topicId"
+              value={topicId}
+              label="Topic"
+              onChange={(e) => setTopicId(e.target.value as number)}
+            >
+              {topics.map((topic) => (
+                <MenuItem key={topic.id} value={topic.id}>
+                  {topic.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="dense" required>
+            <InputLabel id="content-type-select-label">Content Type</InputLabel>
+            <Select
+              labelId="content-type-select-label"
+              id="type"
+              value={type}
+              label="Content Type"
+              onChange={(e) => setType(e.target.value as string)}
+            >
+              {contentTypes.map((contentType) => (
+                <MenuItem key={contentType.id} value={contentType.name}>
+                  {contentType.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Interactive Content Form Area */}
+          <Box sx={{ mt: 2, mb: 1 }}>
+            {(() => {
+              switch (type) {
+                case 'Multiple Choice':
+                  return (
+                    <MultipleChoiceSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                case 'Fill in the Blank':
+                  return (
+                    <FillInTheBlankSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                case 'True/False':
+                  return (
+                    <TrueFalseSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                default:
+                  if (type) {
+                    return (
+                      <Typography variant="caption" color="textSecondary">
+                        Interactive form for type '{type}' is not yet implemented.
+                      </Typography>
+                    );
+                  }
+                  return null; // Nothing selected yet
+              }
+            })()}
+          </Box>
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={active}
+                onChange={(e) => setActive(e.target.checked)}
+                name="active"
+                color="primary"
+              />
+            }
+            label="Active"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} color="secondary">
+            Cancel
+          </Button>
+          <Button type="submit" color="primary">
+            {content ? 'Save Changes' : 'Create Content'}
+          </Button>
+        </DialogActions>
+      </Box>
+    </Dialog>
+  );
+};
+
+export default ContentForm;

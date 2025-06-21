@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { getCurrentUserProfile, updateUserProfile } from '../controllers/user.controller';
+import { getCurrentUserProfile, updateUserProfile, getAllUsers, getAssignedContent } from '../controllers/user.controller';
 import { protect } from '../middleware/auth.middleware';
+import { isAdmin } from '../middleware/admin.middleware';
 
 const router = Router();
 
@@ -14,6 +15,14 @@ router.get('/me', protect, getCurrentUserProfile);
 // @access  Private
 router.put('/me', protect, updateUserProfile);
 
-// TODO: Define other user routes if needed
+// @route   GET /api/users
+// @desc    Get all users
+// @access  Admin
+router.get('/', protect, isAdmin, getAllUsers);
+
+// @route   GET /api/users/me/assignments
+// @desc    Get assigned content for the current user
+// @access  Private
+router.get('/me/assignments', protect, getAssignedContent);
 
 export default router;
