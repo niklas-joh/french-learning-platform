@@ -6,6 +6,7 @@ import Quiz, { QuizData } from './Quiz';
 import { ApiContentItem, mapApiContentToQuizData } from '../utils/data-mappers';
 import AssignedContentList from './AssignedContentList';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
+import ProgressAnalytics from './ProgressAnalytics';
 
 // Use UserProfileData from authService to ensure consistency
 // If UserProfileData needs optional email, it should be defined there.
@@ -86,6 +87,9 @@ const Dashboard: React.FC = () => {
         <Typography variant="body1">
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.
         </Typography>
+        <Box sx={{ mt: 4 }}>
+          <ProgressAnalytics />
+        </Box>
         <Box sx={{ mt: 4 }}>
           <AssignedContentList assignments={assignments} />
         </Box>
