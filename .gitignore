@@ -57,3 +57,4 @@ coverage/
 
 # Cline temporary files
 Cline/
+.clinerules/

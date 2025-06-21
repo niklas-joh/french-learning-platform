@@ -35,9 +35,7 @@ npm install @types/express @types/cors @types/bcryptjs @types/jsonwebtoken types
 ```bash
 cd client
 npx create-react-app . --template typescript
-npm install axios react-router-dom @types/react-router-dom
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+npm install axios react-router-dom @types/react-router-dom @mui/material @emotion/react @emotion/styled
 ```
 
 ### **3. Environment Configuration**
