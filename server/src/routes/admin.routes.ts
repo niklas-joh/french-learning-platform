@@ -1,15 +1,11 @@
-// server/src/routes/admin.routes.ts
-import express from 'express';
+import { Router } from 'express';
 import { protect } from '../middleware/auth.middleware';
 import { isAdmin } from '../middleware/admin.middleware';
-import { adminTestController, getAnalyticsSummary } from '../controllers/admin.controller';
 
-const router = express.Router();
+const router = Router();
 
-// Test route for admin access
-router.get('/test', protect, isAdmin, adminTestController);
-
-// Analytics summary route (already existed in controller, now formally routed)
-router.get('/analytics', protect, isAdmin, getAnalyticsSummary);
+router.get('/test', protect, isAdmin, (req, res) => {
+  res.json({ message: 'Admin route accessed successfully' });
+});
 
 export default router;

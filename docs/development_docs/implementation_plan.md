@@ -19,7 +19,7 @@
 
 ## **Phase 2: Content Management (Weeks 3-4)**
 ### **Admin Features**
-- [ ] Admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending)
+- [✅] Admin authentication and role management (Admin user provisioning script functional; RBAC middleware and protected routes pending)
 - [ ] Admin dashboard with basic analytics (Backend tests for analytics summary complete)
 - [ ] Content creation interface
 - [ ] Topic/tag management system
@@ -114,7 +114,7 @@
 
 ### **Week 3-4 Checklist**
 ```bash
-- [ ] Admin role system (DB schema & JWT role claim implemented; RBAC middleware pending)
+- [✅] Admin role system (DB schema & JWT role claim implemented; RBAC middleware pending)
 ✅ Content CRUD operations
 ✅ Topic management
 ✅ File upload functionality
