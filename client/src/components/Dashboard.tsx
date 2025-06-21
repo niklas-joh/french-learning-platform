@@ -44,10 +44,16 @@ const Dashboard: React.FC = () => {
       setSelectedTopicId(topicId);
       setLoading(true);
       const content: ApiContentItem[] = await getContentForTopic(topicId);
+      console.log('Raw content from API:', content);
+
       const quizzesOnly = content.filter(
-        (item) => item.type === 'multiple-choice' || item.type === 'quiz'
+        (item) => item.type.trim().toLowerCase() === 'multiple_choice' || item.type.trim().toLowerCase() === 'quiz'
       );
+      console.log('Filtered quizzes:', quizzesOnly);
+
       const mapped = quizzesOnly.map(mapApiContentToQuizData);
+      console.log('Mapped quiz data:', mapped);
+      
       setQuizzes(mapped);
     } catch (err: any) {
       console.error('Error fetching topic content:', err);

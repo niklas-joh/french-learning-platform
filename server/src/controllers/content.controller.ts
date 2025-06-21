@@ -19,25 +19,47 @@ export const getContentForTopic = async (req: Request, res: Response): Promise<v
   try {
     const { topicId } = req.params;
     if (isNaN(parseInt(topicId))) {
-        res.status(400).json({ message: 'Invalid topic ID format.' });
-        return;
+      res.status(400).json({ message: 'Invalid topic ID format.' });
+      return;
     }
 
     const topicExists: TopicSchema | undefined = await knex('topics').where({ id: topicId }).first();
     if (!topicExists) {
-        res.status(404).json({ message: 'Topic not found.' });
-        return;
+      res.status(404).json({ message: 'Topic not found.' });
+      return;
     }
 
-    const content: ContentSchema[] = await knex('content').where({ topic_id: topicId }).select('*');
-    
+    const content: ContentSchema[] = await knex('content')
+      .where({ topic_id: topicId, active: true }) // Ensure only active content is fetched
+      .select('*');
+
     if (content.length === 0) {
-      // It's not an error if a topic has no content yet, return empty array
       res.json([]);
       return;
     }
-    
-    res.json(content);
+
+    // Manually transform the data to match the frontend's expected structure
+    const transformedContent = content.map(item => {
+      const questionData = typeof item.question_data === 'string' ? JSON.parse(item.question_data) : item.question_data;
+      
+      return {
+        id: item.id,
+        type: item.type,
+        topic: topicExists.name, // Add topic name
+        difficultyLevel: item.difficulty_level,
+        tags: typeof item.tags === 'string' ? JSON.parse(item.tags) : item.tags,
+        questionData: {
+          text: questionData.text,
+          explanation: questionData.explanation,
+        },
+        options: typeof item.options === 'string' ? JSON.parse(item.options) : item.options,
+        correctAnswer: typeof item.correct_answer === 'string' ? JSON.parse(item.correct_answer) : item.correct_answer,
+        feedback: questionData.feedback, // Extract feedback from the blob
+      };
+    });
+
+    console.log('Transformed content being sent to client:', JSON.stringify(transformedContent, null, 2));
+    res.json(transformedContent);
   } catch (error: any) {
     console.error('Error fetching content for topic:', error);
     res.status(500).json({ message: 'Failed to fetch content for topic' });
