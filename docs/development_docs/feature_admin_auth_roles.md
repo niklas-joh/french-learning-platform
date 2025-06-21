@@ -121,3 +121,102 @@ This document outlines the implementation plan for adding admin authentication a
 *   [✅] `client/src/pages/AdminDashboardPage.tsx`
 *   [✅] `client/src/App.tsx` (for routing & admin nav link)
 *   [✅] Navigation component(s) (e.g., `client/src/components/Navbar.tsx` or `App.tsx` for admin nav link)
+>>>>>>> REPLACE
+*   **Details:**
+    *   When a user logs in via `/api/auth/login`, the generated JWT will contain a `role` claim.
+*   **Actions:**
+    *   Modify the login function in `server/src/controllers/auth.controller.ts`.
+
+### 4. Role-Based Access Control (RBAC) Middleware
+*   **Task:** Create middleware to protect admin-only API routes.
+*   **Details:**
+    *   The middleware (e.g., `admin.middleware.ts`) will execute after the existing `auth.middleware.ts`.
+    *   It will verify if the authenticated user's JWT contains the 'admin' role.
+    *   If not an admin, return a 403 Forbidden error.
+*   **Actions:**
+    *   Create `server/src/middleware/admin.middleware.ts`.
+
+### 5. Placeholder Admin API Routes
+*   **Task:** Create basic admin-only API endpoints for testing and initial development.
+*   **Details:**
+    *   Example: `/api/admin/test` (GET) that returns a success message if accessed by an admin.
+    *   These routes will be protected by the new RBAC middleware.
+*   **Actions:**
+    *   Create a new admin routes file (e.g., `server/src/routes/admin.routes.ts`).
+    *   Integrate these routes into `server/src/app.ts`.
+
+## II. Frontend Implementation (React & TypeScript)
+
+### 1. Store User Role in Frontend State
+*   **Task:** Manage the user's role in the frontend application state.
+*   **Details:**
+    *   After login, extract the role from the JWT or the backend's login response.
+    *   Store the role in a global state (e.g., React Context or other state management solution).
+*   **Actions:**
+    *   Update `client/src/services/authService.ts` to handle/return the role.
+    *   Modify the authentication context/state management logic.
+
+### 2. Protected Admin Routes/Components
+*   **Task:** Restrict access to admin-specific UI sections.
+*   **Proposal:**
+    *   Develop an `<AdminRoute />` higher-order component or wrapper.
+    *   This component will check if the current user has an 'admin' role.
+    *   If not an admin, redirect the user (e.g., to the home page or login page).
+*   **Actions:**
+    *   Create `client/src/components/AdminRoute.tsx` (or similar).
+
+### 3. Basic Admin Dashboard UI
+*   **Task:** Create a placeholder page for the admin dashboard.
+*   **Details:**
+    *   This page (e.g., `AdminDashboardPage.tsx`) will be protected by the `<AdminRoute />`.
+    *   Initially, it can display a simple welcome message or attempt to fetch data from a placeholder admin API endpoint.
+*   **Actions:**
+    *   Create `client/src/pages/AdminDashboardPage.tsx`.
+    *   Update client-side routing in `client/src/App.tsx` to include this new page and protect it.
+
+### 4. Conditional UI for Admin Access
+*   **Task:** Provide a clear way for admin users to navigate to the admin dashboard.
+*   **Proposal:**
+    *   Add a conditional link/button (e.g., "Admin Panel") in the main navigation or user profile dropdown.
+    *   This element should only be visible if the logged-in user is an admin.
+*   **Actions:**
+    *   Modify the relevant navigation component (e.g., `Navbar.tsx`, `Header.tsx`, or within `App.tsx`).
+
+## III. Workflow & Testing
+
+*   **Development Workflow:**
+    *   Create a GitHub issue for this feature.
+    *   Create a dedicated feature branch.
+    *   Implement changes iteratively, with commits for logical backend and frontend chunks.
+    *   Create a Pull Request for review upon completion.
+*   **Testing Strategy:**
+    *   **Manual Testing:**
+        *   Test login as a regular user: ensure no access to admin UI sections or API endpoints.
+        *   Test login as an admin user: ensure full access to admin UI sections and API endpoints.
+    *   **API Testing:**
+        *   Use tools like Postman or Insomnia to directly test the protection of admin API endpoints.
+    *   **Unit/Integration Tests (Future Enhancement):**
+        *   Backend: Write tests for the RBAC middleware and admin-specific controller logic.
+        *   Frontend: Write tests for the `<AdminRoute />` component and admin-specific UI elements.
+
+## IV. Files to be Created/Modified (Summary)
+
+### Backend:
+*   New migration file in `server/database/migrations/` (e.g., `YYYYMMDDHHMMSS_add_role_to_users.ts`)
+*   `server/src/models/User.ts`
+*   `server/src/controllers/auth.controller.ts`
+*   `server/src/middleware/admin.middleware.ts` (New)
+*   `server/src/routes/admin.routes.ts` (New)
+*   `server/src/app.ts`
+*   (Potentially) A new script for admin user provisioning.
+
+### Frontend:
+*   `client/src/services/authService.ts`
+*   Authentication context/state management files (e.g., `client/src/context/AuthContext.tsx`)
+*   `client/src/components/AdminRoute.tsx` (New)
+*   `client/src/pages/AdminDashboardPage.tsx` (New)
+*   `client/src/App.tsx` (for routing)
+*   Navigation component(s) (e.g., `client/src/components/Navbar.tsx`)
+
+---
+This plan provides a structured approach to implementing admin authentication and role management. Specific details might be refined during development.
