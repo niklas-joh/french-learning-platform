@@ -23,7 +23,7 @@ const router = express.Router();
 router.get('/test', protect, isAdmin, adminTestController);
 
 // Analytics summary route
-router.get('/analytics', protect, isAdmin, getAnalyticsSummary);
+router.get('/analytics/summary', protect, isAdmin, getAnalyticsSummary);
 
 // Topic management routes
 router.get('/topics', protect, isAdmin, getAllTopics);
