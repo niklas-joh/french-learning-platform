@@ -5,6 +5,7 @@ import db from '../config/db'; // Knex instance
 // They will need to be parsed/stringified in application logic.
 export interface ContentSchema {
   id?: number;
+  name: string; // The name of the content item for easy identification
   topic_id?: number | null; // Foreign key, can be null if content is not topic-specific
   type: string; // e.g., 'multiple-choice', 'fill-in-the-blank'
   question_data: string; // JSON string
@@ -29,6 +30,7 @@ export type NewContent = Omit<ContentSchema, 'id' | 'created_at' | 'active'> & {
 // Type for content data returned to application, with JSON fields parsed
 export interface ContentApplicationData {
   id: number;
+  name: string;
   topicId?: number | null;
   type: string;
   questionData: any; // Parsed JSON
@@ -42,13 +44,29 @@ export interface ContentApplicationData {
 
 // Helper to map DB schema to application data format
 function mapContentToApplicationData(content: ContentSchema): ContentApplicationData {
+  const questionData = JSON.parse(content.question_data);
+  const correctAnswer = JSON.parse(content.correct_answer);
+  const options = content.options ? JSON.parse(content.options) : null;
+
+  // Reconstruct the full questionData object for the client
+  const fullQuestionData = {
+    ...questionData,
+    correctAnswer,
+  };
+  if (options) {
+    fullQuestionData.options = options;
+  }
+
   return {
     id: content.id!,
+    name: content.name,
     topicId: content.topic_id,
     type: content.type,
-    questionData: JSON.parse(content.question_data),
-    correctAnswer: JSON.parse(content.correct_answer),
-    options: content.options ? JSON.parse(content.options) : null,
+    questionData: fullQuestionData,
+    // The fields below are now part of questionData, but we can keep them for now
+    // for compatibility, though the frontend should primarily use questionData.
+    correctAnswer: correctAnswer,
+    options: options,
     difficultyLevel: content.difficulty_level,
     tags: content.tags ? JSON.parse(content.tags) : null,
     active: content.active !== undefined ? content.active : true, // Default to true if undefined
@@ -69,13 +87,17 @@ export const getContentByTopicId = async (topicId: number): Promise<ContentAppli
   return contentItems.map(mapContentToApplicationData);
 };
 
-export const createContent = async (contentData: NewContent): Promise<ContentApplicationData> => {
+export const createContent = async (contentData: any): Promise<ContentApplicationData> => {
+  // Extract correct_answer and options from questionData if they exist
+  const { correctAnswer, options, ...restOfQuestionData } = contentData.questionData || {};
+
   const contentToInsert: Partial<ContentSchema> = {
-    ...contentData,
-    question_data: JSON.stringify(contentData.question_data),
-    correct_answer: JSON.stringify(contentData.correct_answer),
-    options: contentData.options ? JSON.stringify(contentData.options) : null,
-    tags: contentData.tags ? JSON.stringify(contentData.tags) : null,
+    name: contentData.name,
+    topic_id: contentData.topicId,
+    type: contentData.type,
+    question_data: JSON.stringify(restOfQuestionData),
+    correct_answer: JSON.stringify(correctAnswer),
+    options: options ? JSON.stringify(options) : null,
     active: contentData.active !== undefined ? contentData.active : true,
   };
 
@@ -91,4 +113,39 @@ export const createContent = async (contentData: NewContent): Promise<ContentApp
     return mapContentToApplicationData(fullContent);
   }
   throw new Error('Content creation failed, ID not returned.');
+};
+
+export const getAllContent = async (): Promise<ContentApplicationData[]> => {
+  const items: ContentSchema[] = await db<ContentSchema>('content').select('*');
+  return items.map(mapContentToApplicationData);
+};
+
+export const updateContent = async (id: number, updateData: any): Promise<ContentApplicationData | null> => {
+  const dataToUpdate: Partial<ContentSchema> = {};
+
+  if (updateData.name !== undefined) dataToUpdate.name = updateData.name;
+  if (updateData.topicId !== undefined) dataToUpdate.topic_id = updateData.topicId;
+  if (updateData.type !== undefined) dataToUpdate.type = updateData.type;
+  if (updateData.active !== undefined) dataToUpdate.active = updateData.active;
+
+  // Handle nested questionData
+  if (updateData.questionData) {
+    const { correctAnswer, options, ...restOfQuestionData } = updateData.questionData;
+    dataToUpdate.question_data = JSON.stringify(restOfQuestionData);
+    if (correctAnswer !== undefined) {
+      dataToUpdate.correct_answer = JSON.stringify(correctAnswer);
+    }
+    if (options !== undefined) {
+      dataToUpdate.options = JSON.stringify(options);
+    }
+  }
+  
+  await db<ContentSchema>('content').where({ id }).update(dataToUpdate);
+  const updated = await db<ContentSchema>('content').where({ id }).first();
+  return updated ? mapContentToApplicationData(updated) : null;
+};
+
+export const deleteContent = async (id: number): Promise<boolean> => {
+  const count = await db<ContentSchema>('content').where({ id }).del();
+  return count > 0;
 };
