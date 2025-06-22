@@ -7,7 +7,8 @@ erDiagram
         string last_name "nullable"
         string role "default: 'user'"
         datetime created_at
-        string preferences "nullable, JSON"
+        datetime updated_at
+        json preferences "nullable"
     }
 
     topics {
@@ -15,7 +16,7 @@ erDiagram
         string name UK
         string description "nullable"
         string category "nullable"
-        boolean active "default: 1"
+        boolean active "default: true"
         datetime created_at
         datetime updated_at
     }
@@ -23,81 +24,35 @@ erDiagram
     content {
         int id PK
         int topic_id FK "nullable"
-        string name
-        string type
-        json question_data
-        json correct_answer
-        json options
-        string difficulty_level
-        json tags
-        boolean active
-        datetime created_at
-        boolean active
+        int content_type_id FK
+        string name "not null"
+        json question_data "not null"
+        json correct_answer "not null"
+        json options "nullable"
+        string difficulty_level "nullable"
+        json tags "nullable"
+        boolean active "default: true"
         datetime created_at
         datetime updated_at
     }
 
-    USER_RESPONSES {
+    content_types {
         int id PK
-        int user_id FK
-        int content_id FK
-        json user_answer
-        boolean is_correct
-        int time_taken_seconds
-        datetime answered_at
-        json ai_feedback
-        float confidence_score
-    }
-
-    LEARNING_JOURNEYS {
-        int id PK
-        int user_id FK
-        string name
-        json content_sequence
-        json progress_data
-        string status
+        string name UK
+        string description "nullable"
         datetime created_at
-        datetime completed_at
-    }
-
-    SPACED_REPETITION {
-        int id PK
-        int user_id FK
-        int content_id FK
-        float easiness_factor
-        int repetition_count
-        int interval_days
-        datetime next_review
-        datetime last_reviewed
-        string performance_trend
-    }
-
-    AI_USAGE_LOG {
-        int id PK
-        string api_provider
-        string endpoint_used
-        int user_id FK
-        json request_data
-        json response_data
-        float cost_estimate
-        datetime created_at
-    }
-
-    ADMIN_SETTINGS {
-        int id PK
-        string setting_key UK
-        json setting_value
-        string description
         datetime updated_at
-        int updated_by FK
     }
 
-    USERS ||--o{ USER_RESPONSES : "completes"
-    USERS ||--o{ LEARNING_JOURNEYS : "follows"
-    USERS ||--o{ SPACED_REPETITION : "reviews"
-    USERS ||--o{ AI_USAGE_LOG : "triggers"
-    TOPICS ||--o{ CONTENT : "contains"
-    CONTENT ||--o{ USER_RESPONSES : "answered_in"
-    CONTENT ||--o{ SPACED_REPETITION : "scheduled_for"
-    USERS ||--o{ CONTENT : "creates"
-    USERS ||--o{ ADMIN_SETTINGS : "updates"
+    user_content_assignments {
+        int id PK
+        int user_id FK
+        int content_id FK
+        datetime assigned_at
+        string status "default: 'pending'"
+    }
+
+    users ||--o{ user_content_assignments : "has"
+    content ||--o{ user_content_assignments : "is part of"
+    topics ||--o{ content : "contains"
+    content_types ||--o{ content : "is of type"
