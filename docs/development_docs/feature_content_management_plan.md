@@ -55,19 +55,19 @@ Implement the database schema, migrations, and backend API for managing `topics`
 ## **Phase 2: Content Population Script**
 
 ### **Step 1: Develop Initial Script**
-*   **Status:** `Pending`
+*   **Status:** `Completed (2025-06-22)`
 *   **Task:** Create the `scripts/populate_content.ts` script.
 *   **Details:** The script will read from the `content/topics/**/*.json` files and populate the new `topics` and `content` tables in the database.
 
 ### **Step 2: Test and Refine**
-*   **Status:** `Pending`
+*   **Status:** `Completed (2025-06-22)`
 *   **Task:** Run the script on a local database, validate the inserted data, and refine the script as needed.
 
 ---
 
 ## **Phase 3: Backend API (CRUD Operations)**
 
-*   **Status:** `Pending`
+*   **Status:** `Completed (2025-06-22)`
 *   **Task:** Develop the backend API endpoints for full CRUD (Create, Read, Update, Delete) functionality for topics and content, protected by admin-only access.
 *   **Endpoints:**
     *   `/api/admin/topics`
