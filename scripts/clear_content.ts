@@ -1,5 +1,8 @@
 import knex from 'knex';
-import knexConfig from '../server/knexfile';
+// Import the Knex configuration from the server project.  The file lives under
+// `server/src` but older scripts referenced `../server/knexfile` which no
+// longer exists after the TypeScript refactor.
+import knexConfig from '../server/src/knexfile';
 
 // Initialize Knex with the development configuration
 const db = knex(knexConfig.development);

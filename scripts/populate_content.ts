@@ -1,7 +1,10 @@
 import knex from 'knex';
 import fs from 'fs/promises';
 import path from 'path';
-import knexConfig from '../server/knexfile';
+// Import the Knex configuration from the server project.  Older versions of
+// this script referenced `../server/knexfile`, but the actual file lives under
+// `server/src`.
+import knexConfig from '../server/src/knexfile';
 
 // Initialize Knex with the development configuration
 const db = knex(knexConfig.development);
