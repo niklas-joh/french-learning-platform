@@ -38,10 +38,10 @@
 - [✅] **Content Population Strategy:**
     - [✅] **Initial Population Script:** A script to bulk-populate the `content` and `topics` tables from existing JSON files has been created and executed, populating the initial dataset.
     - [✅] **Admin UI Population:** Enable content creation and management directly through the new Admin UI as an ongoing process.
-- [ ] **Enhanced User Features**
+- [✅] **Enhanced User Features**
 - [ ] Multiple content types (grammar, vocabulary, etc.)
 - [ ] Basic progress visualization
-- [ ] User preference settings
+- [✅] User preference settings
 
 ---
 
