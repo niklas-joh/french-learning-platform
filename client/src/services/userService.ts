@@ -1,6 +1,7 @@
 import apiClient from './authService';
 import { User } from '../types/User';
 import { TopicProgress } from '../types/Progress';
+import { UserPreferences } from '../types/Preference';
 
 /**
  * Fetches all users from the backend.
@@ -25,4 +26,24 @@ export const getUserProgress = async (): Promise<TopicProgress[]> => {
     console.error('Failed to fetch user progress:', error);
     throw new Error('Failed to fetch user progress.');
   }
+};
+
+export const getUserPreferences = async (): Promise<UserPreferences> => {
+    try {
+        const response = await apiClient.get<UserPreferences>('/users/me/preferences');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch user preferences:', error);
+        throw new Error('Failed to fetch user preferences.');
+    }
+};
+
+export const saveUserPreferences = async (preferences: UserPreferences): Promise<UserPreferences> => {
+    try {
+        const response = await apiClient.put<UserPreferences>('/users/me/preferences', { preferences });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to save user preferences:', error);
+        throw new Error('Failed to save user preferences.');
+    }
 };

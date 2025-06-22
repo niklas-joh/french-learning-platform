@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import knex from '../config/db';
 import { UserSchema } from '../models/User'; // Use UserSchema for DB operations
 import UserContentAssignmentModel from '../models/UserContentAssignment';
+import UserPreferenceModel from '../models/UserPreference';
 
 // Extend Express Request type to include user property
 interface AuthenticatedRequest extends Request {
@@ -176,4 +177,45 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
     console.error('Error fetching user progress:', error);
     res.status(500).json({ message: 'Failed to fetch user progress' });
   }
+};
+
+export const getUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    try {
+        if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
+            res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+            return;
+        }
+        const userId = req.user.userId;
+        const preferences = await UserPreferenceModel.findByUserId(userId);
+        if (preferences) {
+            res.json(JSON.parse(preferences.preferences));
+        } else {
+            res.json({}); // Return empty object if no preferences are set
+        }
+    } catch (error: any) {
+        console.error('Error fetching user preferences:', error);
+        res.status(500).json({ message: 'Failed to fetch user preferences' });
+    }
+};
+
+export const updateUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    try {
+        if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
+            res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+            return;
+        }
+        const userId = req.user.userId;
+        const { preferences } = req.body;
+
+        if (!preferences || typeof preferences !== 'object') {
+            res.status(400).json({ message: 'Invalid preferences format' });
+            return;
+        }
+
+        const updatedPreference = await UserPreferenceModel.upsert(userId, preferences);
+        res.json(JSON.parse(updatedPreference.preferences));
+    } catch (error: any) {
+        console.error('Error updating user preferences:', error);
+        res.status(500).json({ message: 'Failed to update user preferences' });
+    }
 };
