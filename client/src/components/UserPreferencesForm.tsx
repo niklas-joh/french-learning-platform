@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { getUserPreferences, saveUserPreferences } from '../services/userService';
 import { UserPreferences } from '../types/Preference';
 import {
@@ -13,8 +13,10 @@ import {
   CircularProgress,
   Snackbar,
 } from '@mui/material';
+import { ThemeModeContext } from '../ThemeProvider';
 
 const UserPreferencesForm: React.FC = () => {
+  const { setMode } = useContext(ThemeModeContext);
   const [preferences, setPreferences] = useState<UserPreferences>({
     theme: 'light',
     notifications: { email: false },
@@ -28,7 +30,10 @@ const UserPreferencesForm: React.FC = () => {
       try {
         const data = await getUserPreferences();
         if (data && Object.keys(data).length > 0) {
-            setPreferences(data);
+          setPreferences(data);
+          if (data.theme) {
+            setMode(data.theme);
+          }
         }
       } catch (err) {
         setError('Failed to load preferences.');
@@ -42,9 +47,11 @@ const UserPreferencesForm: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
-    
+
     if (name === 'theme') {
-        setPreferences(prev => ({ ...prev, theme: prev.theme === 'dark' ? 'light' : 'dark' }));
+        const newMode = preferences.theme === 'dark' ? 'light' : 'dark';
+        setPreferences(prev => ({ ...prev, theme: newMode }));
+        setMode(newMode);
     } else {
         const [category, key] = name.split('.');
         if (category === 'notifications' && (key === 'email' || key === 'sms')) {

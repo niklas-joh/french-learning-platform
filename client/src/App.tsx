@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Container, CssBaseline, Typography } from '@mui/material'; // Added Typography
+import { AppBar, Toolbar, Button, Container, Typography } from '@mui/material';
 import { getCurrentUser, isAuthenticated, logout as authLogout } from './services/authService';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -56,7 +56,6 @@ const AppContent: React.FC = () => {
 
   return (
     <>
-      <CssBaseline />
       <AppBar position="static">
         <Toolbar>
           {isUserAuthenticated ? (
