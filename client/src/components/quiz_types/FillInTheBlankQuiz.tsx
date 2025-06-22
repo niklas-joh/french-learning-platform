@@ -8,6 +8,7 @@ import {
   Box,
   Alert,
 } from '@mui/material';
+<<<<<<< HEAD
 import { Content, FillInTheBlankData } from '../../types/Content';
 
 interface FillInTheBlankQuizProps {
@@ -19,6 +20,17 @@ const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ content, onAnsw
   const [answer, setAnswer] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const data = content.questionData as FillInTheBlankData;
+=======
+import { FillInTheBlankData } from '../../types/Content';
+
+interface FillInTheBlankQuizProps {
+  data: FillInTheBlankData;
+}
+
+const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ data }) => {
+  const [answer, setAnswer] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+>>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -26,9 +38,13 @@ const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ content, onAnsw
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+<<<<<<< HEAD
     const isCorrect = answer.trim().toLowerCase() === data.correctAnswer.toLowerCase();
     setIsSubmitted(true);
     onAnswer(isCorrect);
+=======
+    setIsSubmitted(true);
+>>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
   };
 
   const isCorrect = isSubmitted && answer.trim().toLowerCase() === data.correctAnswer.toLowerCase();

@@ -11,6 +11,7 @@ import {
   Box,
   Alert,
 } from '@mui/material';
+<<<<<<< HEAD
 import { Content, MultipleChoiceData } from '../../types/Content';
 
 interface MultipleChoiceQuizProps {
@@ -22,6 +23,17 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ content, onAnsw
   const [selectedValue, setSelectedValue] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const data = content.questionData as MultipleChoiceData;
+=======
+import { MultipleChoiceData } from '../../types/Content';
+
+interface MultipleChoiceQuizProps {
+  data: MultipleChoiceData;
+}
+
+const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ data }) => {
+  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+>>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -29,10 +41,14 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ content, onAnsw
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+<<<<<<< HEAD
     const selectedOptionIndex = data.options.indexOf(selectedValue);
     const isCorrect = selectedOptionIndex === data.correctAnswer;
     setIsSubmitted(true);
     onAnswer(isCorrect);
+=======
+    setIsSubmitted(true);
+>>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
   };
 
   const selectedOptionIndex = data.options.indexOf(selectedValue);
