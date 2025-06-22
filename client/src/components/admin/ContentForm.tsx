@@ -110,12 +110,12 @@ const ContentForm: React.FC<ContentFormProps> = ({
       type: selectedType ? selectedType.name : '',
       questionData: questionData, // questionData is now an object
       active,
-    };
+    } as Omit<Content, 'id'>;
 
     if (content) {
-      onSubmit({ ...content, ...contentData });
+      onSubmit({ ...content, ...contentData } as Content);
     } else {
-      onSubmit(contentData);
+      onSubmit(contentData as Omit<Content, 'id'>);
     }
   };
 

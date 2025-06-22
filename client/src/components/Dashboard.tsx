@@ -3,8 +3,8 @@ import { Container, Typography, Paper, CircularProgress, Alert, Box, List, ListI
 import { getUserProfile, UserProfileData, logout } from '../services/authService';
 import { getTopics, getContentForTopic, getAssignedContent } from '../services/contentService';
 import { Topic } from '../types/Topic';
-import Quiz, { QuizData } from './Quiz';
-import { ApiContentItem, mapApiContentToQuizData } from '../utils/data-mappers';
+import Quiz from './Quiz';
+import { Content } from '../types/Content';
 import AssignedContentList from './AssignedContentList';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
 import ProgressAnalytics from './ProgressAnalytics';
@@ -14,7 +14,7 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [topics, setTopics] = useState<Topic[]>([]);
-  const [quizzes, setQuizzes] = useState<QuizData[]>([]);
+  const [content, setContent] = useState<Content[]>([]);
   const [selectedTopicId, setSelectedTopicId] = useState<number | null>(null);
   const [assignments, setAssignments] = useState<UserContentAssignmentWithContent[]>([]);
 
@@ -49,21 +49,11 @@ const Dashboard: React.FC = () => {
     try {
       setSelectedTopicId(topicId);
       setLoading(true);
-      const content: ApiContentItem[] = await getContentForTopic(topicId);
-      console.log('Raw content from API:', content);
-
-      const quizzesOnly = content.filter(
-        (item) => item.type.trim().toLowerCase() === 'multiple_choice' || item.type.trim().toLowerCase() === 'quiz'
-      );
-      console.log('Filtered quizzes:', quizzesOnly);
-
-      const mapped = quizzesOnly.map(mapApiContentToQuizData);
-      console.log('Mapped quiz data:', mapped);
-      
-      setQuizzes(mapped);
+      const topicContent: Content[] = await getContentForTopic(topicId);
+      setContent(topicContent);
     } catch (err: any) {
       console.error('Error fetching topic content:', err);
-      setError('Failed to load quizzes for this topic.');
+      setError('Failed to load content for this topic.');
     } finally {
       setLoading(false);
     }
@@ -116,12 +106,12 @@ const Dashboard: React.FC = () => {
           ))}
         </Box>
         <Box sx={{ mt: 4 }}>
-          {selectedTopicId && quizzes.length === 0 && (
-            <Typography>No quizzes found for this topic.</Typography>
+          {selectedTopicId && content.length === 0 && (
+            <Typography>No content found for this topic.</Typography>
           )}
-          {quizzes.map((quiz) => (
-            <Box key={quiz.id} sx={{ mb: 3 }}>
-              <Quiz quizData={quiz} />
+          {content.map((contentItem) => (
+            <Box key={contentItem.id} sx={{ mb: 3 }}>
+              <Quiz content={contentItem} />
             </Box>
           ))}
         </Box>
