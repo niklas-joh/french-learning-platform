@@ -113,7 +113,7 @@ const AssignmentManager: React.FC = () => {
           <Select onChange={(e) => setSelectedUser(Number(e.target.value))} value={selectedUser || ''}>
             <MenuItem value="">--Select a User--</MenuItem>
             {users.map(user => (
-              <MenuItem key={user.id} value={user.id}>{user.first_name} {user.last_name}</MenuItem>
+              <MenuItem key={user.id} value={user.id}>{user.firstName} {user.lastName}</MenuItem>
             ))}
           </Select>
         </FormControl>

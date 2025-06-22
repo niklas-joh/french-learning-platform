@@ -12,7 +12,6 @@ interface AuthenticatedRequest extends Request {
 }
 
 export const protect = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  console.log('Entering protect middleware'); // <-- ADD THIS LINE
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -21,19 +20,15 @@ export const protect = (req: AuthenticatedRequest, res: Response, next: NextFunc
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      // The token payload contains `userId`, not `id`.
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret') as { userId: number; email?: string; role?: string; /* other props from token */ };
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret') as { userId: number; email?: string; role?: string; };
       
-      console.log('Decoded JWT payload in middleware:', decoded); // Log the entire decoded payload
-      console.log('Value of decoded.userId:', decoded.userId, 'Type:', typeof decoded.userId); // Log userId and its type
-
       // Attach user to request object
       if (typeof decoded.userId !== 'number' || decoded.userId <= 0) {
         console.error('Invalid userId in token:', decoded.userId);
         res.status(401).json({ message: 'Not authorized, token invalid (userId)' });
         return;
       }
-      // Populate req.user with details from the token
+      
       req.user = { 
         userId: decoded.userId,
         email: decoded.email,
@@ -45,9 +40,7 @@ export const protect = (req: AuthenticatedRequest, res: Response, next: NextFunc
       console.error('Token verification failed:', error);
       res.status(401).json({ message: 'Not authorized, token failed' });
     }
-  }
-
-  if (!token) {
+  } else {
     res.status(401).json({ message: 'Not authorized, no token' });
   }
 };

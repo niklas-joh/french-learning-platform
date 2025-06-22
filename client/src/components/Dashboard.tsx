@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Paper, CircularProgress, Alert, Box, List, ListItemButton, ListItemText, Divider } from '@mui/material';
-import { getUserProfile, UserProfileData } from '../services/authService';
+import { getUserProfile, UserProfileData, logout } from '../services/authService';
 import { getTopics, getContentForTopic, getAssignedContent } from '../services/contentService';
 import { Topic } from '../types/Topic';
 import Quiz, { QuizData } from './Quiz';
@@ -31,7 +31,12 @@ const Dashboard: React.FC = () => {
       } catch (err: any) {
         console.error('Failed to fetch dashboard data:', err);
         const message = err.message || 'Failed to load user information. Please try again later.';
-        setError(message);
+        if (message.toLowerCase().includes('user not found')) {
+          logout();
+          window.location.reload();
+        } else {
+          setError(message);
+        }
       } finally {
         setLoading(false);
       }

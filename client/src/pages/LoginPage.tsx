@@ -21,7 +21,8 @@ const LoginPage: React.FC = () => {
       const response = await login({ email: normalizedEmail, password });
       console.log('Login successful:', response);
       // Token is stored by authService, navigate to dashboard
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
+      window.location.reload();
     } catch (apiError: any) {
       // Log the actual error object to see its structure if it's not what's expected
       console.error('Login failed raw error:', apiError); 

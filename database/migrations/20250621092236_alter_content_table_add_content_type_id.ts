@@ -1,10 +1,13 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  // 1. Add the new content_type_id column, allowing null values initially
-  await knex.schema.alterTable('content', (table) => {
-    table.integer('content_type_id').unsigned();
-  });
+  const hasColumn = await knex.schema.hasColumn('content', 'content_type_id');
+  if (!hasColumn) {
+    // 1. Add the new content_type_id column, allowing null values initially
+    await knex.schema.alterTable('content', (table) => {
+      table.integer('content_type_id').unsigned();
+    });
+  }
 
   // 2. Create a mapping from old type names to new content_type IDs
   const typeMapping: { [key: string]: number } = {

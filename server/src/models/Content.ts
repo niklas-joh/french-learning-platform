@@ -62,7 +62,7 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
     id: content.id!,
     name: content.name,
     topicId: content.topic_id,
-    type: content.typeName, // Joined from content_types table
+    type: content.typeName || 'default', // Fallback for content without a type
     contentTypeId: content.content_type_id,
     questionData: fullQuestionData,
     // The fields below are now part of questionData, but we can keep them for now
@@ -124,7 +124,16 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
 
 export const getAllContent = async (): Promise<ContentApplicationData[]> => {
   const items = await contentQuery();
-  return items.map(mapContentToApplicationData);
+  return items.map(item => {
+    try {
+      return mapContentToApplicationData(item);
+    } catch (error) {
+      console.error('Error mapping content item:', item, error);
+      // Decide how to handle the error. Skip the item, or re-throw.
+      // For now, let's re-throw to see the error in the console.
+      throw error;
+    }
+  });
 };
 
 export const updateContent = async (id: number, updateData: any): Promise<ContentApplicationData | null> => {
