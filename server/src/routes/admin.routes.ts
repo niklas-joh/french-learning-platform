@@ -17,7 +17,8 @@ import {
     deleteContentType,
     getContentItemById,
     updateContentItemById,
-    deleteContentItemById
+    deleteContentItemById,
+    getAllUsers
 } from '../controllers/admin.controller';
 import {
     assignContentToUser,
@@ -57,5 +58,8 @@ router.delete('/content/:id', protect, isAdmin, deleteContentItemById);
 router.post('/assignments', protect, isAdmin, assignContentToUser);
 router.get('/assignments/user/:userId', protect, isAdmin, getAssignmentsForUser);
 router.delete('/assignments/:assignmentId', protect, isAdmin, unassignContentFromUser);
+
+// User management
+router.get('/users', protect, isAdmin, getAllUsers);
 
 export default router;

@@ -8,7 +8,7 @@ import { TopicProgress } from '../types/Progress';
  */
 export const getUsers = async (): Promise<User[]> => {
   try {
-    const response = await apiClient.get<User[]>('/users'); // Assuming an endpoint like /api/users
+    const response = await apiClient.get<User[]>('/admin/users');
     return response.data;
   } catch (error) {
     console.error('Failed to fetch users:', error);

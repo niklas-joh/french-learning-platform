@@ -16,7 +16,7 @@ export const fetchSampleQuiz = async () => {
 };
 
 export const getTopics = async (): Promise<Topic[]> => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken');
   const response = await apiClient.get('/content/topics', {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
@@ -29,7 +29,7 @@ export const getContentForTopic = async (topicId: number | string) => {
 };
 
 export const getAssignedContent = async () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('authToken');
   if (!token) {
     throw new Error('No token found');
   }
