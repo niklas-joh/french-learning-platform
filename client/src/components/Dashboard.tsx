@@ -116,7 +116,11 @@ const Dashboard: React.FC = () => {
           )}
           {content.map((contentItem) => (
             <Box key={contentItem.id} sx={{ mb: 3 }}>
+<<<<<<< HEAD
+              <Quiz content={contentItem} />
+=======
               <Quiz content={contentItem} onAnswer={handleAnswer} />
+>>>>>>> main
             </Box>
           ))}
         </Box>

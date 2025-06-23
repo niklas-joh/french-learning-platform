@@ -8,6 +8,17 @@ import {
   Box,
   Alert,
 } from '@mui/material';
+<<<<<<< HEAD
+import { FillInTheBlankData } from '../../types/Content';
+
+interface FillInTheBlankQuizProps {
+  data: FillInTheBlankData;
+}
+
+const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ data }) => {
+  const [answer, setAnswer] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+=======
 import { Content, FillInTheBlankData } from '../../types/Content';
 
 interface FillInTheBlankQuizProps {
@@ -19,6 +30,7 @@ const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ content, onAnsw
   const [answer, setAnswer] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const data = content.questionData as FillInTheBlankData;
+>>>>>>> main
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -26,9 +38,13 @@ const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ content, onAnsw
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+<<<<<<< HEAD
+    setIsSubmitted(true);
+=======
     const isCorrect = answer.trim().toLowerCase() === data.correctAnswer.toLowerCase();
     setIsSubmitted(true);
     onAnswer(isCorrect);
+>>>>>>> main
   };
 
   const isCorrect = isSubmitted && answer.trim().toLowerCase() === data.correctAnswer.toLowerCase();
