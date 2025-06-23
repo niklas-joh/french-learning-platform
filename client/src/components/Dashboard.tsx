@@ -116,11 +116,7 @@ const Dashboard: React.FC = () => {
           )}
           {content.map((contentItem) => (
             <Box key={contentItem.id} sx={{ mb: 3 }}>
-<<<<<<< HEAD
               <Quiz content={contentItem} onAnswer={handleAnswer} />
-=======
-              <Quiz content={contentItem} />
->>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
             </Box>
           ))}
         </Box>

@@ -11,7 +11,6 @@ import {
   Box,
   Alert,
 } from '@mui/material';
-<<<<<<< HEAD
 import { Content, TrueFalseData } from '../../types/Content';
 
 interface TrueFalseQuizProps {
@@ -23,17 +22,6 @@ const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ content, onAnswer }) => {
   const [selectedValue, setSelectedValue] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const data = content.questionData as TrueFalseData;
-=======
-import { TrueFalseData } from '../../types/Content';
-
-interface TrueFalseQuizProps {
-  data: TrueFalseData;
-}
-
-const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ data }) => {
-  const [selectedValue, setSelectedValue] = useState<string>('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
->>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -41,13 +29,9 @@ const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ data }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-<<<<<<< HEAD
     const isCorrect = (selectedValue === 'true') === data.correctAnswer;
     setIsSubmitted(true);
     onAnswer(isCorrect);
-=======
-    setIsSubmitted(true);
->>>>>>> 6f552ce (feat(content): Implement multiple content types for quizzes)
   };
 
   const isCorrect = isSubmitted && (selectedValue === 'true') === data.correctAnswer;
