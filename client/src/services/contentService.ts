@@ -41,4 +41,12 @@ export const getAssignedContent = async () => {
   return response.data;
 };
 
+export const getContentById = async (id: string) => {
+  const token = localStorage.getItem('authToken');
+  const response = await apiClient.get(`/content/${id}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return response.data;
+};
+
 export default apiClient;

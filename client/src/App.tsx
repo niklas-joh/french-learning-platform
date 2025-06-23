@@ -7,6 +7,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminRoute from './components/AdminRoute';
+import QuizPage from './pages/QuizPage';
 
 const NotFoundPage = () => (
   <Container sx={{ textAlign: 'center', mt: 4 }}>
@@ -97,6 +98,7 @@ const AppContent: React.FC = () => {
             <Route index element={<AdminDashboardPage />} />
             {/* Add more nested admin routes here if needed */}
           </Route>
+          <Route path="/content/:contentId" element={<QuizPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Container>
