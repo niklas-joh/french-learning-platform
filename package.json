@@ -8,7 +8,8 @@
     "start": "node server/dist/app.js",
     "set-admin": "ts-node scripts/set_admin_user.ts",
     "populate:content": "npx ts-node --project server/tsconfig.json scripts/populate_content.ts",
-    "migrate": "npx ts-node --project server/tsconfig.json scripts/run-migration.ts"
+    "migrate": "npx ts-node --project server/tsconfig.json scripts/run-migration.ts",
+    "db:setup": "npm run migrate && npm run populate:content"
   },
   "keywords": [],
   "author": "",
