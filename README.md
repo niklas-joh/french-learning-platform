@@ -30,6 +30,11 @@ Follow these instructions to get a local copy of the project up and running for 
     ```sh
     npm run db:setup
     ```
+    If you encounter errors like `no such table: users` when running the
+    application, ensure the migrations have been applied by executing:
+    ```sh
+    npm run migrate
+    ```
 
 4.  **Set up environment variables:**
     Copy the `.env.example` file in the `server` directory to a new file named `.env` and fill in the required values.

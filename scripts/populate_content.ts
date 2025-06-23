@@ -15,6 +15,33 @@ async function populateContent() {
   try {
     console.log('Starting content population script...');
 
+    // Ensure required content types exist. Older migrations created a
+    // separate `content_types` table and replaced the string `type`
+    // column with a foreign key. When running this script on a fresh
+    // database we need to populate the table so we can reference the
+    // correct IDs.
+
+    const defaultTypes = [
+      'multiple-choice',
+      'fill-in-the-blank',
+      'sentence-correction',
+      'true-false',
+    ];
+
+    const typeRows = await db('content_types').select('id', 'name');
+    const typeMap: Record<string, number> = {};
+    for (const row of typeRows) {
+      typeMap[row.name] = row.id;
+    }
+    for (const typeName of defaultTypes) {
+      if (!typeMap[typeName]) {
+        const [row] = await db('content_types')
+          .insert({ name: typeName })
+          .returning(['id', 'name']);
+        typeMap[row.name] = row.id;
+      }
+    }
+
     // 1. Read all topic directories
     const topicDirs = await fs.readdir(contentRoot, { withFileTypes: true });
 
@@ -58,14 +85,25 @@ async function populateContent() {
                   feedback: item.feedback,
                 };
 
+                const normalizedType = String(item.type).replace(/_/g, '-');
+                let typeId = typeMap[normalizedType];
+                if (!typeId) {
+                  const [row] = await db('content_types')
+                    .insert({ name: normalizedType })
+                    .returning(['id', 'name']);
+                  typeMap[row.name] = row.id;
+                  typeId = row.id;
+                }
+
                 await db('content').insert({
+                  name: item.id || questionText,
                   topic_id: topic.id,
-                  type: item.type,
+                  content_type_id: typeId,
                   question_data: JSON.stringify(questionData),
                   correct_answer: JSON.stringify(item.correct_answer),
-                  options: JSON.stringify(item.options),
+                  options: item.options ? JSON.stringify(item.options) : null,
                   difficulty_level: item.difficulty,
-                  tags: JSON.stringify(item.tags),
+                  tags: item.tags ? JSON.stringify(item.tags) : null,
                   active: true,
                 });
                 console.log(`  - Inserted content: ${questionText}`);
