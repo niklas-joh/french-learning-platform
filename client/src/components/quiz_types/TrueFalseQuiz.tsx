@@ -11,6 +11,7 @@ import {
   Box,
   Alert,
 } from '@mui/material';
+<<<<<<< HEAD
 import { TrueFalseData } from '../../types/Content';
 
 interface TrueFalseQuizProps {
@@ -20,6 +21,19 @@ interface TrueFalseQuizProps {
 const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ data }) => {
   const [selectedValue, setSelectedValue] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+=======
+import { Content, TrueFalseData } from '../../types/Content';
+
+interface TrueFalseQuizProps {
+  content: Content;
+  onAnswer: (isCorrect: boolean) => void;
+}
+
+const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ content, onAnswer }) => {
+  const [selectedValue, setSelectedValue] = useState<string>('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const data = content.questionData as TrueFalseData;
+>>>>>>> main
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -27,7 +41,13 @@ const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ data }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+<<<<<<< HEAD
     setIsSubmitted(true);
+=======
+    const isCorrect = (selectedValue === 'true') === data.correctAnswer;
+    setIsSubmitted(true);
+    onAnswer(isCorrect);
+>>>>>>> main
   };
 
   const isCorrect = isSubmitted && (selectedValue === 'true') === data.correctAnswer;

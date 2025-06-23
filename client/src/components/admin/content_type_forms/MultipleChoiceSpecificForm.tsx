@@ -46,10 +46,18 @@ const MultipleChoiceSpecificForm: React.FC<MultipleChoiceSpecificFormProps> = ({
   };
 
   const handleOptionChange = (index: number, value: string) => {
+    const oldOption = options[index];
     const newOptions = [...options];
     newOptions[index] = value;
     setOptions(newOptions);
-    handleDataChange({ options: newOptions });
+
+    let newCorrectAnswer = correctAnswer;
+    if (correctAnswer === oldOption) {
+      newCorrectAnswer = value;
+      setCorrectAnswer(value);
+    }
+
+    handleDataChange({ options: newOptions, correctAnswer: newCorrectAnswer });
   };
 
   const handleAddOption = () => {
@@ -59,9 +67,16 @@ const MultipleChoiceSpecificForm: React.FC<MultipleChoiceSpecificFormProps> = ({
   };
 
   const handleRemoveOption = (index: number) => {
+    const removedOption = options[index];
     const newOptions = options.filter((_, i) => i !== index);
     setOptions(newOptions);
-    handleDataChange({ options: newOptions });
+
+    let newCorrectAnswer = correctAnswer;
+    if (correctAnswer === removedOption) {
+      newCorrectAnswer = '';
+      setCorrectAnswer('');
+    }
+    handleDataChange({ options: newOptions, correctAnswer: newCorrectAnswer });
   };
 
   const handleCorrectAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {

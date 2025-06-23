@@ -21,6 +21,7 @@ import { ContentType, getContentTypes } from '../../services/adminService';
 import MultipleChoiceSpecificForm from './content_type_forms/MultipleChoiceSpecificForm';
 import FillInTheBlankSpecificForm from './content_type_forms/FillInTheBlankSpecificForm';
 import TrueFalseSpecificForm from './content_type_forms/TrueFalseSpecificForm';
+import SentenceCorrectionSpecificForm from './content_type_forms/SentenceCorrectionSpecificForm';
 
 interface ContentFormProps {
   open: boolean;
@@ -193,6 +194,13 @@ const ContentForm: React.FC<ContentFormProps> = ({
                 case 'true-false':
                   return (
                     <TrueFalseSpecificForm
+                      data={questionData}
+                      onChange={setQuestionData}
+                    />
+                  );
+                case 'sentence-correction':
+                  return (
+                    <SentenceCorrectionSpecificForm
                       data={questionData}
                       onChange={setQuestionData}
                     />

@@ -20,13 +20,22 @@ export interface TrueFalseData {
   explanation: string;
 }
 
+// For 'sentence-correction'
+export interface SentenceCorrectionData {
+  question: string;
+  correctAnswer: string;
+  explanation?: string;
+}
+
 export interface Content {
   id: number;
   name: string;
   topicId: number;
-  type: 'multiple-choice' | 'fill-in-the-blank' | 'true-false';
+  type: 'multiple-choice' | 'fill-in-the-blank' | 'true-false' | 'sentence-correction';
   contentTypeId: number;
-  questionData: MultipleChoiceData | FillInTheBlankData | TrueFalseData;
+  questionData: MultipleChoiceData | FillInTheBlankData | TrueFalseData | SentenceCorrectionData;
   active: boolean;
   createdAt?: string;
+  options?: string[];
+  correct_answer?: string;
 }
