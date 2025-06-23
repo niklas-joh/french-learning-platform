@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllTopics, getContentForTopic, getSampleQuiz } from '../controllers/content.controller';
+import { getAllTopics, getContentForTopic, getSampleQuiz, getContentById } from '../controllers/content.controller';
 // import { protect } from '../middleware/auth.middleware'; // Uncomment if auth is needed
 
 const router = Router();
@@ -18,6 +18,11 @@ router.get('/topics/:topicId/content', getContentForTopic);
 // @desc    Get a static sample quiz from JSON
 // @access  Public
 router.get('/sample-quiz', getSampleQuiz);
+
+// @route   GET /api/content/:id
+// @desc    Get a single content item by ID
+// @access  Public (for now)
+router.get('/:id', getContentById);
 
 // TODO: Define other content/topic routes if needed (e.g., get single topic/content by ID)
 

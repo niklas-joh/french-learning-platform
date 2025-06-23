@@ -1,4 +1,5 @@
 import db from '../config/db'; // Knex instance
+import { Knex } from 'knex';
 
 // Interface representing the Content table structure
 // JSON fields are stored as strings in SQLite, so they are typed as string here.
@@ -7,7 +8,9 @@ export interface ContentSchema {
   id?: number;
   name: string; // The name of the content item for easy identification
   topic_id?: number | null; // Foreign key, can be null if content is not topic-specific
-  content_type_id: number; // Foreign key to content_types table
+  // Some databases use a simple "type" text column instead of a foreign key. Support both.
+  content_type_id?: number; // Foreign key to content_types table
+  type?: string;
   question_data: string; // JSON string
   correct_answer: string; // JSON string
   options?: string | null; // JSON string, optional
@@ -33,7 +36,7 @@ export interface ContentApplicationData {
   name: string;
   topicId?: number | null;
   type: string; // The name of the content type, e.g., 'multiple-choice'
-  contentTypeId: number;
+  contentTypeId?: number;
   questionData: any; // Parsed JSON
   correctAnswer: any; // Parsed JSON
   options?: any | null; // Parsed JSON
@@ -58,11 +61,13 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
     fullQuestionData.options = options;
   }
 
+  const type = content.typeName || content.type || 'default';
+
   return {
     id: content.id!,
     name: content.name,
     topicId: content.topic_id,
-    type: content.typeName || 'default', // Fallback for content without a type
+    type,
     contentTypeId: content.content_type_id,
     questionData: fullQuestionData,
     // The fields below are now part of questionData, but we can keep them for now
@@ -76,14 +81,16 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
   };
 }
 
-const contentQuery = () => 
-  db('content')
-    .select('content.*', 'content_types.name as typeName')
-    .leftJoin('content_types', 'content.content_type_id', 'content_types.id');
 
 
 export const getContentById = async (id: number): Promise<ContentApplicationData | null> => {
-  const contentItem = await contentQuery().where('content.id', id).first();
+  const hasContentTypes = await db.schema.hasTable('content_types');
+  const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
+  let query = db('content').select('content.*');
+  if (hasContentTypes && hasContentTypeId2) {
+    query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
+  }
+  const contentItem = await query.where('content.id', id).first();
   if (!contentItem) {
     return null;
   }
@@ -91,7 +98,13 @@ export const getContentById = async (id: number): Promise<ContentApplicationData
 };
 
 export const getContentByTopicId = async (topicId: number): Promise<ContentApplicationData[]> => {
-  const contentItems = await contentQuery().where({ topic_id: topicId });
+  const hasContentTypes = await db.schema.hasTable('content_types');
+  const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
+  let query = db('content').select('content.*');
+  if (hasContentTypes && hasContentTypeId2) {
+    query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
+  }
+  const contentItems = await query.where({ topic_id: topicId });
   return contentItems.map(mapContentToApplicationData);
 };
 
@@ -102,18 +115,29 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
   const contentToInsert: Partial<ContentSchema> = {
     name: contentData.name,
     topic_id: contentData.topicId,
-    content_type_id: contentData.contentTypeId,
     question_data: JSON.stringify(restOfQuestionData),
     correct_answer: JSON.stringify(correctAnswer),
     options: options ? JSON.stringify(options) : null,
     active: contentData.active !== undefined ? contentData.active : true,
   };
 
+  const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
+  if (hasContentTypeId) {
+    contentToInsert.content_type_id = contentData.contentTypeId;
+  } else {
+    contentToInsert.type = contentData.type || String(contentData.contentTypeId);
+  }
+
   const [insertedContent] = await db<ContentSchema>('content').insert(contentToInsert).returning('*');
   
   if (insertedContent && insertedContent.id) {
-    // Fetch the full record with the join to get all data for mapping
-    const fullContent = await contentQuery().where('content.id', insertedContent.id).first();
+    const hasContentTypes = await db.schema.hasTable('content_types');
+    const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
+    let query = db('content').select('content.*');
+    if (hasContentTypes && hasContentTypeId) {
+      query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
+    }
+    const fullContent = await query.where('content.id', insertedContent.id).first();
     if (!fullContent) {
         throw new Error('Failed to retrieve content after creation.');
     }
@@ -123,8 +147,14 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
 };
 
 export const getAllContent = async (): Promise<ContentApplicationData[]> => {
-  const items = await contentQuery();
-  return items.map(item => {
+  const hasContentTypes = await db.schema.hasTable('content_types');
+  const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
+  let query = db('content').select('content.*');
+  if (hasContentTypes && hasContentTypeId2) {
+    query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
+  }
+  const items: any[] = await query;
+  return items.map((item: any) => {
     try {
       return mapContentToApplicationData(item);
     } catch (error) {
@@ -141,7 +171,12 @@ export const updateContent = async (id: number, updateData: any): Promise<Conten
 
   if (updateData.name !== undefined) dataToUpdate.name = updateData.name;
   if (updateData.topicId !== undefined) dataToUpdate.topic_id = updateData.topicId;
-  if (updateData.contentTypeId !== undefined) dataToUpdate.content_type_id = updateData.contentTypeId;
+  const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
+  if (hasContentTypeId) {
+    if (updateData.contentTypeId !== undefined) dataToUpdate.content_type_id = updateData.contentTypeId;
+  } else if (updateData.type !== undefined) {
+    dataToUpdate.type = updateData.type;
+  }
   if (updateData.active !== undefined) dataToUpdate.active = updateData.active;
 
   // Handle nested questionData
@@ -157,7 +192,13 @@ export const updateContent = async (id: number, updateData: any): Promise<Conten
   }
   
   await db<ContentSchema>('content').where({ id }).update(dataToUpdate);
-  const updated = await contentQuery().where('content.id', id).first();
+  const hasContentTypes = await db.schema.hasTable('content_types');
+  const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
+  let query = db('content').select('content.*');
+  if (hasContentTypes && hasContentTypeId2) {
+    query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
+  }
+  const updated = await query.where('content.id', id).first();
   return updated ? mapContentToApplicationData(updated) : null;
 };
 
