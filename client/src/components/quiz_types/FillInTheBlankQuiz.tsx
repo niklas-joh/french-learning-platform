@@ -8,15 +8,17 @@ import {
   Box,
   Alert,
 } from '@mui/material';
-import { FillInTheBlankData } from '../../types/Content';
+import { Content, FillInTheBlankData } from '../../types/Content';
 
 interface FillInTheBlankQuizProps {
-  data: FillInTheBlankData;
+  content: Content;
+  onAnswer: (isCorrect: boolean) => void;
 }
 
-const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ data }) => {
+const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ content, onAnswer }) => {
   const [answer, setAnswer] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const data = content.questionData as FillInTheBlankData;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAnswer(event.target.value);
@@ -24,7 +26,9 @@ const FillInTheBlankQuiz: React.FC<FillInTheBlankQuizProps> = ({ data }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const isCorrect = answer.trim().toLowerCase() === data.correctAnswer.toLowerCase();
     setIsSubmitted(true);
+    onAnswer(isCorrect);
   };
 
   const isCorrect = isSubmitted && answer.trim().toLowerCase() === data.correctAnswer.toLowerCase();

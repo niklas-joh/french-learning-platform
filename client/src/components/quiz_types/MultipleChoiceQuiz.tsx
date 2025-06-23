@@ -11,15 +11,17 @@ import {
   Box,
   Alert,
 } from '@mui/material';
-import { MultipleChoiceData } from '../../types/Content';
+import { Content, MultipleChoiceData } from '../../types/Content';
 
 interface MultipleChoiceQuizProps {
-  data: MultipleChoiceData;
+  content: Content;
+  onAnswer: (isCorrect: boolean) => void;
 }
 
-const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ data }) => {
+const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ content, onAnswer }) => {
   const [selectedValue, setSelectedValue] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const data = content.questionData as MultipleChoiceData;
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -27,7 +29,10 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ data }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const selectedOptionIndex = data.options.indexOf(selectedValue);
+    const isCorrect = selectedOptionIndex === data.correctAnswer;
     setIsSubmitted(true);
+    onAnswer(isCorrect);
   };
 
   const selectedOptionIndex = data.options.indexOf(selectedValue);

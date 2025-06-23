@@ -59,6 +59,11 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleAnswer = (isCorrect: boolean) => {
+    console.log('Answered correctly:', isCorrect);
+    // Here you would typically update user progress, etc.
+  };
+
   if (loading) {
     return (
       <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -111,7 +116,7 @@ const Dashboard: React.FC = () => {
           )}
           {content.map((contentItem) => (
             <Box key={contentItem.id} sx={{ mb: 3 }}>
-              <Quiz content={contentItem} />
+              <Quiz content={contentItem} onAnswer={handleAnswer} />
             </Box>
           ))}
         </Box>

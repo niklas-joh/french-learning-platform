@@ -11,15 +11,17 @@ import {
   Box,
   Alert,
 } from '@mui/material';
-import { TrueFalseData } from '../../types/Content';
+import { Content, TrueFalseData } from '../../types/Content';
 
 interface TrueFalseQuizProps {
-  data: TrueFalseData;
+  content: Content;
+  onAnswer: (isCorrect: boolean) => void;
 }
 
-const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ data }) => {
+const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ content, onAnswer }) => {
   const [selectedValue, setSelectedValue] = useState<string>('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const data = content.questionData as TrueFalseData;
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -27,7 +29,9 @@ const TrueFalseQuiz: React.FC<TrueFalseQuizProps> = ({ data }) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const isCorrect = (selectedValue === 'true') === data.correctAnswer;
     setIsSubmitted(true);
+    onAnswer(isCorrect);
   };
 
   const isCorrect = isSubmitted && (selectedValue === 'true') === data.correctAnswer;
