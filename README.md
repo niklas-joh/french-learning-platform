@@ -27,9 +27,17 @@ Follow these instructions to get a local copy of the project up and running for 
 
 3.  **Set up the database:**
     This command will run all necessary database migrations and seed the database with initial content.
+    The seed includes a few example topics, exercises and assignments and creates default user accounts.
     ```sh
     npm run db:setup
     ```
+    The preloaded accounts are:
+
+    | Email | Password | Role |
+    |-------|----------|------|
+    | `admin@example.com` | `admin` | admin |
+    | `user@example.com` | `user` | user |
+
     If you encounter errors like `no such table: users` when running the
     application, ensure the migrations have been applied by executing:
     ```sh
