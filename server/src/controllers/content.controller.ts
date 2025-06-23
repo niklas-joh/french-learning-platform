@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import knex from '../config/db';
 import { TopicSchema } from '../models/Topic';
-import { getContentByTopicId as fetchContentByTopicId } from '../models/Content';
+import { getContentByTopicId as fetchContentByTopicId, getContentById as fetchContentById } from '../models/Content';
 
 export const getAllTopics = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -47,5 +47,29 @@ export const getSampleQuiz = async (req: Request, res: Response): Promise<void> 
   } catch (error: any) {
     console.error('Error loading sample quiz:', error);
     res.status(500).json({ message: 'Failed to load sample quiz' });
+  }
+};
+
+export const getContentById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const contentId = parseInt(id, 10);
+
+    if (isNaN(contentId)) {
+      res.status(400).json({ message: 'Invalid content ID format.' });
+      return;
+    }
+
+    const content = await fetchContentById(contentId);
+
+    if (!content) {
+      res.status(404).json({ message: 'Content not found.' });
+      return;
+    }
+
+    res.json(content);
+  } catch (error: any) {
+    console.error(`Error fetching content by ID: ${error.message}`);
+    res.status(500).json({ message: 'Failed to fetch content.' });
   }
 };
