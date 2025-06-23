@@ -22,7 +22,7 @@ router.get('/sample-quiz', getSampleQuiz);
 // @route   GET /api/content/:id
 // @desc    Get a single piece of content by its ID
 // @access  Public (for now)
-router.get('/content/:id', getContentById);
+router.get('/:id', getContentById);
 
 // TODO: Define other content/topic routes if needed (e.g., get single topic/content by ID)
 

@@ -34,24 +34,28 @@ const UserContentAssignmentModel = {
         'user_content_assignments.*',
         'content.name as content_name',
         'content.question_data as content_question_data',
-        'content.id as content_id_alias',
+        'content.id as content_id', // Use a clear alias for the content ID
         'content_types.name as content_type_name',
         'content.content_type_id as content_type_id'
       );
 
-    return assignments.map(assignment => {
-      const { content_name, content_question_data, content_id_alias, content_type_id, content_type_name, ...assignmentData } = assignment;
+    return assignments.map(row => {
+      // Destructure with care to avoid name collisions
+      const { content_id: assigned_content_id, ...assignmentFields } = row;
+
       return {
-        ...assignmentData,
+        id: assignmentFields.id,
+        user_id: assignmentFields.user_id,
+        content_id: assigned_content_id, // This is the actual content_id from the content table
+        assigned_at: assignmentFields.assigned_at,
+        status: assignmentFields.status,
         content: {
-          id: content_id_alias,
-          name: content_name,
-          question_data: content_question_data,
-          content_type_id: content_type_id,
-          type: content_type_name,
-          // Create a minimal valid Content object.
-          // Most fields are missing, but it satisfies the type for now.
-          correct_answer: '',
+          id: assigned_content_id, // The ID of the content item
+          name: assignmentFields.content_name,
+          question_data: assignmentFields.content_question_data,
+          content_type_id: assignmentFields.content_type_id,
+          type: assignmentFields.content_type_name,
+          correct_answer: '', // Still minimal, but the ID is now correct
         },
       };
     });
