@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Paper, CircularProgress, Alert, Box, List, ListItemButton, ListItemText, Divider } from '@mui/material';
-import { getUserProfile, UserProfileData, logout } from '../services/authService';
+import { Container, Typography, Paper, CircularProgress, Alert, Box } from '@mui/material';
+import { logout } from '../services/authService';
 import { getTopics, getContentForTopic, getAssignedContent } from '../services/contentService';
-import { recordContentCompletion } from '../services/userService';
+import { recordContentCompletion, getCurrentUser } from '../services/userService';
 import { Topic } from '../types/Topic';
+import { User } from '../types/User';
 import Quiz from './Quiz';
 import { Content } from '../types/Content';
 import AssignedContentList from './AssignedContentList';
@@ -11,7 +12,7 @@ import { UserContentAssignmentWithContent } from '../types/Assignment';
 import ProgressAnalytics from './ProgressAnalytics';
 
 const Dashboard: React.FC = () => {
-  const [user, setUser] = useState<UserProfileData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -23,7 +24,7 @@ const Dashboard: React.FC = () => {
     const fetchInitialData = async () => {
       try {
         setLoading(true);
-        const userData = await getUserProfile();
+        const userData = await getCurrentUser();
         setUser(userData);
         const topicList = await getTopics();
         setTopics(topicList);
@@ -91,7 +92,7 @@ const Dashboard: React.FC = () => {
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Welcome, {user?.firstName || user?.email || 'User'}!
+          Welcome, {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.email || 'User'}!
         </Typography>
         <Typography variant="body1" gutterBottom>
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.

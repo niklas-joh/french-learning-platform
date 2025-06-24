@@ -21,6 +21,28 @@ export const getUsers = async (): Promise<User[]> => {
 };
 // TODO: memoize user list to reduce network calls
 
+/**
+ * Fetches the current authenticated user's profile.
+ * @returns A promise that resolves with the user object.
+ */
+export const getCurrentUser = async (): Promise<User> => {
+  try {
+    // The backend sends snake_case, so we map to camelCase for the frontend type.
+    const response = await apiClient.get('/users/me');
+    const userData = response.data;
+    return {
+      id: userData.id,
+      firstName: userData.first_name,
+      lastName: userData.last_name,
+      email: userData.email,
+      role: userData.role,
+    };
+  } catch (error) {
+    console.error('Failed to fetch current user:', error);
+    throw new Error('Failed to fetch current user.');
+  }
+};
+
 export const getUserProgress = async (): Promise<UserOverallProgress> => {
   try {
     // The user ID will be extracted from the token on the backend.
