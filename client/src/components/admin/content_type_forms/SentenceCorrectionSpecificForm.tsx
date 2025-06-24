@@ -3,7 +3,7 @@ import { Box, Typography, TextField } from '@mui/material';
 
 interface SentenceCorrectionSpecificFormProps {
   data: {
-    question?: string;
+    text?: string; // Changed from question to text
     correctAnswer?: string;
   };
   onChange: (newData: any) => void;
@@ -14,7 +14,7 @@ const SentenceCorrectionSpecificForm: React.FC<SentenceCorrectionSpecificFormPro
   const [correctAnswer, setCorrectAnswer] = useState('');
 
   useEffect(() => {
-    setQuestion(data?.question || '');
+    setQuestion(data?.text || ''); // Changed from question to text
     setCorrectAnswer(data?.correctAnswer || '');
   }, [data]);
 
@@ -28,7 +28,7 @@ const SentenceCorrectionSpecificForm: React.FC<SentenceCorrectionSpecificFormPro
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestion = e.target.value;
     setQuestion(newQuestion);
-    handleDataChange({ question: newQuestion });
+    handleDataChange({ text: newQuestion }); // Changed from question to text
   };
 
   const handleCorrectAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {

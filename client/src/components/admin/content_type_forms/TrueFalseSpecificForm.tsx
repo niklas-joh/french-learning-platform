@@ -12,7 +12,7 @@ import {
 
 interface TrueFalseSpecificFormProps {
   data: {
-    question?: string;
+    text?: string; // Changed from question to text
     correctAnswer?: boolean;
   };
   onChange: (newData: any) => void;
@@ -23,7 +23,7 @@ const TrueFalseSpecificForm: React.FC<TrueFalseSpecificFormProps> = ({ data, onC
   const [correctAnswer, setCorrectAnswer] = useState<boolean | null>(null);
 
   useEffect(() => {
-    setQuestion(data?.question || '');
+    setQuestion(data?.text || ''); // Changed from question to text
     setCorrectAnswer(data?.correctAnswer === undefined ? null : data.correctAnswer);
   }, [data]);
 
@@ -37,7 +37,7 @@ const TrueFalseSpecificForm: React.FC<TrueFalseSpecificFormProps> = ({ data, onC
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestion = e.target.value;
     setQuestion(newQuestion);
-    handleDataChange({ question: newQuestion });
+    handleDataChange({ text: newQuestion }); // Changed from question to text
   };
 
   const handleCorrectAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -14,7 +14,7 @@ import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 
 interface MultipleChoiceSpecificFormProps {
   data: {
-    question?: string;
+    text?: string; // Changed from question to text
     options?: string[];
     correctAnswer?: string;
   };
@@ -27,7 +27,7 @@ const MultipleChoiceSpecificForm: React.FC<MultipleChoiceSpecificFormProps> = ({
   const [correctAnswer, setCorrectAnswer] = useState('');
 
   useEffect(() => {
-    setQuestion(data?.question || '');
+    setQuestion(data?.text || ''); // Changed from question to text
     setOptions(data?.options || ['', '']);
     setCorrectAnswer(data?.correctAnswer || '');
   }, [data]);
@@ -42,7 +42,7 @@ const MultipleChoiceSpecificForm: React.FC<MultipleChoiceSpecificFormProps> = ({
   const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newQuestion = e.target.value;
     setQuestion(newQuestion);
-    handleDataChange({ question: newQuestion });
+    handleDataChange({ text: newQuestion }); // Changed from question to text
   };
 
   const handleOptionChange = (index: number, value: string) => {
