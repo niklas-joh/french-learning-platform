@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import knex from '../config/db';
 import { UserSchema } from '../models/User';
 import UserContentAssignmentModel from '../models/UserContentAssignment';
+import UserContentCompletionModel from '../models/UserContentCompletion';
 import UserPreferenceModel from '../models/UserPreference';
 
 // Extend Express Request type to include the user object populated by the
@@ -156,14 +157,14 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
     const topics = await knex('topics').select('id', 'name');
     const topicProgress = topics.length > 0 ? await Promise.all(topics.map(async topic => {
       const totalCountResult = await knex('content').where('topic_id', topic.id).count('* as count').first();
-      const completedCountResult = await knex('user_content_assignments')
-        .join('content', 'user_content_assignments.content_id', 'content.id')
+      const completedCountResult = await knex('user_content_completions')
+        .join('content', 'user_content_completions.content_id', 'content.id')
         .where({
-          'user_content_assignments.user_id': userId,
-          'user_content_assignments.status': 'completed',
+          'user_content_completions.user_id': userId,
           'content.topic_id': topic.id,
         })
-        .count('* as count').first();
+        .countDistinct('content.id as count')
+        .first();
       
       const totalCount = Number(totalCountResult?.count || 0);
       const completedCount = Number(completedCountResult?.count || 0);
@@ -178,16 +179,19 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
     })) : [];
 
     // --- Assigned Content Progress Calculation ---
-    const assignedContentStats = await knex('user_content_assignments')
+    const totalAssignedResult = await knex('user_content_assignments')
       .where({ user_id: userId })
-      .select(
-        knex.raw('count(*) as "totalCount"'),
-        knex.raw('count(case when status = \'completed\' then 1 else null end) as "completedCount"')
-      )
+      .count('* as count')
       .first();
 
-    const totalAssigned = Number(assignedContentStats?.totalCount || 0);
-    const completedAssigned = Number(assignedContentStats?.completedCount || 0);
+    const completedAssignedResult = await knex('user_content_completions')
+      .where({ user_id: userId })
+      .whereNotNull('explicit_assignment_id')
+      .countDistinct('explicit_assignment_id as count')
+      .first();
+
+    const totalAssigned = Number(totalAssignedResult?.count || 0);
+    const completedAssigned = Number(completedAssignedResult?.count || 0);
     
     const assignedContentProgress = {
       completedCount: completedAssigned,
@@ -278,26 +282,24 @@ export const recordContentItemProgress = async (req: AuthenticatedRequest, res: 
 
     const numericContentId = Number(contentId);
 
-    // Check if an assignment exists. If not, create one.
-    // This handles cases where a user completes content that wasn't explicitly assigned.
-    let assignment = await knex('user_content_assignments')
-      .where({ user_id: userId, content_id: numericContentId })
-      .first();
+    // Check if there is an explicit assignment for this content that is not yet completed.
+    const explicitAssignment = await UserContentAssignmentModel.findByUserIdAndContentId(userId, numericContentId);
 
-    if (!assignment) {
-      assignment = await UserContentAssignmentModel.assign(userId, numericContentId);
+    let explicitAssignmentId: number | undefined = undefined;
+    if (explicitAssignment && explicitAssignment.status !== 'completed') {
+      // If an explicit assignment exists and it's not completed, mark it as completed.
+      await UserContentAssignmentModel.updateStatus(explicitAssignment.id, 'completed');
+      explicitAssignmentId = explicitAssignment.id;
     }
 
-    // Now, update the status to 'completed'
-    const updatedAssignment = await UserContentAssignmentModel.updateStatus(userId, numericContentId, 'completed');
+    // Always record the completion event in the new table.
+    const completion = await UserContentCompletionModel.create(
+      userId,
+      numericContentId,
+      explicitAssignmentId
+    );
 
-    if (!updatedAssignment) {
-      // This case might occur if the assignment exists but the update fails for some reason.
-      res.status(404).json({ message: 'Could not update progress. Assignment not found.' });
-      return;
-    }
-
-    res.status(200).json({ message: 'Progress recorded successfully.', assignment: updatedAssignment });
+    res.status(200).json({ message: 'Progress recorded successfully.', completion });
 
   } catch (error: any) {
     console.error('Error recording content progress:', error);

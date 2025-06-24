@@ -10,7 +10,8 @@ export interface UserContentAssignment {
   user_id: number;
   content_id: number;
   assigned_at: Date;
-  status: 'pending' | 'completed';
+  due_date?: Date;
+  status: 'pending' | 'in-progress' | 'completed' | 'overdue';
 }
 
 export interface UserContentAssignmentWithContent extends UserContentAssignment {
@@ -21,12 +22,14 @@ export interface UserContentAssignmentWithContent extends UserContentAssignment 
  * CRUD helpers for content assignments.
  */
 const UserContentAssignmentModel = {
-  async assign(userId: number, contentId: number): Promise<UserContentAssignment> {
+  async assign(userId: number, contentId: number, dueDate?: Date): Promise<UserContentAssignment> {
     // Create a new assignment row linking a user and a content item
     const [assignment] = await db('user_content_assignments')
       .insert({
         user_id: userId,
         content_id: contentId,
+        due_date: dueDate,
+        status: 'pending',
       })
       .returning('*');
     return assignment;
@@ -40,7 +43,7 @@ const UserContentAssignmentModel = {
       .join('content', 'user_content_assignments.content_id', 'content.id')
       .select(
         'user_content_assignments.*',
-        'content.name as content_name',
+        'content.title as content_name',
         'content.question_data as content_question_data',
         'content.id as content_id_alias'
       );
@@ -91,12 +94,18 @@ const UserContentAssignmentModel = {
     return db('user_content_assignments').where({ id }).del();
   },
 
-  async updateStatus(userId: number, contentId: number, status: 'pending' | 'completed'): Promise<UserContentAssignment | undefined> {
+  async updateStatus(assignmentId: number, status: 'pending' | 'in-progress' | 'completed' | 'overdue'): Promise<UserContentAssignment | undefined> {
     const [updatedAssignment] = await db('user_content_assignments')
-      .where({ user_id: userId, content_id: contentId })
+      .where({ id: assignmentId })
       .update({ status: status })
       .returning('*');
     return updatedAssignment;
+  },
+
+  async findByUserIdAndContentId(userId: number, contentId: number): Promise<UserContentAssignment | undefined> {
+    return db('user_content_assignments')
+      .where({ user_id: userId, content_id: contentId })
+      .first();
   }
 };
 

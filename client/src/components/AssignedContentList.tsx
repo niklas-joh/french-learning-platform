@@ -33,7 +33,7 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments }
             <ListItem disablePadding>
               <ListItemButton component={RouterLink} to={`/content/${assignment.content.id}`}>
                 <ListItemText
-                  primary={assignment.content.title}
+                  primary={assignment.content.name}
                   secondary={assignment.content.type}
                 />
               </ListItemButton>
