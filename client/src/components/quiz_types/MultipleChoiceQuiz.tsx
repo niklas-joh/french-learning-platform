@@ -29,14 +29,12 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ content, onAnsw
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const selectedOptionIndex = data.options.indexOf(selectedValue);
-    const isCorrect = selectedOptionIndex === data.correctAnswer;
+    const isCorrect = selectedValue === data.correctAnswer;
     setIsSubmitted(true);
     onAnswer(isCorrect);
   };
 
-  const selectedOptionIndex = data.options.indexOf(selectedValue);
-  const isCorrect = isSubmitted && selectedOptionIndex === data.correctAnswer;
+  const isCorrect = isSubmitted && selectedValue === data.correctAnswer;
 
   return (
     <Card>
