@@ -47,8 +47,16 @@ const UserContentAssignmentModel = {
 
     const assignments = await base;
 
+    const typeIdMap: Record<number, string> = {
+      1: 'multiple-choice',
+      2: 'fill-in-the-blank',
+      3: 'sentence-correction',
+      4: 'true-false',
+    };
+
     return assignments.map(assignment => {
       const { content_name, content_question_data, content_id_alias, content_type_id, content_type_name, ...assignmentData } = assignment;
+      const type = content_type_name || (content_type_id ? typeIdMap[content_type_id] : undefined) || 'default';
       return {
         ...assignmentData,
         content: {
@@ -56,7 +64,7 @@ const UserContentAssignmentModel = {
           name: content_name,
           question_data: content_question_data,
           content_type_id: content_type_id,
-          type: content_type_name,
+          type,
           // Create a minimal valid Content object.
           // Most fields are missing, but it satisfies the type for now.
           correct_answer: '',
