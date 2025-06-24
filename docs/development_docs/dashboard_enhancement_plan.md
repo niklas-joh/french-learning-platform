@@ -2,18 +2,16 @@
 
 This document outlines the proposed improvements for the user dashboard based on user feedback.
 
-## 1. Personalized Welcome Message
+## 1. Personalized Welcome Message (✅ Completed)
 
 *   **Current Issue:** Displays "Welcome, user@example.com!"
 *   **Desired Change:** Display "Welcome, [User's First Name]!" or "Welcome, [User's Full Name]!"
-*   **Proposed Solution:**
-    1.  **Backend:** Ensure the user data fetched for the dashboard (e.g., via `/api/users/me`) includes the user's first name and last name.
-    2.  **Frontend (`client/src/types/User.ts`):** Update the `User` type to include `firstName` and `lastName` (or `fullName`).
-    3.  **Frontend (`client/src/services/userService.ts`):** Ensure the service correctly fetches and makes this data available.
-    4.  **Frontend (`client/src/components/Dashboard.tsx`):** Modify the component to access the user's name from the state/context and display it in the welcome message. If only email is available, fall back to "Welcome, [email]!" or a generic "Welcome!".
+*   **Outcome:**
+    1.  **Backend:** Verified that the `/api/users/me` endpoint returns `first_name` and `last_name`. No changes were needed.
+    2.  **Frontend (`client/src/types/User.ts`):** Verified that the `User` type already included `firstName` and `lastName`.
+    3.  **Frontend (`client/src/services/userService.ts`):** Added a `getCurrentUser` function to fetch the user profile and map the snake_case response to the camelCase `User` type.
+    4.  **Frontend (`client/src/components/Dashboard.tsx`):** Updated the component to use the new service function and display the user's full name, with a fallback to their email.
 *   **Affected Files:**
-    *   `server/src/controllers/user.controller.ts` (and potentially `User` model if names aren't stored)
-    *   `client/src/types/User.ts`
     *   `client/src/services/userService.ts`
     *   `client/src/components/Dashboard.tsx`
 
