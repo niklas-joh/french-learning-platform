@@ -46,11 +46,13 @@ const ContentForm: React.FC<ContentFormProps> = ({
   const [active, setActive] = useState(true);
   const [error, setError] = useState('');
 
+  // Fetch content types when the form is opened
   useEffect(() => {
     const fetchTypes = async () => {
       try {
         const types = await getContentTypes();
         setContentTypes(types);
+        setError('');
       } catch (err) {
         console.error('Failed to fetch content types:', err);
         setError('Failed to load content types.');
@@ -60,35 +62,45 @@ const ContentForm: React.FC<ContentFormProps> = ({
     if (open) {
       fetchTypes();
     }
+  }, [open]);
 
-    if (content) {
-      setName(content.name);
-      setTopicId(content.topicId);
-      setContentTypeId(content.contentTypeId);
-      // Handle both object and stringified JSON for backward compatibility
-      if (typeof content.questionData === 'string') {
-        try {
-          setQuestionData(JSON.parse(content.questionData));
-        } catch (e) {
-          console.error('Failed to parse questionData JSON:', e);
-          setQuestionData({});
-          setError('Failed to parse existing question data.');
+  // Populate form when content or contentTypes are loaded/changed
+  useEffect(() => {
+    if (open) {
+      if (content && contentTypes.length > 0) {
+        const currentContentType = contentTypes.find(
+          (ct) => ct.name === content.type
+        );
+
+        setName(content.name);
+        setTopicId(content.topicId);
+        setContentTypeId(currentContentType ? currentContentType.id : '');
+        setActive(content.active);
+
+        // Handle both object and stringified JSON for backward compatibility
+        if (typeof content.questionData === 'string') {
+          try {
+            setQuestionData(JSON.parse(content.questionData));
+          } catch (e) {
+            console.error('Failed to parse questionData JSON:', e);
+            setQuestionData({});
+            setError('Failed to parse existing question data.');
+          }
+        } else {
+          setQuestionData(content.questionData || {});
         }
-      } else {
-        setQuestionData(content.questionData || {});
+        setError('');
+      } else if (!content) {
+        // Reset for new content form
+        setName('');
+        setTopicId('');
+        setContentTypeId('');
+        setQuestionData({});
+        setActive(true);
+        setError('');
       }
-      setActive(content.active);
-      setError('');
-    } else {
-      // Reset for new content form
-      setName('');
-      setTopicId('');
-      setContentTypeId('');
-      setQuestionData({});
-      setActive(true);
-      setError('');
     }
-  }, [content, open]);
+  }, [content, open, contentTypes]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
