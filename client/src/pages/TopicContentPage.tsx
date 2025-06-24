@@ -67,7 +67,7 @@ const TopicContentPage: React.FC = () => {
               <React.Fragment key={item.id}>
                 <ListItem disablePadding>
                   <ListItemButton component={RouterLink} to={`/content/${item.id}`}>
-                    <ListItemText primary={item.name} secondary={`Type: ${item.type}`} />
+                    <ListItemText primary={item.title} secondary={`Type: ${item.type}`} />
                   </ListItemButton>
                 </ListItem>
                 {index < contentList.length - 1 && <Divider />}

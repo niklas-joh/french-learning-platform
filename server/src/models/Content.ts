@@ -11,6 +11,7 @@ import { Knex } from 'knex';
 export interface ContentSchema {
   id?: number;
   name: string; // The name of the content item for easy identification
+  title?: string; // The user-friendly display name
   topic_id?: number | null; // Foreign key, can be null if content is not topic-specific
   // Some databases use a simple "type" text column instead of a foreign key. Support both.
   content_type_id?: number; // Foreign key to content_types table
@@ -26,6 +27,7 @@ export interface ContentSchema {
 
 // Type for creating new content
 export type NewContent = Omit<ContentSchema, 'id' | 'created_at' | 'active'> & {
+  title?: string;
   topic_id?: number;
   question_data: any; // Allow 'any' for input, will be stringified
   correct_answer: any; // Allow 'any' for input, will be stringified
@@ -38,6 +40,7 @@ export type NewContent = Omit<ContentSchema, 'id' | 'created_at' | 'active'> & {
 export interface ContentApplicationData {
   id: number;
   name: string;
+  title: string;
   topicId?: number | null;
   topic_id?: number | null; // legacy field name
   type: string; // The name of the content type, e.g., 'multiple-choice'
@@ -82,9 +85,19 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
   }
   if (!type) type = 'default';
   
+  // Helper function to generate a title from a snake_case name
+  const generateTitleFromName = (name: string) => {
+    if (!name) return 'Untitled';
+    return name
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+  
   return {
     id: content.id!,
     name: content.name,
+    title: content.title || generateTitleFromName(content.name),
     topicId: content.topic_id,
 
     topic_id: content.topic_id,
@@ -149,6 +162,7 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
 
   const contentToInsert: Partial<ContentSchema> = {
     name: contentData.name,
+    title: contentData.title,
     topic_id: contentData.topicId,
     question_data: JSON.stringify(restOfQuestionData),
     correct_answer: JSON.stringify(correctAnswer),
@@ -215,6 +229,7 @@ export const updateContent = async (id: number, updateData: any): Promise<Conten
   const dataToUpdate: Partial<ContentSchema> = {};
 
   if (updateData.name !== undefined) dataToUpdate.name = updateData.name;
+  if (updateData.title !== undefined) dataToUpdate.title = updateData.title;
   if (updateData.topicId !== undefined) dataToUpdate.topic_id = updateData.topicId;
   const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
   if (hasContentTypeId) {

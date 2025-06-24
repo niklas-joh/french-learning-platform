@@ -30,6 +30,7 @@ export interface SentenceCorrectionData {
 export interface Content {
   id: number;
   name: string;
+  title: string;
   topicId: number;
   type: 'multiple-choice' | 'fill-in-the-blank' | 'true-false' | 'sentence-correction';
   contentTypeId: number;

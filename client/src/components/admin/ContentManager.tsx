@@ -142,7 +142,8 @@ const ContentManager: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell>ID</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Identifier (Name)</TableCell>
                 <TableCell>Type</TableCell>
                 <TableCell>Topic</TableCell>
                 <TableCell>Status</TableCell>
@@ -156,6 +157,7 @@ const ContentManager: React.FC = () => {
                 return (
                   <TableRow key={item.id}>
                     <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.title}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.type}</TableCell>
                     <TableCell>{topicName}</TableCell>
