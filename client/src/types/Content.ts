@@ -2,7 +2,7 @@
 export interface MultipleChoiceData {
   text: string;
   options: string[];
-  correctAnswer: number; // index
+  correctAnswer: string; // The actual answer string
   explanation: string;
 }
 
