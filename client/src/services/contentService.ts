@@ -28,6 +28,11 @@ export const getContentForTopic = async (topicId: number | string) => {
   return response.data;
 };
 
+export const getContentById = async (id: number | string) => {
+  const response = await apiClient.get(`/content/${id}`);
+  return response.data;
+};
+
 export const getAssignedContent = async () => {
   const token = localStorage.getItem('authToken');
   if (!token) {
