@@ -1,14 +1,32 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
-import { Typography, List, ListItem, ListItemText, Divider, Box, Button, ListItemButton } from '@mui/material';
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Box,
+  Button,
+  ListItemButton,
+  ListItemIcon,
+} from '@mui/material';
+import { formatDisplayName } from '../utils/textFormatters';
+import { getIconForType } from '../utils/iconMap';
 
 interface AssignedContentListProps {
   assignments: UserContentAssignmentWithContent[];
+  /** Number of items to display. Omit to show all */
+  limit?: number;
+  /** Whether to hide assignments with status === 'completed' */
+  showIncompleteOnly?: boolean;
 }
 
-const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments }) => {
-  if (assignments.length === 0) {
+const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, limit, showIncompleteOnly = false }) => {
+  const filteredAssignments = showIncompleteOnly ? assignments.filter(a => a.status !== 'completed') : assignments;
+
+  if (filteredAssignments.length === 0) {
     return (
       <Box>
         <Typography variant="h5" component="h2" gutterBottom>
@@ -19,8 +37,7 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments }
     );
   }
 
-  // In a future step, this could be limited to e.g. 5 items on the dashboard
-  const itemsToShow = assignments;
+  const itemsToShow = typeof limit === 'number' ? filteredAssignments.slice(0, limit) : filteredAssignments;
 
   return (
     <Box>
@@ -31,10 +48,11 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments }
         {itemsToShow.map((assignment, index) => (
           <React.Fragment key={assignment.id}>
             <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to={`/content/${assignment.content.id}`}>
+              <ListItemButton component={RouterLink} to={`/content/${assignment.content.id}`}> 
+                <ListItemIcon>{getIconForType(assignment.content.type)}</ListItemIcon>
                 <ListItemText
-                  primary={assignment.content.name}
-                  secondary={assignment.content.type}
+                  primary={formatDisplayName(assignment.content.name)}
+                  secondary={formatDisplayName(assignment.content.type)}
                 />
               </ListItemButton>
             </ListItem>
@@ -43,9 +61,9 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments }
         ))}
       </List>
       {/* This link is more useful on the dashboard view specifically */}
-      {assignments.length > itemsToShow.length && (
+      {filteredAssignments.length > itemsToShow.length && (
          <Button component={RouterLink} to="/assignments" sx={{ mt: 2 }}>
-           View All ({assignments.length})
+           View All ({filteredAssignments.length})
          </Button>
       )}
     </Box>

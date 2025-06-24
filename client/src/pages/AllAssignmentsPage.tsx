@@ -14,7 +14,6 @@ const AllAssignmentsPage: React.FC = () => {
       try {
         setLoading(true);
         const allAssignments = await getAssignedContent();
-        // TODO: Filter for incomplete assignments once status is available
         setAssignments(allAssignments);
         setError(null);
       } catch (err) {
