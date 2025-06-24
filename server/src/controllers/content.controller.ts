@@ -22,6 +22,31 @@ export const getAllTopics = async (_req: Request, res: Response): Promise<void> 
 };
 
 /**
+ * Retrieves a single topic by its ID.
+ */
+export const getTopicById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const topicId = parseInt(id);
+    if (isNaN(topicId)) {
+      res.status(400).json({ message: 'Invalid topic ID format.' });
+      return;
+    }
+
+    const topic: TopicSchema | undefined = await knex('topics').where({ id: topicId }).first();
+    if (!topic) {
+      res.status(404).json({ message: 'Topic not found.' });
+      return;
+    }
+
+    res.json(topic);
+  } catch (error: any) {
+    console.error('Error fetching topic by ID:', error);
+    res.status(500).json({ message: 'Failed to fetch topic' });
+  }
+};
+
+/**
  * Returns all content items associated with a given topic.
  */
 export const getContentForTopic = async (req: Request, res: Response): Promise<void> => {

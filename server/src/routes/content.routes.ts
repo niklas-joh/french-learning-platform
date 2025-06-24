@@ -2,7 +2,7 @@
  * Public content exploration routes.
  */
 import { Router } from 'express';
-import { getAllTopics, getContentForTopic, getSampleQuiz, getContentById } from '../controllers/content.controller';
+import { getAllTopics, getContentForTopic, getSampleQuiz, getContentById, getTopicById } from '../controllers/content.controller';
 // import { protect } from '../middleware/auth.middleware'; // Uncomment if auth is needed
 
 const router = Router();
@@ -11,6 +11,11 @@ const router = Router();
 // @desc    Get all topics
 // @access  Public (for now)
 router.get('/topics', getAllTopics);
+
+// @route   GET /api/topics/:id
+// @desc    Get a single topic by ID
+// @access  Public (for now)
+router.get('/topics/:id', getTopicById);
 
 // @route   GET /api/topics/:topicId/content
 // @desc    Get all content for a specific topic

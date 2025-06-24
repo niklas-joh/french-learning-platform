@@ -23,6 +23,14 @@ export const getTopics = async (): Promise<Topic[]> => {
   return response.data;
 };
 
+export const getTopicById = async (topicId: string): Promise<Topic> => {
+  const token = localStorage.getItem('authToken');
+  const response = await apiClient.get(`/content/topics/${topicId}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  return response.data;
+};
+
 export const getContentForTopic = async (topicId: number | string) => {
   const response = await apiClient.get(`/content/topics/${topicId}/content`);
   return response.data;

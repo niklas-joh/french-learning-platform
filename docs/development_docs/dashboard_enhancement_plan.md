@@ -15,24 +15,28 @@ This document outlines the proposed improvements for the user dashboard based on
     *   `client/src/services/userService.ts`
     *   `client/src/components/Dashboard.tsx`
 
-## 2. Clickable Progress Cards
+## 2. Clickable Progress Cards (✅ Completed)
 
-*   **Current Issue:** Progress cards (e.g., "Assigned Content" in "My Progress") are static.
+*   **Current Issue:** Progress cards (e.g., "Assigned Content" in "My Progress") were static.
 *   **Desired Change:** Make these cards clickable to navigate the user to relevant content or sections.
-*   **Proposed Solution:**
-    1.  **"Assigned Content" Card (in "My Progress"):**
-        *   Should link to a view displaying all *incomplete* assigned content items. This could be the main "Assigned Content" section on the dashboard (if it's made comprehensive) or a dedicated page.
-    2.  **"Progress by Topic" Items:**
-        *   Each topic progress bar could link to a page displaying content for that topic, prioritizing incomplete items.
-    3.  **Implementation:**
-        *   Wrap the relevant card components in `Link` components from `react-router-dom`.
-        *   Define appropriate routes (e.g., `/assignments`, `/topics/:topicId/learn`).
-        *   Pass necessary parameters (e.g., topic ID, filter for incomplete).
+*   **Outcome:**
+    1.  **New Pages Created:**
+        *   `client/src/pages/AllAssignmentsPage.tsx`: A new page to display all content assigned to the user. It fetches and renders assignments using the `AssignedContentList` component.
+        *   `client/src/pages/TopicContentPage.tsx`: A new page to display all content related to a specific topic. It fetches the topic details and a list of its content, linking each item to the individual quiz page.
+    2.  **Routing:**
+        *   Added routes in `client/src/App.tsx` for `/assignments` and `/topics/:topicId/learn` to render the new pages.
+    3.  **Dashboard Links:**
+        *   The "Assigned Content" section in `client/src/components/Dashboard.tsx` is now wrapped in a `Link` pointing to `/assignments`.
+        *   Each topic in the "Progress by Topic" section in `client/src/components/ProgressAnalytics.tsx` is now wrapped in a `Link` pointing to `/topics/:topicId/learn`.
+    4.  **Services:**
+        *   Added a `getTopicById` function to `client/src/services/contentService.ts` to support the `TopicContentPage`.
 *   **Affected Files:**
     *   `client/src/components/Dashboard.tsx`
-    *   `client/src/components/ProgressAnalytics.tsx` (if it renders these cards)
-    *   `client/src/App.tsx` (for route definitions)
-    *   Potentially new components for dedicated views (e.g., `AllAssignmentsPage.tsx`).
+    *   `client/src/components/ProgressAnalytics.tsx`
+    *   `client/src/App.tsx`
+    *   `client/src/services/contentService.ts`
+    *   `client/src/pages/AllAssignmentsPage.tsx` (new)
+    *   `client/src/pages/TopicContentPage.tsx` (new)
 
 ## 3. 'Assigned Content' Card Improvements
 

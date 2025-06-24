@@ -5,6 +5,7 @@ import { getTopics, getContentForTopic, getAssignedContent } from '../services/c
 import { recordContentCompletion, getCurrentUser } from '../services/userService';
 import { Topic } from '../types/Topic';
 import { User } from '../types/User';
+import { Link as RouterLink } from 'react-router-dom';
 import Quiz from './Quiz';
 import { Content } from '../types/Content';
 import AssignedContentList from './AssignedContentList';

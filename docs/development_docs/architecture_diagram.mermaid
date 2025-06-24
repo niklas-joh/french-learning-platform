@@ -2,6 +2,9 @@ graph TB
     subgraph "Frontend (React + TypeScript)"
         A[User Dashboard] --> B[Quiz Interface]
         A --> C[Progress Tracker]
+        A --> AA[All Assignments Page]
+        A --> AB[Topic Content Page]
+        AB --> B
         D[Admin Dashboard] --> E[Content Manager]
         D --> F[User Analytics]
         D --> G[API Controls]

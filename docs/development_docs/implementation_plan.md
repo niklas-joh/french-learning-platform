@@ -48,7 +48,7 @@
 ## **Phase 2.5: Dashboard Revamp (Parallel to early Phase 3)**
 ### **Dashboard User Experience Enhancements**
 - [✅] **Personalized Welcome:** Display user's name instead of email.
-- [ ] **Clickable Progress Cards:** Enable navigation from progress elements.
+- [✅] **Clickable Progress Cards:** Enable navigation from progress elements.
 - [ ] **'Assigned Content' Improvements:**
     - [ ] Show all incomplete items with a "View All" option.
     - [ ] Filter out completed items from the main list.
