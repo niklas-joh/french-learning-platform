@@ -46,6 +46,7 @@ const UserContentAssignmentModel = {
     }
 
     const assignments = await base;
+
     const typeIdMap: Record<number, string> = {
       1: 'multiple-choice',
       2: 'fill-in-the-blank',

@@ -38,7 +38,9 @@ export interface ContentApplicationData {
   topic_id?: number | null; // legacy field name
   type: string; // The name of the content type, e.g., 'multiple-choice'
   contentTypeId?: number;
+
   question_data?: string; // legacy raw JSON string
+
   questionData: any; // Parsed JSON
   correctAnswer: any; // Parsed JSON
   options?: any | null; // Parsed JSON
@@ -75,13 +77,15 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
     type = typeIdMap[content.content_type_id] || 'default';
   }
   if (!type) type = 'default';
-
+  
   return {
     id: content.id!,
     name: content.name,
     topicId: content.topic_id,
+
     topic_id: content.topic_id,
     question_data: content.question_data,
+
     type,
     contentTypeId: content.content_type_id,
     questionData: fullQuestionData,
@@ -96,8 +100,6 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
   };
 }
 
-
-
 export const getContentById = async (id: number): Promise<ContentApplicationData | null> => {
   const hasContentTypes = await db.schema.hasTable('content_types');
   const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
@@ -105,6 +107,7 @@ export const getContentById = async (id: number): Promise<ContentApplicationData
   if (hasContentTypes && hasContentTypeId2) {
     query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
   }
+
   const contentItem = await query.where('content.id', id).first();
   if (!contentItem) {
     return null;
@@ -113,12 +116,14 @@ export const getContentById = async (id: number): Promise<ContentApplicationData
 };
 
 export const getContentByTopicId = async (topicId: number): Promise<ContentApplicationData[]> => {
+
   const hasContentTypes = await db.schema.hasTable('content_types');
   const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
   let query = db('content').select('content.*');
   if (hasContentTypes && hasContentTypeId2) {
     query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
   }
+  
   const contentItems = await query.where({ topic_id: topicId });
   return contentItems.map(mapContentToApplicationData);
 };
@@ -146,12 +151,14 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
   const [insertedContent] = await db<ContentSchema>('content').insert(contentToInsert).returning('*');
   
   if (insertedContent && insertedContent.id) {
+
     const hasContentTypes = await db.schema.hasTable('content_types');
     const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
     let query = db('content').select('content.*');
     if (hasContentTypes && hasContentTypeId) {
       query = query.leftJoin('content_types', 'content.content_type_id', 'content_types.id').select('content_types.name as typeName');
     }
+
     const fullContent = await query.where('content.id', insertedContent.id).first();
     if (!fullContent) {
         throw new Error('Failed to retrieve content after creation.');
@@ -162,6 +169,7 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
 };
 
 export const getAllContent = async (): Promise<ContentApplicationData[]> => {
+
   const hasContentTypes = await db.schema.hasTable('content_types');
   const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
   let query = db('content').select('content.*');
@@ -170,6 +178,7 @@ export const getAllContent = async (): Promise<ContentApplicationData[]> => {
   }
   const items: any[] = await query;
   return items.map((item: any) => {
+
     try {
       return mapContentToApplicationData(item);
     } catch (error) {
