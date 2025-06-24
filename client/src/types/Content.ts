@@ -22,7 +22,7 @@ export interface TrueFalseData {
 
 // For 'sentence-correction'
 export interface SentenceCorrectionData {
-  question: string;
+  text: string;
   correctAnswer: string;
   explanation?: string;
 }

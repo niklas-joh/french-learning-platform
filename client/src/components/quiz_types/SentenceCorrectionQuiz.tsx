@@ -5,7 +5,7 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-import { Content } from '../../types/Content';
+import { Content, SentenceCorrectionData } from '../../types/Content';
 
 interface SentenceCorrectionQuizProps {
   content: Content;
@@ -17,12 +17,13 @@ const SentenceCorrectionQuiz: React.FC<SentenceCorrectionQuizProps> = ({ content
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
-  const questionText = (content.questionData as any)?.question || '';
+  const data = content.questionData as SentenceCorrectionData;
+  const questionText = data.text || '';
   const blank = '____';
   const parts = questionText.split(blank);
 
   const handleSubmit = () => {
-    const correct = userAnswer.trim().toLowerCase() === content.correct_answer?.toLowerCase();
+    const correct = userAnswer.trim().toLowerCase() === data.correctAnswer.toLowerCase();
     setIsCorrect(correct);
     setIsSubmitted(true);
     onAnswer(correct);
@@ -49,7 +50,7 @@ const SentenceCorrectionQuiz: React.FC<SentenceCorrectionQuizProps> = ({ content
       </Button>
       {isSubmitted && (
         <Typography variant="body1" sx={{ mt: 2, color: isCorrect ? 'green' : 'red' }}>
-          {isCorrect ? 'Correct!' : `Incorrect. The correct answer is: ${content.correct_answer}`}
+          {isCorrect ? 'Correct!' : `Incorrect. The correct answer is: ${data.correctAnswer}`}
         </Typography>
       )}
     </Box>
