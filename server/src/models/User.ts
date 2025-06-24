@@ -1,4 +1,7 @@
-import db from '../config/db'; // Knex instance
+/**
+ * Model functions for interacting with the `users` table.
+ */
+import db from '../config/db';
 
 // Interface representing the User table structure
 export interface UserSchema {
@@ -45,6 +48,9 @@ function mapUserToApplicationData(user: UserSchema): UserApplicationData {
 }
 
 
+/**
+ * Looks up a user by email and maps the result to application data shape.
+ */
 export const getUserByEmail = async (email: string): Promise<UserApplicationData | null> => {
   const user: UserSchema | undefined = await db<UserSchema>('users').where({ email }).first();
   if (!user) {
@@ -54,6 +60,10 @@ export const getUserByEmail = async (email: string): Promise<UserApplicationData
 };
 
 // For internal use, e.g., authentication, where password_hash is needed
+/**
+ * Looks up a user by email but returns the raw database schema including the
+ * password hash. Used internally for authentication checks.
+ */
 export const getInternalUserByEmail = async (email: string): Promise<UserSchema | null> => {
   const user: UserSchema | undefined = await db<UserSchema>('users')
     .select('*')
@@ -62,6 +72,9 @@ export const getInternalUserByEmail = async (email: string): Promise<UserSchema 
   return user || null;
 };
 
+/**
+ * Fetches a user by primary key.
+ */
 export const getUserById = async (id: number): Promise<UserApplicationData | null> => {
   const user: UserSchema | undefined = await db<UserSchema>('users').where({ id }).first();
   if (!user) {
@@ -70,8 +83,12 @@ export const getUserById = async (id: number): Promise<UserApplicationData | nul
   return mapUserToApplicationData(user);
 };
 
+/**
+ * Inserts a new user record and returns it in application data format.
+ */
 export const createUser = async (userData: NewUser): Promise<UserApplicationData> => {
   // Prepare data for insertion, ensuring correct field names and stringifying JSON
+  // TODO: validate userData before inserting
   const userToInsert: Partial<UserSchema> = {
     email: userData.email,
     password_hash: userData.password_hash, // Ensure this is already hashed

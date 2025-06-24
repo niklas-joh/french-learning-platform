@@ -1,5 +1,9 @@
+/**
+ * Data access helpers for the `content` table and related lookups.
+ */
 import db from '../config/db'; // Knex instance
 import { Knex } from 'knex';
+
 
 // Interface representing the Content table structure
 // JSON fields are stored as strings in SQLite, so they are typed as string here.
@@ -100,6 +104,9 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
   };
 }
 
+/**
+ * Retrieves a single content item by id.
+ */
 export const getContentById = async (id: number): Promise<ContentApplicationData | null> => {
   const hasContentTypes = await db.schema.hasTable('content_types');
   const hasContentTypeId2 = await db.schema.hasColumn('content', 'content_type_id');
@@ -115,6 +122,9 @@ export const getContentById = async (id: number): Promise<ContentApplicationData
   return mapContentToApplicationData(contentItem);
 };
 
+/**
+ * Returns all content belonging to the provided topic id.
+ */
 export const getContentByTopicId = async (topicId: number): Promise<ContentApplicationData[]> => {
 
   const hasContentTypes = await db.schema.hasTable('content_types');
@@ -128,9 +138,14 @@ export const getContentByTopicId = async (topicId: number): Promise<ContentAppli
   return contentItems.map(mapContentToApplicationData);
 };
 
+/**
+ * Inserts a new content record and returns the mapped result.
+ */
 export const createContent = async (contentData: any): Promise<ContentApplicationData> => {
   // Extract correct_answer and options from questionData if they exist
   const { correctAnswer, options, ...restOfQuestionData } = contentData.questionData || {};
+
+  // TODO: validate contentData before insertion
 
   const contentToInsert: Partial<ContentSchema> = {
     name: contentData.name,
@@ -168,6 +183,9 @@ export const createContent = async (contentData: any): Promise<ContentApplicatio
   throw new Error('Content creation failed, ID not returned.');
 };
 
+/**
+ * Retrieves all content records.
+ */
 export const getAllContent = async (): Promise<ContentApplicationData[]> => {
 
   const hasContentTypes = await db.schema.hasTable('content_types');
@@ -190,6 +208,9 @@ export const getAllContent = async (): Promise<ContentApplicationData[]> => {
   });
 };
 
+/**
+ * Updates a content record and returns the updated version.
+ */
 export const updateContent = async (id: number, updateData: any): Promise<ContentApplicationData | null> => {
   const dataToUpdate: Partial<ContentSchema> = {};
 
@@ -226,6 +247,9 @@ export const updateContent = async (id: number, updateData: any): Promise<Conten
   return updated ? mapContentToApplicationData(updated) : null;
 };
 
+/**
+ * Removes a content record.
+ */
 export const deleteContent = async (id: number): Promise<boolean> => {
   const count = await db<ContentSchema>('content').where({ id }).del();
   return count > 0;

@@ -1,7 +1,11 @@
+/**
+ * Script to promote a predefined user to admin. Run via `npm run set-admin`.
+ */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const db = require('../server/src/config/db').default; // Adjust path and get default export for Knex instance
+const db = require('../server/src/config/db').default;
 
 const ADMIN_EMAIL = 'admin@example.com';
+// TODO: allow passing email via CLI argument
 
 async function setAdminUser() {
   try {

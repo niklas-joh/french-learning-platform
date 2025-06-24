@@ -1,3 +1,10 @@
+/**
+ * Knex configuration used by scripts and the database module.
+ *
+ * Separate configurations are provided for the development and test
+ * environments. Tests run against an in-memory SQLite database to avoid
+ * touching the developer's local data.
+ */
 import type { Knex } from 'knex';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -24,6 +31,8 @@ const config: { [key: string]: Knex.Config } = {
     connection: {
       filename: ':memory:',
     },
+    // TODO: consider using a temporary file database for easier debugging of
+    // failing tests.
     useNullAsDefault: true,
     migrations: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'migrations'),

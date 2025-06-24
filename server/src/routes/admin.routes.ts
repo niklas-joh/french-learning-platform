@@ -1,3 +1,6 @@
+/**
+ * Administrative routes for managing content and users.
+ */
 import express from 'express';
 import { protect } from '../middleware/auth.middleware';
 import { isAdmin } from '../middleware/admin.middleware';
@@ -30,6 +33,8 @@ const router = express.Router();
 
 // Test route for admin access
 router.get('/test', protect, isAdmin, adminTestController);
+
+// TODO: add finer-grained role checks for specific admin actions
 
 // Analytics summary route
 router.get('/analytics/summary', protect, isAdmin, getAnalyticsSummary);

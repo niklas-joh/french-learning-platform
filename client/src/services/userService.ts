@@ -1,3 +1,6 @@
+/**
+ * Service layer for user related API calls.
+ */
 import apiClient from './authService';
 import { User } from '../types/User';
 import { TopicProgress } from '../types/Progress';
@@ -16,6 +19,7 @@ export const getUsers = async (): Promise<User[]> => {
     throw new Error('Failed to fetch users.');
   }
 };
+// TODO: memoize user list to reduce network calls
 
 export const getUserProgress = async (): Promise<TopicProgress[]> => {
   try {

@@ -1,3 +1,9 @@
+/**
+ * Express application bootstrap.
+ *
+ * This file wires together all middleware and routes used by the API.
+ * It is imported in tests to start an in-memory server.
+ */
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -21,7 +27,9 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(morgan('combined'));
 app.use(express.json());
 
-// Debug middleware to log all requests
+// Debug middleware to log all incoming requests. Useful during development
+// to trace API usage. Consider removing or making conditional in production.
+// TODO: respect an environment variable to toggle request logging.
 app.use((req, res, next) => {
   console.log(`🔍 Incoming request: ${req.method} ${req.url}`);
   next();
@@ -38,6 +46,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
+// Start the HTTP server. When running in tests the listener is closed after
+// each suite to avoid port collisions.
 const server = app.listen(PORT, () => {
   // Only log when not in test environment
   if (process.env.NODE_ENV !== 'test') {
@@ -45,4 +55,6 @@ const server = app.listen(PORT, () => {
   }
 });
 
+// Exporting the app and server allows the test suite to import and
+// gracefully shut down the server after running.
 export { app, server };

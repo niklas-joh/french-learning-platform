@@ -1,3 +1,6 @@
+/**
+ * Helpers for managing persisted user preferences.
+ */
 import db from '../config/db';
 
 export interface UserPreference {
@@ -8,10 +11,16 @@ export interface UserPreference {
     updated_at?: string;
 }
 
+/**
+ * Retrieves a preference row for the specified user.
+ */
 const findByUserId = (user_id: number): Promise<UserPreference | undefined> => {
     return db<UserPreference>('user_preferences').where({ user_id }).first();
 };
 
+/**
+ * Inserts or updates the preference entry for a user.
+ */
 const upsert = async (user_id: number, preferences: object): Promise<UserPreference> => {
     const existingPreference = await findByUserId(user_id);
 
@@ -28,6 +37,8 @@ const upsert = async (user_id: number, preferences: object): Promise<UserPrefere
         return newPreference;
     }
 };
+
+// TODO: enforce schema validation for preferences JSON
 
 export default {
     findByUserId,

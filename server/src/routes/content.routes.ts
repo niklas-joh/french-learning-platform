@@ -1,3 +1,6 @@
+/**
+ * Public content exploration routes.
+ */
 import { Router } from 'express';
 import { getAllTopics, getContentForTopic, getSampleQuiz, getContentById } from '../controllers/content.controller';
 // import { protect } from '../middleware/auth.middleware'; // Uncomment if auth is needed
@@ -13,6 +16,8 @@ router.get('/topics', getAllTopics);
 // @desc    Get all content for a specific topic
 // @access  Public (for now)
 router.get('/topics/:topicId/content', getContentForTopic);
+
+// TODO: implement pagination for large topic content lists
 
 // @route   GET /api/content/sample-quiz
 // @desc    Get a static sample quiz from JSON

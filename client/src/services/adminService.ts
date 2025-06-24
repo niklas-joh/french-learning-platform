@@ -1,7 +1,10 @@
-import apiClient from './authService'; // Reusing the configured Axios instance
-import axios, { AxiosError } from 'axios'; // For type checking like axios.isAxiosError
-import { Topic } from '../types/Topic'; // Import Topic type
-import { Content } from '../types/Content'; // Import Content type
+/**
+ * Service layer for admin APIs.
+ */
+import apiClient from './authService';
+import axios, { AxiosError } from 'axios';
+import { Topic } from '../types/Topic';
+import { Content } from '../types/Content';
 
 export interface AnalyticsSummary {
   totalUsers: number;
@@ -24,6 +27,7 @@ export const getAdminAnalyticsSummary = async (): Promise<AnalyticsSummary> => {
     if (axiosError.response && axiosError.response.data) {
       throw axiosError.response.data;
     }
+    // TODO: surface network connectivity issues to the user
     throw { message: 'An unexpected error occurred while fetching admin analytics.' } as AdminErrorResponse;
   }
 };

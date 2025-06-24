@@ -1,3 +1,6 @@
+/**
+ * Utility script to load JSON based content into the database.
+ */
 import knex from 'knex';
 import fs from 'fs/promises';
 import path from 'path';
@@ -14,6 +17,7 @@ const contentRoot = path.join(__dirname, '../content/topics');
 async function populateContent() {
   try {
     console.log('Starting content population script...');
+    // TODO: validate that the content directory exists before continuing
 
     // Ensure required content types exist. Older migrations created a
     // separate `content_types` table and replaced the string `type`
