@@ -12,7 +12,9 @@ import UserPreferenceModel from '../models/UserPreference';
 // authentication middleware.
 interface AuthenticatedRequest extends Request {
   user?: {
-    userId: number;
+    
+    userId?: number;
+    id?: number;
     email?: string;
     role?: string;
   };
@@ -23,12 +25,13 @@ interface AuthenticatedRequest extends Request {
  */
 export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) { // Check for userId and its validity
-      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+    const uid = req.user?.userId ?? req.user?.id;
+    if (!uid || typeof uid !== 'number' || uid <= 0) {
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
-    const userId = req.user.userId; // Use userId
+    const userId = uid;
     const user = await knex('users').where({ id: userId }).first();
 
     if (!user) {
@@ -51,12 +54,13 @@ export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Resp
  */
 export const updateUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) { // Check for userId and its validity
-      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+    const uid = req.user?.userId ?? req.user?.id;
+    if (!uid || typeof uid !== 'number' || uid <= 0) {
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
-    const userId = req.user.userId; // Use userId
+    const userId = uid;
     const { email, first_name, last_name, preferences, password } = req.body;
 
     if (password) {
@@ -121,12 +125,13 @@ export const getAllUsers = async (_req: Request, res: Response): Promise<void> =
  */
 export const getAssignedContent = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
-      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+    const uid = req.user?.userId ?? req.user?.id;
+    if (!uid || typeof uid !== 'number' || uid <= 0) {
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
-    const userId = req.user.userId;
+    const userId = uid;
     const assignments = await UserContentAssignmentModel.findByUserId(userId);
     res.json(assignments);
   } catch (error: any) {
@@ -140,11 +145,12 @@ export const getAssignedContent = async (req: AuthenticatedRequest, res: Respons
  */
 export const getUserProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
-      res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+    const uid2 = req.user?.userId ?? req.user?.id;
+    if (!uid2 || typeof uid2 !== 'number' || uid2 <= 0) {
+      res.status(401).json({ message: 'User not authenticated' });
       return;
     }
-    const userId = req.user.userId;
+    const userId = uid2;
 
     // 1. Get all topics
     const topics = await knex('topics').select('id', 'name');
@@ -206,11 +212,12 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
  */
 export const getUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     try {
-        if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
-            res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+        const uid = req.user?.userId ?? req.user?.id;
+        if (!uid || typeof uid !== 'number' || uid <= 0) {
+            res.status(401).json({ message: 'User not authenticated' });
             return;
         }
-        const userId = req.user.userId;
+        const userId = uid;
         const preferences = await UserPreferenceModel.findByUserId(userId);
         if (preferences) {
             res.json(JSON.parse(preferences.preferences));
@@ -228,11 +235,12 @@ export const getUserPreferences = async (req: AuthenticatedRequest, res: Respons
  */
 export const updateUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     try {
-        if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
-            res.status(401).json({ message: 'User not authenticated or invalid user ID' });
+        const uid2 = req.user?.userId ?? req.user?.id;
+        if (!uid2 || typeof uid2 !== 'number' || uid2 <= 0) {
+            res.status(401).json({ message: 'User not authenticated' });
             return;
         }
-        const userId = req.user.userId;
+        const userId = uid2;
         const { preferences } = req.body;
 
         if (!preferences || typeof preferences !== 'object') {

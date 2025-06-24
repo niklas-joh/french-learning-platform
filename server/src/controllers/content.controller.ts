@@ -6,7 +6,7 @@ import path from 'path';
 import fs from 'fs/promises';
 import knex from '../config/db';
 import { TopicSchema } from '../models/Topic';
-import { getContentByTopicId as fetchContentByTopicId } from '../models/Content';
+import { getContentByTopicId as fetchContentByTopicId, getContentById as fetchContentById } from '../models/Content';
 
 /**
  * Retrieves a list of all learning topics.
@@ -43,6 +43,28 @@ export const getContentForTopic = async (req: Request, res: Response): Promise<v
   } catch (error: any) {
     console.error('Error fetching content for topic:', error);
     res.status(500).json({ message: 'Failed to fetch content for topic' });
+  }
+};
+
+export const getContentById = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const contentId = parseInt(id);
+    if (isNaN(contentId)) {
+      res.status(400).json({ message: 'Invalid content ID format.' });
+      return;
+    }
+
+    const content = await fetchContentById(contentId);
+    if (!content) {
+      res.status(404).json({ message: 'Content not found' });
+      return;
+    }
+
+    res.json(content);
+  } catch (error: any) {
+    console.error('Error fetching content by id:', error);
+    res.status(500).json({ message: 'Failed to fetch content' });
   }
 };
 
