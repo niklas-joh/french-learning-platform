@@ -49,7 +49,9 @@
 ### **Dashboard User Experience Enhancements**
 - [✅] **Personalized Welcome:** Display user's name instead of email.
 - [✅] **Clickable Progress Cards:** Enable navigation from progress elements.
-- [ ] **'Assigned Content' Improvements:**
+- [✅] **'Assigned Content' Improvements:**
+    - [✅] Refactored data model to separate explicit assignments from ad-hoc completions, fixing progress calculation bugs.
+    - [✅] Correctly display content titles in the assigned content list.
     - [ ] Show all incomplete items with a "View All" option.
     - [ ] Filter out completed items from the main list.
     - [ ] User-friendly layout: formatted names and icons for content types.

@@ -40,31 +40,35 @@ This document outlines the proposed improvements for the user dashboard based on
 
 ## 3. 'Assigned Content' Card Improvements
 
-### 3.a. Show More Items & Filter Completed
+### 3.a. Show More Items & Filter Completed (✅ Data Model Refactored)
 
-*   **Current Issue:** Shows only the first two items; includes completed items. Overall progress shows "1/3 (33%)" suggesting 3 items are assigned, one of which is complete. The list below shows 2 items.
+*   **Current Issue:** Ad-hoc completions were incorrectly affecting the "Assigned Content" progress bar.
 *   **Desired Change:**
+    *   The "Assigned Content" progress bar should *only* reflect progress on explicitly assigned items.
     *   Display all *incomplete* assigned items.
     *   If the list is long, provide a "View All" link or pagination.
-*   **Proposed Solution:**
-    1.  **Backend:** The API endpoint for assigned content (`/api/users/me/assignments` or similar) should ideally allow filtering by status (e.g., `status=pending`) or return status information for each item.
-    2.  **Frontend Service (`client/src/services/userService.ts`):** Fetch all assigned items or specifically incomplete ones.
-    3.  **Frontend Component (`client/src/components/AssignedContentList.tsx` or `Dashboard.tsx`):**
-        *   Filter out items with a 'completed' status.
-        *   Render the list of incomplete items.
-        *   If more than, say, 5 items, show the first 5 and a "View all [N] assignments" link that expands the list or navigates to a dedicated page.
+*   **Outcome:**
+    1.  **Backend Data Model Refactor:** The data model has been fundamentally refactored to separate explicit assignments from ad-hoc completions.
+        *   A new `user_content_completions` table now logs all completion events.
+        *   The `user_content_assignments` table is now exclusively for explicit assignments.
+    2.  **Backend Logic Update:** The `getUserProgress` and `recordContentItemProgress` controllers were updated to use the new two-table system, ensuring correct progress calculation.
+    3.  **Next Steps:** The frontend component (`AssignedContentList.tsx`) still needs to be updated to filter for incomplete items and implement the "View All" functionality.
 *   **Affected Files:**
-    *   `server/src/controllers/user.controller.ts` (or `assignment.controller.ts`)
-    *   `client/src/services/userService.ts`
-    *   `client/src/components/AssignedContentList.tsx` (or `Dashboard.tsx`)
-    *   `client/src/types/Assignment.ts` (ensure it has a status field)
+    *   `server/src/controllers/user.controller.ts`
+    *   `server/src/models/UserContentAssignment.ts`
+    *   `server/src/models/UserContentCompletion.ts` (new)
+    *   Multiple new database migration files.
 
-### 3.b. User-Friendly Layout (Names & Icons)
+### 3.b. User-Friendly Layout (Names & Icons) (✅ Title Fixed)
 
-*   **Current Issue:** Uses underscores in names (e.g., `greeting_evening`); shows content type as text (e.g., `multiple-choice`).
+*   **Current Issue:** The assigned content list was displaying the content's internal `name` or `type` instead of its user-friendly `title`.
 *   **Desired Change:**
     *   Format names to be human-readable (e.g., "Greeting Evening").
     *   Use icons for content types.
+*   **Outcome:**
+    1.  **Backend Fix:** The `UserContentAssignmentModel` was updated to select `content.title` from the database.
+    2.  **Frontend Fix:** The `AssignedContentList.tsx` component was updated to render the `name` property of the content object, which is now correctly populated with the title from the backend.
+    3.  **Next Steps:** The list still needs icons and potentially better name formatting for cases like `snake_case`.
 *   **Proposed Solution:**
     1.  **Name Formatting:**
         *   Create a utility function (e.g., `formatDisplayName(text: string)`) that converts `snake_case` or `kebab-case` to "Title Case" (e.g., "Greeting Evening").
