@@ -43,7 +43,8 @@ Thumbs.db
 # It's often better to manage schema via migrations and seed data via scripts.
 # If the .db file contains essential seed data that isn't easily scriptable,
 # you might consider versioning it, but generally, it's excluded.
-database/french_learning.db
+server/database/
+database/*.db
 *.sqlite
 *.sqlite3
 
@@ -51,6 +52,10 @@ database/french_learning.db
 temp/
 tmp/
 *.tmp
+*.tgz
+
+# NPM folders
+server/npm
 
 # Coverage directory
 coverage/
