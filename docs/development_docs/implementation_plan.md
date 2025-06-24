@@ -45,6 +45,25 @@
 
 ---
 
+## **Phase 2.5: Dashboard Revamp (Parallel to early Phase 3)**
+### **Dashboard User Experience Enhancements**
+- [ ] **Personalized Welcome:** Display user's name instead of email.
+- [ ] **Clickable Progress Cards:** Enable navigation from progress elements.
+- [ ] **'Assigned Content' Improvements:**
+    - [ ] Show all incomplete items with a "View All" option.
+    - [ ] Filter out completed items from the main list.
+    - [ ] User-friendly layout: formatted names and icons for content types.
+- [ ] **'Explore Topics' Styling:** Implement cards with descriptions and navigation.
+- [ ] **Intuitive Page Structure:** Redesign dashboard layout for better flow (learning, assignments, exploration, progress).
+- [ ] **Detailed Plan:** Refer to [Dashboard Enhancement Plan](./dashboard_enhancement_plan.md) for specifics.
+
+### **Deliverables**
+- Revamped user dashboard with improved usability and aesthetics.
+- Clearer presentation of assigned content and learning paths.
+- Enhanced navigation and user engagement.
+
+---
+
 ## **Phase 3: AI Integration (Weeks 5-6)**
 ### **AI Services Setup**
 - [ ] Claude API integration
