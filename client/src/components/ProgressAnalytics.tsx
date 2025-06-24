@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getUserProgress } from '../services/userService';
-import { TopicProgress } from '../types/Progress';
+import { UserOverallProgress } from '../types/Progress';
+import { Card, CardContent, Typography, Box, LinearProgress, CircularProgress, Alert, Paper } from '@mui/material';
 
 const ProgressAnalytics: React.FC = () => {
-  const [progress, setProgress] = useState<TopicProgress[]>([]);
+  const [progress, setProgress] = useState<UserOverallProgress | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,37 +27,91 @@ const ProgressAnalytics: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading progress...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>;
+    return <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>;
   }
 
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
-      <h2 className="text-xl font-bold mb-4">My Progress</h2>
-      {progress.length === 0 ? (
-        <p>No progress data available yet.</p>
-      ) : (
-        <div className="space-y-4">
-          {progress.map((item) => (
-            <div key={item.topicId}>
-              <div className="flex justify-between mb-1">
-                <span className="font-medium">{item.topicName}</span>
-                <span className="text-sm font-medium text-gray-700">{`${item.completedCount} / ${item.totalCount} (${item.percentage}%)`}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5">
-                <div
-                  className="bg-blue-600 h-2.5 rounded-full"
-                  style={{ width: `${item.percentage}%` }}
-                ></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <Card elevation={3}>
+      <CardContent>
+        <Typography variant="h5" component="h2" gutterBottom>
+          My Progress
+        </Typography>
+        {!progress || (progress.topicProgress.length === 0 && progress.assignedContentProgress.totalCount === 0) ? (
+          <Typography variant="body1" color="text.secondary">
+            No progress data available yet. Complete some exercises to see your progress!
+          </Typography>
+        ) : (
+          <Box>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
+              {/* Assigned Content Progress */}
+              <Box sx={{ flex: 1 }}>
+                <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
+                  <Typography variant="h6" gutterBottom>Assigned Content</Typography>
+                  <Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                      <Typography variant="subtitle1" component="span" fontWeight="medium">
+                        Overall Completion
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {`${progress.assignedContentProgress.completedCount} / ${progress.assignedContentProgress.totalCount} (${progress.assignedContentProgress.percentage}%)`}
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={progress.assignedContentProgress.percentage}
+                      sx={{ height: 8, borderRadius: 5 }}
+                    />
+                  </Box>
+                </Paper>
+              </Box>
+
+              {/* Journeys Placeholder */}
+              <Box sx={{ flex: 1 }}>
+                <Paper variant="outlined" sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <Typography variant="h6" gutterBottom>Learning Journeys</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Custom learning paths are coming soon!
+                  </Typography>
+                  {/* TODO: Implement journey progress visualization */}
+                </Paper>
+              </Box>
+            </Box>
+
+            {/* Topic Progress */}
+            <Paper variant="outlined" sx={{ p: 2 }}>
+              <Typography variant="h6" gutterBottom>Progress by Topic</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
+                {progress.topicProgress.map((item) => (
+                  <Box key={item.topicId}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                      <Typography variant="subtitle1" component="span" fontWeight="medium">
+                        {item.topicName}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {`${item.completedCount} / ${item.totalCount} (${item.percentage}%)`}
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={item.percentage}
+                      sx={{ height: 8, borderRadius: 5 }}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            </Paper>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

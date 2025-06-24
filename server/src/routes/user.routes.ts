@@ -2,7 +2,7 @@
  * Routes for regular authenticated users.
  */
 import { Router } from 'express';
-import { getCurrentUserProfile, updateUserProfile, getAllUsers, getAssignedContent, getUserProgress, getUserPreferences, updateUserPreferences } from '../controllers/user.controller';
+import { getCurrentUserProfile, updateUserProfile, getAllUsers, getAssignedContent, getUserProgress, getUserPreferences, updateUserPreferences, recordContentItemProgress } from '../controllers/user.controller';
 import { protect } from '../middleware/auth.middleware';
 import { isAdmin } from '../middleware/admin.middleware';
 
@@ -44,5 +44,10 @@ router.get('/me/preferences', protect, getUserPreferences);
 // @desc    Update preferences for the current user
 // @access  Private
 router.put('/me/preferences', protect, updateUserPreferences);
+
+// @route   POST /api/users/me/progress/content/:contentId
+// @desc    Record progress for a content item
+// @access  Private
+router.post('/me/progress/content/:contentId', protect, recordContentItemProgress);
 
 export default router;

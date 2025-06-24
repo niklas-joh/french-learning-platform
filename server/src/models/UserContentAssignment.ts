@@ -90,6 +90,14 @@ const UserContentAssignmentModel = {
     // TODO: implement soft delete to preserve assignment history
     return db('user_content_assignments').where({ id }).del();
   },
+
+  async updateStatus(userId: number, contentId: number, status: 'pending' | 'completed'): Promise<UserContentAssignment | undefined> {
+    const [updatedAssignment] = await db('user_content_assignments')
+      .where({ user_id: userId, content_id: contentId })
+      .update({ status: status })
+      .returning('*');
+    return updatedAssignment;
+  }
 };
 
 export default UserContentAssignmentModel;
