@@ -1,3 +1,6 @@
+/**
+ * Model helpers for the `user_content_assignments` join table.
+ */
 import db from '../config/db';
 
 import { ContentSchema as Content } from './Content';
@@ -14,8 +17,12 @@ export interface UserContentAssignmentWithContent extends UserContentAssignment 
   content: Partial<Content> & { type: string };
 }
 
+/**
+ * CRUD helpers for content assignments.
+ */
 const UserContentAssignmentModel = {
   async assign(userId: number, contentId: number): Promise<UserContentAssignment> {
+    // Create a new assignment row linking a user and a content item
     const [assignment] = await db('user_content_assignments')
       .insert({
         user_id: userId,
@@ -26,6 +33,7 @@ const UserContentAssignmentModel = {
   },
 
   async findByUserId(userId: number): Promise<UserContentAssignmentWithContent[]> {
+    // Lookup assignments and join the content information
     const assignments = await db('user_content_assignments')
       .where({ 'user_content_assignments.user_id': userId })
       .join('content', 'user_content_assignments.content_id', 'content.id')
@@ -62,6 +70,7 @@ const UserContentAssignmentModel = {
   },
 
   async unassign(id: number): Promise<number> {
+    // TODO: implement soft delete to preserve assignment history
     return db('user_content_assignments').where({ id }).del();
   },
 };

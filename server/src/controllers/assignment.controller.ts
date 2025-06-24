@@ -1,6 +1,12 @@
+/**
+ * Controllers for assigning content items to users.
+ */
 import { Request, Response } from 'express';
 import UserContentAssignmentModel from '../models/UserContentAssignment';
 
+/**
+ * Assigns a content item to a user.
+ */
 export const assignContentToUser = async (req: Request, res: Response): Promise<void> => {
   const { userId, contentId } = req.body;
 
@@ -21,17 +27,24 @@ export const assignContentToUser = async (req: Request, res: Response): Promise<
   }
 };
 
+/**
+ * Retrieves all assignments for a given user id.
+ */
 export const getAssignmentsForUser = async (req: Request, res: Response): Promise<void> => {
   const { userId } = req.params;
 
   try {
     const assignments = await UserContentAssignmentModel.findByUserId(Number(userId));
+    // TODO: support pagination once assignment counts grow large.
     res.status(200).json(assignments);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching assignments for user', error });
   }
 };
 
+/**
+ * Removes an assignment entry.
+ */
 export const unassignContentFromUser = async (req: Request, res: Response): Promise<void> => {
   const { assignmentId } = req.params;
 

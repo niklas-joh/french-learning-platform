@@ -1,3 +1,8 @@
+/**
+ * Collection of controller functions for administrator specific endpoints.
+ *
+ * These handlers manage topics, content items and perform simple analytics.
+ */
 import { Request, Response } from 'express';
 import knex from '../config/db';
 
@@ -8,10 +13,19 @@ interface AnalyticsSummary {
   totalContentItems: number;
 }
 
+/**
+ * Simple endpoint used by tests to verify that admin routes are reachable.
+ */
 export const adminTestController = (req: Request, res: Response): void => {
   res.status(200).json({ message: 'Admin route test successful!' });
 };
 
+/**
+ * Returns a high level analytics summary of the application.
+ *
+ * Currently counts users and basic content items. File system reads are used
+ * to approximate the total amount of content available.
+ */
 export const getAnalyticsSummary = async (req: Request, res: Response): Promise<void> => {
   try {
     // 1. Get total number of users
@@ -29,12 +43,8 @@ export const getAnalyticsSummary = async (req: Request, res: Response): Promise<
     }));
 
     // 3. Get total number of content items
-    // This is a placeholder. We need to determine how content items are stored.
-    // Assuming content is stored as JSON files in `content/topics/*/*.json`
-    // This part will require a different approach, likely reading the file system or querying a dedicated table if one exists.
-    // For MVP, let's simulate this or come back to it.
-    // For now, let's count files in the content/topics directory as a proxy.
-    // This is NOT a robust solution for production.
+    // TODO: replace file system scanning with a dedicated table once content
+    // management moves away from static JSON files.
     const fs = require('fs').promises;
     const path = require('path');
     // Corrected path: from server/src/controllers, go up 3 levels to french-learning-platform, then content/topics
@@ -71,7 +81,10 @@ export const getAnalyticsSummary = async (req: Request, res: Response): Promise<
   }
 };
 
-export const getAllTopics = async (req: Request, res: Response): Promise<void> => {
+/**
+ * Fetches all topics available in the system.
+ */
+export const getAllTopics = async (_req: Request, res: Response): Promise<void> => {
   try {
     const topics = await knex('topics').select('*');
     res.status(200).json(topics);
@@ -81,6 +94,9 @@ export const getAllTopics = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+/**
+ * Creates a new topic entry.
+ */
 export const createTopic = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, description } = req.body;
@@ -98,6 +114,9 @@ export const createTopic = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+/**
+ * Retrieves a single topic by its id.
+ */
 export const getTopicById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -129,6 +148,9 @@ export const updateTopicById = async (req: Request, res: Response): Promise<void
   }
 };
 
+/**
+ * Deletes a topic from the database.
+ */
 export const deleteTopicById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -144,7 +166,10 @@ export const deleteTopicById = async (req: Request, res: Response): Promise<void
   }
 };
 
-export const getAllContentTypes = async (req: Request, res: Response): Promise<void> => {
+/**
+ * Returns the list of configured content types.
+ */
+export const getAllContentTypes = async (_req: Request, res: Response): Promise<void> => {
   try {
     const types = await knex('content_types').select('*');
     res.status(200).json(types);
@@ -154,6 +179,9 @@ export const getAllContentTypes = async (req: Request, res: Response): Promise<v
   }
 };
 
+/**
+ * Creates a new content type.
+ */
 export const createContentType = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name, description } = req.body;
@@ -169,6 +197,9 @@ export const createContentType = async (req: Request, res: Response): Promise<vo
   }
 };
 
+/**
+ * Updates an existing content type record.
+ */
 export const updateContentType = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -186,6 +217,9 @@ export const updateContentType = async (req: Request, res: Response): Promise<vo
   }
 };
 
+/**
+ * Removes a content type from the system.
+ */
 export const deleteContentType = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -201,6 +235,9 @@ export const deleteContentType = async (req: Request, res: Response): Promise<vo
   }
 };
 
+/**
+ * Creates a new content item entry.
+ */
 export const createContentItem = async (req: Request, res: Response): Promise<void> => {
   try {
     const { name } = req.body;
@@ -216,6 +253,9 @@ export const createContentItem = async (req: Request, res: Response): Promise<vo
   }
 };
 
+/**
+ * Fetches all content items.
+ */
 export const getAllContentItems = async (_req: Request, res: Response): Promise<void> => {
   try {
     const items = await getAllContent();
@@ -226,6 +266,9 @@ export const getAllContentItems = async (_req: Request, res: Response): Promise<
   }
 };
 
+/**
+ * Returns a single content item by id.
+ */
 export const getContentItemById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -241,6 +284,9 @@ export const getContentItemById = async (req: Request, res: Response): Promise<v
   }
 };
 
+/**
+ * Updates a content item identified by id.
+ */
 export const updateContentItemById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -256,6 +302,9 @@ export const updateContentItemById = async (req: Request, res: Response): Promis
   }
 };
 
+/**
+ * Deletes a content item.
+ */
 export const deleteContentItemById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
@@ -271,7 +320,10 @@ export const deleteContentItemById = async (req: Request, res: Response): Promis
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+/**
+ * Retrieves a list of all users in the system.
+ */
+export const getAllUsers = async (_req: Request, res: Response): Promise<void> => {
   try {
     const users = await knex('users').select('id', 'email', 'first_name', 'last_name', 'role');
     const mappedUsers = users.map(user => ({

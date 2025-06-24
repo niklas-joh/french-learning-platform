@@ -1,3 +1,6 @@
+/**
+ * Content and topic retrieval endpoints.
+ */
 import { Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs/promises';
@@ -5,7 +8,10 @@ import knex from '../config/db';
 import { TopicSchema } from '../models/Topic';
 import { getContentByTopicId as fetchContentByTopicId } from '../models/Content';
 
-export const getAllTopics = async (req: Request, res: Response): Promise<void> => {
+/**
+ * Retrieves a list of all learning topics.
+ */
+export const getAllTopics = async (_req: Request, res: Response): Promise<void> => {
   try {
     const topics: TopicSchema[] = await knex('topics').select('*');
     res.json(topics);
@@ -15,6 +21,9 @@ export const getAllTopics = async (req: Request, res: Response): Promise<void> =
   }
 };
 
+/**
+ * Returns all content items associated with a given topic.
+ */
 export const getContentForTopic = async (req: Request, res: Response): Promise<void> => {
   try {
     const { topicId } = req.params;
@@ -38,7 +47,11 @@ export const getContentForTopic = async (req: Request, res: Response): Promise<v
 };
 
 // Simple endpoint to return a sample quiz from the JSON content directory
-export const getSampleQuiz = async (req: Request, res: Response): Promise<void> => {
+/**
+ * Serves a static quiz JSON file for quick testing.
+ * TODO: remove once dynamic quizzes are implemented.
+ */
+export const getSampleQuiz = async (_req: Request, res: Response): Promise<void> => {
   try {
     const filePath = path.resolve(__dirname, '../../../content/topics/subjunctive/certainty-vs-doubt.json');
     const fileData = await fs.readFile(filePath, 'utf-8');

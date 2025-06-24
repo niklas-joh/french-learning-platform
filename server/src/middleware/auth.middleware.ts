@@ -1,3 +1,9 @@
+/**
+ * Express middleware for JWT authentication.
+ *
+ * If a valid token is present in the Authorization header the decoded user
+ * payload is attached to the request object.
+ */
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -21,6 +27,7 @@ export const protect = (req: AuthenticatedRequest, res: Response, next: NextFunc
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret') as { userId: number; email?: string; role?: string; };
+      // TODO: implement token revocation list for logout support.
       
       // Attach user to request object
       if (typeof decoded.userId !== 'number' || decoded.userId <= 0) {

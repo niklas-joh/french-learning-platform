@@ -1,18 +1,26 @@
+/**
+ * User related controllers responsible for profile management and progress
+ * tracking APIs.
+ */
 import { Request, Response } from 'express';
 import knex from '../config/db';
-import { UserSchema } from '../models/User'; // Use UserSchema for DB operations
+import { UserSchema } from '../models/User';
 import UserContentAssignmentModel from '../models/UserContentAssignment';
 import UserPreferenceModel from '../models/UserPreference';
 
-// Extend Express Request type to include user property
+// Extend Express Request type to include the user object populated by the
+// authentication middleware.
 interface AuthenticatedRequest extends Request {
   user?: {
-    userId: number; // Changed to userId for consistency with auth.middleware.ts
-    email?: string; // Added for completeness, though not strictly used by getCurrentUserProfile directly
-    role?: string;  // Added for completeness
+    userId: number;
+    email?: string;
+    role?: string;
   };
 }
 
+/**
+ * Returns the authenticated user's profile without the password hash.
+ */
 export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) { // Check for userId and its validity
@@ -38,6 +46,9 @@ export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Resp
   }
 };
 
+/**
+ * Updates the authenticated user's profile fields.
+ */
 export const updateUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) { // Check for userId and its validity
@@ -92,7 +103,10 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+/**
+ * Lists all users. Admin only endpoint.
+ */
+export const getAllUsers = async (_req: Request, res: Response): Promise<void> => {
   try {
     const users = await knex('users').select('id', 'first_name', 'last_name', 'email', 'role');
     res.json(users);
@@ -102,6 +116,9 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+/**
+ * Returns all content assignments for the authenticated user.
+ */
 export const getAssignedContent = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
@@ -118,6 +135,9 @@ export const getAssignedContent = async (req: AuthenticatedRequest, res: Respons
   }
 };
 
+/**
+ * Aggregates progress for the authenticated user across all topics.
+ */
 export const getUserProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
@@ -172,6 +192,8 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
       };
     });
 
+    // TODO: include streaks and other progress metrics in the response
+
     res.json(progressData);
   } catch (error: any) {
     console.error('Error fetching user progress:', error);
@@ -179,6 +201,9 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
   }
 };
 
+/**
+ * Retrieves the persisted preferences for the authenticated user.
+ */
 export const getUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     try {
         if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {
@@ -198,6 +223,9 @@ export const getUserPreferences = async (req: AuthenticatedRequest, res: Respons
     }
 };
 
+/**
+ * Stores new preference values for the authenticated user.
+ */
 export const updateUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     try {
         if (!req.user || typeof req.user.userId !== 'number' || req.user.userId <= 0) {

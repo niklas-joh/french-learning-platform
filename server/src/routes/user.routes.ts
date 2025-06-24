@@ -1,3 +1,6 @@
+/**
+ * Routes for regular authenticated users.
+ */
 import { Router } from 'express';
 import { getCurrentUserProfile, updateUserProfile, getAllUsers, getAssignedContent, getUserProgress, getUserPreferences, updateUserPreferences } from '../controllers/user.controller';
 import { protect } from '../middleware/auth.middleware';
@@ -14,6 +17,8 @@ router.get('/me', protect, getCurrentUserProfile);
 // @desc    Update current user's profile
 // @access  Private
 router.put('/me', protect, updateUserProfile);
+
+// TODO: expose route for verifying email changes
 
 // @route   GET /api/users
 // @desc    Get all users

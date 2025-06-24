@@ -1,8 +1,17 @@
+/**
+ * Authentication controller.
+ *
+ * Handles registration and login logic and issues JWT tokens that are later
+ * consumed by the auth middleware.
+ */
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getUserByEmail, createUser, getInternalUserByEmail, UserApplicationData } from '../models/User';
 
+/**
+ * Registers a new user and returns a JWT token.
+ */
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password, firstName, lastName } = req.body;
@@ -16,6 +25,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+    // TODO: enforce password strength requirements before hashing.
 
     // Create user
     // The createUser function expects 'password_hash', 'first_name', 'last_name'
@@ -51,6 +61,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+/**
+ * Validates user credentials and returns a JWT token on success.
+ */
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
