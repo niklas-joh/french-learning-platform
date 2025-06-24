@@ -5,3 +5,14 @@ export interface TopicProgress {
   totalCount: number;
   percentage: number;
 }
+
+export interface AssignedContentProgress {
+  completedCount: number;
+  totalCount: number;
+  percentage: number;
+}
+
+export interface UserOverallProgress {
+  topicProgress: TopicProgress[];
+  assignedContentProgress: AssignedContentProgress;
+}

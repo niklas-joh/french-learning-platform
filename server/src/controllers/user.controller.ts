@@ -141,53 +141,32 @@ export const getAssignedContent = async (req: AuthenticatedRequest, res: Respons
 };
 
 /**
- * Aggregates progress for the authenticated user across all topics.
+ * Aggregates progress for the authenticated user across all topics and assigned content.
  */
 export const getUserProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    const uid2 = req.user?.userId ?? req.user?.id;
-    if (!uid2 || typeof uid2 !== 'number' || uid2 <= 0) {
+    const uid = req.user?.userId ?? req.user?.id;
+    if (!uid || typeof uid !== 'number' || uid <= 0) {
       res.status(401).json({ message: 'User not authenticated' });
       return;
     }
-    const userId = uid2;
+    const userId = uid;
 
-    // 1. Get all topics
+    // --- Topic Progress Calculation ---
     const topics = await knex('topics').select('id', 'name');
-    if (!topics || topics.length === 0) {
-      res.json([]);
-      return;
-    }
-
-    // 2. Get total content count for each topic
-    const totalCountsQuery = knex('content')
-      .select('topic_id')
-      .count('* as totalCount')
-      .groupBy('topic_id');
-    
-    // 3. Get completed content count for the user for each topic
-    const completedCountsQuery = knex('user_content_assignments')
-      .join('content', 'user_content_assignments.content_id', 'content.id')
-      .where({
-        'user_content_assignments.user_id': userId,
-        'user_content_assignments.status': 'completed',
-      })
-      .select('content.topic_id')
-      .count('* as completedCount')
-      .groupBy('content.topic_id');
-
-    const [totalCounts, completedCounts] = await Promise.all([
-      totalCountsQuery,
-      completedCountsQuery,
-    ]);
-
-    // 4. Map counts to topics for a more robust result
-    const progressData = topics.map(topic => {
-      const total = totalCounts.find(c => c.topic_id === topic.id);
-      const completed = completedCounts.find(c => c.topic_id === topic.id);
-
-      const totalCount = total ? Number(total.totalCount) : 0;
-      const completedCount = completed ? Number(completed.completedCount) : 0;
+    const topicProgress = topics.length > 0 ? await Promise.all(topics.map(async topic => {
+      const totalCountResult = await knex('content').where('topic_id', topic.id).count('* as count').first();
+      const completedCountResult = await knex('user_content_assignments')
+        .join('content', 'user_content_assignments.content_id', 'content.id')
+        .where({
+          'user_content_assignments.user_id': userId,
+          'user_content_assignments.status': 'completed',
+          'content.topic_id': topic.id,
+        })
+        .count('* as count').first();
+      
+      const totalCount = Number(totalCountResult?.count || 0);
+      const completedCount = Number(completedCountResult?.count || 0);
 
       return {
         topicId: topic.id,
@@ -196,11 +175,33 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
         totalCount,
         percentage: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
       };
-    });
+    })) : [];
 
-    // TODO: include streaks and other progress metrics in the response
+    // --- Assigned Content Progress Calculation ---
+    const assignedContentStats = await knex('user_content_assignments')
+      .where({ user_id: userId })
+      .select(
+        knex.raw('count(*) as "totalCount"'),
+        knex.raw('count(case when status = \'completed\' then 1 else null end) as "completedCount"')
+      )
+      .first();
 
-    res.json(progressData);
+    const totalAssigned = Number(assignedContentStats?.totalCount || 0);
+    const completedAssigned = Number(assignedContentStats?.completedCount || 0);
+    
+    const assignedContentProgress = {
+      completedCount: completedAssigned,
+      totalCount: totalAssigned,
+      percentage: totalAssigned > 0 ? Math.round((completedAssigned / totalAssigned) * 100) : 0,
+    };
+
+    // --- Final Response ---
+    const overallProgress = {
+      topicProgress,
+      assignedContentProgress,
+    };
+
+    res.json(overallProgress);
   } catch (error: any) {
     console.error('Error fetching user progress:', error);
     res.status(500).json({ message: 'Failed to fetch user progress' });
@@ -254,4 +255,52 @@ export const updateUserPreferences = async (req: AuthenticatedRequest, res: Resp
         console.error('Error updating user preferences:', error);
         res.status(500).json({ message: 'Failed to update user preferences' });
     }
+};
+
+/**
+ * Records progress for a specific content item for the authenticated user.
+ * Sets the status of the corresponding user_content_assignment to 'completed'.
+ */
+export const recordContentItemProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    const uid = req.user?.userId ?? req.user?.id;
+    if (!uid || typeof uid !== 'number' || uid <= 0) {
+      res.status(401).json({ message: 'User not authenticated' });
+      return;
+    }
+    const userId = uid;
+    const { contentId } = req.params;
+
+    if (!contentId || isNaN(Number(contentId))) {
+      res.status(400).json({ message: 'Invalid content ID provided.' });
+      return;
+    }
+
+    const numericContentId = Number(contentId);
+
+    // Check if an assignment exists. If not, create one.
+    // This handles cases where a user completes content that wasn't explicitly assigned.
+    let assignment = await knex('user_content_assignments')
+      .where({ user_id: userId, content_id: numericContentId })
+      .first();
+
+    if (!assignment) {
+      assignment = await UserContentAssignmentModel.assign(userId, numericContentId);
+    }
+
+    // Now, update the status to 'completed'
+    const updatedAssignment = await UserContentAssignmentModel.updateStatus(userId, numericContentId, 'completed');
+
+    if (!updatedAssignment) {
+      // This case might occur if the assignment exists but the update fails for some reason.
+      res.status(404).json({ message: 'Could not update progress. Assignment not found.' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Progress recorded successfully.', assignment: updatedAssignment });
+
+  } catch (error: any) {
+    console.error('Error recording content progress:', error);
+    res.status(500).json({ message: 'Failed to record progress.' });
+  }
 };

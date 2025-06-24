@@ -4,6 +4,7 @@ import { Container, CircularProgress, Alert } from '@mui/material';
 import Quiz from '../components/Quiz';
 import { Content } from '../types/Content';
 import { getContentById } from '../services/contentService';
+import { recordContentCompletion } from '../services/userService';
 
 const ContentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -50,9 +51,16 @@ const ContentPage: React.FC = () => {
     return null;
   }
 
+  const handleAnswer = (isCorrect: boolean) => {
+    if (isCorrect && content) {
+      // If the answer is correct, call the service to record the completion.
+      recordContentCompletion(content.id);
+    }
+  };
+
   return (
     <Container sx={{ mt: 4 }}>
-      <Quiz content={content} onAnswer={() => {}} />
+      <Quiz content={content} onAnswer={handleAnswer} />
     </Container>
   );
 };

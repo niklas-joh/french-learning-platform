@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Paper, CircularProgress, Alert, Box, List, ListItemButton, ListItemText, Divider } from '@mui/material';
 import { getUserProfile, UserProfileData, logout } from '../services/authService';
 import { getTopics, getContentForTopic, getAssignedContent } from '../services/contentService';
+import { recordContentCompletion } from '../services/userService';
 import { Topic } from '../types/Topic';
 import Quiz from './Quiz';
 import { Content } from '../types/Content';
@@ -59,9 +60,15 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleAnswer = (isCorrect: boolean) => {
-    console.log('Answered correctly:', isCorrect);
-    // Here you would typically update user progress, etc.
+  const handleAnswer = (contentId: number, isCorrect: boolean) => {
+    console.log(`Answered content ${contentId}. Correct: ${isCorrect}`);
+    if (isCorrect) {
+      // If the answer is correct, call the service to record the completion.
+      // This is an optimistic update; we don't wait for it or handle errors
+      // in the UI to keep things simple, as per requirements.
+      // The progress will be visible on the next page load.
+      recordContentCompletion(contentId);
+    }
   };
 
   if (loading) {
@@ -116,7 +123,7 @@ const Dashboard: React.FC = () => {
           )}
           {content.map((contentItem) => (
             <Box key={contentItem.id} sx={{ mb: 3 }}>
-              <Quiz content={contentItem} onAnswer={handleAnswer} />
+              <Quiz content={contentItem} onAnswer={(isCorrect) => handleAnswer(contentItem.id, isCorrect)} />
             </Box>
           ))}
         </Box>
