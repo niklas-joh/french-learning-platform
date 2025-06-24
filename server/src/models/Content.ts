@@ -35,8 +35,10 @@ export interface ContentApplicationData {
   id: number;
   name: string;
   topicId?: number | null;
+  topic_id?: number | null; // legacy field name
   type: string; // The name of the content type, e.g., 'multiple-choice'
   contentTypeId?: number;
+  question_data?: string; // legacy raw JSON string
   questionData: any; // Parsed JSON
   correctAnswer: any; // Parsed JSON
   options?: any | null; // Parsed JSON
@@ -61,12 +63,25 @@ function mapContentToApplicationData(content: any): ContentApplicationData {
     fullQuestionData.options = options;
   }
 
-  const type = content.typeName || content.type || 'default';
+  const typeIdMap: Record<number, string> = {
+    1: 'multiple-choice',
+    2: 'fill-in-the-blank',
+    3: 'sentence-correction',
+    4: 'true-false',
+  };
+
+  let type = content.typeName || content.type;
+  if (!type && typeof content.content_type_id === 'number') {
+    type = typeIdMap[content.content_type_id] || 'default';
+  }
+  if (!type) type = 'default';
 
   return {
     id: content.id!,
     name: content.name,
     topicId: content.topic_id,
+    topic_id: content.topic_id,
+    question_data: content.question_data,
     type,
     contentTypeId: content.content_type_id,
     questionData: fullQuestionData,
