@@ -46,7 +46,7 @@ const SentenceCorrectionQuiz: React.FC<SentenceCorrectionQuizProps> = ({ content
         <Typography variant="body1">{parts[1]}</Typography>
       </Box>
       <Button onClick={handleSubmit} variant="contained" disabled={isSubmitted}>
-        Soumettre
+        Submit
       </Button>
       {isSubmitted && (
         <Typography variant="body1" sx={{ mt: 2, color: isCorrect ? 'green' : 'red' }}>
