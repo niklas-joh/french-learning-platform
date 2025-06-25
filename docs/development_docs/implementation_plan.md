@@ -52,9 +52,9 @@
 - [✅] **'Assigned Content' Improvements:**
     - [✅] Refactored data model to separate explicit assignments from ad-hoc completions, fixing progress calculation bugs.
     - [✅] Correctly display content titles in the assigned content list.
-    - [ ] Show all incomplete items with a "View All" option.
-    - [ ] Filter out completed items from the main list.
-    - [ ] User-friendly layout: formatted names and icons for content types.
+    - [✅] Show all incomplete items with a "View All" option.
+    - [✅] Filter out completed items from the main list.
+    - [✅] User-friendly layout: formatted names and icons for content types.
 - [ ] **'Explore Topics' Styling:** Implement cards with descriptions and navigation.
 - [ ] **Intuitive Page Structure:** Redesign dashboard layout for better flow (learning, assignments, exploration, progress).
 - [ ] **Detailed Plan:** Refer to [Dashboard Enhancement Plan](./dashboard_enhancement_plan.md) for specifics.

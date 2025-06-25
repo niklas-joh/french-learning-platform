@@ -40,7 +40,7 @@ This document outlines the proposed improvements for the user dashboard based on
 
 ## 3. 'Assigned Content' Card Improvements
 
-### 3.a. Show More Items & Filter Completed (✅ Data Model Refactored)
+### 3.a. Show More Items & Filter Completed (✅ Completed)
 
 *   **Current Issue:** Ad-hoc completions were incorrectly affecting the "Assigned Content" progress bar.
 *   **Desired Change:**
@@ -52,14 +52,17 @@ This document outlines the proposed improvements for the user dashboard based on
         *   A new `user_content_completions` table now logs all completion events.
         *   The `user_content_assignments` table is now exclusively for explicit assignments.
     2.  **Backend Logic Update:** The `getUserProgress` and `recordContentItemProgress` controllers were updated to use the new two-table system, ensuring correct progress calculation.
-    3.  **Next Steps:** The frontend component (`AssignedContentList.tsx`) still needs to be updated to filter for incomplete items and implement the "View All" functionality.
+    3.  **Frontend Implementation:** The `client/src/components/AssignedContentList.tsx` component has been updated. It now filters to show incomplete items by default (when used with `showIncompleteOnly` prop on the dashboard) and includes a "View All" link to `/assignments` if a `limit` is applied and more items exist. The `client/src/pages/AllAssignmentsPage.tsx` displays all assignments (complete and incomplete) when navigated to.
 *   **Affected Files:**
     *   `server/src/controllers/user.controller.ts`
     *   `server/src/models/UserContentAssignment.ts`
     *   `server/src/models/UserContentCompletion.ts` (new)
     *   Multiple new database migration files.
+    *   `client/src/components/AssignedContentList.tsx`
+    *   `client/src/components/Dashboard.tsx`
+    *   `client/src/pages/AllAssignmentsPage.tsx`
 
-### 3.b. User-Friendly Layout (Names & Icons) (✅ Title Fixed)
+### 3.b. User-Friendly Layout (Names & Icons) (✅ Completed)
 
 *   **Current Issue:** The assigned content list was displaying the content's internal `name` or `type` instead of its user-friendly `title`.
 *   **Desired Change:**
@@ -67,24 +70,20 @@ This document outlines the proposed improvements for the user dashboard based on
     *   Use icons for content types.
 *   **Outcome:**
     1.  **Backend Fix:** The `UserContentAssignmentModel` was updated to select `content.title` from the database.
-    2.  **Frontend Fix:** The `AssignedContentList.tsx` component was updated to render the `name` property of the content object, which is now correctly populated with the title from the backend.
-    3.  **Next Steps:** The list still needs icons and potentially better name formatting for cases like `snake_case`.
+    2.  **Frontend Fix:** The `AssignedContentList.tsx` component was updated to render the `name` property (which is populated with the title) of the content object.
+    3.  **Frontend Implementation:** The `client/src/components/AssignedContentList.tsx` now uses a utility function (`formatDisplayName` from `client/src/utils/textFormatters.ts`) for name formatting and another utility (`getIconForType` from `client/src/utils/iconMap.tsx`) to display icons for content types.
 *   **Proposed Solution:**
     1.  **Name Formatting:**
-        *   Create a utility function (e.g., `formatDisplayName(text: string)`) that converts `snake_case` or `kebab-case` to "Title Case" (e.g., "Greeting Evening").
+        *   A utility function (`formatDisplayName(text: string)`) in `client/src/utils/textFormatters.ts` converts `snake_case` or `kebab-case` to "Title Case".
     2.  **Icons for Content Types:**
-        *   Install an icon library (e.g., `react-icons`).
-        *   Create a mapping from content type strings (e.g., "multiple-choice", "sentence-correction") to specific icon components.
-        *   Example mapping:
-            *   `multiple-choice`: `<FaListOl />` (Numbered list)
-            *   `sentence-correction`: `<FaEdit />` (Edit icon)
-            *   `fill-in-the-blank`: `<FaKeyboard />` (Keyboard icon for input)
-            *   `true-false`: `<FaCheckSquare />` / `<FaWindowClose />` (Check/cross)
-        *   Update the rendering logic to display the icon next to or in place of the content type text.
+        *   An icon library (`react-icons`) is used.
+        *   A mapping in `client/src/utils/iconMap.tsx` from content type strings to specific icon components is utilized.
+        *   The rendering logic in `AssignedContentList.tsx` displays the icon.
 *   **Affected Files:**
-    *   `client/src/components/AssignedContentList.tsx` (or `Dashboard.tsx`)
-    *   A new utility file for `formatDisplayName` (e.g., `client/src/utils/textFormatters.ts`)
-    *   A new mapping file or constant for icons (e.g., `client/src/utils/iconMap.tsx`)
+    *   `client/src/components/AssignedContentList.tsx`
+    *   `client/src/utils/textFormatters.ts`
+    *   `client/src/utils/iconMap.tsx`
+    *   `client/package.json` (for `react-icons` dependency)
 
 ## 4. 'Explore Topics' Styling
 
