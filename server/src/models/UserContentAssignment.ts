@@ -37,10 +37,24 @@ const UserContentAssignmentModel = {
 
   async findByUserId(userId: number): Promise<UserContentAssignmentWithContent[]> {
     // Lookup assignments and join the content information
+    // console.log(`[UserContentAssignmentModel] findByUserId - User ID: ${userId} (DEBUGGING - Simple Query)`); // Removed debug log
 
+    // // DEBUGGING: Simplified query (REMOVED)
+    // const assignmentsFromDb = await db('user_content_assignments')
+    //   .where({ 'user_id': userId })
+    //   .select('*');
+    // 
+    // console.log(`[UserContentAssignmentModel] findByUserId - Raw assignments from DB (DEBUGGING - Simple Query): ${JSON.stringify(assignmentsFromDb, null, 2)}`); // Removed debug log
+
+    // if (assignmentsFromDb.length === 0) { // REMOVED
+    //   console.log(`[UserContentAssignmentModel] findByUserId - DEBUGGING: No assignments found for user ${userId} with simple query. Returning empty array.`); // Removed debug log
+    //   return []; 
+    // }
+
+    // Restore Original query logic 
     const base = db('user_content_assignments')
       .where({ 'user_content_assignments.user_id': userId })
-      .join('content', 'user_content_assignments.content_id', 'content.id')
+      .leftJoin('content', 'user_content_assignments.content_id', 'content.id') // Changed to leftJoin
       .select(
         'user_content_assignments.*',
         'content.title as content_name',
@@ -51,13 +65,14 @@ const UserContentAssignmentModel = {
     const hasContentTypes = await db.schema.hasTable('content_types');
     const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
     if (hasContentTypes && hasContentTypeId) {
-      base.join('content_types', 'content.content_type_id', 'content_types.id');
+      base.leftJoin('content_types', 'content.content_type_id', 'content_types.id'); // Changed to leftJoin
       base.select('content_types.name as content_type_name', 'content.content_type_id as content_type_id');
     } else {
       base.select('content.type as content_type_name');
     }
-
+    // console.log(`[UserContentAssignmentModel] findByUserId - User ID: ${userId} (Restored Original Query)`); // Log removed
     const assignments = await base;
+    // console.log(`[UserContentAssignmentModel] findByUserId - Raw assignments from DB (After Joins): ${JSON.stringify(assignments, null, 2)}`); // Log removed
 
     const typeIdMap: Record<number, string> = {
       1: 'multiple-choice',
