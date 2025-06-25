@@ -20,14 +20,15 @@ interface AssignedContentListProps {
   assignments: UserContentAssignmentWithContent[];
   /** Number of items to display. Omit to show all */
   limit?: number;
-  // showIncompleteOnly prop is removed as filtering is now handled by parent
+  /** Whether to hide assignments with status === 'completed' */
+  showIncompleteOnly?: boolean;
 }
 
-const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, limit }) => {
-  // Filtering based on showIncompleteOnly is removed.
-  // The 'assignments' prop should now be the already filtered list from the parent.
+const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, limit, showIncompleteOnly = false }) => {
+  const baseAssignments = assignments; // Keep original list for reference if needed
+  const filteredAssignments = showIncompleteOnly ? baseAssignments.filter(a => a.status !== 'completed') : baseAssignments;
 
-  if (assignments.length === 0) {
+  if (filteredAssignments.length === 0) {
     return (
       <Box>
         <Typography variant="h5" component="h2" gutterBottom>
@@ -39,7 +40,7 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
     );
   }
 
-  const itemsToShow = typeof limit === 'number' ? assignments.slice(0, limit) : assignments;
+  const itemsToShow = typeof limit === 'number' ? filteredAssignments.slice(0, limit) : filteredAssignments;
   
   return (
     <Box>
@@ -76,9 +77,9 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
         ))}
       </List>
       {/* This link is more useful on the dashboard view specifically */}
-      {assignments.length > itemsToShow.length && (
+      {filteredAssignments.length > itemsToShow.length && (
          <Button component={RouterLink} to="/assignments" sx={{ mt: 2 }}>
-           View All ({assignments.length})
+           View All ({filteredAssignments.length})
          </Button>
       )}
     </Box>
