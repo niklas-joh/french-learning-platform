@@ -104,7 +104,9 @@ This document outlines the proposed improvements for the user dashboard based on
     *   `client/src/components/TopicCard.tsx` (new or existing)
     *   Relevant CSS files (e.g., `ExploreTopics.module.css`, `TopicCard.module.css`).
 
-## 5. Intuitive Page Structure Suggestion
+## 5. Intuitive Page Structure Suggestion (✅ Superseded)
+
+*   **Note:** This entire section has been superseded by a more detailed plan in `docs/development_docs/feature_dashboard_intuitive_layout_plan.md`. The "Intuitive Page Structure" will be implemented as a separate, larger feature.
 
 *   **Current Issue:** User feels the page mixes learning, progress, and user preferences, seeking a more intuitive layout.
 *   **Proposed New Dashboard Structure:**
@@ -165,6 +167,9 @@ This document outlines the proposed improvements for the user dashboard based on
 *   **Implementation Notes:**
     *   This would involve significant refactoring of `client/src/components/Dashboard.tsx`.
     *   May require creating new sub-components for each section (e.g., `QuickActionsSection.tsx`, `MyAssignmentsSection.tsx`).
-    *   CSS will be crucial for achieving a clean, card-based layout. Use the UI library Material-UI.
+*   CSS will be crucial for achieving a clean, card-based layout. Use the UI library Material-UI.
 
+---
+
+**Overall Status:** All enhancements planned in this document are now complete or have been moved to dedicated future plans. This document will be archived.
 This detailed plan will guide the implementation once approved.
