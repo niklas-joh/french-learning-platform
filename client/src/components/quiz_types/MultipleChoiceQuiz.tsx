@@ -76,8 +76,8 @@ const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({ content, onAnsw
             severity={isCorrect ? 'success' : 'error'}
             sx={{ mt: 2 }}
           >
-            {isCorrect ? 'Correct!' : 'Incorrect.'}
-            <Typography variant="body2">
+            {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+            <Typography variant="body2" sx={{ mt: 1 }}>
               {data.explanation}
             </Typography>
           </Alert>

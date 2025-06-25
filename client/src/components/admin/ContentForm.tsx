@@ -39,6 +39,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
   topics,
 }) => {
   const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [topicId, setTopicId] = useState<number | ''>('');
   const [contentTypeId, setContentTypeId] = useState<number | ''>('');
   const [contentTypes, setContentTypes] = useState<ContentType[]>([]);
@@ -73,6 +74,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
         );
 
         setName(content.name);
+        setTitle(content.title || '');
         setTopicId(content.topicId);
         setContentTypeId(currentContentType ? currentContentType.id : '');
         setActive(content.active);
@@ -93,6 +95,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
       } else if (!content) {
         // Reset for new content form
         setName('');
+        setTitle('');
         setTopicId('');
         setContentTypeId('');
         setQuestionData({});
@@ -118,6 +121,7 @@ const ContentForm: React.FC<ContentFormProps> = ({
 
     const contentData = {
       name,
+      title,
       topicId: Number(topicId),
       contentTypeId: Number(contentTypeId),
       type: selectedType ? selectedType.name : '',
@@ -140,14 +144,26 @@ const ContentForm: React.FC<ContentFormProps> = ({
           <TextField
             autoFocus
             margin="dense"
+            id="title"
+            label="Content Title"
+            type="text"
+            fullWidth
+            variant="outlined"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <TextField
+            margin="dense"
             id="name"
-            label="Content Name"
+            label="Content Identifier (Name)"
             type="text"
             fullWidth
             variant="outlined"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            helperText="Unique machine-readable identifier (e.g., food_phrase_blank)"
           />
           <FormControl fullWidth margin="dense" required>
             <InputLabel id="topic-select-label">Topic</InputLabel>

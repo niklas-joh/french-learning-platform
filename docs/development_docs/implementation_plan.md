@@ -45,6 +45,28 @@
 
 ---
 
+## **Phase 2.5: Dashboard Revamp (Parallel to early Phase 3)**
+### **Dashboard User Experience Enhancements**
+- [✅] **Personalized Welcome:** Display user's name instead of email.
+- [✅] **Clickable Progress Cards:** Enable navigation from progress elements.
+- [✅] **'Assigned Content' Improvements:**
+    - [✅] Refactored data model to separate explicit assignments from ad-hoc completions, fixing progress calculation bugs.
+    - [✅] Correctly display content titles in the assigned content list.
+    - [✅] Show all incomplete items with a "View All" option.
+    - [✅] Filter out completed items from the main list.
+    - [✅] User-friendly layout: formatted names and icons for content types.
+    - [✅] **Assignments Page Enhancements:** Added status column (Pending, In Progress, Completed, Overdue) and filter controls (Status, Topic placeholder, Journey placeholder) to the "All Assigned Content" page.
+- [✅] **'Explore Topics' Styling:** Implement cards with descriptions and navigation.
+- [➡️] **Intuitive Page Structure:** Redesign dashboard layout for better flow (learning, assignments, exploration, progress). (Moved to [Feature Plan: Dashboard Intuitive Layout](./feature_dashboard_intuitive_layout_plan.md))
+- [ℹ️] **Detailed Plan:** The original [Dashboard Enhancement Plan](./archive/dashboard_enhancement_plan.md) is now archived as all its items are complete or moved. Future work on the dashboard layout is detailed in [Feature Plan: Dashboard Intuitive Layout](./feature_dashboard_intuitive_layout_plan.md).
+
+### **Deliverables**
+- Revamped user dashboard with improved usability and aesthetics.
+- Clearer presentation of assigned content and learning paths.
+- Enhanced navigation and user engagement.
+
+---
+
 ## **Phase 3: AI Integration (Weeks 5-6)**
 ### **AI Services Setup**
 - [ ] Claude API integration

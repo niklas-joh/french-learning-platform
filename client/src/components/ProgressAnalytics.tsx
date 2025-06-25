@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { getUserProgress } from '../services/userService';
 import { UserOverallProgress } from '../types/Progress';
 import { Card, CardContent, Typography, Box, LinearProgress, CircularProgress, Alert, Paper } from '@mui/material';
@@ -52,12 +53,16 @@ const ProgressAnalytics: React.FC = () => {
           <Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, mb: 3 }}>
               {/* Assigned Content Progress */}
-              <Box sx={{ flex: 1 }}>
-                <Paper variant="outlined" sx={{ p: 2, height: '100%' }}>
-                  <Typography variant="h6" gutterBottom>Assigned Content</Typography>
+              <Box
+                sx={{ flex: 1, textDecoration: 'none' }}
+                component={RouterLink}
+                to="/assignments"
+              >
+                <Paper variant="outlined" sx={{ p: 2, height: '100%', '&:hover': { backgroundColor: 'action.hover' } }}>
+                  <Typography variant="h6" gutterBottom color="text.primary">Assigned Content</Typography>
                   <Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                      <Typography variant="subtitle1" component="span" fontWeight="medium">
+                      <Typography variant="subtitle1" component="span" fontWeight="medium" color="text.primary">
                         Overall Completion
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -90,7 +95,12 @@ const ProgressAnalytics: React.FC = () => {
               <Typography variant="h6" gutterBottom>Progress by Topic</Typography>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 1 }}>
                 {progress.topicProgress.map((item) => (
-                  <Box key={item.topicId}>
+                  <Box
+                    key={item.topicId}
+                    component={RouterLink}
+                    to={`/topics/${item.topicId}/learn`}
+                    sx={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                  >
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
                       <Typography variant="subtitle1" component="span" fontWeight="medium">
                         {item.topicName}

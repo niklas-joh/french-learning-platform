@@ -5,7 +5,7 @@ export interface UserContentAssignment {
   user_id: number;
   content_id: number;
   assigned_at: Date;
-  status: 'pending' | 'completed';
+  status: 'pending' | 'in-progress' | 'completed' | 'overdue';
 }
 
 export interface UserContentAssignmentWithContent extends UserContentAssignment {

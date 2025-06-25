@@ -14,6 +14,7 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('content').insert([
     {
       name: 'greeting_evening',
+      title: 'Greeting: Evening',
       topic_id: greetings.id,
       content_type_id: 1,
       question_data: JSON.stringify({
@@ -24,12 +25,13 @@ export async function seed(knex: Knex): Promise<void> {
           incorrect: "Remember that 'Bonsoir' is specifically used in the evening."
         }
       }),
-      correct_answer: JSON.stringify(1),
+      correct_answer: JSON.stringify('Bonsoir'),
       options: JSON.stringify(['Bonjour', 'Bonsoir', 'Bonne nuit']),
       difficulty_level: 'A1'
     },
     {
       name: 'food_phrase_blank',
+      title: 'Food Phrase: Fill in the Blank',
       topic_id: food.id,
       content_type_id: 2,
       question_data: JSON.stringify({
@@ -46,6 +48,7 @@ export async function seed(knex: Knex): Promise<void> {
     },
     {
       name: 'travel_sentence_fix',
+      title: 'Travel: Sentence Correction',
       topic_id: travel.id,
       content_type_id: 3,
       question_data: JSON.stringify({

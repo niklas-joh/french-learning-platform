@@ -99,12 +99,24 @@ async function populateContent() {
                   typeId = row.id;
                 }
 
+                // Resolve correct answer based on type
+                let correctAnswer;
+                if (
+                  normalizedType === 'multiple-choice' &&
+                  item.options &&
+                  typeof item.correct_answer === 'number'
+                ) {
+                  correctAnswer = item.options[item.correct_answer];
+                } else {
+                  correctAnswer = item.correct_answer;
+                }
+
                 await db('content').insert({
                   name: item.id || questionText,
                   topic_id: topic.id,
                   content_type_id: typeId,
                   question_data: JSON.stringify(questionData),
-                  correct_answer: JSON.stringify(item.correct_answer),
+                  correct_answer: JSON.stringify(correctAnswer),
                   options: item.options ? JSON.stringify(item.options) : null,
                   difficulty_level: item.difficulty,
                   tags: item.tags ? JSON.stringify(item.tags) : null,
