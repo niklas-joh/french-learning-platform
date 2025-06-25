@@ -12,7 +12,7 @@ import {
   ListItemButton,
   ListItemIcon,
 } from '@mui/material';
-import {formatDisplayName } from '../utils/textFormatters';
+import { formatDisplayName, formatStatus } from '../utils/textFormatters';
 import { getIconForType } from '../utils/iconMap';
 
 
@@ -20,14 +20,14 @@ interface AssignedContentListProps {
   assignments: UserContentAssignmentWithContent[];
   /** Number of items to display. Omit to show all */
   limit?: number;
-  /** Whether to hide assignments with status === 'completed' */
-  showIncompleteOnly?: boolean;
+  // showIncompleteOnly prop is removed as filtering is now handled by parent
 }
 
-const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, limit, showIncompleteOnly = false }) => {
-  const filteredAssignments = showIncompleteOnly ? assignments.filter(a => a.status !== 'completed') : assignments;
+const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, limit }) => {
+  // Filtering based on showIncompleteOnly is removed.
+  // The 'assignments' prop should now be the already filtered list from the parent.
 
-  if (filteredAssignments.length === 0) {
+  if (assignments.length === 0) {
     return (
       <Box>
         <Typography variant="h5" component="h2" gutterBottom>
@@ -39,7 +39,7 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
     );
   }
 
-  const itemsToShow = typeof limit === 'number' ? filteredAssignments.slice(0, limit) : filteredAssignments;
+  const itemsToShow = typeof limit === 'number' ? assignments.slice(0, limit) : assignments;
   
   return (
     <Box>
@@ -56,6 +56,19 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
                   primary={formatDisplayName(assignment.content.name)}
                   secondary={formatDisplayName(assignment.content.type)}
                 />
+                <Typography
+                  variant="body2"
+                  sx={{
+                    minWidth: '100px',
+                    textAlign: 'right',
+                    ml: 2, // Add margin to the left of the status
+                    color: assignment.status === 'completed' ? 'success.main' : 
+                           assignment.status === 'overdue' ? 'error.main' : 
+                           'text.secondary'
+                  }}
+                >
+                  {formatStatus(assignment.status)}
+                </Typography>
               </ListItemButton>
             </ListItem>
             {index < itemsToShow.length - 1 && <Divider />}
@@ -63,9 +76,9 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
         ))}
       </List>
       {/* This link is more useful on the dashboard view specifically */}
-      {filteredAssignments.length > itemsToShow.length && (
+      {assignments.length > itemsToShow.length && (
          <Button component={RouterLink} to="/assignments" sx={{ mt: 2 }}>
-           View All ({filteredAssignments.length})
+           View All ({assignments.length})
          </Button>
       )}
     </Box>
