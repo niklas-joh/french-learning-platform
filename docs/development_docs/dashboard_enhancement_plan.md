@@ -165,6 +165,6 @@ This document outlines the proposed improvements for the user dashboard based on
 *   **Implementation Notes:**
     *   This would involve significant refactoring of `client/src/components/Dashboard.tsx`.
     *   May require creating new sub-components for each section (e.g., `QuickActionsSection.tsx`, `MyAssignmentsSection.tsx`).
-    *   CSS will be crucial for achieving a clean, card-based layout. Consider a UI library like Material-UI or Chakra UI if not already heavily invested in custom CSS, or use a CSS framework like Tailwind CSS.
+    *   CSS will be crucial for achieving a clean, card-based layout. Use the UI library Material-UI.
 
 This detailed plan will guide the implementation once approved.
