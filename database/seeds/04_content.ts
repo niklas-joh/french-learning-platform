@@ -25,7 +25,7 @@ export async function seed(knex: Knex): Promise<void> {
           incorrect: "Remember that 'Bonsoir' is specifically used in the evening."
         }
       }),
-      correct_answer: JSON.stringify(1),
+      correct_answer: JSON.stringify('Bonsoir'),
       options: JSON.stringify(['Bonjour', 'Bonsoir', 'Bonne nuit']),
       difficulty_level: 'A1'
     },
