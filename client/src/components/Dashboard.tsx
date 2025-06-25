@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Typography, Paper, CircularProgress, Alert, Box } from '@mui/material';
 import { logout } from '../services/authService';
-import { getTopics, getContentForTopic, getAssignedContent } from '../services/contentService';
-import { recordContentCompletion, getCurrentUser } from '../services/userService';
+import { getTopics, getAssignedContent } from '../services/contentService';
+import { getCurrentUser } from '../services/userService';
 import { Topic } from '../types/Topic';
 import { User } from '../types/User';
-import { Link as RouterLink } from 'react-router-dom';
-import Quiz from './Quiz';
-import { Content } from '../types/Content';
+
 import AssignedContentList from './AssignedContentList';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
 import ProgressAnalytics from './ProgressAnalytics';
+import ExploreTopics from './ExploreTopics';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [topics, setTopics] = useState<Topic[]>([]);
-  const [content, setContent] = useState<Content[]>([]);
-  const [selectedTopicId, setSelectedTopicId] = useState<number | null>(null);
   const [assignments, setAssignments] = useState<UserContentAssignmentWithContent[]>([]);
 
   useEffect(() => {
@@ -48,30 +45,7 @@ const Dashboard: React.FC = () => {
     fetchInitialData();
   }, []);
 
-  const handleTopicClick = async (topicId: number) => {
-    try {
-      setSelectedTopicId(topicId);
-      setLoading(true);
-      const topicContent: Content[] = await getContentForTopic(topicId);
-      setContent(topicContent);
-    } catch (err: any) {
-      console.error('Error fetching topic content:', err);
-      setError('Failed to load content for this topic.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const handleAnswer = (contentId: number, isCorrect: boolean) => {
-    console.log(`Answered content ${contentId}. Correct: ${isCorrect}`);
-    if (isCorrect) {
-      // If the answer is correct, call the service to record the completion.
-      // This is an optimistic update; we don't wait for it or handle errors
-      // in the UI to keep things simple, as per requirements.
-      // The progress will be visible on the next page load.
-      recordContentCompletion(contentId);
-    }
-  };
 
   if (loading) {
     return (
@@ -102,33 +76,15 @@ const Dashboard: React.FC = () => {
           <ProgressAnalytics />
         </Box>
         <Box sx={{ mt: 4 }}>
-          <AssignedContentList assignments={assignments} />
+          <AssignedContentList assignments={assignments} limit={5} showIncompleteOnly />
         </Box>
         <Box sx={{ mt: 4 }}>
           <Typography variant="h5" component="h2" gutterBottom>
             Explore Topics
           </Typography>
-          {topics.map((topic) => (
-            <Typography
-              key={topic.id}
-              variant="h6"
-              sx={{ cursor: 'pointer', mb: 1 }}
-              onClick={() => handleTopicClick(topic.id)}
-            >
-              {topic.name}
-            </Typography>
-          ))}
+          <ExploreTopics topics={topics} />
         </Box>
-        <Box sx={{ mt: 4 }}>
-          {selectedTopicId && content.length === 0 && (
-            <Typography>No content found for this topic.</Typography>
-          )}
-          {content.map((contentItem) => (
-            <Box key={contentItem.id} sx={{ mb: 3 }}>
-              <Quiz content={contentItem} onAnswer={(isCorrect) => handleAnswer(contentItem.id, isCorrect)} />
-            </Box>
-          ))}
-        </Box>
+        {/* Topic content preview has been removed in favor of dedicated pages */}
       </Paper>
     </Container>
   );
