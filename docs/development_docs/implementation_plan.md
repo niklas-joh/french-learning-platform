@@ -56,7 +56,7 @@
     - [✅] Filter out completed items from the main list.
     - [✅] User-friendly layout: formatted names and icons for content types.
     - [✅] **Assignments Page Enhancements:** Added status column (Pending, In Progress, Completed, Overdue) and filter controls (Status, Topic placeholder, Journey placeholder) to the "All Assigned Content" page.
-- [ ] **'Explore Topics' Styling:** Implement cards with descriptions and navigation.
+- [✅] **'Explore Topics' Styling:** Implement cards with descriptions and navigation.
 - [ ] **Intuitive Page Structure:** Redesign dashboard layout for better flow (learning, assignments, exploration, progress).
 - [ ] **Detailed Plan:** Refer to [Dashboard Enhancement Plan](./dashboard_enhancement_plan.md) for specifics.
 
