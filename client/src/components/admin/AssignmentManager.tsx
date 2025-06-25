@@ -154,7 +154,7 @@ const AssignmentManager: React.FC = () => {
             ) : (
               assignments.map(assignment => (
                 <TableRow key={assignment.id}>
-                  <TableCell>{assignment.content.name}</TableCell>
+                  <TableCell>{assignment.content.title || assignment.content.name}</TableCell>
                   <TableCell>{assignment.content.type}</TableCell>
                   <TableCell>{assignment.status}</TableCell>
                   <TableCell align="right">

@@ -41,12 +41,14 @@ export const getContentById = async (id: number | string) => {
   return response.data;
 };
 
-export const getAssignedContent = async () => {
+import { UserContentAssignmentWithContent } from '../types/Assignment';
+
+export const getAssignedContent = async (): Promise<UserContentAssignmentWithContent[]> => {
   const token = localStorage.getItem('authToken');
   if (!token) {
     throw new Error('No token found');
   }
-  const response = await apiClient.get('/users/me/assignments', {
+  const response = await apiClient.get<UserContentAssignmentWithContent[]>('/users/me/assignments', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

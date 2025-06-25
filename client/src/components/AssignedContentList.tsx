@@ -51,7 +51,7 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
               <ListItemButton component={RouterLink} to={`/content/${assignment.content.id}`}> 
                 <ListItemIcon>{getIconForType(assignment.content.type)}</ListItemIcon>
                 <ListItemText
-                  primary={formatDisplayName(assignment.content.name)}
+                  primary={formatDisplayName(assignment.content.title || assignment.content.name)}
                   secondary={formatDisplayName(assignment.content.type)}
                 />
               </ListItemButton>

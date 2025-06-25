@@ -240,7 +240,8 @@ export interface UserContentAssignment {
   user_id: number;
   content_id: number;
   assigned_at: string;
-  status: string;
+  due_date?: string;
+  status: 'pending' | 'in-progress' | 'completed' | 'overdue';
 }
 
 export interface UserContentAssignmentWithContent extends UserContentAssignment {

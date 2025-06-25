@@ -43,7 +43,8 @@ const UserContentAssignmentModel = {
       .join('content', 'user_content_assignments.content_id', 'content.id')
       .select(
         'user_content_assignments.*',
-        'content.title as content_name',
+        'content.name as content_slug_name',
+        'content.title as content_display_title',
         'content.question_data as content_question_data',
         'content.id as content_id_alias'
       );
@@ -67,13 +68,22 @@ const UserContentAssignmentModel = {
     };
 
     return assignments.map(assignment => {
-      const { content_name, content_question_data, content_id_alias, content_type_id, content_type_name, ...assignmentData } = assignment;
+      const {
+        content_slug_name,
+        content_display_title,
+        content_question_data,
+        content_id_alias,
+        content_type_id,
+        content_type_name,
+        ...assignmentData
+      } = assignment;
       const type = content_type_name || (content_type_id ? typeIdMap[content_type_id] : undefined) || 'default';
       return {
         ...assignmentData,
         content: {
           id: content_id_alias,
-          name: content_name,
+          name: content_slug_name,
+          title: content_display_title,
           question_data: content_question_data,
           content_type_id: content_type_id,
           type,
