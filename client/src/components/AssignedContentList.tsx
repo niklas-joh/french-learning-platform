@@ -12,8 +12,9 @@ import {
   ListItemButton,
   ListItemIcon,
 } from '@mui/material';
-import { formatDisplayName } from '../utils/textFormatters';
+import {formatDisplayName } from '../utils/textFormatters';
 import { getIconForType } from '../utils/iconMap';
+
 
 interface AssignedContentListProps {
   assignments: UserContentAssignmentWithContent[];
@@ -32,13 +33,14 @@ const AssignedContentList: React.FC<AssignedContentListProps> = ({ assignments, 
         <Typography variant="h5" component="h2" gutterBottom>
           Assigned Content
         </Typography>
-        <Typography>No content has been assigned to you yet.</Typography>
+        <Typography>
+         No content has been assigned to you yet.</Typography>
       </Box>
     );
   }
 
   const itemsToShow = typeof limit === 'number' ? filteredAssignments.slice(0, limit) : filteredAssignments;
-
+  
   return (
     <Box>
       <Typography variant="h5" component="h2" gutterBottom>

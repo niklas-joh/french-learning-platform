@@ -27,6 +27,7 @@ const Dashboard: React.FC = () => {
         const topicList = await getTopics();
         setTopics(topicList);
         const assignedContent = await getAssignedContent();
+        // console.log('Dashboard - Fetched Assigned Content:', JSON.stringify(assignedContent, null, 2)); // Log removed
         setAssignments(assignedContent);
       } catch (err: any) {
         console.error('Failed to fetch dashboard data:', err);
@@ -76,6 +77,7 @@ const Dashboard: React.FC = () => {
           <ProgressAnalytics />
         </Box>
         <Box sx={{ mt: 4 }}>
+          {/* {console.log('Dashboard - Passing to AssignedContentList:', JSON.stringify(assignments, null, 2))} // Log removed */}
           <AssignedContentList assignments={assignments} limit={5} showIncompleteOnly />
         </Box>
         <Box sx={{ mt: 4 }}>

@@ -133,7 +133,9 @@ export const getAssignedContent = async (req: AuthenticatedRequest, res: Respons
     }
 
     const userId = uid;
+    // console.log(`[User Controller] getAssignedContent - User ID: ${userId}`); // Log removed
     const assignments = await UserContentAssignmentModel.findByUserId(userId);
+    // console.log(`[User Controller] getAssignedContent - Assignments from Model: ${JSON.stringify(assignments, null, 2)}`); // Log removed
     res.json(assignments);
   } catch (error: any) {
     console.error('Error fetching assigned content:', error);
