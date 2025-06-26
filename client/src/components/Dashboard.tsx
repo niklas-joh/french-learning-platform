@@ -66,28 +66,64 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Paper elevation={3} sx={{ padding: 3 }}>
+      {/* 
         <Typography variant="h4" component="h1" gutterBottom>
           Welcome, {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.email || 'User'}!
         </Typography>
         <Typography variant="body1" gutterBottom>
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.
         </Typography>
-        <Box sx={{ mt: 4 }}>
-          <ProgressAnalytics />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          {/* {console.log('Dashboard - Passing to AssignedContentList:', JSON.stringify(assignments, null, 2))} // Log removed */}
-          <AssignedContentList assignments={assignments} limit={5} showIncompleteOnly />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
-            Explore Topics
-          </Typography>
-          <ExploreTopics topics={topics} />
-        </Box>
-        {/* Topic content preview has been removed in favor of dedicated pages */}
-      </Paper>
+      */}
+
+      {/* Phase 2: New Section Components will be integrated here */}
+      
+      {/* 1. HeaderSection */}
+      {/* <HeaderSection user={user} /> */}
+      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for HeaderSection */}
+        <Typography variant="h5">Placeholder: Header Section</Typography>
+        <Typography>Welcome message and User Avatar/Settings Icon will be here.</Typography>
+        {user && <Typography>User: {user.firstName} {user.lastName}</Typography>}
+      </Box>
+
+      {/* 2. StartLearningNowSection */}
+      {/* <StartLearningNowSection assignments={assignments} /> */}
+      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for StartLearningNowSection */}
+        <Typography variant="h5">Placeholder: Start Learning Now Section</Typography>
+        <Typography>Continue Last Activity & Next Assigned Item will be here.</Typography>
+        {assignments && assignments.length > 0 && <Typography>Next assignment hint: {assignments[0].content.title}</Typography>}
+      </Box>
+
+      {/* 3. MyAssignmentsSection */}
+      {/* <MyAssignmentsSection assignments={assignments} /> */}
+      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for MyAssignmentsSection */}
+        <Typography variant="h5">Placeholder: My Assignments Section</Typography>
+        <Typography>AssignedContentList will be rendered here.</Typography>
+         {/* <AssignedContentList assignments={assignments} limit={3} showIncompleteOnly /> */}
+      </Box>
+
+      {/* 4. LearningJourneysSection */}
+      {/* <LearningJourneysSection /> */}
+      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for LearningJourneysSection */}
+        <Typography variant="h5">Placeholder: Learning Journeys Section</Typography>
+        <Typography>Coming Soon!</Typography>
+      </Box>
+
+      {/* 5. ExploreTopicsSectionWrapper */}
+      {/* <ExploreTopicsSectionWrapper topics={topics} /> */}
+      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for ExploreTopicsSectionWrapper */}
+        <Typography variant="h5">Placeholder: Explore Topics Section</Typography>
+        <Typography>ExploreTopics component will be wrapped here.</Typography>
+        {/* <ExploreTopics topics={topics} /> */}
+      </Box>
+
+      {/* 6. MyProgressOverviewSectionWrapper */}
+      {/* <MyProgressOverviewSectionWrapper /> */}
+      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for MyProgressOverviewSectionWrapper */}
+        <Typography variant="h5">Placeholder: My Progress Overview Section</Typography>
+        <Typography>ProgressAnalytics component will be wrapped here.</Typography>
+        {/* <ProgressAnalytics /> */}
+      </Box>
+
     </Container>
   );
 };
