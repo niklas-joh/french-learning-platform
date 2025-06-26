@@ -65,6 +65,7 @@ french-learning-platform/
 │
 ├── database/
 │   ├── migrations/
+│   │   └── archive/
 │   ├── seeds/
 │   └── schema.sql
 │

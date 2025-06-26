@@ -33,11 +33,11 @@ Backend: Node.js + Express
 └── Analytics Service
 
 Database: SQLite
-├── users (id, email, password_hash, first_name, last_name, role, preferences)
-├── topics (id, name, description, category, active)
-├── content (id, topic_id, content_type_id, name, question_data, correct_answer, options)
-├── content_types (id, name, description)
-└── user_content_assignments (id, user_id, content_id, assigned_at, status)
+    (The detailed schema is managed by Knex migrations in `database/migrations/`
+    and visualized in `docs/development_docs/database_schema.mermaid`.)
+    Key tables include: users, topics, content, content_types, user_content_assignments,
+    user_preferences, user_content_completions, user_progress, learning_paths,
+    learning_units, lessons, achievements, user_achievements, user_lesson_progress.
 ```
 
 ### 2.2 Current Limitations
@@ -340,193 +340,28 @@ interface AnimationConfig {
 
 ## 5. Database Schema Changes
 
-### 5.1 New Tables Required
+The database schema is managed by Knex.js migrations located in `database/migrations/`.
+The complete and current schema is visualized in `docs/development_docs/database_schema.mermaid`.
 
-```sql
--- User progress and gamification
-CREATE TABLE user_progress (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    current_level TEXT NOT NULL DEFAULT 'A1',
-    current_xp INTEGER NOT NULL DEFAULT 0,
-    total_xp INTEGER NOT NULL DEFAULT 0,
-    streak_days INTEGER NOT NULL DEFAULT 0,
-    last_activity_date DATE,
-    lessons_completed INTEGER NOT NULL DEFAULT 0,
-    words_learned INTEGER NOT NULL DEFAULT 0,
-    time_spent_minutes INTEGER NOT NULL DEFAULT 0,
-    accuracy_rate REAL NOT NULL DEFAULT 0.0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
+Key tables include:
+- `users`
+- `topics`
+- `content_types`
+- `content`
+- `user_content_assignments`
+- `user_preferences`
+- `user_content_completions`
+- `user_progress`
+- `learning_paths`
+- `learning_units`
+- `lessons`
+- `achievements`
+- `user_achievements`
+- `user_lesson_progress`
 
--- Learning paths and lessons
-CREATE TABLE learning_paths (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    language TEXT NOT NULL DEFAULT 'french',
-    name TEXT NOT NULL,
-    description TEXT,
-    total_lessons INTEGER NOT NULL DEFAULT 0,
-    estimated_duration INTEGER, -- in hours
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
+Refer to the aforementioned Knex migration files and the Mermaid diagram for detailed column definitions, types, constraints, and relationships.
 
-CREATE TABLE learning_units (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    learning_path_id INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    description TEXT,
-    level TEXT NOT NULL, -- A1, A2, B1, B2, C1, C2
-    order_index INTEGER NOT NULL,
-    prerequisites TEXT, -- JSON array of unit IDs
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (learning_path_id) REFERENCES learning_paths(id)
-);
-
-CREATE TABLE lessons (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    learning_unit_id INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    description TEXT,
-    type TEXT NOT NULL, -- vocabulary, grammar, conversation, culture, pronunciation
-    estimated_time INTEGER NOT NULL, -- in minutes
-    order_index INTEGER NOT NULL,
-    content_data TEXT, -- JSON content
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (learning_unit_id) REFERENCES learning_units(id)
-);
-
--- User lesson progress
-CREATE TABLE user_lesson_progress (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    lesson_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'locked', -- locked, available, in_progress, completed
-    score REAL, -- 0-100
-    time_spent INTEGER, -- in seconds
-    attempts INTEGER DEFAULT 0,
-    started_at DATETIME,
-    completed_at DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (lesson_id) REFERENCES lessons(id),
-    UNIQUE(user_id, lesson_id)
-);
-
--- Activities and user activity progress
-CREATE TABLE activities (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    lesson_id INTEGER NOT NULL,
-    type TEXT NOT NULL, -- multiple_choice, pronunciation, conversation, etc.
-    title TEXT NOT NULL,
-    content_data TEXT NOT NULL, -- JSON activity data
-    order_index INTEGER NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (lesson_id) REFERENCES lessons(id)
-);
-
-CREATE TABLE user_activity_progress (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    activity_id INTEGER NOT NULL,
-    status TEXT NOT NULL DEFAULT 'pending', -- pending, completed, skipped
-    score REAL, -- 0-100
-    response_data TEXT, -- JSON user responses
-    ai_feedback TEXT, -- JSON AI feedback
-    time_spent INTEGER, -- in seconds
-    attempts INTEGER DEFAULT 0,
-    completed_at DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (activity_id) REFERENCES activities(id)
-);
-
--- Achievements system
-CREATE TABLE achievements (
-    id TEXT PRIMARY KEY, -- e.g., 'streak_7_days'
-    name TEXT NOT NULL,
-    description TEXT NOT NULL,
-    icon TEXT NOT NULL,
-    category TEXT NOT NULL, -- streak, accuracy, lessons, speaking, vocabulary
-    criteria_data TEXT NOT NULL, -- JSON criteria
-    rarity TEXT NOT NULL DEFAULT 'common', -- common, rare, epic, legendary
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE user_achievements (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    achievement_id TEXT NOT NULL,
-    unlocked_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (achievement_id) REFERENCES achievements(id),
-    UNIQUE(user_id, achievement_id)
-);
-
--- AI conversation history
-CREATE TABLE ai_conversations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    session_id TEXT NOT NULL,
-    message_type TEXT NOT NULL, -- user, ai
-    content TEXT NOT NULL,
-    context_data TEXT, -- JSON context
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-
--- User vocabulary progress
-CREATE TABLE user_vocabulary (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    word TEXT NOT NULL,
-    translation TEXT NOT NULL,
-    language TEXT NOT NULL DEFAULT 'french',
-    proficiency_level INTEGER NOT NULL DEFAULT 0, -- 0-5 (unknown to mastered)
-    times_practiced INTEGER NOT NULL DEFAULT 0,
-    last_practiced DATETIME,
-    learned_at DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    UNIQUE(user_id, word, language)
-);
-```
-
-### 5.2 Modified Tables
-
-```sql
--- Add language learning specific fields to users table
-ALTER TABLE users ADD COLUMN native_language TEXT DEFAULT 'english';
-ALTER TABLE users ADD COLUMN target_languages TEXT; -- JSON array
-ALTER TABLE users ADD COLUMN learning_goals TEXT; -- JSON array
-ALTER TABLE users ADD COLUMN daily_goal_minutes INTEGER DEFAULT 15;
-ALTER TABLE users ADD COLUMN preferred_learning_time TEXT; -- morning, afternoon, evening
-ALTER TABLE users ADD COLUMN notification_preferences TEXT; -- JSON preferences
-
--- Enhance content table for new activity types
-ALTER TABLE content ADD COLUMN activity_type TEXT DEFAULT 'multiple_choice';
-ALTER TABLE content ADD COLUMN lesson_id INTEGER;
-ALTER TABLE content ADD COLUMN skill_focus TEXT; -- reading, writing, listening, speaking
-ALTER TABLE content ADD COLUMN estimated_time INTEGER; -- in minutes
-ALTER TABLE content ADD COLUMN ai_feedback_enabled BOOLEAN DEFAULT FALSE;
-
--- Add foreign key for lesson relationship
--- Note: This requires recreating table in SQLite
-```
+(The PRD sections 5.1 "New Tables Required" and 5.2 "Modified Tables" previously contained illustrative SQL. This has been removed to prevent outdated information, directing to the true sources of schema definition: Knex migrations and the `database_schema.mermaid` ERD.)
 
 ## 6. API Endpoint Requirements
 

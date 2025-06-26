@@ -399,9 +399,11 @@ export default App;
 ### Week 2: Database Schema and API Foundation
 
 #### Task 2.1: Database Schema Updates
-**File**: `server/database/migrations/001_language_learning_schema.sql`
+**Details**: The database schema is managed by Knex.js migration files located in `database/migrations/`. These migrations define the creation and alteration of tables. Key tables for this phase include `user_progress`, `learning_paths`, `learning_units`, `lessons`, `achievements`, and `user_achievements`. Refer to the migration files (e.g., `20250625000000_create_core_learning_tables.ts`) for the precise SQL definitions. The illustrative SQL below shows the general structure of these tables.
 ```sql
--- Create new tables for language learning platform
+-- Illustrative SQL for new tables (actual definitions are in Knex migrations):
+
+-- User progress and gamification
 
 -- User progress and gamification
 CREATE TABLE user_progress (
@@ -880,7 +882,7 @@ Before proceeding to Phase 2, ensure all Phase 1 tasks are completed:
     1.  Create migration: `server/database/migrations/YYYYMMDDHHMMSS_create_user_lesson_progress_table.ts` (using Knex schema builder).
     2.  Define `user_lesson_progress` table schema (columns: `id`, `user_id`, `lesson_id`, `status` (TEXT, default 'locked'), `score` (REAL), `time_spent` (INTEGER), `attempts` (INTEGER, default 0), `started_at` (DATETIME), `completed_at` (DATETIME), `created_at` (DATETIME, default CURRENT_TIMESTAMP), `updated_at` (DATETIME, default CURRENT_TIMESTAMP). Add Foreign Keys for `user_id` to `users(id)` and `lesson_id` to `lessons(id)`. Add `UNIQUE(user_id, lesson_id)` constraint).
     3.  Run migration.
-*   **Impacted Files**: New migration file, `database/schema.sql` (for reference), `docs/development_docs/database_schema.mermaid`.
+*   **Impacted Files**: New Knex migration files in `database/migrations/`, `database/schema.sql` (generated dump, for reference), `docs/development_docs/database_schema.mermaid`.
 
 #### Prerequisite Task P2: Implement Backend APIs for Learning Paths and Lesson Progress (Refined)
 *   **Objective**: Create backend services, controllers, and routes to serve a consolidated learning path structure including user-specific lesson statuses.
