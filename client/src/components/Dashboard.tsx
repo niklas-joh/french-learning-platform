@@ -13,6 +13,7 @@ import ExploreTopics from './ExploreTopics';
 // import HeaderSection from './dashboard_sections/HeaderSection'; // Removed
 import StartLearningNowSection from './dashboard_sections/StartLearningNowSection';
 import MyAssignmentsSection from './dashboard_sections/MyAssignmentsSection';
+import LearningJourneysSection from './dashboard_sections/LearningJourneysSection';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -89,11 +90,7 @@ const Dashboard: React.FC = () => {
       <MyAssignmentsSection assignments={assignments} />
 
       {/* 4. LearningJourneysSection */}
-      {/* <LearningJourneysSection /> */}
-      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for LearningJourneysSection */}
-        <Typography variant="h5">Placeholder: Learning Journeys Section</Typography>
-        <Typography>Coming Soon!</Typography>
-      </Box>
+      <LearningJourneysSection />
 
       {/* 5. ExploreTopicsSectionWrapper */}
       {/* <ExploreTopicsSectionWrapper topics={topics} /> */}
