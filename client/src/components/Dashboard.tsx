@@ -10,6 +10,7 @@ import AssignedContentList from './AssignedContentList';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
 import ProgressAnalytics from './ProgressAnalytics';
 import ExploreTopics from './ExploreTopics';
+// import HeaderSection from './dashboard_sections/HeaderSection'; // Removed
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -77,15 +78,9 @@ const Dashboard: React.FC = () => {
 
       {/* Phase 2: New Section Components will be integrated here */}
       
-      {/* 1. HeaderSection */}
-      {/* <HeaderSection user={user} /> */}
-      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for HeaderSection */}
-        <Typography variant="h5">Placeholder: Header Section</Typography>
-        <Typography>Welcome message and User Avatar/Settings Icon will be here.</Typography>
-        {user && <Typography>User: {user.firstName} {user.lastName}</Typography>}
-      </Box>
+      {/* HeaderSection user={user} /> // Removed as functionality moved to App.tsx AppBar */}
 
-      {/* 2. StartLearningNowSection */}
+      {/* 1. StartLearningNowSection (was 2) */}
       {/* <StartLearningNowSection assignments={assignments} /> */}
       <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for StartLearningNowSection */}
         <Typography variant="h5">Placeholder: Start Learning Now Section</Typography>
