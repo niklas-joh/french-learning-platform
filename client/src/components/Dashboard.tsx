@@ -15,6 +15,7 @@ import StartLearningNowSection from './dashboard_sections/StartLearningNowSectio
 import MyAssignmentsSection from './dashboard_sections/MyAssignmentsSection';
 import LearningJourneysSection from './dashboard_sections/LearningJourneysSection';
 import ExploreTopicsSectionWrapper from './dashboard_sections/ExploreTopicsSectionWrapper';
+import MyProgressOverviewSectionWrapper from './dashboard_sections/MyProgressOverviewSectionWrapper';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -97,12 +98,7 @@ const Dashboard: React.FC = () => {
       <ExploreTopicsSectionWrapper topics={topics} />
 
       {/* 6. MyProgressOverviewSectionWrapper */}
-      {/* <MyProgressOverviewSectionWrapper /> */}
-      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for MyProgressOverviewSectionWrapper */}
-        <Typography variant="h5">Placeholder: My Progress Overview Section</Typography>
-        <Typography>ProgressAnalytics component will be wrapped here.</Typography>
-        {/* <ProgressAnalytics /> */}
-      </Box>
+      <MyProgressOverviewSectionWrapper />
 
     </Container>
   );
