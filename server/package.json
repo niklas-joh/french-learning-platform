@@ -12,6 +12,7 @@
     "db:migrate": "knex migrate:latest --knexfile src/knexfile.ts",
     "db:rollback": "knex migrate:rollback --knexfile src/knexfile.ts",
     "db:seed": "knex seed:run --knexfile src/knexfile.ts",
+    "db:status": "knex migrate:list --knexfile src/knexfile.ts",
     "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts"
   },
   "keywords": [],

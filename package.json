@@ -9,7 +9,8 @@
     "set-admin": "npx ts-node --project server/tsconfig.json scripts/set_admin_user.ts",
     "populate:content": "npx ts-node --project server/tsconfig.json scripts/populate_content.ts",
     "migrate": "npx ts-node --project server/tsconfig.json scripts/run-migration.ts",
-    "db:setup": "npm run migrate && npm --prefix server run db:seed && npm run populate:content"
+    "db:status": "npm --prefix server run db:status",
+    "db:setup": "npm run migrate && npm run db:status && npm --prefix server run db:seed && npm run populate:content"
   },
   "keywords": [],
   "author": "",
