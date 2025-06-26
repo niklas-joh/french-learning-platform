@@ -160,12 +160,12 @@
 
 ### **Week 5-6 Checklist**
 ```bash
-✅ API integration architecture
-✅ Claude API wrapper
-✅ OpenAI API wrapper
-✅ Usage tracking system
-✅ AI feedback generation
-✅ Admin API controls
+[ ] API integration architecture
+[ ] Claude API wrapper
+[ ] OpenAI API wrapper
+[ ] Usage tracking system
+[ ] AI feedback generation
+[ ] Admin API controls
 ```
 
 ---
