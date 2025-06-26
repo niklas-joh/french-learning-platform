@@ -8,7 +8,6 @@ const DashboardPage: React.FC = () => {
     <Container>
       <Box sx={{ my: 4 }}>
         <Dashboard /> {/* Render the Dashboard component */}
-        <UserPreferencesForm />
       </Box>
     </Container>
   );

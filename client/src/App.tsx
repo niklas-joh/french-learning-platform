@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Container, Typography } from '@mui/material';
+import { AppBar, Toolbar, Button, Container, Typography, Box, Avatar, IconButton, Modal } from '@mui/material'; // Added Box, Avatar, IconButton, Modal
 import { getCurrentUser, isAuthenticated, logout as authLogout } from './services/authService';
+import { User } from './types/User'; // Added User type
+import UserPreferencesForm from './components/UserPreferencesForm'; // Added UserPreferencesForm
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
@@ -24,8 +26,31 @@ const NotFoundPage = () => (
 
 // AppContent component to use router hooks correctly
 const AppContent: React.FC = () => {
+  // Helper to get initials from firstName and potentially lastName
+  const getInitials = (firstName?: string, lastName?: string): string => {
+    if (!firstName) return '';
+    const firstInitial = firstName.charAt(0).toUpperCase();
+    if (!lastName) return firstInitial;
+    const lastInitial = lastName.charAt(0).toUpperCase();
+    return `${firstInitial}${lastInitial}`;
+  };
+
+  const modalStyle = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(isAuthenticated());
   const [currentUserRole, setCurrentUserRole] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null); // Added user state
+  const [isModalOpen, setIsModalOpen] = useState(false); // Added modal state
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,9 +59,23 @@ const AppContent: React.FC = () => {
       const authStatus = isAuthenticated();
       setIsUserAuthenticated(authStatus);
       if (authStatus) {
-        const user = getCurrentUser();
-        setCurrentUserRole(user?.role || null);
+        const currentUserData = getCurrentUser();
+        if (currentUserData) {
+          const transformedUser: User = {
+            id: currentUserData.id,
+            email: currentUserData.email,
+            firstName: currentUserData.firstName || '', // Default to empty string
+            lastName: currentUserData.lastName || '',   // Default to empty string
+            role: (currentUserData.role === 'admin' || currentUserData.role === 'user') ? currentUserData.role : 'user', // Ensure role is valid
+          };
+          setUser(transformedUser);
+          setCurrentUserRole(transformedUser.role);
+        } else {
+          setUser(null);
+          setCurrentUserRole(null);
+        }
       } else {
+        setUser(null); // Clear user object on logout
         setCurrentUserRole(null);
       }
     };
@@ -50,10 +89,14 @@ const AppContent: React.FC = () => {
     };
   }, [location.pathname]); // Re-check when route changes
 
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
   const handleLogout = () => {
     authLogout();
     setIsUserAuthenticated(false);
     setCurrentUserRole(null);
+    setUser(null); // Clear user object on logout
     navigate('/login');
   };
 
@@ -61,7 +104,7 @@ const AppContent: React.FC = () => {
     <>
       <AppBar position="static">
         <Toolbar>
-          {isUserAuthenticated ? (
+          {isUserAuthenticated && user ? (
             <>
               <Button color="inherit" component={Link} to="/dashboard">
                 Dashboard
@@ -71,12 +114,23 @@ const AppContent: React.FC = () => {
                   Admin Panel
                 </Button>
               )}
+              <Box sx={{ flexGrow: 1 }} /> {/* Pushes subsequent items to the right */}
+              <Typography sx={{ mr: 2 }}>
+                Welcome, {user.firstName}!
+              </Typography>
+              <IconButton onClick={handleOpenModal} color="inherit" sx={{ p: 0, mr: 2 }}>
+                <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                  {getInitials(user.firstName, user.lastName)}
+                </Avatar>
+              </IconButton>
               <Button color="inherit" onClick={handleLogout}>
                 Logout
               </Button>
             </>
           ) : (
             <>
+              {/* For unauthenticated users, push login/register to the right */}
+              <Box sx={{ flexGrow: 1 }} />
               <Button color="inherit" component={Link} to="/login">
                 Login
               </Button>
@@ -89,6 +143,22 @@ const AppContent: React.FC = () => {
           )}
         </Toolbar>
       </AppBar>
+      {/* Modal for User Preferences */}
+      {user && (
+        <Modal
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          aria-labelledby="user-preferences-modal-title"
+          aria-describedby="user-preferences-modal-description"
+        >
+          <Box sx={modalStyle}>
+            <Typography id="user-preferences-modal-title" variant="h6" component="h2" gutterBottom>
+              User Preferences
+            </Typography>
+            <UserPreferencesForm />
+          </Box>
+        </Modal>
+      )}
       <Container component="main" sx={{ mt: 4 }}>
         <Routes>
           <Route path="/" element={<LoginPage />} />

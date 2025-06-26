@@ -10,6 +10,12 @@ import AssignedContentList from './AssignedContentList';
 import { UserContentAssignmentWithContent } from '../types/Assignment';
 import ProgressAnalytics from './ProgressAnalytics';
 import ExploreTopics from './ExploreTopics';
+// import HeaderSection from './dashboard_sections/HeaderSection'; // Removed
+import StartLearningNowSection from './dashboard_sections/StartLearningNowSection';
+import MyAssignmentsSection from './dashboard_sections/MyAssignmentsSection';
+import LearningJourneysSection from './dashboard_sections/LearningJourneysSection';
+import ExploreTopicsSectionWrapper from './dashboard_sections/ExploreTopicsSectionWrapper';
+import MyProgressOverviewSectionWrapper from './dashboard_sections/MyProgressOverviewSectionWrapper';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -66,28 +72,34 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Paper elevation={3} sx={{ padding: 3 }}>
+      {/* 
         <Typography variant="h4" component="h1" gutterBottom>
           Welcome, {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.email || 'User'}!
         </Typography>
         <Typography variant="body1" gutterBottom>
           This is your personal dashboard. Here you will find your progress, available quizzes, and more.
         </Typography>
-        <Box sx={{ mt: 4 }}>
-          <ProgressAnalytics />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          {/* {console.log('Dashboard - Passing to AssignedContentList:', JSON.stringify(assignments, null, 2))} // Log removed */}
-          <AssignedContentList assignments={assignments} limit={5} showIncompleteOnly />
-        </Box>
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom>
-            Explore Topics
-          </Typography>
-          <ExploreTopics topics={topics} />
-        </Box>
-        {/* Topic content preview has been removed in favor of dedicated pages */}
-      </Paper>
+      */}
+
+      {/* Phase 2: New Section Components will be integrated here */}
+      
+      {/* HeaderSection user={user} /> // Removed as functionality moved to App.tsx AppBar */}
+
+      {/* 1. StartLearningNowSection (was 2) */}
+      <StartLearningNowSection assignments={assignments} />
+
+      {/* 3. MyAssignmentsSection */}
+      <MyAssignmentsSection assignments={assignments} />
+
+      {/* 4. LearningJourneysSection */}
+      <LearningJourneysSection />
+
+      {/* 5. ExploreTopicsSectionWrapper */}
+      <ExploreTopicsSectionWrapper topics={topics} />
+
+      {/* 6. MyProgressOverviewSectionWrapper */}
+      <MyProgressOverviewSectionWrapper />
+
     </Container>
   );
 };
