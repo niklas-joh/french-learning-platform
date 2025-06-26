@@ -11,6 +11,7 @@ import { UserContentAssignmentWithContent } from '../types/Assignment';
 import ProgressAnalytics from './ProgressAnalytics';
 import ExploreTopics from './ExploreTopics';
 // import HeaderSection from './dashboard_sections/HeaderSection'; // Removed
+import StartLearningNowSection from './dashboard_sections/StartLearningNowSection';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -81,12 +82,7 @@ const Dashboard: React.FC = () => {
       {/* HeaderSection user={user} /> // Removed as functionality moved to App.tsx AppBar */}
 
       {/* 1. StartLearningNowSection (was 2) */}
-      {/* <StartLearningNowSection assignments={assignments} /> */}
-      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for StartLearningNowSection */}
-        <Typography variant="h5">Placeholder: Start Learning Now Section</Typography>
-        <Typography>Continue Last Activity & Next Assigned Item will be here.</Typography>
-        {assignments && assignments.length > 0 && <Typography>Next assignment hint: {assignments[0].content.title}</Typography>}
-      </Box>
+      <StartLearningNowSection assignments={assignments} />
 
       {/* 3. MyAssignmentsSection */}
       {/* <MyAssignmentsSection assignments={assignments} /> */}
