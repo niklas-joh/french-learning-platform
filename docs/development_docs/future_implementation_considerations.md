@@ -68,6 +68,17 @@ This document captures potential future enhancements, refactorings, and larger s
 *   **Benefits:** Simplified data fetching logic, automatic caching, background updates, stale-while-revalidate strategies, reduced boilerplate for loading/error states.
 *   **Considerations:** This would be a significant architectural shift but could greatly improve performance and developer experience for data-heavy applications.
 
+## 3. Learning Path Enhancements
+
+### 3.1. Advanced Prerequisite Logic for Lessons and Units
+*   **Current State:** The `learningPathService.getLearningPathUserView` determines lesson availability based on sequential completion if no explicit progress exists. The `learning_units.prerequisites` field is a simple text field and not used for programmatic locking/unlocking.
+*   **Future Enhancement:** Implement a robust prerequisite system that allows defining dependencies between lessons and/or units.
+*   **Considerations:**
+    *   **Schema Changes:** Modify `learning_units.prerequisites` (and potentially add a similar field to `lessons`) to store structured data (e.g., JSON array of required lesson IDs or unit IDs).
+    *   **Service Logic:** Update `learningPathService` to parse these prerequisites and accurately determine lesson/unit availability based on the completion status of dependent items. This would involve checking `user_lesson_progress` for all prerequisite lessons.
+    *   **Impact:** Enables non-linear learning paths, more complex curriculum design, and a more accurate representation of content dependencies.
+    *   **Admin UI:** The admin interface for managing learning paths and units would need to be updated to allow for setting these structured prerequisites.
+
 ---
 
 *This document should be reviewed periodically and items prioritized for implementation as the project evolves.*

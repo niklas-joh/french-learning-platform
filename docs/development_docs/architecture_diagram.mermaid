@@ -17,6 +17,10 @@ graph TB
         I --> L[Progress Service]
         J --> M[Content Service]
         J --> N[Analytics Service]
+
+        LP_Routes[learningPathRoutes.ts]
+        LP_Controller[LearningPathController]
+        LP_Service[LearningPathService]
     end
 
     subgraph "AI Services"
@@ -49,6 +53,11 @@ graph TB
     L --> R
     M --> S
     N --> T
+
+    A --> LP_Routes
+    LP_Routes --> LP_Controller
+    LP_Controller --> LP_Service
+    LP_Service --> R
     
     U --> V
     V --> A
