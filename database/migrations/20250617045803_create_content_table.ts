@@ -1,31 +1,33 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  const hasTable = await knex.schema.hasTable('content');
-  if (!hasTable) {
-    await knex.schema.createTable('content', (table) => {
-      table.increments('id').primary();
-      table
+  await knex.schema.createTable('content', (table) => {
+    table.increments('id').primary();
+    table.string('name').notNullable().defaultTo('Unnamed Content');
+    table.string('title').nullable();
+    table
       .integer('topic_id')
       .unsigned()
       .nullable()
       .references('id')
       .inTable('topics')
-      .onDelete('SET NULL') // Or 'CASCADE' if content should be deleted with topic
+      .onDelete('SET NULL')
       .onUpdate('CASCADE');
-    table.string('type').notNullable(); // e.g., 'multiple_choice', 'fill_in_the_blank'
-    table.json('question_data').notNullable(); // Store question text, explanation, etc.
+    table
+      .integer('content_type_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('content_types') // Assuming content_types table is created before this
+      .onDelete('SET NULL');
+    table.json('question_data').notNullable();
     table.json('correct_answer').notNullable();
-    table.json('options').nullable(); // For multiple choice, etc.
+    table.json('options').nullable();
     table.string('difficulty_level').nullable();
-    table.json('tags').nullable(); // Store as JSON array of strings
+    table.json('tags').nullable();
     table.boolean('active').defaultTo(true).notNullable();
-    table.timestamps(true, true); // Adds created_at and updated_at
-    });
-  } else {
-    console.log('Table "content" already exists. Migration not run, or run to add missing columns if necessary.');
-    // Optionally add checks for missing columns and alter table
-  }
+    table.timestamps(true, true);
+  });
 }
 
 export async function down(knex: Knex): Promise<void> {

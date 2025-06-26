@@ -11,6 +11,7 @@ exports.up = function(knex) {
     table.foreign('content_id').references('content.id').onDelete('CASCADE');
     table.timestamp('assigned_at').defaultTo(knex.fn.now());
     table.string('status').notNullable().defaultTo('pending');
+    table.timestamp('due_date').nullable(); // Added nullable due_date
     table.unique(['user_id', 'content_id']);
   });
 };
@@ -20,5 +21,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable('user_content_assignments');
+  return knex.schema.dropTableIfExists('user_content_assignments'); // dropTableIfExists is safer
 };

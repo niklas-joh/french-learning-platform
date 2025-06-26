@@ -21,21 +21,6 @@ erDiagram
         datetime updated_at
     }
 
-    content {
-        int id PK
-        int topic_id FK "nullable"
-        int content_type_id FK
-        string name "not null"
-        json question_data "not null"
-        json correct_answer "not null"
-        json options "nullable"
-        string difficulty_level "nullable"
-        json tags "nullable"
-        boolean active "default: true"
-        datetime created_at
-        datetime updated_at
-    }
-
     content_types {
         int id PK
         string name UK
@@ -44,15 +29,157 @@ erDiagram
         datetime updated_at
     }
 
+    content {
+        int id PK
+        string name "notNull default: 'Unnamed Content'"
+        string title "nullable"
+        int topic_id FK "nullable"
+        int content_type_id FK "notNull"
+        json question_data "notNull"
+        json correct_answer "notNull"
+        json options "nullable"
+        string difficulty_level "nullable"
+        json tags "nullable"
+        boolean active "default: true notNull"
+        datetime created_at
+        datetime updated_at
+    }
+
     user_content_assignments {
         int id PK
         int user_id FK
         int content_id FK
-        datetime assigned_at
-        string status "default: 'pending'"
+        datetime assigned_at "default: now"
+        string status "default: 'pending' notNull"
+        datetime due_date "nullable"
+        %% unique user_id, content_id
     }
 
-    users ||--o{ user_content_assignments : "has"
-    content ||--o{ user_content_assignments : "is part of"
+    user_preferences {
+        int id PK
+        int user_id FK
+        json preferences "notNull"
+        datetime created_at
+        datetime updated_at
+    }
+
+    user_content_completions {
+        int id PK
+        int user_id FK
+        int content_id FK
+        datetime completed_at "notNull default: now"
+        int attempt_number "notNull default: 1"
+        float score "nullable"
+        int explicit_assignment_id FK "nullable"
+        datetime created_at
+        datetime updated_at
+    }
+
+    user_progress {
+        int id PK
+        int user_id FK
+        string current_level "notNull default: 'A1'"
+        int current_xp "notNull default: 0"
+        int total_xp "notNull default: 0"
+        int streak_days "notNull default: 0"
+        date last_activity_date "nullable"
+        int lessons_completed "notNull default: 0"
+        int words_learned "notNull default: 0"
+        int time_spent_minutes "notNull default: 0"
+        float accuracy_rate "notNull default: 0.0"
+        datetime created_at
+        datetime updated_at
+    }
+
+    learning_paths {
+        int id PK
+        string language "notNull default: 'french'"
+        string name "notNull"
+        text description "nullable"
+        int total_lessons "notNull default: 0"
+        int estimated_duration "nullable"
+        boolean is_active "default: true"
+        datetime created_at
+        datetime updated_at
+    }
+
+    learning_units {
+        int id PK
+        int learning_path_id FK
+        string title "notNull"
+        text description "nullable"
+        string level "notNull"
+        int order_index "notNull"
+        text prerequisites "nullable"
+        boolean is_active "default: true"
+        datetime created_at
+        datetime updated_at
+    }
+
+    lessons {
+        int id PK
+        int learning_unit_id FK
+        string title "notNull"
+        text description "nullable"
+        string type "notNull"
+        int estimated_time "notNull"
+        int order_index "notNull"
+        text content_data "nullable"
+        boolean is_active "default: true"
+        datetime created_at
+        datetime updated_at
+    }
+
+    achievements {
+        string id PK
+        string name "notNull"
+        text description "notNull"
+        string icon "notNull"
+        string category "notNull"
+        text criteria_data "notNull"
+        string rarity "notNull default: 'common'"
+        boolean is_active "default: true"
+        datetime created_at
+        datetime updated_at
+    }
+
+    user_achievements {
+        int id PK
+        int user_id FK
+        string achievement_id FK
+        datetime unlocked_at "default: now"
+        %% unique user_id, achievement_id
+    }
+
+    user_lesson_progress {
+        int id PK
+        int user_id FK
+        int lesson_id FK
+        string status "notNull default: 'locked'"
+        float score "nullable"
+        int time_spent "nullable"
+        int attempts "default: 0"
+        datetime started_at "nullable"
+        datetime completed_at "nullable"
+        datetime created_at
+        datetime updated_at
+        %% unique user_id, lesson_id
+    }
+
+    users ||--o{ user_preferences : "has"
+    users ||--o{ user_content_assignments : "assigned"
+    content ||--o{ user_content_assignments : "is_part_of"
+    users ||--o{ user_content_completions : "completes"
+    content ||--o{ user_content_completions : "is_completed_in"
+    user_content_assignments }o--o| user_content_completions : "can_lead_to"
+
     topics ||--o{ content : "contains"
-    content_types ||--o{ content : "is of type"
+    content_types ||--o{ content : "is_of_type"
+
+    users ||--o{ user_progress : "tracks"
+    learning_paths ||--o{ learning_units : "contains"
+    learning_units ||--o{ lessons : "contains"
+    users ||--o{ user_achievements : "earns"
+    achievements ||--o{ user_achievements : "awarded_to"
+    users ||--o{ user_lesson_progress : "tracks_progress_on"
+    lessons ||--o{ user_lesson_progress : "has_progress_by"
