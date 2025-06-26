@@ -57,8 +57,8 @@
     - [✅] User-friendly layout: formatted names and icons for content types.
     - [✅] **Assignments Page Enhancements:** Added status column (Pending, In Progress, Completed, Overdue) and filter controls (Status, Topic placeholder, Journey placeholder) to the "All Assigned Content" page.
 - [✅] **'Explore Topics' Styling:** Implement cards with descriptions and navigation.
-- [✅] **Intuitive Page Structure:** Redesign dashboard layout for better flow (learning, assignments, exploration, progress). (Moved to [Feature Plan: Dashboard Intuitive Layout](./feature_dashboard_intuitive_layout_plan.md))
-- [ℹ️] **Detailed Plan:** The original [Dashboard Enhancement Plan](./archive/dashboard_enhancement_plan.md) is now archived as all its items are complete or moved. Future work on the dashboard layout is detailed in [Feature Plan: Dashboard Intuitive Layout](./feature_dashboard_intuitive_layout_plan.md).
+- [✅] **Intuitive Page Structure:** Redesign dashboard layout for better flow (learning, assignments, exploration, progress). (Feature implemented as per [Feature Plan: Dashboard Intuitive Layout](./feature_dashboard_intuitive_layout_plan.md) - Completed 2025-06-26)
+- [✅] **Detailed Plan:** The original [Dashboard Enhancement Plan](./archive/dashboard_enhancement_plan.md) is now archived. The [Feature Plan: Dashboard Intuitive Layout](./feature_dashboard_intuitive_layout_plan.md) is now considered complete and will be archived post-PR.
 
 ### **Deliverables**
 - Revamped user dashboard with improved usability and aesthetics.
