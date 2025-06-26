@@ -12,6 +12,7 @@ import ProgressAnalytics from './ProgressAnalytics';
 import ExploreTopics from './ExploreTopics';
 // import HeaderSection from './dashboard_sections/HeaderSection'; // Removed
 import StartLearningNowSection from './dashboard_sections/StartLearningNowSection';
+import MyAssignmentsSection from './dashboard_sections/MyAssignmentsSection';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -85,12 +86,7 @@ const Dashboard: React.FC = () => {
       <StartLearningNowSection assignments={assignments} />
 
       {/* 3. MyAssignmentsSection */}
-      {/* <MyAssignmentsSection assignments={assignments} /> */}
-      <Box sx={{ mb: 3, p: 2, border: '1px dashed grey' }}> {/* Placeholder for MyAssignmentsSection */}
-        <Typography variant="h5">Placeholder: My Assignments Section</Typography>
-        <Typography>AssignedContentList will be rendered here.</Typography>
-         {/* <AssignedContentList assignments={assignments} limit={3} showIncompleteOnly /> */}
-      </Box>
+      <MyAssignmentsSection assignments={assignments} />
 
       {/* 4. LearningJourneysSection */}
       {/* <LearningJourneysSection /> */}
