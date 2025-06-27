@@ -88,7 +88,10 @@ export async function getLearningPathUserView(
 
   // 4. Data Restructuring and Status Determination
   const unitsMap = new Map<number, LearningUnitWithUserProgress>();
-  let firstAvailableFound = false;
+  // This variable tracks the status of the previous lesson in the linear path
+  // to determine if the current lesson should be unlocked.
+  // We initialize it to 'completed' to unlock the very first lesson.
+  let lastLessonStatus: LessonStatus | null = 'completed';
 
   for (const row of unitsAndLessonsRaw) {
     // Get or create the unit
@@ -111,14 +114,19 @@ export async function getLearningPathUserView(
     }
 
     const lessonProgress = progressMap.get(row.lesson_id);
-    let currentStatus: LessonStatus = 'locked'; // Default to locked
+    let currentStatus: LessonStatus;
 
     if (lessonProgress) {
+      // If a progress record exists, it is the source of truth for this lesson's status.
       currentStatus = lessonProgress.status;
-    } else if (!firstAvailableFound) {
-      // This is the first lesson without a progress record, so it becomes available.
-      currentStatus = 'available';
-      firstAvailableFound = true;
+    } else {
+      // If no progress record exists, the lesson is 'available' only if the previous
+      // lesson was completed. Otherwise, it remains 'locked'.
+      if (lastLessonStatus === 'completed') {
+        currentStatus = 'available';
+      } else {
+        currentStatus = 'locked';
+      }
     }
 
     const lessonWithProgress: LessonWithUserProgress = {
@@ -139,6 +147,14 @@ export async function getLearningPathUserView(
       completed_at: lessonProgress?.completed_at,
     };
     unit.lessons.push(lessonWithProgress);
+
+    // The status of the current lesson determines the state for the next one in the loop.
+    // If a lesson is 'available', the next one must be 'locked' until this one is completed.
+    if (currentStatus === 'available') {
+      lastLessonStatus = 'locked';
+    } else {
+      lastLessonStatus = currentStatus;
+    }
   }
 
   // TODO: Implement robust prerequisite logic for non-linear paths.
