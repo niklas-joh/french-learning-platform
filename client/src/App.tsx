@@ -7,6 +7,7 @@ import CustomThemeProvider from './ThemeProvider'; // Assuming theme is a defaul
 import MainLayout from './components/layout/MainLayout';
 import HomePage from './pages/HomePage';
 import LessonsPage from './pages/LessonsPage';
+import LessonPage from './pages/LessonPage';
 import PracticePage from './pages/PracticePage';
 import ProgressPage from './pages/ProgressPage';
 import ProfilePage from './pages/ProfilePage';
@@ -31,11 +32,12 @@ function App() {
 
             {/* Protected main application routes */}
             <Route element={<ProtectedRoute />}>
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/lessons" element={<LessonsPage />} />
-                <Route path="/practice" element={<PracticePage />} />
-                <Route path="/progress" element={<ProgressPage />} />
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/lessons" element={<LessonsPage />} />
+              <Route path="/lessons/:lessonId" element={<LessonPage />} />
+              <Route path="/practice" element={<PracticePage />} />
+              <Route path="/progress" element={<ProgressPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
               </Route>
             </Route>

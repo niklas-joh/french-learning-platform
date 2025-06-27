@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ClientLearningPath } from '../types/LearningPath';
 import { fetchLearningPath } from '../services/learningPathService';
 
@@ -23,7 +23,7 @@ export const useLearningPath = (pathId: number): UseLearningPathReturn => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -34,11 +34,11 @@ export const useLearningPath = (pathId: number): UseLearningPathReturn => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [pathId]);
 
   useEffect(() => {
     fetchData();
-  }, [pathId]);
+  }, [fetchData]);
 
   return { data, isLoading, error, refetch: fetchData };
 };

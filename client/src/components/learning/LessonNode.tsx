@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Icon } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Lock, PlayCircleOutline, CheckCircle, RadioButtonUnchecked } from '@mui/icons-material';
@@ -36,7 +37,14 @@ const statusMap = {
 };
 
 const LessonNode: React.FC<LessonNodeProps> = ({ lesson }) => {
+  const navigate = useNavigate();
   const { icon: StatusIcon, color, bgColor, borderColor } = statusMap[lesson.status];
+
+  const handleLessonClick = () => {
+    if (lesson.status !== 'locked') {
+      navigate(`/lessons/${lesson.id}`);
+    }
+  };
 
   return (
     <motion.div
@@ -47,6 +55,7 @@ const LessonNode: React.FC<LessonNodeProps> = ({ lesson }) => {
       whileTap={{ scale: lesson.status !== 'locked' ? 0.98 : 1 }}
     >
       <Box
+        onClick={handleLessonClick}
         sx={{
           display: 'flex',
           alignItems: 'center',

@@ -51,3 +51,18 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Simplifies state access in components.
   - Offers powerful features (like derived state and middleware) with minimal boilerplate compared to Redux.
   - Provides a clear, centralized store for all global state.
+
+## 6. Robust Prerequisite System for Learning Paths
+- **Identified**: During the implementation of the dynamic learning path (Task 2.3).
+- **Current State**: The backend `learningPathService` assumes a strictly linear path, unlocking the next lesson in sequence. The `prerequisites` field on the `learning_units` table is not currently used by the logic.
+- **Problem**: This prevents the creation of non-linear learning paths where, for example, a user might need to complete two specific "beginner" units before unlocking an "intermediate" one. The current system cannot model these dependencies.
+- **Proposed Solution**:
+  1.  **Schema Refinement**: Formalize the `prerequisites` column in the `learning_units` table to store a structured format, such as a JSON array of required `unit_id`s (e.g., `[1, 3]`).
+  2.  **Backend Logic Enhancement**: Update the `getLearningPathUserView` service to:
+      a. Fetch completion status for all units for the user.
+      b. For each unit, parse its prerequisites.
+      c. A unit (and its first lesson) becomes `available` only if all its prerequisite units are marked as `completed`.
+- **Benefits**:
+  - Enables the creation of flexible and pedagogically sound learning curricula.
+  - Allows for branching paths and optional review units.
+  - Makes the learning structure much more powerful and future-proof.

@@ -81,10 +81,10 @@ export async function getLearningPathUserView(
 
   // 4. Data Restructuring and Status Determination
   const unitsMap = new Map<number, LearningUnitWithUserProgress>();
-  let isFirstLessonOverall = true;
-  let previousLessonCompleted = true; // Assume true for the very first lesson to become available
+  let firstAvailableFound = false;
 
   for (const row of unitsAndLessonsRaw) {
+    // Get or create the unit
     let unit = unitsMap.get(row.unit_id);
     if (!unit) {
       unit = {
@@ -104,28 +104,16 @@ export async function getLearningPathUserView(
     }
 
     const lessonProgress = progressMap.get(row.lesson_id);
-    let currentLessonStatus: LessonStatus;
+    let currentStatus: LessonStatus = 'locked'; // Default to locked
 
     if (lessonProgress) {
-      currentLessonStatus = lessonProgress.status;
-    } else {
-      // TODO: Implement robust prerequisite logic.
-      // Currently, lesson availability relies on sequential completion or explicit
-      // user_lesson_progress status. The `learning_units.prerequisites` field
-      // is a text field and not used for programmatic locking/unlocking.
-      // Future enhancement should involve:
-      // 1. Modifying `learning_units.prerequisites` to be a structured format
-      //    (e.g., JSON array of required lesson/unit IDs).
-      // 2. Updating this service to parse these prerequisites and determine
-      //    lesson availability based on the completion status of dependent items.
-      // This will allow for non-linear learning paths and more complex dependencies.
-      if (isFirstLessonOverall) {
-        currentLessonStatus = 'available';
-      } else {
-        currentLessonStatus = previousLessonCompleted ? 'available' : 'locked';
-      }
+      currentStatus = lessonProgress.status;
+    } else if (!firstAvailableFound) {
+      // This is the first lesson without a progress record, so it becomes available.
+      currentStatus = 'available';
+      firstAvailableFound = true;
     }
-    
+
     const lessonWithProgress: LessonWithUserProgress = {
       id: row.lesson_id,
       learning_unit_id: row.unit_id,
@@ -138,17 +126,19 @@ export async function getLearningPathUserView(
       is_active: row.lesson_is_active,
       created_at: row.lesson_created_at,
       updated_at: row.lesson_updated_at,
-      status: currentLessonStatus,
+      status: currentStatus,
       score: lessonProgress?.score,
       started_at: lessonProgress?.started_at,
       completed_at: lessonProgress?.completed_at,
     };
     unit.lessons.push(lessonWithProgress);
-
-    // Update for next iteration
-    isFirstLessonOverall = false;
-    previousLessonCompleted = currentLessonStatus === 'completed';
   }
+
+  // TODO: Implement robust prerequisite logic for non-linear paths.
+  // The current logic assumes a linear path. Future enhancements should parse
+  // `learning_units.prerequisites` (e.g., a JSON array of unit IDs) to handle
+  // complex dependencies, which might allow multiple lessons or units to be
+  // 'available' simultaneously based on the completion of other units.
 
   const assembledUnits = Array.from(unitsMap.values()).sort((a, b) => a.order_index - b.order_index);
 
