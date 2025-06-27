@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create a dedicated Axios instance for our API
 const api = axios.create({
-  baseURL: '/api', // Adjust this if your API is hosted elsewhere
+  baseURL: '/api/v1', // Pointing to the versioned API
 });
 
 /**

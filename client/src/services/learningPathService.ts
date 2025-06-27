@@ -13,7 +13,8 @@ import { ClientLearningPath } from '../types/LearningPath';
  */
 export const fetchLearningPath = async (pathId: number): Promise<ClientLearningPath> => {
   try {
-    const response = await api.get<ClientLearningPath>(`/learning-paths/${pathId}/user-view`);
+    // The '/learning' prefix corresponds to how learningRoutes is registered in app.ts
+    const response = await api.get<ClientLearningPath>(`/learning/learning-paths/${pathId}/user-view`);
     return response.data;
   } catch (error) {
     // The error will be handled by the global interceptor in api.ts,

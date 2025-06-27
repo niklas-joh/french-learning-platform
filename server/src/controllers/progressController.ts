@@ -24,6 +24,11 @@ export const getUserStreak = async (req: Request, res: Response) => {
 };
 
 export const recordActivityCompleted = async (req: Request, res: Response) => {
+  // TODO: Refactor to an event-driven architecture.
+  // This synchronous operation is a potential performance bottleneck as it
+  // currently handles progress updates, XP calculations, and achievement checks
+  // in a single transaction.
+  // See: docs/development_docs/future_implementation_considerations.md (Item #7)
   try {
     const userId = (req as any).user.id;
     const activityData = req.body; // e.g., { type, performance, timeSpent }

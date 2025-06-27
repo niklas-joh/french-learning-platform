@@ -32,7 +32,7 @@ This document provides a high-level overview of the project's phases and major t
 | 2.3.3   | Create AI Controller & Service                   | `[x]` Done  | [details](./tasks/phase-1/2-3-3-ai-ctrl.md)       |
 | 2.3.4   | Create Speech Controller & Service               | `[x]` Done  | [details](./tasks/phase-1/2-3-4-speech-ctrl.md)   |
 | 2.4     | Create Progress Service                      | `[x]` Done  | [details](./tasks/phase-1/2-4-progress-service.md) |
-| 2.5     | Update API Routes                            | `[ ]` To Do | [details](./tasks/phase-1/2-5-api-routes.md) |
+| 2.5     | Update API Routes                            | `[x]` Done  | [details](./tasks/phase-1/2-5-api-routes.md) |
 
 ---
 

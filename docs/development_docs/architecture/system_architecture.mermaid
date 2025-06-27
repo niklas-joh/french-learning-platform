@@ -45,28 +45,55 @@ graph TD
 
     subgraph "Backend API (Node.js + Express)"
         direction TB
-        
-        subgraph "Core Routes"
+
+        ApiGateway["/api/v1"]
+
+        subgraph "Routes"
+            UserRoutes["user.routes.ts"]
+            LearningRoutes["learning.routes.ts"]
+            MetaRoutes["meta.routes.ts"]
             AuthRoutes["auth.routes.ts"]
-            ProgressRoutes["progress.routes.ts"]
-            LearningPathRoutes["learningPath.routes.ts"]
+            AdminRoutes["admin.routes.ts"]
         end
 
         subgraph "Controllers"
-            AuthController["auth.controller.ts"]
+            UserController["user.controller.ts"]
             ProgressController["progress.controller.ts"]
+            GamificationController["gamification.controller.ts"]
             LearningPathController["learningPath.controller.ts"]
+            AIController["ai.controller.ts"]
+            SpeechController["speech.controller.ts"]
         end
 
         subgraph "Services"
-            AuthService["auth.service.ts"]
             ProgressService["progress.service.ts"]
             LearningPathService["learningPath.service.ts"]
+            GamificationService["gamification.service.ts (placeholder)"]
+            AIService["ai.service.ts (placeholder)"]
+            SpeechService["speech.service.ts (placeholder)"]
         end
         
-        AuthRoutes --> AuthController --> AuthService
-        ProgressRoutes --> ProgressController --> ProgressService
-        LearningPathRoutes --> LearningPathController --> LearningPathService
+        ApiGateway --> AuthRoutes
+        ApiGateway --> UserRoutes
+        ApiGateway --> LearningRoutes
+        ApiGateway --> MetaRoutes
+        ApiGateway --> AdminRoutes
+
+        UserRoutes --> UserController
+        UserRoutes --> ProgressController
+        UserRoutes --> GamificationController
+        
+        LearningRoutes --> LearningPathController
+        LearningRoutes --> AIController
+        LearningRoutes --> SpeechController
+
+        MetaRoutes --> GamificationController
+
+        ProgressController --> ProgressService
+        GamificationController --> GamificationService
+        LearningPathController --> LearningPathService
+        AIController --> AIService
+        SpeechController --> SpeechService
     end
 
     subgraph "Data Layer (SQLite + Knex.js)"
@@ -96,6 +123,4 @@ graph TD
         Vercel -- "Serves" --> Frontend
     end
 
-    ApiService -- "Makes calls to" --> AuthRoutes
-    ApiService -- "Makes calls to" --> ProgressRoutes
-    ApiService -- "Makes calls to" --> LearningPathRoutes
+    ApiService -- "Makes calls to" --> ApiGateway
