@@ -85,14 +85,14 @@ export async function getLearningPathUserView(
 
   // Create a map for quick progress lookup
   const progressMap = new Map<number, UserLessonProgress>();
-  userProgressRecords.forEach(p => progressMap.set(p.lesson_id, p));
+  userProgressRecords.forEach(p => progressMap.set(p.lessonId, p));
 
   // 4. Data Restructuring and Status Determination
   const unitsMap = new Map<number, LearningUnitWithUserProgress>();
-  // This variable tracks the status of the previous lesson in the linear path
-  // to determine if the current lesson should be unlocked.
-  // We initialize it to 'completed' to unlock the very first lesson.
-  let lastLessonStatus: LessonStatus | null = 'completed';
+  // This variable tracks if the PREVIOUS lesson is marked as 'completed' in the database,
+  // which is the condition for unlocking the current lesson.
+  // We initialize it to true to ensure the very first lesson is always available.
+  let previousLessonWasCompleted = true;
 
   for (const row of unitsAndLessonsRaw) {
     // Get or create the unit
@@ -118,16 +118,11 @@ export async function getLearningPathUserView(
     let currentStatus: LessonStatus;
 
     if (lessonProgress) {
-      // If a progress record exists, it is the source of truth for this lesson's status.
+      // If a progress record exists, it is the source of truth.
       currentStatus = lessonProgress.status;
     } else {
-      // If no progress record exists, the lesson is 'available' only if the previous
-      // lesson was completed. Otherwise, it remains 'locked'.
-      if (lastLessonStatus === 'completed') {
-        currentStatus = 'available';
-      } else {
-        currentStatus = 'locked';
-      }
+      // If no record exists, the status depends on the completion of the previous lesson.
+      currentStatus = previousLessonWasCompleted ? 'available' : 'locked';
     }
 
     // Create a base lesson object from the row data
@@ -150,14 +145,15 @@ export async function getLearningPathUserView(
       ...lesson,
       status: currentStatus,
       score: lessonProgress?.score,
-      started_at: lessonProgress?.started_at,
-      completed_at: lessonProgress?.completed_at,
+      started_at: lessonProgress?.startedAt,
+      completed_at: lessonProgress?.completedAt,
     };
     
     unit.lessons.push(lessonWithProgress);
 
-    // The status of the current lesson becomes the prerequisite for the next lesson.
-    lastLessonStatus = currentStatus;
+    // For the next lesson to be available, THIS lesson must have a 'completed' status
+    // in the database. We check the original progress record, not the calculated `currentStatus`.
+    previousLessonWasCompleted = lessonProgress?.status === 'completed';
   }
 
   // TODO: Implement robust prerequisite logic for non-linear paths.
@@ -184,39 +180,37 @@ export async function startUserLesson(
   userId: number,
   lessonId: number
 ): Promise<UserLessonProgress> {
-  // Find existing progress record
   const existingProgress = await db<UserLessonProgress>('user_lesson_progress')
-    .where({ user_id: userId, lesson_id: lessonId })
+    .where({ userId: userId, lessonId: lessonId })
     .first();
 
   if (existingProgress) {
-    // If already 'in_progress' or 'completed', do nothing and return current state
-    if (['in_progress', 'completed'].includes(existingProgress.status)) {
+    // If the lesson is already in progress or completed, do nothing and return the current state.
+    if (existingProgress.status === 'in-progress' || existingProgress.status === 'completed') {
       return existingProgress;
     }
-    // If 'available' or 'locked' (though starting a locked lesson should be prevented by UI), update to 'in-progress'
-    const [updatedProgress] = await db<UserLessonProgress>('user_lesson_progress')
+
+    // This case handles a record that might exist but is not in a final state.
+    // We transition it to 'in-progress'. This is a safeguard.
+    const [updated] = await db('user_lesson_progress')
       .where('id', existingProgress.id)
-      .update({
-        status: 'in-progress',
-        started_at: new Date().toISOString(),
-      })
+      .update({ status: 'in-progress', started_at: new Date().toISOString() })
       .returning('*');
-    return updatedProgress;
-  } else {
-    // If no record exists, create a new one
-    // Note: In a strict system, we should verify the lesson is 'available' before creating this.
-    // This is handled in getLearningPathUserView, but could be re-verified here for API security.
-    const [newProgress] = await db<UserLessonProgress>('user_lesson_progress')
-      .insert({
-        user_id: userId,
-        lesson_id: lessonId,
-        status: 'in-progress',
-        started_at: new Date().toISOString(),
-      })
-      .returning('*');
-    return newProgress;
+    return updated;
   }
+
+  // If no progress record exists, the lesson is 'available' (as determined by the UI).
+  // We create a new record to mark it as 'in-progress'.
+  // For API security, a check could be added here to verify the lesson *should* be available.
+  const [newProgress] = await db<UserLessonProgress>('user_lesson_progress')
+    .insert({
+      userId: userId,
+      lessonId: lessonId,
+      status: 'in-progress',
+      startedAt: new Date().toISOString(),
+    })
+    .returning('*');
+  return newProgress;
 }
 
 /**
@@ -233,7 +227,7 @@ export async function completeUserLesson(
   trx: Knex.Transaction
 ): Promise<UserLessonProgress> {
   const progressToUpdate = await trx<UserLessonProgress>('user_lesson_progress')
-    .where({ user_id: userId, lesson_id: lessonId })
+    .where({ userId: userId, lessonId: lessonId })
     .first();
 
   // A lesson must be started before it can be completed.
@@ -252,7 +246,7 @@ export async function completeUserLesson(
     .where('id', progressToUpdate.id)
     .update({
       status: 'completed',
-      completed_at: new Date().toISOString(),
+      completedAt: new Date().toISOString(),
       // score could be updated here if applicable
     })
     .returning('*');

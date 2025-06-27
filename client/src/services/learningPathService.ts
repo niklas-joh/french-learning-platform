@@ -23,3 +23,32 @@ export const fetchLearningPath = async (pathId: number): Promise<ClientLearningP
     throw error;
   }
 };
+
+/**
+ * Notifies the backend that a user has started a lesson.
+ * @param lessonId The ID of the lesson being started.
+ * @returns A promise that resolves when the request is successful.
+ */
+export const startLesson = async (lessonId: number): Promise<void> => {
+  try {
+    await api.post(`/learning/user/lessons/${lessonId}/start`);
+  } catch (error) {
+    console.error(`Failed to mark lesson ${lessonId} as started:`, error);
+    // Depending on requirements, we might not want to throw,
+    // to avoid interrupting the user experience for a non-critical failure.
+  }
+};
+
+/**
+ * Notifies the backend that a user has completed a lesson.
+ * @param lessonId The ID of the lesson being completed.
+ * @returns A promise that resolves when the request is successful.
+ */
+export const completeLesson = async (lessonId: number): Promise<void> => {
+  try {
+    await api.post(`/learning/user/lessons/${lessonId}/complete`);
+  } catch (error) {
+    console.error(`Failed to mark lesson ${lessonId} as completed:`, error);
+    throw error; // Re-throw to allow UI to handle completion failure
+  }
+};

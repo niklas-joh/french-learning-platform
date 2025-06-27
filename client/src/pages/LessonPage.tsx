@@ -1,25 +1,67 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import { Box, Typography, Paper, CircularProgress, Alert } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-
-// TODO: This is a placeholder component. It needs to be connected to a
-// new service and hook to fetch the specific content for the given lessonId.
-// e.g., useLessonContent(lessonId)
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Box, Typography, Paper, CircularProgress, Alert, Button } from '@mui/material';
+import { ArrowBack, CheckCircle } from '@mui/icons-material';
+import { startLesson, completeLesson } from '../services/learningPathService';
+import { useLearningPath } from '../hooks/useLearningPath';
+import { ClientLesson, ClientLearningPath } from '../types/LearningPath';
 
 const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
+  const { data: learningPath, isLoading: isPathLoading, error: pathError, refetch: refreshLearningPath } = useLearningPath(1); // Assuming pathId 1
+  const [isCompleting, setIsCompleting] = useState(false);
+  const [completionError, setCompletionError] = useState<string | null>(null);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  // Placeholder state
-  const isLoading = false;
-  const error = null;
-  const lessonTitle = `Lesson ${lessonId}`; // Replace with actual data
+  const findLesson = (path: ClientLearningPath | null, id: number): ClientLesson | null => {
+    if (!path) return null;
+    for (const unit of path.units) {
+      for (const lesson of unit.lessons) {
+        if (lesson.id === id) {
+          return lesson;
+        }
+      }
+    }
+    return null;
+  };
+
+  const lesson = lessonId ? findLesson(learningPath, parseInt(lessonId, 10)) : null;
+
+  useEffect(() => {
+    if (lesson) {
+      setIsCompleted(lesson.status === 'completed');
+    }
+    if (lessonId && lesson?.status !== 'completed') {
+      startLesson(parseInt(lessonId, 10));
+    }
+  }, [lessonId, lesson]);
+
+  const handleCompleteLesson = async () => {
+    if (!lessonId) return;
+
+    setIsCompleting(true);
+    setCompletionError(null);
+    try {
+      await completeLesson(parseInt(lessonId, 10));
+      setIsCompleted(true); // Immediately update UI
+      await refreshLearningPath(); // Refresh data in the background
+      setTimeout(() => navigate('/lessons'), 1000); // Navigate after a short delay
+    } catch (err) {
+      setCompletionError('Failed to mark lesson as complete. Please try again.');
+      console.error(err);
+    } finally {
+      setIsCompleting(false);
+    }
+  };
 
   const handleBack = () => {
     navigate('/lessons');
   };
+
+  const isLoading = isPathLoading || !lesson;
+  const error = pathError;
+  const lessonTitle = lesson ? lesson.title : `Lesson ${lessonId}`;
 
   return (
     <Box sx={{ p: 2, pb: 10 }}>
@@ -36,18 +78,18 @@ const LessonPage: React.FC = () => {
       <Paper
         elevation={0}
         className="glass-card"
-        sx={{ p: 3, minHeight: '70vh' }}
+        sx={{ p: 3, minHeight: '70vh', display: 'flex', flexDirection: 'column' }}
       >
         {isLoading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
             <CircularProgress />
           </Box>
         ) : error ? (
           <Alert severity="error">{error}</Alert>
         ) : (
-          <Box>
+          <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h6" gutterBottom>
-              Content for Lesson {lessonId}
+              Content for {lessonTitle}
             </Typography>
             <Typography>
               This is where the actual lesson content (e.g., vocabulary, grammar explanations,
@@ -56,6 +98,31 @@ const LessonPage: React.FC = () => {
             {/* TODO: Implement content rendering components based on lesson.type */}
             {/* e.g., <VocabularyLesson content={lesson.content} /> */}
           </Box>
+        )}
+
+        {lesson && !isCompleted && (
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<CheckCircle />}
+              onClick={handleCompleteLesson}
+              disabled={isCompleting}
+            >
+              {isCompleting ? 'Completing...' : 'Complete Lesson'}
+            </Button>
+          </Box>
+        )}
+        {isCompleted && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            Lesson completed! Redirecting...
+          </Alert>
+        )}
+        {completionError && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {completionError}
+          </Alert>
         )}
       </Paper>
     </Box>

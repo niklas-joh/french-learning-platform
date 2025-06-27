@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Icon } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Lock, PlayCircleOutline, CheckCircle, RadioButtonUnchecked } from '@mui/icons-material';
+import { Lock, PlayCircleOutline, CheckCircle, HourglassTop } from '@mui/icons-material';
 import { ClientLesson, LessonStatus } from '../../types/LearningPath';
 
 interface LessonNodeProps {
@@ -23,7 +23,7 @@ const statusMap = {
     borderColor: 'var(--french-blue)',
   },
   in_progress: {
-    icon: RadioButtonUnchecked, // Or another suitable icon
+    icon: HourglassTop,
     color: 'var(--french-purple)',
     bgColor: 'rgba(118, 75, 162, 0.1)',
     borderColor: 'var(--french-purple)',
@@ -63,12 +63,13 @@ const LessonNode: React.FC<LessonNodeProps> = ({ lesson }) => {
           my: 1,
           borderRadius: 'var(--border-radius-medium)',
           cursor: lesson.status === 'locked' ? 'not-allowed' : 'pointer',
-          transition: 'background-color var(--transition-fast)',
-          backgroundColor: lesson.status === 'locked' ? 'transparent' : 'rgba(255, 255, 255, 0.6)',
+          transition: 'background-color var(--transition-fast), border-color var(--transition-fast)',
+          backgroundColor: lesson.status === 'locked' ? 'grey.100' : 'rgba(255, 255, 255, 0.6)',
           border: '1px solid',
-          borderColor: lesson.status === 'locked' ? 'transparent' : 'var(--glass-border)',
+          borderColor: lesson.status === 'locked' ? 'grey.300' : 'var(--glass-border)',
+          opacity: lesson.status === 'locked' ? 0.7 : 1,
           '&:hover': {
-            backgroundColor: lesson.status !== 'locked' ? 'rgba(255, 255, 255, 1)' : 'transparent',
+            backgroundColor: lesson.status !== 'locked' ? 'rgba(255, 255, 255, 1)' : 'grey.100',
           },
         }}
       >
