@@ -78,3 +78,15 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Decoupling**: Services no longer need to know about each other.
   - **Performance**: The API response to the user becomes nearly instantaneous.
   - **Scalability & Resilience**: Each consumer can be scaled independently. A failure in the achievement consumer doesn't affect progress updates.
+
+## 8. Implement Runtime Schema Validation for Lesson Content
+- **Identified**: During planning for dynamic lesson content rendering (Task 2.4).
+- **Current State**: The frontend relies on TypeScript interfaces to trust the shape of the `lesson.content_data` JSON blob coming from the API.
+- **Problem**: There is no runtime guarantee that the data from the database actually conforms to these frontend types. A data entry error or a migration issue could lead to malformed JSON, causing runtime crashes on the client.
+- **Proposed Solution**: Introduce a schema validation library like **Zod**.
+  1.  **Backend**: Before sending lesson data, parse the `content_data` JSON using a Zod schema to ensure it's valid.
+  2.  **Frontend**: When receiving data from the API, parse it with the same Zod schema. This not only validates the data but also automatically infers the TypeScript types, eliminating the need to maintain separate `interface` definitions.
+- **Benefits**:
+  - Creates a single source of truth for data shapes (the Zod schema).
+  - Prevents malformed data from ever reaching the UI components.
+  - Makes the application significantly more robust and resilient to data integrity issues.

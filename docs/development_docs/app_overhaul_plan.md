@@ -48,3 +48,7 @@ This document provides a high-level overview of the project's phases and major t
 | 2.3.2   | **Backend**: Implement `start` and `complete` Lesson Endpoints | `[x]` Done | [details](./tasks/phase-2/2-3-2-lesson-endpoints.md) |
 | 2.3.3   | **Frontend**: Update `LessonNode` to Visually Reflect Status | `[x]` Done | [details](./tasks/phase-2/2-3-3-lesson-node-ui.md) |
 | 2.3.4   | **Frontend**: Implement `start` and `complete` Logic on `LessonPage` | `[x]` Done | [details](./tasks/phase-2/2-3-4-lesson-page-logic.md) |
+| 2.4.1   | **Frontend**: Create Foundation for Dynamic Content Components | `[ ]` To Do | [details](./tasks/phase-2/2-4-1-dynamic-content-foundation.md) |
+| 2.4.2   | **Frontend**: Implement Dynamic Component Loading in `LessonPage` | `[ ]` To Do | [details](./tasks/phase-2/2-4-2-dynamic-loading.md) |
+| 2.4.3   | **Frontend**: Create Placeholder Content Components (`Vocab`, `Grammar`, etc.) | `[ ]` To Do | [details](./tasks/phase-2/2-4-3-placeholder-components.md) |
+| 2.4.4   | **Docs**: Update High-Level Architecture Diagrams | `[ ]` To Do | [details](./tasks/phase-2/2-4-4-update-architecture-docs.md) |
