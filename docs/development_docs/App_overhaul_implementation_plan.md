@@ -898,47 +898,56 @@ app.use('/api', progressRoutes);
     5.  Update `server/src/app.ts` to use new routes.
 *   **Impacted Files**: New model, service, controller, routes files in `server/src/`; update `server/src/app.ts`, `docs/development_docs/architecture_diagram.mermaid`.
 
-#### Task 2.1: Implement Visual Learning Path Component
+#### [x] Task 2.1: Implement Visual Learning Path Component
 
-*   **Subtask 2.1.A: Define Client-Side Data Models**
+*   **[x] Subtask 2.1.A: Define Client-Side Data Models**
     *   **Objective**: Create TypeScript interfaces for the consolidated learning path data.
-    *   **Action**: Create/update `client/src/types/LearningPath.ts` with `ClientLearningPath`, `ClientLearningUnit`, `ClientLesson` (where `ClientLesson` includes `status: LessonStatus` directly from the refined API response).
+    *   **Action**: Created `client/src/types/LearningPath.ts` with `ClientLearningPath`, `ClientLearningUnit`, and `ClientLesson` interfaces.
     *   **Impacted Files**: `client/src/types/LearningPath.ts`.
 
-*   **Subtask 2.1.B: Implement Client API Service**
+*   **[x] Subtask 2.1.B: Implement Client API Service**
     *   **Objective**: Create a service to fetch the consolidated learning path data.
-    *   **Action**: Update `client/src/services/learningPathService.ts` with `fetchLearningPathUserView(pathId: string): Promise<ClientLearningPath>`.
+    *   **Action**: Created `client/src/services/learningPathService.ts` with `fetchLearningPath` function. Added `TODO` for future API pagination.
     *   **Impacted Files**: `client/src/services/learningPathService.ts`.
 
-*   **Subtask 2.1.C: Create `LearningPath` State Management Hook**
+*   **[x] Subtask 2.1.C: Create `LearningPath` State Management Hook**
     *   **Objective**: Manage data fetching and state for the learning path.
-    *   **Action**: Create `client/src/hooks/useLearningPath.ts`. This hook will use the `learningPathService.fetchLearningPathUserView` and manage `loading`, `error`, and `data` states.
+    *   **Action**: Created `client/src/hooks/useLearningPath.ts`. This hook manages `loading`, `error`, and `data` states. Added `TODO` for future migration to a server-state library.
     *   **Impacted Files**: `client/src/hooks/useLearningPath.ts`.
 
-*   **Subtask 2.1.D: Develop `LearningPath.tsx` Structure & Sub-Components**
+*   **[x] Subtask 2.1.D: Develop `LearningPath.tsx` Structure & Sub-Components**
     *   **Objective**: Create the main UI component and sub-components for units and lesson nodes.
-    *   **Action**: Create `client/src/components/learning/LearningPath.tsx`. It may internally define or import `LearningUnitComponent` and `LessonNodeComponent`. Render units/lessons. Style nodes based on `lesson.status` using `design-tokens.css` and Material-UI icons (e.g., `Lock`, `PlayCircleOutline`, `CheckCircle`).
-    *   **Impacted Files**: `client/src/components/learning/LearningPath.tsx`.
+    *   **Action**: Created `LessonNode.tsx` and `LearningUnit.tsx`. Both are memoized for performance.
+    *   **Impacted Files**: `client/src/components/learning/LessonNode.tsx`, `client/src/components/learning/LearningUnit.tsx`.
 
-*   **Subtask 2.1.E: Implement Visual Connections and Styling**
+*   **[x] Subtask 2.1.E: Implement Visual Connections and Styling**
     *   **Objective**: Visually connect lesson nodes and apply consistent styling.
-    *   **Action**: Use CSS (pseudo-elements, borders) or SVG to draw lines connecting lesson nodes within a unit. Ensure styling aligns with `design-tokens.css`.
-    *   **Impacted Files**: `client/src/components/learning/LearningPath.tsx` (styles).
+    *   **Action**: Used a simple `border-left` approach in `LearningUnit.tsx` for a clean and maintainable visual path connector.
+    *   **Impacted Files**: `client/src/components/learning/LearningUnit.tsx`.
 
-*   **Subtask 2.1.F: Integrate into `LessonsPage.tsx`**
+*   **[x] Subtask 2.1.F: Integrate into `LessonsPage.tsx`**
     *   **Objective**: Display the learning path on the Lessons screen.
-    *   **Action**: Modify `client/src/pages/LessonsPage.tsx` to instantiate and display the `LearningPath.tsx` component, passing a default learning path ID.
+    *   **Action**: Created `client/src/pages/LessonsPage.tsx` and integrated the `LearningPath` component.
     *   **Impacted Files**: `client/src/pages/LessonsPage.tsx`.
 
-*   **Subtask 2.1.G: Implement Animations & Touch Interactions**
+*   **[x] Subtask 2.1.G: Implement Animations & Touch Interactions**
     *   **Objective**: Enhance UX with smooth animations and mobile-friendly interactions.
-    *   **Action**: Use `framer-motion` for load-in animations and status changes. Ensure nodes are easily tappable.
+    *   **Action**: Used `framer-motion` for fade-in and hover/tap animations on the components.
+    *   **Impacted Files**: `client/src/components/learning/LearningPath.tsx`, `client/src/components/learning/LessonNode.tsx`.
+
+*   **[x] Subtask 2.1.H: Implement Progressive Disclosure & Basic Error/Loading States**
+    *   **Objective**: Manage information density and provide user feedback.
+    *   **Action**: Implemented loading (`CircularProgress`) and error (`Alert` with retry button) states in `LearningPath.tsx`. Added `TODO` for future virtualization.
     *   **Impacted Files**: `client/src/components/learning/LearningPath.tsx`.
 
-*   **Subtask 2.1.H: Implement Progressive Disclosure & Basic Error/Loading States**
-    *   **Objective**: Manage information density and provide user feedback.
-    *   **Action**: Implement strategy (e.g., collapsible units). Display loading skeletons (MUI `Skeleton`) while data is fetched by `useLearningPath.ts`. Display user-friendly error messages if fetching fails, with a retry option.
-    *   **Impacted Files**: `client/src/components/learning/LearningPath.tsx`, `client/src/hooks/useLearningPath.ts`.
+#### Task 2.2: Integrate Authentication with New Layout
+*   **Objective**: Ensure that the authentication token from the login process is correctly stored and made available to the API services used by the new layout.
+*   **Key Actions**:
+    1.  Review the `authService.ts` and `LoginPage.tsx` to understand the current token storage mechanism (e.g., `localStorage`).
+    2.  Ensure the `ProtectedRoute` and API services (`learningPathService.ts`) are correctly retrieving the token.
+    3.  Refactor the login success logic to navigate to the new root (`/`) instead of the old `/dashboard`.
+    4.  Implement a global state or context for the user object to be accessible throughout the new layout, replacing the logic that was removed from `App.tsx`.
+*   **Impacted Files**: `client/src/pages/LoginPage.tsx`, `client/src/services/authService.ts`, `client/src/components/ProtectedRoute.tsx`, potentially a new `client/src/context/AuthContext.tsx`.
 
 ---
 (The plan would continue with other tasks for Week 3-4 like "Create lesson progression logic", "Build lesson content rendering system", etc., as outlined in the PRD, but broken down into similar actionable subtasks.)

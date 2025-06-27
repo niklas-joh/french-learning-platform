@@ -1,5 +1,22 @@
 graph TB
     subgraph "Frontend (React + TypeScript)"
+        subgraph "Core App Screens"
+            direction LR
+            HomePage(Home Page)
+            LessonsPage(Lessons Page)
+            PracticePage(Practice Page)
+            ProgressPage(Progress Page)
+            ProfilePage(Profile Page)
+        end
+
+        subgraph "Learning Components"
+            direction TB
+            LC1[LearningPath.tsx] --> LC2[LearningUnit.tsx]
+            LC2 --> LC3[LessonNode.tsx]
+        end
+        
+        LessonsPage --> LC1
+
         A[User Dashboard] --> B[Quiz Interface]
         A --> C[Progress Tracker]
         A --> AA[All Assignments Page]
