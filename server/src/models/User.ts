@@ -65,11 +65,26 @@ export const getUserByEmail = async (email: string): Promise<UserApplicationData
  * password hash. Used internally for authentication checks.
  */
 export const getInternalUserByEmail = async (email: string): Promise<UserSchema | null> => {
-  const user: UserSchema | undefined = await db<UserSchema>('users')
+  const user: any = await db('users')
     .select('*')
-    .whereRaw('LOWER(email) = LOWER(?)', [email.trim()]) // Trim email and make lookup case-insensitive
+    .whereRaw('LOWER(email) = LOWER(?)', [email.trim()])
     .first();
-  return user || null;
+
+  if (!user) {
+    return null;
+  }
+
+  // Manually map back to snake_case for internal use if needed, or adjust consuming function
+  return {
+    id: user.id,
+    email: user.email,
+    password_hash: user.passwordHash, // Key change here
+    first_name: user.firstName,
+    last_name: user.lastName,
+    role: user.role,
+    created_at: user.createdAt,
+    preferences: user.preferences,
+  };
 };
 
 /**
@@ -100,19 +115,5 @@ export const createUser = async (userData: NewUser): Promise<UserApplicationData
 
   const [insertedUser] = await db<UserSchema>('users').insert(userToInsert).returning('*');
   
-  // The 'returning('*')' might not work consistently across all SQLite versions with Knex
-  // or might return only the ID. If full object is not returned, fetch it.
-  if (insertedUser && insertedUser.id) {
-     return mapUserToApplicationData(insertedUser);
-  } else {
-    // Fallback: if 'returning' doesn't give the full user, query by email (assuming email is unique)
-    // Or, if an ID is returned, query by ID.
-    // For simplicity, let's assume email is the most reliable way to get the just-inserted user
-    // if 'returning' is not comprehensive.
-    const newUser = await getUserByEmail(userData.email);
-    if (!newUser) {
-        throw new Error('User creation failed or user not found after insert.');
-    }
-    return newUser;
-  }
+  return mapUserToApplicationData(insertedUser);
 };

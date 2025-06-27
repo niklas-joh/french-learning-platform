@@ -6,6 +6,7 @@
  * touching the developer's local data.
  */
 import type { Knex } from 'knex';
+import { knexSnakeCaseMappers } from 'objection';
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -28,6 +29,7 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
     },
+    ...knexSnakeCaseMappers(),
   },
 
   test: {
@@ -44,6 +46,7 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
     },
+    ...knexSnakeCaseMappers(),
   },
 };
 
