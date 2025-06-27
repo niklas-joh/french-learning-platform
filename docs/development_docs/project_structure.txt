@@ -1,88 +1,58 @@
 french-learning-platform/
 ├── README.md
 ├── package.json
-├── .gitignore
-├── .env.example
-├── vercel.json
 │
-├── client/                          # React Frontend
-│   ├── public/
+├── client/                          # React Frontend (Mobile-First)
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── auth/
-│   │   │   ├── dashboard/
-│   │   │   ├── quiz/
-│   │   │   ├── admin/
-│   │   │   └── common/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   ├── services/               # API calls
+│   │   │   ├── navigation/         # Core navigation (e.g., BottomTabNavigation)
+│   │   │   ├── layout/             # Main layout components (e.g., MainLayout)
+│   │   │   ├── learning/           # Components for the learning path
+│   │   │   └── common/             # (If needed for shared buttons, etc.)
+│   │   ├── pages/                  # Top-level screen components
+│   │   │   ├── HomePage.tsx
+│   │   │   ├── LessonsPage.tsx
+│   │   │   ├── PracticePage.tsx
+│   │   │   ├── ProgressPage.tsx
+│   │   │   ├── ProfilePage.tsx
+│   │   │   ├── LessonPage.tsx      # Detail page for a single lesson
+│   │   │   ├── LoginPage.tsx
+│   │   │   └── RegisterPage.tsx
+│   │   ├── hooks/                  # Custom hooks (e.g., useLearningPath)
+│   │   ├── services/               # API calls (e.g., api.ts, authService, learningPathService)
+│   │   ├── context/                # Global state (e.g., AuthContext)
 │   │   ├── types/                  # TypeScript interfaces
-│   │   ├── utils/
-│   │   └── styles/
-│   ├── package.json
-│   └── tsconfig.json
+│   │   ├── styles/                 # Global styles and design tokens
+│   │   └── utils/
+│   └── vite.config.ts
 │
 ├── server/                          # Node.js Backend
 │   ├── src/
 │   │   ├── controllers/
 │   │   │   ├── auth.controller.ts
-│   │   │   ├── user.controller.ts
-│   │   │   ├── content.controller.ts
-│   │   │   ├── quiz.controller.ts
-│   │   │   └── admin.controller.ts
+│   │   │   ├── progress.controller.ts
+│   │   │   └── learningPath.controller.ts
 │   │   ├── middleware/
-│   │   │   ├── auth.middleware.ts
-│   │   │   ├── admin.middleware.ts
-│   │   │   └── rateLimit.middleware.ts
-│   │   ├── models/
-│   │   │   ├── User.ts
-│   │   │   ├── Content.ts
-│   │   │   ├── UserResponse.ts
-│   │   │   └── SpacedRepetition.ts
-│   │   ├── services/
-│   │   │   ├── ai/
-│   │   │   │   ├── claude.service.ts
-│   │   │   │   ├── openai.service.ts
-│   │   │   │   └── ai-router.service.ts
-│   │   │   ├── learning/
-│   │   │   │   ├── spaced-repetition.service.ts
-│   │   │   │   ├── progress.service.ts
-│   │   │   │   └── recommendation.service.ts
-│   │   │   └── database/
-│   │   │       ├── connection.ts
-│   │   │       └── migrations/
+│   │   │   └── auth.middleware.ts
+│   │   ├── models/                 # Data interfaces (e.g., UserProgress, LearningPath)
+│   │   ├── services/               # Business logic
+│   │   │   ├── progress.service.ts
+│   │   │   └── learningPath.service.ts
 │   │   ├── routes/
 │   │   │   ├── auth.routes.ts
-│   │   │   ├── user.routes.ts
-│   │   │   ├── content.routes.ts
-│   │   │   └── admin.routes.ts
-│   │   ├── types/
-│   │   ├── utils/
+│   │   │   ├── progress.routes.ts
+│   │   │   └── learningPath.routes.ts
 │   │   └── app.ts
-│   ├── package.json
-│   └── tsconfig.json
 │
 ├── database/
-│   ├── migrations/
-│   │   └── archive/
-│   ├── seeds/
-│   └── schema.sql
+│   ├── migrations/                 # Knex.js database migrations
+│   ├── seeds/                      # Data seeding scripts
+│   └── schema.sql                  # (Reference) Generated DB schema
 │
-├── content/                         # Content Storage
-│   ├── topics/
-│   │   ├── subjunctive/
-│   │   ├── vocabulary/
-│   │   └── grammar/
-│   ├── templates/
-│   └── uploads/
+├── docs/
+│   ├── development_docs/
+│   │   ├── App_overhaul_implementation_plan.md
+│   │   ├── architecture_diagram.mermaid
+│   │   └── project_structure.txt
 │
-├── docs/                           # Documentation
-│   ├── api.md
-│   ├── deployment.md
-│   └── content-format.md
-│
-└── scripts/                        # Utility Scripts
-    ├── setup.sh
-    ├── deploy.sh
-    └── seed-data.js
+└── scripts/                        # Utility Scripts (e.g., init-db.ts)

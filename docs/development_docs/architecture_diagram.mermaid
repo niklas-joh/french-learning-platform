@@ -1,95 +1,101 @@
-graph TB
+graph TD
     subgraph "Frontend (React + TypeScript)"
+        direction TB
+
         subgraph "State & API Management"
-            direction TB
-            AuthContext["AuthContext (User, Token)"]
-            ApiService["Central API Service (with Interceptors)"]
+            AuthContext["AuthContext (User, Token, Auth Status)"]
+            ApiService["Central API Service (Axios with Interceptors)"]
+            useLearningPath["useLearningPath Hook (State for Lessons)"]
             AuthContext --> ApiService
+            ApiService --> AuthContext
         end
 
-        subgraph "Core App Screens"
+        subgraph "Core App Screens (Mobile First)"
             direction LR
-            HomePage(Home Page)
-            LessonsPage(Lessons Page)
-            PracticePage(Practice Page)
-            ProgressPage(Progress Page)
-            ProfilePage(Profile Page)
+            HomePage(Home)
+            LessonsPage(Lessons)
+            PracticePage(Practice)
+            ProgressPage(Progress)
+            ProfilePage(Profile)
         end
 
-        subgraph "Learning Components"
-            direction TB
-            LC1[LearningPath.tsx] --> LC2[LearningUnit.tsx]
-            LC2 --> LC3[LessonNode.tsx]
+        subgraph "UI Components"
+            MainLayout["MainLayout (Mobile Frame)"]
+            BottomNav["BottomTabNavigation"]
+            LearningPath["LearningPath.tsx"]
+            LearningUnit["LearningUnit.tsx"]
+            LessonNode["LessonNode.tsx"]
         end
+
+        MainLayout --> BottomNav
+        MainLayout --> HomePage
+        MainLayout --> LessonsPage
+        MainLayout --> PracticePage
+        MainLayout --> ProgressPage
+        MainLayout --> ProfilePage
         
-        LessonsPage --> LC1
-
-        HomePage --> AuthContext
-        LessonsPage --> AuthContext
-        PracticePage --> AuthContext
-        ProgressPage --> AuthContext
-        ProfilePage --> AuthContext
-
-        A[User Dashboard] --> B[Quiz Interface]
-        A --> C[Progress Tracker]
-        A --> AA[All Assignments Page]
-        A --> AB[Topic Content Page]
-        AB --> B
-        D[Admin Dashboard] --> E[Content Manager]
-        D --> F[User Analytics]
-        D --> G[API Controls]
+        LessonsPage --> LearningPath
+        LearningPath --> LearningUnit
+        LearningUnit --> LessonNode
+        
+        AuthContext -- "Provides auth state" --> MainLayout
+        useLearningPath -- "Fetches data via" --> ApiService
+        LessonNode -- "Navigates to" --> LessonPage(Lesson Detail Page)
     end
 
     subgraph "Backend API (Node.js + Express)"
-        H[Authentication Service] --> I[User Controller]
-        H --> J[Admin Controller]
-        I --> K[Quiz Engine]
-        I --> L[Progress Service]
-        J --> M[Content Service]
-        J --> N[Analytics Service]
+        direction TB
+        
+        subgraph "Core Routes"
+            AuthRoutes["auth.routes.ts"]
+            ProgressRoutes["progress.routes.ts"]
+            LearningPathRoutes["learningPath.routes.ts"]
+        end
 
-        LP_Routes[learningPathRoutes.ts]
-        LP_Controller[LearningPathController]
-        LP_Service[LearningPathService]
+        subgraph "Controllers"
+            AuthController["auth.controller.ts"]
+            ProgressController["progress.controller.ts"]
+            LearningPathController["learningPath.controller.ts"]
+        end
+
+        subgraph "Services"
+            AuthService["auth.service.ts"]
+            ProgressService["progress.service.ts"]
+            LearningPathService["learningPath.service.ts"]
+        end
+        
+        AuthRoutes --> AuthController --> AuthService
+        ProgressRoutes --> ProgressController --> ProgressService
+        LearningPathRoutes --> LearningPathController --> LearningPathService
     end
 
-    subgraph "AI Services"
-        O[Claude API]
-        P[OpenAI API]
-        Q[AI Router Service]
+    subgraph "Data Layer (SQLite + Knex.js)"
+        direction TB
+        Users["users"]
+        UserProgress["user_progress"]
+        LearningPaths["learning_paths"]
+        LearningUnits["learning_units"]
+        Lessons["lessons"]
+        UserLessonProgress["user_lesson_progress"]
+        Achievements["achievements"]
+        
+        AuthService --> Users
+        ProgressService --> UserProgress
+        LearningPathService --> LearningPaths
+        LearningPathService --> LearningUnits
+        LearningPathService --> Lessons
+        LearningPathService --> UserLessonProgress
     end
 
-    subgraph "Data Layer"
-        R[(SQLite Database)]
-        S[Content JSON Files]
-        T[User Progress Store]
+    subgraph "External Services & Deployment"
+        GitHub["GitHub Repository"]
+        Vercel["Vercel Hosting"]
+        AI_Tutor["AI Tutor Service (Future)"]
+        
+        GitHub -- "CI/CD" --> Vercel
+        Vercel -- "Serves" --> Frontend
     end
 
-    subgraph "External Integration"
-        U[GitHub Repository]
-        V[Vercel Hosting]
-    end
-
-    ApiService --> H
-    A --> ApiService
-    D --> ApiService
-    K --> Q
-    L --> Q
-    M --> Q
-    Q --> O
-    Q --> P
-    I --> R
-    J --> R
-    K --> R
-    L --> R
-    M --> S
-    N --> T
-
-    A --> LP_Routes
-    LP_Routes --> LP_Controller
-    LP_Controller --> LP_Service
-    LP_Service --> R
-    
-    U --> V
-    V --> A
-    V --> D
+    ApiService -- "Makes calls to" --> AuthRoutes
+    ApiService -- "Makes calls to" --> ProgressRoutes
+    ApiService -- "Makes calls to" --> LearningPathRoutes

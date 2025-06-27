@@ -8,6 +8,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getUserByEmail, createUser, getInternalUserByEmail, UserApplicationData } from '../models/User';
+import { progressService } from '../services/progressService';
 
 /**
  * Registers a new user and returns a JWT token.
@@ -36,6 +37,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       last_name: lastName,           // Use snake_case for DB model
       role: 'user'
     });
+
+    // Initialize user progress
+    await progressService.initializeUserProgress(createdUser.id);
 
     // Generate JWT using data from UserApplicationData
     const token = jwt.sign(

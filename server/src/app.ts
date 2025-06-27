@@ -13,7 +13,6 @@ import dotenv from 'dotenv';
 // Route imports (create these files)
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
-import contentRoutes from './routes/content.routes';
 import adminRoutes from './routes/admin.routes'; // Added admin routes
 import learningPathRoutes from './routes/learningPathRoutes'; // Added learning path routes
 
@@ -39,7 +38,6 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/content', contentRoutes);
 app.use('/api/admin', adminRoutes); // Added admin routes
 app.use('/api/learning-paths', learningPathRoutes); // Added learning path routes
 
