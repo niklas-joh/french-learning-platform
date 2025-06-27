@@ -1,7 +1,7 @@
 /**
  * Service layer for admin APIs.
  */
-import apiClient from './authService';
+import api from './api';
 import axios, { AxiosError } from 'axios';
 import { Topic } from '../types/Topic';
 import { Content } from '../types/Content';
@@ -19,8 +19,8 @@ interface AdminErrorResponse { // Consistent error response type
 
 export const getAdminAnalyticsSummary = async (): Promise<AnalyticsSummary> => {
   try {
-    // No need to manually get/set token, axios interceptor in authService handles it
-    const response = await apiClient.get<AnalyticsSummary>('/admin/analytics/summary');
+    // No need to manually get/set token, the central 'api' service interceptor handles it
+    const response = await api.get<AnalyticsSummary>('/admin/analytics/summary');
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<AdminErrorResponse>;
@@ -42,7 +42,7 @@ export const getAdminAnalyticsSummary = async (): Promise<AnalyticsSummary> => {
  */
 export const getTopics = async (): Promise<Topic[]> => {
   try {
-    const response = await apiClient.get<Topic[]>('/admin/topics');
+    const response = await api.get<Topic[]>('/admin/topics');
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -59,7 +59,7 @@ export const getTopics = async (): Promise<Topic[]> => {
  */
 export const createTopic = async (topicData: Omit<Topic, 'id'>): Promise<Topic> => {
   try {
-    const response = await apiClient.post<Topic>('/admin/topics', topicData);
+    const response = await api.post<Topic>('/admin/topics', topicData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -77,7 +77,7 @@ export const createTopic = async (topicData: Omit<Topic, 'id'>): Promise<Topic> 
  */
 export const updateTopic = async (topicId: number, topicData: Partial<Topic>): Promise<Topic> => {
   try {
-    const response = await apiClient.put<Topic>(`/admin/topics/${topicId}`, topicData);
+    const response = await api.put<Topic>(`/admin/topics/${topicId}`, topicData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -94,7 +94,7 @@ export const updateTopic = async (topicId: number, topicData: Partial<Topic>): P
  */
 export const deleteTopic = async (topicId: number): Promise<void> => {
   try {
-    await apiClient.delete(`/admin/topics/${topicId}`);
+    await api.delete(`/admin/topics/${topicId}`);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AdminErrorResponse;
@@ -119,7 +119,7 @@ export interface ContentType {
  */
 export const getContentTypes = async (): Promise<ContentType[]> => {
   try {
-    const response = await apiClient.get<ContentType[]>('/admin/content-types');
+    const response = await api.get<ContentType[]>('/admin/content-types');
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -131,7 +131,7 @@ export const getContentTypes = async (): Promise<ContentType[]> => {
 
 export const createContentType = async (data: { name: string; description?: string }): Promise<ContentType> => {
   try {
-    const response = await apiClient.post<ContentType>('/admin/content-types', data);
+    const response = await api.post<ContentType>('/admin/content-types', data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -143,7 +143,7 @@ export const createContentType = async (data: { name: string; description?: stri
 
 export const updateContentType = async (id: number, data: { name: string; description?: string }): Promise<ContentType> => {
   try {
-    const response = await apiClient.put<ContentType>(`/admin/content-types/${id}`, data);
+    const response = await api.put<ContentType>(`/admin/content-types/${id}`, data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -155,7 +155,7 @@ export const updateContentType = async (id: number, data: { name: string; descri
 
 export const deleteContentType = async (id: number): Promise<void> => {
   try {
-    await apiClient.delete(`/admin/content-types/${id}`);
+    await api.delete(`/admin/content-types/${id}`);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AdminErrorResponse;
@@ -170,7 +170,7 @@ export const deleteContentType = async (id: number): Promise<void> => {
  */
 export const getContentItems = async (): Promise<Content[]> => {
   try {
-    const response = await apiClient.get<Content[]>('/admin/content');
+    const response = await api.get<Content[]>('/admin/content');
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -187,7 +187,7 @@ export const getContentItems = async (): Promise<Content[]> => {
  */
 export const createContentItem = async (contentData: Omit<Content, 'id'>): Promise<Content> => {
   try {
-    const response = await apiClient.post<Content>('/admin/content', contentData);
+    const response = await api.post<Content>('/admin/content', contentData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -205,7 +205,7 @@ export const createContentItem = async (contentData: Omit<Content, 'id'>): Promi
  */
 export const updateContentItem = async (contentId: number, contentData: Partial<Content>): Promise<Content> => {
   try {
-    const response = await apiClient.put<Content>(`/admin/content/${contentId}`, contentData);
+    const response = await api.put<Content>(`/admin/content/${contentId}`, contentData);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -222,7 +222,7 @@ export const updateContentItem = async (contentId: number, contentData: Partial<
  */
 export const deleteContentItem = async (contentId: number): Promise<void> => {
   try {
-    await apiClient.delete(`/admin/content/${contentId}`);
+    await api.delete(`/admin/content/${contentId}`);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AdminErrorResponse;
@@ -255,7 +255,7 @@ export interface UserContentAssignmentWithContent extends UserContentAssignment 
  */
 export const assignContentToUser = async (userId: number, contentId: number): Promise<UserContentAssignment> => {
   try {
-    const response = await apiClient.post<UserContentAssignment>('/admin/assignments', { userId, contentId });
+    const response = await api.post<UserContentAssignment>('/admin/assignments', { userId, contentId });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -272,7 +272,7 @@ export const assignContentToUser = async (userId: number, contentId: number): Pr
  */
 export const getAssignmentsForUser = async (userId: number): Promise<UserContentAssignmentWithContent[]> => {
   try {
-    const response = await apiClient.get<UserContentAssignmentWithContent[]>(`/admin/assignments/user/${userId}`);
+    const response = await api.get<UserContentAssignmentWithContent[]>(`/admin/assignments/user/${userId}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -289,7 +289,7 @@ export const getAssignmentsForUser = async (userId: number): Promise<UserContent
  */
 export const unassignContentFromUser = async (assignmentId: number): Promise<void> => {
   try {
-    await apiClient.delete(`/admin/assignments/${assignmentId}`);
+    await api.delete(`/admin/assignments/${assignmentId}`);
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AdminErrorResponse;

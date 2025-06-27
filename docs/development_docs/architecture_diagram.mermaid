@@ -1,5 +1,12 @@
 graph TB
     subgraph "Frontend (React + TypeScript)"
+        subgraph "State & API Management"
+            direction TB
+            AuthContext["AuthContext (User, Token)"]
+            ApiService["Central API Service (with Interceptors)"]
+            AuthContext --> ApiService
+        end
+
         subgraph "Core App Screens"
             direction LR
             HomePage(Home Page)
@@ -16,6 +23,12 @@ graph TB
         end
         
         LessonsPage --> LC1
+
+        HomePage --> AuthContext
+        LessonsPage --> AuthContext
+        PracticePage --> AuthContext
+        ProgressPage --> AuthContext
+        ProfilePage --> AuthContext
 
         A[User Dashboard] --> B[Quiz Interface]
         A --> C[Progress Tracker]
@@ -57,8 +70,9 @@ graph TB
         V[Vercel Hosting]
     end
 
-    A --> H
-    D --> H
+    ApiService --> H
+    A --> ApiService
+    D --> ApiService
     K --> Q
     L --> Q
     M --> Q

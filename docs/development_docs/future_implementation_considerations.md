@@ -40,3 +40,14 @@ This document tracks architectural improvements, refactoring opportunities, and 
   1. Create a new API endpoint to list all available learning paths.
   2. Implement a UI element (e.g., a dropdown or a selection page) that allows the user to choose a learning path.
   3. Store the selected `pathId` in global state or as a URL parameter and pass it dynamically to the `LearningPath` component.
+
+## 5. Evolve Global State Management
+- **Identified**: During the planning phase for authentication integration (Task 2.2).
+- **Current State**: We are implementing a dedicated `AuthContext` for managing user authentication state.
+- **Problem**: As the application grows, we may need to manage more global state (e.g., UI state, notifications, user preferences). Adding a new React Context for each piece of global state can lead to deeply nested providers in `App.tsx` (often called "Provider Hell"), which can be cumbersome to maintain.
+- **Proposed Solution**: If the application's global state needs expand beyond authentication and one or two other simple states, we should consider migrating to a dedicated, lightweight state management library like **Zustand** or **Jotai**.
+- **Benefits**:
+  - Avoids the provider nesting issue.
+  - Simplifies state access in components.
+  - Offers powerful features (like derived state and middleware) with minimal boilerplate compared to Redux.
+  - Provides a clear, centralized store for all global state.
