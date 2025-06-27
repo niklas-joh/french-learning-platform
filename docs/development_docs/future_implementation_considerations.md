@@ -66,3 +66,15 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Enables the creation of flexible and pedagogically sound learning curricula.
   - Allows for branching paths and optional review units.
   - Makes the learning structure much more powerful and future-proof.
+
+## 7. Transition to an Asynchronous Event-Driven Architecture for User Activities
+- **Identified**: During the planning for API controller creation (Phase 1).
+- **Current State**: The `POST /api/user/activity-completed` endpoint synchronously handles progress updates, XP calculations, and achievement checks within a single database transaction.
+- **Problem**: While transactional integrity is good, this approach can lead to increased API response times as more logic (e.g., analytics hooks, social notifications) is added to the flow. It tightly couples the core services.
+- **Proposed Solution**: Refactor the system to be event-driven.
+  1.  The `progressController`'s only job would be to validate the input and publish an `ActivityCompleted` event to a message queue (like RabbitMQ or a simple in-memory queue for starters).
+  2.  Multiple, independent consumer services (e.g., `ProgressConsumer`, `AchievementConsumer`, `AnalyticsConsumer`) would listen for this event and process it asynchronously.
+- **Benefits**:
+  - **Decoupling**: Services no longer need to know about each other.
+  - **Performance**: The API response to the user becomes nearly instantaneous.
+  - **Scalability & Resilience**: Each consumer can be scaled independently. A failure in the achievement consumer doesn't affect progress updates.

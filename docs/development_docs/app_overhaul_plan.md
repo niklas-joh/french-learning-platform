@@ -27,7 +27,10 @@ This document provides a high-level overview of the project's phases and major t
 | 1.6     | Update Routing                               | `[x]` Done  | [details](./tasks/phase-1/1-6-routing.md) |
 | 2.1     | Database Schema Updates                      | `[x]` Done  | [details](./tasks/phase-1/2-1-db-schema.md) |
 | 2.2     | Create Data Models                           | `[x]` Done  | [details](./tasks/phase-1/2-2-data-models.md) |
-| 2.3     | Create API Controllers                       | `[ ]` To Do | [details](./tasks/phase-1/2-3-api-controllers.md) |
+| 2.3.1   | Enhance Progress Controller & Service            | `[x]` Done  | [details](./tasks/phase-1/2-3-1-progress-ctrl.md) |
+| 2.3.2   | Create Gamification Controller & Services        | `[x]` Done  | [details](./tasks/phase-1/2-3-2-gamify-ctrl.md)   |
+| 2.3.3   | Create AI Controller & Service                   | `[x]` Done  | [details](./tasks/phase-1/2-3-3-ai-ctrl.md)       |
+| 2.3.4   | Create Speech Controller & Service               | `[x]` Done  | [details](./tasks/phase-1/2-3-4-speech-ctrl.md)   |
 | 2.4     | Create Progress Service                      | `[x]` Done  | [details](./tasks/phase-1/2-4-progress-service.md) |
 | 2.5     | Update API Routes                            | `[ ]` To Do | [details](./tasks/phase-1/2-5-api-routes.md) |
 

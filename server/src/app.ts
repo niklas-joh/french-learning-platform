@@ -13,8 +13,12 @@ import dotenv from 'dotenv';
 // Route imports (create these files)
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
-import adminRoutes from './routes/admin.routes'; // Added admin routes
-import learningPathRoutes from './routes/learningPathRoutes'; // Added learning path routes
+import adminRoutes from './routes/admin.routes';
+import learningPathRoutes from './routes/learningPathRoutes';
+import progressRoutes from './routes/progress.routes';
+import gamificationRoutes from './routes/gamification.routes';
+import aiRoutes from './routes/ai.routes';
+import speechRoutes from './routes/speech.routes';
 
 dotenv.config();
 
@@ -38,8 +42,12 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes); // Added admin routes
-app.use('/api/learning-paths', learningPathRoutes); // Added learning path routes
+app.use('/api/admin', adminRoutes);
+app.use('/api/learning-paths', learningPathRoutes);
+app.use('/api/user', progressRoutes); // e.g. /api/user/progress
+app.use('/api', gamificationRoutes); // e.g. /api/achievements
+app.use('/api/ai', aiRoutes);
+app.use('/api/speech', speechRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
