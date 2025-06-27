@@ -1,3 +1,4 @@
+import { Knex } from 'knex';
 import db from '../config/db';
 import { LearningPath, LearningPathWithUserProgress } from '../models/LearningPath';
 import { LearningUnit, LearningUnitWithUserProgress } from '../models/LearningUnit';
@@ -25,27 +26,27 @@ export async function getLearningPathUserView(
   }
 
   // 2. Fetch All Units and Lessons for the Path in One Go
-  // We need to cast the result of this query as the Knex select can be broad.
-  type UnitAndLessonRow = LearningUnit & Lesson & {
-    unit_id: number;
-    unit_title: string;
-    unit_description?: string;
-    unit_level: string;
-    unit_order_index: number;
-    unit_prerequisites?: string;
-    unit_is_active: boolean;
-    unit_created_at: string;
-    unit_updated_at: string;
-    lesson_id: number;
-    lesson_title: string;
-    lesson_description?: string;
-    lesson_type: string;
-    lesson_estimated_time: number;
-    lesson_order_index: number;
-    lesson_content_data?: string;
-    lesson_is_active: boolean;
-    lesson_created_at: string;
-    lesson_updated_at: string;
+  // The DB driver converts snake_case to camelCase, so our type must reflect that.
+  type UnitAndLessonRow = {
+    unitId: number;
+    unitTitle: string;
+    unitDescription?: string;
+    unitLevel: string;
+    unitOrderIndex: number;
+    unitPrerequisites?: string;
+    unitIsActive: boolean;
+    unitCreatedAt: string;
+    unitUpdatedAt: string;
+    lessonId: number;
+    lessonTitle: string;
+    lessonDescription?: string;
+    lessonType: string;
+    lessonEstimatedTime: number;
+    lessonOrderIndex: number;
+    lessonContentData?: string;
+    lessonIsActive: boolean;
+    lessonCreatedAt: string;
+    lessonUpdatedAt: string;
   };
 
   const unitsAndLessonsRaw = await db('learning_units as lu')
@@ -71,7 +72,7 @@ export async function getLearningPathUserView(
 
   // 3. Fetch All Relevant User Lesson Progress in One Go
   const lessonIds = unitsAndLessonsRaw
-    .map(item => item.lesson_id)
+    .map(item => item.lessonId)
     .filter((id): id is number => id !== null && id !== undefined);
     
   let userProgressRecords: UserLessonProgress[] = [];
@@ -95,25 +96,25 @@ export async function getLearningPathUserView(
 
   for (const row of unitsAndLessonsRaw) {
     // Get or create the unit
-    let unit = unitsMap.get(row.unit_id);
+    let unit = unitsMap.get(row.unitId);
     if (!unit) {
       unit = {
-        id: row.unit_id,
+        id: row.unitId,
         learning_path_id: pathId,
-        title: row.unit_title,
-        description: row.unit_description,
-        level: row.unit_level,
-        order_index: row.unit_order_index,
-        prerequisites: row.unit_prerequisites,
-        is_active: row.unit_is_active,
-        created_at: row.unit_created_at,
-        updated_at: row.unit_updated_at,
+        title: row.unitTitle,
+        description: row.unitDescription,
+        level: row.unitLevel,
+        order_index: row.unitOrderIndex,
+        prerequisites: row.unitPrerequisites,
+        is_active: row.unitIsActive,
+        created_at: row.unitCreatedAt,
+        updated_at: row.unitUpdatedAt,
         lessons: [],
       };
-      unitsMap.set(row.unit_id, unit);
+      unitsMap.set(row.unitId, unit);
     }
 
-    const lessonProgress = progressMap.get(row.lesson_id);
+    const lessonProgress = progressMap.get(row.lessonId);
     let currentStatus: LessonStatus;
 
     if (lessonProgress) {
@@ -129,32 +130,34 @@ export async function getLearningPathUserView(
       }
     }
 
+    // Create a base lesson object from the row data
+    const lesson: Lesson = {
+      id: row.lessonId,
+      learning_unit_id: row.unitId,
+      title: row.lessonTitle,
+      description: row.lessonDescription,
+      type: row.lessonType,
+      estimated_time: row.lessonEstimatedTime,
+      order_index: row.lessonOrderIndex,
+      content_data: row.lessonContentData,
+      is_active: row.lessonIsActive,
+      created_at: row.lessonCreatedAt,
+      updated_at: row.lessonUpdatedAt,
+    };
+
+    // Combine the base lesson with user progress to create the final object
     const lessonWithProgress: LessonWithUserProgress = {
-      id: row.lesson_id,
-      learning_unit_id: row.unit_id,
-      title: row.lesson_title,
-      description: row.lesson_description,
-      type: row.lesson_type,
-      estimated_time: row.lesson_estimated_time,
-      order_index: row.lesson_order_index,
-      content_data: row.lesson_content_data,
-      is_active: row.lesson_is_active,
-      created_at: row.lesson_created_at,
-      updated_at: row.lesson_updated_at,
+      ...lesson,
       status: currentStatus,
       score: lessonProgress?.score,
       started_at: lessonProgress?.started_at,
       completed_at: lessonProgress?.completed_at,
     };
+    
     unit.lessons.push(lessonWithProgress);
 
-    // The status of the current lesson determines the state for the next one in the loop.
-    // If a lesson is 'available', the next one must be 'locked' until this one is completed.
-    if (currentStatus === 'available') {
-      lastLessonStatus = 'locked';
-    } else {
-      lastLessonStatus = currentStatus;
-    }
+    // The status of the current lesson becomes the prerequisite for the next lesson.
+    lastLessonStatus = currentStatus;
   }
 
   // TODO: Implement robust prerequisite logic for non-linear paths.
@@ -169,4 +172,90 @@ export async function getLearningPathUserView(
     ...learningPath,
     units: assembledUnits,
   };
+}
+
+/**
+ * Starts a lesson for a user by creating or updating their progress record.
+ * @param userId - The ID of the user.
+ * @param lessonId - The ID of the lesson to start.
+ * @returns The created or updated user lesson progress record.
+ */
+export async function startUserLesson(
+  userId: number,
+  lessonId: number
+): Promise<UserLessonProgress> {
+  // Find existing progress record
+  const existingProgress = await db<UserLessonProgress>('user_lesson_progress')
+    .where({ user_id: userId, lesson_id: lessonId })
+    .first();
+
+  if (existingProgress) {
+    // If already 'in_progress' or 'completed', do nothing and return current state
+    if (['in_progress', 'completed'].includes(existingProgress.status)) {
+      return existingProgress;
+    }
+    // If 'available' or 'locked' (though starting a locked lesson should be prevented by UI), update to 'in-progress'
+    const [updatedProgress] = await db<UserLessonProgress>('user_lesson_progress')
+      .where('id', existingProgress.id)
+      .update({
+        status: 'in-progress',
+        started_at: new Date().toISOString(),
+      })
+      .returning('*');
+    return updatedProgress;
+  } else {
+    // If no record exists, create a new one
+    // Note: In a strict system, we should verify the lesson is 'available' before creating this.
+    // This is handled in getLearningPathUserView, but could be re-verified here for API security.
+    const [newProgress] = await db<UserLessonProgress>('user_lesson_progress')
+      .insert({
+        user_id: userId,
+        lesson_id: lessonId,
+        status: 'in-progress',
+        started_at: new Date().toISOString(),
+      })
+      .returning('*');
+    return newProgress;
+  }
+}
+
+/**
+ * Completes a lesson for a user within a database transaction.
+ * @param userId - The ID of the user.
+ * @param lessonId - The ID of the lesson to complete.
+ * @param trx - The Knex transaction object.
+ * @returns The updated user lesson progress record.
+ * @throws An error if the lesson progress does not exist or is not 'in_progress'.
+ */
+export async function completeUserLesson(
+  userId: number,
+  lessonId: number,
+  trx: Knex.Transaction
+): Promise<UserLessonProgress> {
+  const progressToUpdate = await trx<UserLessonProgress>('user_lesson_progress')
+    .where({ user_id: userId, lesson_id: lessonId })
+    .first();
+
+  // A lesson must be started before it can be completed.
+  if (!progressToUpdate) {
+    throw new Error('Lesson has not been started. Cannot mark as complete.');
+  }
+
+  // You can only complete a lesson that is currently in progress.
+  if (progressToUpdate.status !== 'in-progress') {
+    // We can either throw an error or just return the existing record if it's already completed.
+    // Throwing an error is stricter and likely better.
+    throw new Error(`Cannot complete lesson with status: ${progressToUpdate.status}`);
+  }
+
+  const [updatedProgress] = await trx<UserLessonProgress>('user_lesson_progress')
+    .where('id', progressToUpdate.id)
+    .update({
+      status: 'completed',
+      completed_at: new Date().toISOString(),
+      // score could be updated here if applicable
+    })
+    .returning('*');
+
+  return updatedProgress;
 }

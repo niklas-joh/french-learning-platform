@@ -44,4 +44,7 @@ This document provides a high-level overview of the project's phases and major t
 | :------ | :------------------------------------------- | :---------- | :------------------------------------ |
 | 2.1     | Implement Visual Learning Path Component     | `[x]` Done  | [details](./tasks/phase-2/2-1-visual-learning-path.md) |
 | 2.2     | Integrate Authentication with New Layout     | `[x]` Done  | [details](./tasks/phase-2/2-2-auth-integration.md) |
-| 2.3     | Implement Dynamic Learning Path Progression  | `[ ]` To Do | [details](./tasks/phase-2/2-3-dynamic-learning-path.md) |
+| 2.3.1   | **Backend**: Enhance Service to Compute Dynamic Lesson Status | `[x]` Done | [details](./tasks/phase-2/2-3-1-dynamic-status-service.md) |
+| 2.3.2   | **Backend**: Implement `start` and `complete` Lesson Endpoints | `[x]` Done | [details](./tasks/phase-2/2-3-2-lesson-endpoints.md) |
+| 2.3.3   | **Frontend**: Update `LessonNode` to Visually Reflect Status | `[ ]` To Do | [details](./tasks/phase-2/2-3-3-lesson-node-ui.md) |
+| 2.3.4   | **Frontend**: Implement `start` and `complete` Logic on `LessonPage` | `[ ]` To Do | [details](./tasks/phase-2/2-3-4-lesson-page-logic.md) |

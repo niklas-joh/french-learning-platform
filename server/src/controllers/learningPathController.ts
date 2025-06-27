@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as learningPathService from '../services/learningPathService';
-import { AuthenticatedRequest } from '../middleware/auth.middleware'; // Assuming this type exists
+import { AuthenticatedRequest } from '../middleware/auth.middleware';
+import knex from '../config/db';
 
 /**
  * @controller LearningPathController
@@ -43,6 +44,74 @@ export class LearningPathController {
       // Pass to a centralized error handler if one exists, otherwise log and send generic error
       console.error('Error in getLearningPathForUser:', error);
       next(error); // Or res.status(500).json({ message: 'Internal server error' });
+    }
+  }
+
+  /**
+   * @handler POST /api/user/lessons/:lessonId/start
+   * Marks a lesson as 'in_progress' for the user.
+   */
+  public async startLesson(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { lessonId } = req.params;
+      const userId = req.user?.userId;
+
+      if (!userId) {
+        res.status(401).json({ message: 'User authentication required.' });
+        return;
+      }
+
+      if (!lessonId || isNaN(parseInt(lessonId, 10))) {
+        res.status(400).json({ message: 'Valid lessonId parameter is required.' });
+        return;
+      }
+
+      const numericLessonId = parseInt(lessonId, 10);
+
+      // Your service call to update the lesson status
+      const progress = await learningPathService.startUserLesson(userId, numericLessonId);
+
+      res.status(200).json({ message: 'Lesson started successfully.', progress });
+    } catch (error) {
+      console.error('Error in startLesson:', error);
+      next(error);
+    }
+  }
+
+  /**
+   * @handler POST /api/user/lessons/:lessonId/complete
+   * Marks a lesson as 'completed' for the user within a transaction.
+   */
+  public async completeLesson(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    const { lessonId } = req.params;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(401).json({ message: 'User authentication required.' });
+      return;
+    }
+
+    if (!lessonId || isNaN(parseInt(lessonId, 10))) {
+      res.status(400).json({ message: 'Valid lessonId parameter is required.' });
+      return;
+    }
+    const numericLessonId = parseInt(lessonId, 10);
+
+    try {
+      await knex.transaction(async (trx) => {
+        // Update lesson progress
+        const progress = await learningPathService.completeUserLesson(userId, numericLessonId, trx);
+
+        // Future steps (e.g., gamification) would be called here, using the same transaction `trx`
+        // await gamificationService.awardPointsForLesson(userId, numericLessonId, { trx });
+        // await achievementService.checkLessonCompletionAchievements(userId, { trx });
+
+        res.status(200).json({ message: 'Lesson completed successfully.', progress });
+      });
+    } catch (error) {
+      console.error('Error in completeLesson transaction:', error);
+      // The transaction will automatically roll back on error
+      next(error);
     }
   }
 }

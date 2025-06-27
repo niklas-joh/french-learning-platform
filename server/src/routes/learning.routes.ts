@@ -20,6 +20,10 @@ router.get('/learning-paths/:pathId/user-view', protect, learningPathController.
 // TODO: Implement GET /lessons/:id to get specific lesson details
 // router.get('/lessons/:id', protect, learningPathController.getLesson);
 
+// Lesson State Management
+router.post('/user/lessons/:lessonId/start', protect, learningPathController.startLesson);
+router.post('/user/lessons/:lessonId/complete', protect, learningPathController.completeLesson);
+
 
 // === AI Interaction ===
 router.post('/ai/chat', protect, chatWithAI);
