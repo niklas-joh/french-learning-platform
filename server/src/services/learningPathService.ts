@@ -70,10 +70,17 @@ export async function getLearningPathUserView(
   }
 
   // 3. Fetch All Relevant User Lesson Progress in One Go
-  const lessonIds = unitsAndLessonsRaw.map(item => item.lesson_id);
-  const userProgressRecords = await db<UserLessonProgress>('user_lesson_progress')
-    .where('user_id', userId)
-    .whereIn('lesson_id', lessonIds);
+  const lessonIds = unitsAndLessonsRaw
+    .map(item => item.lesson_id)
+    .filter((id): id is number => id !== null && id !== undefined);
+    
+  let userProgressRecords: UserLessonProgress[] = [];
+
+  if (lessonIds.length > 0) {
+    userProgressRecords = await db<UserLessonProgress>('user_lesson_progress')
+      .where('user_id', userId)
+      .whereIn('lesson_id', lessonIds);
+  }
 
   // Create a map for quick progress lookup
   const progressMap = new Map<number, UserLessonProgress>();

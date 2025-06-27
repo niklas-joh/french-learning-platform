@@ -11,7 +11,8 @@
     "migrate": "npx ts-node --project server/tsconfig.json scripts/run-migration.ts",
     "db:status": "npm --prefix server run db:status",
     "db:reset": "powershell -Command \"Remove-Item -Path database/french_learning.db -Force -ErrorAction SilentlyContinue\"",
-    "db:setup": "npm run db:reset && npm run migrate && npm run db:status && npm --prefix server run db:seed"
+    "db:seed": "npm --prefix server run db:seed",
+    "db:setup": "npm run migrate; npm run db:seed; npm run db:status"
   },
   "keywords": [],
   "author": "",
