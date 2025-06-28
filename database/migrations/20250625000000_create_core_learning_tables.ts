@@ -5,18 +5,18 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable('user_progress', (table) => {
     table.increments('id').primary();
-    table.integer('user_id').notNullable().references('id').inTable('users');
-    table.string('current_level').notNullable().defaultTo('A1');
-    table.integer('current_xp').notNullable().defaultTo(0);
-    table.integer('total_xp').notNullable().defaultTo(0);
-    table.integer('streak_days').notNullable().defaultTo(0);
-    table.date('last_activity_date');
-    table.integer('lessons_completed').notNullable().defaultTo(0);
-    table.integer('words_learned').notNullable().defaultTo(0);
-    table.integer('time_spent_minutes').notNullable().defaultTo(0);
-    table.float('accuracy_rate').notNullable().defaultTo(0.0);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.integer('userId').notNullable().references('id').inTable('users');
+    table.string('currentLevel').notNullable().defaultTo('A1');
+    table.integer('currentXp').notNullable().defaultTo(0);
+    table.integer('totalXp').notNullable().defaultTo(0);
+    table.integer('streakDays').notNullable().defaultTo(0);
+    table.date('lastActivityDate');
+    table.integer('lessonsCompleted').notNullable().defaultTo(0);
+    table.integer('wordsLearned').notNullable().defaultTo(0);
+    table.integer('timeSpentMinutes').notNullable().defaultTo(0);
+    table.float('accuracyRate').notNullable().defaultTo(0.0);
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   console.log('Created table: user_progress');
 
@@ -25,40 +25,40 @@ export async function up(knex: Knex): Promise<void> {
     table.string('language').notNullable().defaultTo('french');
     table.string('name').notNullable();
     table.text('description');
-    table.integer('total_lessons').notNullable().defaultTo(0);
-    table.integer('estimated_duration');
-    table.boolean('is_active').defaultTo(true);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.integer('totalLessons').notNullable().defaultTo(0);
+    table.integer('estimatedDuration');
+    table.boolean('isActive').defaultTo(true);
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   console.log('Created table: learning_paths');
 
   await knex.schema.createTable('learning_units', (table) => {
     table.increments('id').primary();
-    table.integer('learning_path_id').notNullable().references('id').inTable('learning_paths');
+    table.integer('learningPathId').notNullable().references('id').inTable('learning_paths');
     table.string('title').notNullable();
     table.text('description');
     table.string('level').notNullable();
-    table.integer('order_index').notNullable();
+    table.integer('orderIndex').notNullable();
     table.text('prerequisites');
-    table.boolean('is_active').defaultTo(true);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.boolean('isActive').defaultTo(true);
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   console.log('Created table: learning_units');
 
   await knex.schema.createTable('lessons', (table) => {
     table.increments('id').primary();
-    table.integer('learning_unit_id').notNullable().references('id').inTable('learning_units');
+    table.integer('learningUnitId').notNullable().references('id').inTable('learning_units');
     table.string('title').notNullable();
     table.text('description');
     table.string('type').notNullable();
-    table.integer('estimated_time').notNullable();
-    table.integer('order_index').notNullable();
-    table.text('content_data');
-    table.boolean('is_active').defaultTo(true);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.integer('estimatedTime').notNullable();
+    table.integer('orderIndex').notNullable();
+    table.text('contentData');
+    table.boolean('isActive').defaultTo(true);
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   console.log('Created table: lessons');
 
@@ -68,20 +68,20 @@ export async function up(knex: Knex): Promise<void> {
     table.text('description').notNullable();
     table.string('icon').notNullable();
     table.string('category').notNullable();
-    table.text('criteria_data').notNullable();
+    table.text('criteriaData').notNullable();
     table.string('rarity').notNullable().defaultTo('common');
-    table.boolean('is_active').defaultTo(true);
-    table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.timestamp('updated_at').defaultTo(knex.fn.now());
+    table.boolean('isActive').defaultTo(true);
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   console.log('Created table: achievements');
 
   await knex.schema.createTable('user_achievements', (table) => {
     table.increments('id').primary();
-    table.integer('user_id').notNullable().references('id').inTable('users');
-    table.string('achievement_id').notNullable().references('id').inTable('achievements');
-    table.timestamp('unlocked_at').defaultTo(knex.fn.now());
-    table.unique(['user_id', 'achievement_id']);
+    table.integer('userId').notNullable().references('id').inTable('users');
+    table.string('achievementId').notNullable().references('id').inTable('achievements');
+    table.timestamp('unlockedAt').defaultTo(knex.fn.now());
+    table.unique(['userId', 'achievementId']);
   });
   console.log('Created table: user_achievements');
 
