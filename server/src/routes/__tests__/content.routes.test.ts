@@ -1,8 +1,13 @@
 import request from 'supertest';
-import { app, server } from '../../app'; // Adjust path as necessary
+import express from 'express';
+import contentRoutes from '../learning.routes';
 import knex from '../../config/db'; // Adjust path as necessary
 import fs from 'fs/promises';
 import path from 'path';
+
+const app = express();
+app.use(express.json());
+app.use('/api/content', contentRoutes);
 
 describe('Content API Endpoints', () => {
   beforeAll(async () => {
@@ -15,6 +20,16 @@ describe('Content API Endpoints', () => {
     for (const statement of statements) {
       await knex.raw(statement);
     }
+    await knex.raw(`
+      CREATE TABLE user_progress (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        streak_days INTEGER DEFAULT 0,
+        last_activity_date DATETIME,
+        total_xp INTEGER DEFAULT 0,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+      );
+    `);
 
     // Seed data
     await knex('topics').insert([
@@ -22,41 +37,38 @@ describe('Content API Endpoints', () => {
       { id: 2, name: 'Test Topic 2', description: 'Description for topic 2', category: 'Test' },
     ]);
     
-    // The schema now defines 'content' table with 'question_data', 'correct_answer', 'options'
+    // The schema now defines 'content' table with 'questionData', 'correctAnswer', 'options'
     // Let's adjust the seed data to match the actual schema.sql
     await knex('content').insert([
       { 
         id: 1, 
-        topic_id: 1, 
+        topicId: 1, 
         type: 'lesson', 
-        question_data: JSON.stringify({ title: 'Lesson 1.1', text: 'Content for lesson 1.1' }),
-        correct_answer: JSON.stringify({}),
+        questionData: JSON.stringify({ title: 'Lesson 1.1', text: 'Content for lesson 1.1' }),
+        correctAnswer: JSON.stringify({}),
         options: JSON.stringify({})
       },
       { 
         id: 2, 
-        topic_id: 1, 
+        topicId: 1, 
         type: 'quiz', 
-        question_data: JSON.stringify({ title: 'Quiz 1.1', questions: [] }),
-        correct_answer: JSON.stringify({}),
+        questionData: JSON.stringify({ title: 'Quiz 1.1', questions: [] }),
+        correctAnswer: JSON.stringify({}),
         options: JSON.stringify({})
       },
       { 
         id: 3, 
-        topic_id: 2, 
+        topicId: 2, 
         type: 'lesson', 
-        question_data: JSON.stringify({ title: 'Lesson 2.1', text: 'Content for lesson 2.1' }),
-        correct_answer: JSON.stringify({}),
+        questionData: JSON.stringify({ title: 'Lesson 2.1', text: 'Content for lesson 2.1' }),
+        correctAnswer: JSON.stringify({}),
         options: JSON.stringify({})
       },
     ]);
   });
 
-  afterAll((done) => {
-    // Close the server and database connection
-    server.close(() => {
-      knex.destroy().then(done);
-    });
+  afterAll(async () => {
+    await knex.destroy();
   });
 
   describe('GET /api/content/topics', () => {
@@ -79,11 +91,11 @@ describe('Content API Endpoints', () => {
       expect(response.body).toBeInstanceOf(Array);
       expect(response.body.length).toBeGreaterThanOrEqual(2);
       response.body.forEach((item: any) => {
-        expect(item.topic_id).toBe(topicId);
+        expect(item.topicId).toBe(topicId);
         expect(item).toHaveProperty('id');
         expect(item).toHaveProperty('type');
-        // Title is inside the question_data JSON string
-        const questionData = JSON.parse(item.question_data);
+        // Title is inside the questionData JSON string
+        const questionData = JSON.parse(item.questionData);
         expect(questionData).toHaveProperty('title');
       });
     });

@@ -2,12 +2,12 @@ erDiagram
     users {
         int id PK
         string email UK
-        string password_hash
-        string first_name "nullable"
-        string last_name "nullable"
+        string passwordHash
+        string firstName "nullable"
+        string lastName "nullable"
         string role "default: 'user'"
-        datetime created_at
-        datetime updated_at
+        datetime createdAt
+        datetime updatedAt
         json preferences "nullable"
     }
 
@@ -17,78 +17,78 @@ erDiagram
         string description "nullable"
         string category "nullable"
         boolean active "default: true"
-        datetime created_at
-        datetime updated_at
+        datetime createdAt
+        datetime updatedAt
     }
 
     content_types {
         int id PK
         string name UK
         string description "nullable"
-        datetime created_at
-        datetime updated_at
+        datetime createdAt
+        datetime updatedAt
     }
 
     content {
         int id PK
         string name "notNull default: 'Unnamed Content'"
         string title "nullable"
-        int topic_id FK "nullable"
-        int content_type_id FK "notNull"
-        json question_data "notNull"
-        json correct_answer "notNull"
+        int topicId FK "nullable"
+        int contentTypeId FK "notNull"
+        json questionData "notNull"
+        json correctAnswer "notNull"
         json options "nullable"
-        string difficulty_level "nullable"
+        string difficultyLevel "nullable"
         json tags "nullable"
         boolean active "default: true notNull"
-        datetime created_at
-        datetime updated_at
+        datetime createdAt
+        datetime updatedAt
     }
 
     user_content_assignments {
         int id PK
-        int user_id FK
-        int content_id FK
-        datetime assigned_at "default: now"
+        int userId FK
+        int contentId FK
+        datetime assignedAt "default: now"
         string status "default: 'pending' notNull"
-        datetime due_date "nullable"
-        %% unique user_id, content_id
+        datetime dueDate "nullable"
+        %% unique userId, contentId
     }
 
     user_preferences {
         int id PK
-        int user_id FK
+        int userId FK
         json preferences "notNull"
-        datetime created_at
-        datetime updated_at
+        datetime createdAt
+        datetime updatedAt
     }
 
     user_content_completions {
         int id PK
-        int user_id FK
-        int content_id FK
-        datetime completed_at "notNull default: now"
-        int attempt_number "notNull default: 1"
+        int userId FK
+        int contentId FK
+        datetime completedAt "notNull default: now"
+        int attemptNumber "notNull default: 1"
         float score "nullable"
-        int explicit_assignment_id FK "nullable"
-        datetime created_at
-        datetime updated_at
+        int explicitAssignmentId FK "nullable"
+        datetime createdAt
+        datetime updatedAt
     }
 
     user_progress {
         int id PK
-        int user_id FK
-        string current_level "notNull default: 'A1'"
-        int current_xp "notNull default: 0"
-        int total_xp "notNull default: 0"
-        int streak_days "notNull default: 0"
-        date last_activity_date "nullable"
-        int lessons_completed "notNull default: 0"
-        int words_learned "notNull default: 0"
-        int time_spent_minutes "notNull default: 0"
-        float accuracy_rate "notNull default: 0.0"
-        datetime created_at
-        datetime updated_at
+        int userId FK
+        string currentLevel "notNull default: 'A1'"
+        int currentXp "notNull default: 0"
+        int totalXp "notNull default: 0"
+        int streakDays "notNull default: 0"
+        date lastActivityDate "nullable"
+        int lessonsCompleted "notNull default: 0"
+        int wordsLearned "notNull default: 0"
+        int timeSpentMinutes "notNull default: 0"
+        float accuracyRate "notNull default: 0.0"
+        datetime createdAt
+        datetime updatedAt
     }
 
     learning_paths {
@@ -96,38 +96,38 @@ erDiagram
         string language "notNull default: 'french'"
         string name "notNull"
         text description "nullable"
-        int total_lessons "notNull default: 0"
-        int estimated_duration "nullable"
-        boolean is_active "default: true"
-        datetime created_at
-        datetime updated_at
+        int totalLessons "notNull default: 0"
+        int estimatedDuration "nullable"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
     }
 
     learning_units {
         int id PK
-        int learning_path_id FK
+        int learningPathId FK
         string title "notNull"
         text description "nullable"
         string level "notNull"
-        int order_index "notNull"
+        int orderIndex "notNull"
         text prerequisites "nullable"
-        boolean is_active "default: true"
-        datetime created_at
-        datetime updated_at
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
     }
 
     lessons {
         int id PK
-        int learning_unit_id FK
+        int learningUnitId FK
         string title "notNull"
         text description "nullable"
         string type "notNull"
-        int estimated_time "notNull"
-        int order_index "notNull"
-        text content_data "nullable"
-        boolean is_active "default: true"
-        datetime created_at
-        datetime updated_at
+        int estimatedTime "notNull"
+        int orderIndex "notNull"
+        text contentData "nullable"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
     }
 
     achievements {
@@ -136,34 +136,34 @@ erDiagram
         text description "notNull"
         string icon "notNull"
         string category "notNull"
-        text criteria_data "notNull"
+        text criteriaData "notNull"
         string rarity "notNull default: 'common'"
-        boolean is_active "default: true"
-        datetime created_at
-        datetime updated_at
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
     }
 
     user_achievements {
         int id PK
-        int user_id FK
-        string achievement_id FK
-        datetime unlocked_at "default: now"
-        %% unique user_id, achievement_id
+        int userId FK
+        string achievementId FK
+        datetime unlockedAt "default: now"
+        %% unique userId, achievementId
     }
 
     user_lesson_progress {
         int id PK
-        int user_id FK
-        int lesson_id FK
+        int userId FK
+        int lessonId FK
         string status "notNull default: 'locked'"
         float score "nullable"
-        int time_spent "nullable"
+        int timeSpent "nullable"
         int attempts "default: 0"
-        datetime started_at "nullable"
-        datetime completed_at "nullable"
-        datetime created_at
-        datetime updated_at
-        %% unique user_id, lesson_id
+        datetime startedAt "nullable"
+        datetime completedAt "nullable"
+        datetime createdAt
+        datetime updatedAt
+        %% unique userId, lessonId
     }
 
     users ||--o{ user_preferences : "has"

@@ -90,3 +90,13 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Creates a single source of truth for data shapes (the Zod schema).
   - Prevents malformed data from ever reaching the UI components.
   - Makes the application significantly more robust and resilient to data integrity issues.
+
+## 9. Automate `schema.sql` Generation
+- **Identified**: During planning for the `camelCase` migration (Phase 1).
+- **Current State**: The `database/schema.sql` file is a manually maintained or infrequently generated snapshot of the database schema.
+- **Problem**: This file can easily become outdated as new migrations are applied. An out-of-sync schema file provides a false sense of documentation and can mislead developers. The migrations themselves are the only true source of truth.
+- **Proposed Solution**: Implement a script in `package.json` (e.g., `npm run db:schema:dump`) that uses the underlying database's CLI tools to dump the current schema after all migrations have been run. This script should be run as part of the development workflow to ensure the `schema.sql` file is always up-to-date.
+- **Benefits**:
+  - Ensures architectural documentation is always accurate.
+  - Provides a reliable, quick reference for the current database structure without needing to inspect all migration files.
+  - Improves developer onboarding and confidence.
