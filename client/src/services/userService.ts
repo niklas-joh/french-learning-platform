@@ -27,16 +27,9 @@ export const getUsers = async (): Promise<User[]> => {
  */
 export const getCurrentUser = async (): Promise<User> => {
   try {
-    // The backend sends snake_case, so we map to camelCase for the frontend type.
+    // The backend now returns camelCase, so no mapping is needed.
     const response = await api.get('/users/me');
-    const userData = response.data;
-    return {
-      id: userData.id,
-      firstName: userData.first_name,
-      lastName: userData.last_name,
-      email: userData.email,
-      role: userData.role,
-    };
+    return response.data;
   } catch (error) {
     console.error('Failed to fetch current user:', error);
     throw new Error('Failed to fetch current user.');

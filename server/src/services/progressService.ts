@@ -15,12 +15,12 @@ const achievementService = {
   async checkAndAwardAchievements(userId: number, activity: any, trx: any) {
     // TODO: Implement actual achievement checking logic
     console.log(`Checking achievements for user ${userId} within transaction.`);
-    // This service will check against achievement criteria and insert into user_achievements
+    // This service will check against achievement criteria and insert into userAchievements
   }
 };
 
 export const getUserProgress = async (userId: number): Promise<UserProgress | undefined> => {
-  return db('user_progress').where({ user_id: userId }).first();
+  return db('userProgress').where({ userId: userId }).first();
 };
 
 export const getUserStreak = async (userId: number): Promise<number> => {
@@ -33,7 +33,7 @@ export const recordActivity = async (userId: number, activityData: any) => {
   return db.transaction(async (trx: Knex.Transaction) => {
     const xpGained = gamificationService.calculateXpForActivity(activityData);
 
-    const currentProgress = await trx('user_progress').where({ user_id: userId }).first();
+    const currentProgress = await trx('userProgress').where({ userId: userId }).first();
 
     if (!currentProgress) {
       throw new Error('User progress not found.');
@@ -42,12 +42,12 @@ export const recordActivity = async (userId: number, activityData: any) => {
     // TODO: Implement proper streak logic
     const newStreak = (currentProgress.streakDays || 0) + 1;
 
-    const [updatedProgress] = await trx('user_progress')
-      .where({ user_id: userId })
-      .increment('total_xp', xpGained)
+    const [updatedProgress] = await trx('userProgress')
+      .where({ userId: userId })
+      .increment('totalXp', xpGained)
       .update({
-        streak_days: newStreak,
-        last_activity_date: new Date(),
+        streakDays: newStreak,
+        lastActivityDate: new Date(),
       })
       .returning('*');
 
@@ -84,7 +84,7 @@ export class ProgressService {
       lastActivityDate: new Date(),
     };
 
-    const [newProgressId] = await db('user_progress').insert(defaultProgress).returning('id');
+    const [newProgressId] = await db('userProgress').insert(defaultProgress).returning('id');
     
     const newProgress = await getUserProgress(userId);
     if (!newProgress) {

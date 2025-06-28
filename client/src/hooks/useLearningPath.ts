@@ -30,32 +30,8 @@ export const useLearningPath = (pathId: number): UseLearningPathReturn => {
     try {
       const learningPathData = await fetchLearningPath(pathId);
 
-      // Map the API's snake_case fields to the camelCase structure
-      const mappedPath: ClientLearningPath = {
-        id: learningPathData.id,
-        name: learningPathData.name,
-        description: learningPathData.description,
-        totalLessons: learningPathData.total_lessons,
-        units: learningPathData.units.map((unit: any) => ({
-          id: unit.id,
-          title: unit.title,
-          description: unit.description,
-          level: unit.level,
-          orderIndex: unit.order_index,
-          lessons: unit.lessons.map((lesson: any) => ({
-            id: lesson.id,
-            title: lesson.title,
-            description: lesson.description,
-            type: lesson.type,
-            estimatedTime: lesson.estimated_time,
-            orderIndex: lesson.order_index,
-            status: lesson.status,
-            contentData: lesson.content_data,
-          })),
-        })),
-      };
-
-      setData(mappedPath);
+      // The backend now returns camelCase, so no mapping is needed.
+      setData(learningPathData);
     } catch (err: any) {
       setError(err.message || 'An unknown error occurred while fetching the learning path.');
     } finally {

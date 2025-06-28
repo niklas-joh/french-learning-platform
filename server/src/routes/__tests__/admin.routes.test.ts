@@ -18,7 +18,15 @@ let adminUserId: number;
 let regularUserId: number;
 
 const setupDatabase = async () => {
-  await knex.migrate.latest();
+  const fs = require('fs').promises;
+  const path = require('path');
+  const schemaPath = path.resolve(__dirname, '../../../../database/schema.sql');
+  const schemaSQL = await fs.readFile(schemaPath, 'utf-8');
+  const statements = schemaSQL.split(/;\s*$/m).filter((s: string) => s.trim().length > 0);
+  for (const statement of statements) {
+    await knex.raw(statement);
+  }
+
   // Clean up before seeding
   await knex('users').delete();
   await knex('topics').delete();
@@ -27,14 +35,14 @@ const setupDatabase = async () => {
   const hashedPassword = await bcrypt.hash('password123', 10);
   const [admin] = await knex('users').insert({
     email: 'admin@test.com',
-    password: hashedPassword,
+    passwordHash: hashedPassword,
     role: 'admin'
   }).returning('id');
   adminUserId = admin.id;
 
   const [user] = await knex('users').insert({
     email: 'user@test.com',
-    password: hashedPassword,
+    passwordHash: hashedPassword,
     role: 'user'
   }).returning('id');
   regularUserId = user.id;
@@ -145,10 +153,11 @@ describe('Admin Routes', () => {
         .post('/api/admin/content')
         .set('Authorization', `Bearer ${adminToken}`)
         .send({
-          topic_id: topicId,
+          name: 'test_content',
+          topicId: topicId,
           type: 'multiple-choice',
-          question_data: { question: 'What is 2+2?' },
-          correct_answer: { answer: '4' },
+          questionData: { question: 'What is 2+2?' },
+          correctAnswer: { answer: '4' },
           options: { choices: ['3', '4', '5'] }
         });
 
@@ -181,7 +190,7 @@ describe('Admin Routes', () => {
         const res = await request(app)
           .put(`/api/admin/content/${contentId}`)
           .set('Authorization', `Bearer ${adminToken}`)
-          .send({ difficulty_level: 'easy' });
+          .send({ difficultyLevel: 'easy' });
   
         expect(res.status).toBe(200);
         expect(res.body.difficultyLevel).toBe('easy');

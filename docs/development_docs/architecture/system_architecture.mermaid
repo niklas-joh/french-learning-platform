@@ -99,11 +99,11 @@ graph TD
     subgraph "Data Layer (SQLite + Knex.js)"
         direction TB
         Users["users"]
-        UserProgress["user_progress"]
-        LearningPaths["learning_paths"]
-        LearningUnits["learning_units"]
+        UserProgress["userProgress"]
+        LearningPaths["learningPaths"]
+        LearningUnits["learningUnits"]
         Lessons["lessons"]
-        UserLessonProgress["user_lesson_progress"]
+        UserLessonProgress["userLessonProgress"]
         Achievements["achievements"]
         
         AuthService --> Users

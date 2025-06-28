@@ -237,9 +237,9 @@ export const deleteContentItem = async (contentId: number): Promise<void> => {
 
 export interface UserContentAssignment {
   id: number;
-  user_id: number;
-  content_id: number;
-  assigned_at: string;
+  userId: number;
+  contentId: number;
+  assignedAt: string;
   status: string;
 }
 

@@ -1,8 +1,13 @@
 import request from 'supertest';
-import { app, server } from '../../app';
+import express from 'express';
+import authRoutes from '../auth.routes';
 import knex from '../../config/db';
 import fs from 'fs/promises';
 import path from 'path';
+
+const app = express();
+app.use(express.json());
+app.use('/api/auth', authRoutes);
 
 describe('Auth API Endpoints', () => {
   beforeAll(async () => {
@@ -12,12 +17,20 @@ describe('Auth API Endpoints', () => {
     for (const statement of statements) {
       await knex.raw(statement);
     }
+    await knex.raw(`
+      CREATE TABLE user_progress (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        streak_days INTEGER DEFAULT 0,
+        last_activity_date DATETIME,
+        total_xp INTEGER DEFAULT 0,
+        FOREIGN KEY (user_id) REFERENCES users (id)
+      );
+    `);
   });
 
-  afterAll((done) => {
-    server.close(() => {
-      knex.destroy().then(done);
-    });
+  afterAll(async () => {
+    await knex.destroy();
   });
 
   describe('POST /api/auth/register', () => {
@@ -48,7 +61,7 @@ describe('Auth API Endpoints', () => {
       // Verify the user is in the database
       const userInDb = await knex('users').where({ email: newUser.email }).first();
       expect(userInDb).toBeDefined();
-      expect(userInDb.first_name).toBe(newUser.firstName);
+      expect(userInDb.firstName).toBe(newUser.firstName);
     });
 
     it('should not register a user with an existing email', async () => {
