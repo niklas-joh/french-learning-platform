@@ -38,7 +38,8 @@ const statusMap = {
 
 const LessonNode: React.FC<LessonNodeProps> = ({ lesson }) => {
   const navigate = useNavigate();
-  const { icon: StatusIcon, color, bgColor, borderColor } = statusMap[lesson.status];
+  const statusDetails = statusMap[lesson.status] || statusMap.locked;
+  const { icon: StatusIcon, color, bgColor, borderColor } = statusDetails;
 
   const handleLessonClick = () => {
     if (lesson.status !== 'locked') {
