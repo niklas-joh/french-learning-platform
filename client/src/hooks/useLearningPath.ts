@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { ClientLearningPath } from '../types/LearningPath';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { ClientLearningPath, ClientLesson } from '../types/LearningPath';
 import { fetchLearningPath } from '../services/learningPathService';
 
 // TODO: This custom hook should be replaced with a robust server-state management
@@ -12,6 +12,7 @@ interface UseLearningPathReturn {
   isLoading: boolean;
   error: string | null;
   refetch: () => void;
+  findLessonById: (lessonId: number) => ClientLesson | undefined;
 }
 
 /**
@@ -40,5 +41,25 @@ export const useLearningPath = (pathId: number): UseLearningPathReturn => {
     fetchData();
   }, [fetchData]);
 
-  return { data, isLoading, error, refetch: fetchData };
+  const lessonMap = useMemo(() => {
+    if (!data) {
+      return new Map<number, ClientLesson>();
+    }
+    const map = new Map<number, ClientLesson>();
+    data.units.forEach(unit => {
+      unit.lessons.forEach(lesson => {
+        map.set(lesson.id, lesson);
+      });
+    });
+    return map;
+  }, [data]);
+
+  const findLessonById = useCallback(
+    (lessonId: number): ClientLesson | undefined => {
+      return lessonMap.get(lessonId);
+    },
+    [lessonMap]
+  );
+
+  return { data, isLoading, error, refetch: fetchData, findLessonById };
 };

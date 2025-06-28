@@ -1,32 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Paper, CircularProgress, Alert, Button } from '@mui/material';
 import { ArrowBack, CheckCircle } from '@mui/icons-material';
 import { startLesson, completeLesson } from '../services/learningPathService';
 import { useLearningPath } from '../hooks/useLearningPath';
-import { ClientLesson, ClientLearningPath } from '../types/LearningPath';
+import { lessonComponentMap } from '../components/learning/content';
+import { LessonType } from '../types/LessonContentTypes';
 
 const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
   const navigate = useNavigate();
-  const { data: learningPath, isLoading: isPathLoading, error: pathError, refetch: refreshLearningPath } = useLearningPath(1); // Assuming pathId 1
+  const {
+    isLoading: isPathLoading,
+    error: pathError,
+    refetch: refreshLearningPath,
+    findLessonById,
+  } = useLearningPath(1); // Assuming pathId 1 for now
+
   const [isCompleting, setIsCompleting] = useState(false);
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const findLesson = (path: ClientLearningPath | null, id: number): ClientLesson | null => {
-    if (!path) return null;
-    for (const unit of path.units) {
-      for (const lesson of unit.lessons) {
-        if (lesson.id === id) {
-          return lesson;
-        }
-      }
-    }
-    return null;
-  };
-
-  const lesson = lessonId ? findLesson(learningPath, parseInt(lessonId, 10)) : null;
+  const lesson = lessonId ? findLessonById(parseInt(lessonId, 10)) : undefined;
 
   useEffect(() => {
     if (lesson) {
@@ -86,18 +81,34 @@ const LessonPage: React.FC = () => {
           </Box>
         ) : error ? (
           <Alert severity="error">{error}</Alert>
+        ) : lesson ? (
+          <Suspense
+            fallback={
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
+                <CircularProgress />
+              </Box>
+            }
+          >
+            {(() => {
+              // TODO: Implement robust runtime validation of lesson.contentData
+              // using a library like Zod to prevent crashes from malformed data.
+              const LessonComponent = lessonComponentMap[lesson.type as LessonType];
+              if (!LessonComponent) {
+                return <Alert severity="warning">This lesson type is not supported yet.</Alert>;
+              }
+              try {
+                const content = typeof lesson.contentData === 'string' 
+                  ? JSON.parse(lesson.contentData) 
+                  : lesson.contentData;
+                return <LessonComponent content={content} />;
+              } catch (e) {
+                console.error("Failed to parse lesson content:", e);
+                return <Alert severity="error">Failed to load lesson content.</Alert>;
+              }
+            })()}
+          </Suspense>
         ) : (
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              Content for {lessonTitle}
-            </Typography>
-            <Typography>
-              This is where the actual lesson content (e.g., vocabulary, grammar explanations,
-              interactive exercises) will be rendered based on the lesson type.
-            </Typography>
-            {/* TODO: Implement content rendering components based on lesson.type */}
-            {/* e.g., <VocabularyLesson content={lesson.content} /> */}
-          </Box>
+          <Alert severity="warning">Lesson not found.</Alert>
         )}
 
         {lesson && !isCompleted && (
