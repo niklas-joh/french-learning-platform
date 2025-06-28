@@ -33,6 +33,8 @@ A detailed breakdown of tasks for this phase can be found under `docs/developmen
 - **React components and pages** in `client/src/components/` and `client/src/pages/` – revise prop names, form fields, and API integrations.
 - **TypeScript types** in `client/src/types/` (if present) – ensure all interfaces use camelCase.
 
+A detailed breakdown of tasks for this phase can be found under `docs/development_docs/tasks/camelCase-phase-4/`.
+
 ## Phase 5: Testing and Validation
 - **Run backend test suite** via `npm --prefix server test` and update any failing tests.
 - **Add or adjust client-side tests** if applicable.
