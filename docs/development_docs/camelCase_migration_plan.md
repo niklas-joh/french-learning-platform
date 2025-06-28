@@ -16,6 +16,8 @@ This document outlines a staged approach for migrating the entire project from s
 - **Modify database utilities** like `server/src/knexfile.ts` and any usage of `knexSnakeCaseMappers`.
 - **Verify** updated schema works in SQLite and is ready for future PostgreSQL migration.
 
+A detailed breakdown of tasks for this phase can be found under `docs/development_docs/tasks/camelCase-phase-2/`.
+
 ## Phase 3: Backend Code Refactor
 - **Models** in `server/src/models/` – update property names, query builders, and data mapping logic.
 - **Controllers and services** in `server/src/controllers/` and `server/src/services/` – change references to snake_case fields, remove case‑conversion helpers.
