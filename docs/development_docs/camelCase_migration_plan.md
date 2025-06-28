@@ -47,4 +47,6 @@ A detailed breakdown of tasks for this phase can be found under `docs/developmen
 - **Continuous integration updates** if build scripts reference snake_case.
 - **Document rollback procedures** and update README or deployment docs as needed.
 
+A detailed breakdown of tasks for this phase can be found under `docs/development_docs/tasks/camelCase-phase-6/`.
+
 This phased approach aims to minimize disruptions while ensuring consistency across the database, backend, and frontend layers.
