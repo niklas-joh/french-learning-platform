@@ -25,6 +25,8 @@ A detailed breakdown of tasks for this phase can be found under `docs/developmen
 - **Config files** in `server/src/config/` – adjust any database mapping utilities.
 - **Tests** in `server/src/**/__tests__/` – update fixtures and expectations to camelCase.
 
+A detailed breakdown of tasks for this phase can be found under `docs/development_docs/tasks/camelCase-phase-3/`.
+
 ## Phase 4: Frontend Updates
 - **API service layer** in `client/src/services/` – update request payloads and response handling.
 - **State management and context** in `client/src/context/` and hooks under `client/src/hooks/`.
