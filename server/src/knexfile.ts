@@ -6,7 +6,6 @@
  * touching the developer's local data.
  */
 import type { Knex } from 'knex';
-import stringcase from 'knex-stringcase';
 import path from 'path';
 import dotenv from 'dotenv';
 
@@ -29,7 +28,6 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
     },
-    ...stringcase(),
   },
 
   test: {
@@ -46,7 +44,6 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
     },
-    ...stringcase(),
   },
 };
 
