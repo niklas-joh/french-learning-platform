@@ -38,10 +38,9 @@ Follow these instructions to get a local copy of the project up and running for 
     | `admin@example.com` | `admin` | admin |
     | `user@example.com` | `user` | user |
 
-    If you encounter errors like `no such table: users` when running the
-    application, ensure the migrations have been applied by executing:
+    To reset the database to its original state at any time, you can run:
     ```sh
-    npm run migrate
+    npm run db:rebuild
     ```
 
 4.  **Set up environment variables:**
@@ -56,4 +55,4 @@ Follow these instructions to get a local copy of the project up and running for 
     npm run dev
     ```
     *   The backend will be available at `http://localhost:3001` (or as configured in your `.env`).
-    *   The frontend will be available at `http://localhost:3000`.
+    *   The frontend will be available at `http://localhost:5173` (or another port specified by Vite).

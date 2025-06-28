@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/app.ts",
     "start": "ts-node src/app.ts",
-    "clean": "rm -rf dist",
+    "clean": "rimraf dist",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watchAll",
