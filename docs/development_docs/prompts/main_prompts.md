@@ -5,10 +5,10 @@ Conduct a detailed analysis of your approach, impacted files, dependencies, and 
 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
-If the task require larger changes, expand the tasks into subtask, update the @/docs\development_docs\app_overhaul_plan.md with the subtasks.
-
 ## Second review
-What are the changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
+What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
+
+If the task require larger changes, break down the tasks into subtask, update the @/docs\development_docs\app_overhaul_plan.md with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
 
 Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
@@ -16,14 +16,14 @@ Consider impacts on Architecture and technical documents, plans etc., before sta
 Now criticise your approach, identifying flaws or ineffiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities. When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs\development_docs\app_overhaul_plan.md, capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md 
 
 ## ACT MODE
-If you have found tasks for future use, add them to @\docs\development_docs\future_implementation_considerations.md before working on other activities. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
+If you have found tasks for future use, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
 1. Develop the proposed code
 2. Review your code for consistency, logic and potential flaws
 3. Analyse if changes are needed to other files
 4. Ask me to validate, explaining how I can validate, expected outcome
 5. Update documentation plans with our progress
 6. Push to git with comprehensive message and git body in a separate file
-7. Create a new Cline task for the next subtask to keep to atomic changes.
+7. Create a new Cline task for the next subtask to keep to atomic changes, repeating these instructions.
 
 
 ## Creating subtasks

@@ -55,13 +55,10 @@ export async function seed(knex: Knex): Promise<void> {
       estimated_time: 10,
       order_index: 1,
       content_data: JSON.stringify({
-        introduction: "Welcome to your first French lesson! Let's learn how to greet people.",
-        vocabulary: [
-          { french: 'Bonjour', english: 'Hello (formal)', audio_url: 'path/to/bonjour.mp3' },
-          { french: 'Salut', english: 'Hi (informal)', audio_url: 'path/to/salut.mp3' },
-        ],
-        examples: ["Bonjour Madame Dubois.", "Salut Paul!"],
-        practice_prompts: ["How do you greet your teacher?", "How do you greet a friend?"]
+        items: [
+          { word: 'Bonjour', translation: 'Hello (formal)', example_sentence: 'Bonjour Madame Dubois.' },
+          { word: 'Salut', translation: 'Hi (informal)', example_sentence: 'Salut Paul!' },
+        ]
       }),
       is_active: true,
     },
@@ -73,11 +70,11 @@ export async function seed(knex: Knex): Promise<void> {
       estimated_time: 15,
       order_index: 2,
       content_data: JSON.stringify({
+        title: 'Checking In',
         dialogue: [
-          { speaker: "A", line: "Bonjour! Comment ça va?" },
-          { speaker: "B", line: "Ça va bien, merci. Et vous?" }
-        ],
-        key_phrases: ["Comment ça va?", "Ça va bien.", "Merci", "Et vous/toi?"]
+          { speaker: "Alice", line: "Bonjour! Comment ça va?" },
+          { speaker: "Ben", line: "Ça va bien, merci. Et vous?" }
+        ]
       }),
       is_active: true,
     },
@@ -126,11 +123,29 @@ export async function seed(knex: Knex): Promise<void> {
       estimated_time: 10,
       order_index: 2,
       content_data: JSON.stringify({
-        numbers: [
-          { french: 'un', value: 1 }, { french: 'deux', value: 2 }, { french: 'trois', value: 3 },
-          { french: 'quatre', value: 4 }, { french: 'cinq', value: 5 }, { french: 'six', value: 6 },
-          { french: 'sept', value: 7 }, { french: 'huit', value: 8 }, { french: 'neuf', value: 9 },
-          { french: 'dix', value: 10 }
+        items: [
+          { word: 'Un', translation: 'One', example_sentence: 'J\'ai un stylo.' },
+          { word: 'Deux', translation: 'Two', example_sentence: 'Il a deux frères.' },
+          { word: 'Trois', translation: 'Three', example_sentence: 'Nous avons trois chats.' },
+        ]
+      }),
+      is_active: true,
+    },
+    {
+      learning_unit_id: unit2Id,
+      title: 'Lesson 2.3: Le, La, Les - Definite Articles',
+      description: 'Understand how to use definite articles in French.',
+      type: 'grammar',
+      estimated_time: 20,
+      order_index: 3,
+      content_data: JSON.stringify({
+        rule: 'Definite Articles (Le, La, L\', Les)',
+        explanation: 'Definite articles are used to refer to specific nouns. They are equivalent to "the" in English. The form changes depending on the gender and number of the noun.',
+        examples: [
+          'Le garçon (the boy) - masculine singular',
+          'La fille (the girl) - feminine singular',
+          'L\'ami (the friend) - singular, starts with a vowel',
+          'Les enfants (the children) - plural',
         ]
       }),
       is_active: true,

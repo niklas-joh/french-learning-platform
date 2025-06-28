@@ -194,7 +194,7 @@ export async function startUserLesson(
     // We transition it to 'in-progress'. This is a safeguard.
     const [updated] = await db('user_lesson_progress')
       .where('id', existingProgress.id)
-      .update({ status: 'in-progress', started_at: new Date().toISOString() })
+      .update({ status: 'in-progress', startedAt: new Date().toISOString() })
       .returning('*');
     return updated;
   }
