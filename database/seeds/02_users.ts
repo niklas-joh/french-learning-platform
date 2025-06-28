@@ -10,16 +10,16 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('users').insert([
     {
       email: 'admin@example.com',
-      password_hash: adminHash,
-      first_name: 'admin',
-      last_name: 'example',
+      passwordHash: adminHash,
+      firstName: 'admin',
+      lastName: 'example',
       role: 'admin',
     },
     {
       email: 'user@example.com',
-      password_hash: userHash,
-      first_name: 'user',
-      last_name: 'example',
+      passwordHash: userHash,
+      firstName: 'user',
+      lastName: 'example',
       role: 'user',
     },
   ]);
