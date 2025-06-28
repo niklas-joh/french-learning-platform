@@ -180,24 +180,22 @@ export async function startUserLesson(
   userId: number,
   lessonId: number
 ): Promise<UserLessonProgress> {
-  const existingProgress = await db<UserLessonProgress>('user_lesson_progress')
-    .where({ userId: userId, lessonId: lessonId })
-    .first();
+  try {
+    const existingProgress = await db<UserLessonProgress>('user_lesson_progress')
+      .where({ userId: userId, lessonId: lessonId })
+      .first();
 
-  if (existingProgress) {
-    // If the lesson is already in progress or completed, do nothing and return the current state.
-    if (existingProgress.status === 'in-progress' || existingProgress.status === 'completed') {
-      return existingProgress;
+    if (existingProgress) {
+      if (existingProgress.status === 'in-progress' || existingProgress.status === 'completed') {
+        return existingProgress;
+      }
+
+      const [updated] = await db('user_lesson_progress')
+        .where('id', existingProgress.id)
+        .update({ status: 'in-progress', startedAt: new Date().toISOString() })
+        .returning('*');
+      return updated;
     }
-
-    // This case handles a record that might exist but is not in a final state.
-    // We transition it to 'in-progress'. This is a safeguard.
-    const [updated] = await db('user_lesson_progress')
-      .where('id', existingProgress.id)
-      .update({ status: 'in-progress', startedAt: new Date().toISOString() })
-      .returning('*');
-    return updated;
-  }
 
   // If no progress record exists, the lesson is 'available' (as determined by the UI).
   // We create a new record to mark it as 'in-progress'.
@@ -211,6 +209,10 @@ export async function startUserLesson(
     })
     .returning('*');
   return newProgress;
+  } catch (error) {
+    console.error('startUserLesson error:', error);
+    throw error;
+  }
 }
 
 /**
