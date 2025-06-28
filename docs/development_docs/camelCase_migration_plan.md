@@ -40,6 +40,8 @@ A detailed breakdown of tasks for this phase can be found under `docs/developmen
 - **Add or adjust client-side tests** if applicable.
 - **Manual QA**: verify that API responses and the UI operate correctly with camelCase data.
 
+A detailed breakdown of tasks for this phase can be found under `docs/development_docs/tasks/camelCase-phase-5/`.
+
 ## Phase 6: Deployment and Rollback Planning
 - **Database backups** before applying migrations.
 - **Continuous integration updates** if build scripts reference snake_case.
