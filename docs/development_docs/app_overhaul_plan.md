@@ -12,7 +12,7 @@ This document provides a high-level overview of the project's phases and major t
 
 ## PHASE 1: FOUNDATION
 
-### Status: In Progress
+### Status: Completed
 
 | Task ID | Description                                  | Status      | Details                               |
 | :------ | :------------------------------------------- | :---------- | :------------------------------------ |
@@ -55,4 +55,4 @@ This document provides a high-level overview of the project's phases and major t
 | 2.4.2.3 | **Frontend**: Install Zod and Create Content Schemas | `[x]` Done | Add runtime validation for lesson content data |
 | 2.4.2.4 | **Frontend**: Integrate Zod Validation in Dynamic Loading | `[x]` Done | Validate content data before rendering components |
 | 2.4.3   | **Frontend**: Create Placeholder Content Components (`Vocab`, `Grammar`, etc.) | `[x]` Done | [details](./tasks/phase-2/2-4-3-placeholder-components.md) |
-| 2.4.4   | **Docs**: Update High-Level Architecture Diagrams | `[ ]` To Do | [details](./tasks/phase-2/2-4-4-update-architecture-docs.md) |
+| 2.4.4   | **Docs**: Update High-Level Architecture Diagrams | `[x]` Done | [details](./tasks/phase-2/2-4-4-update-architecture-docs.md) |
