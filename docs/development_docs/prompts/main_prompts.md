@@ -1,13 +1,5 @@
 ## First review
-# App Overhaul Plan
-Identify the next task in @/docs\development_docs\app_overhaul_plan.md.
-
-Conduct a detailed analysis of your approach, impacted files, dependencies, and create concrete developing suggestions. Adhere to the PRD in @/docs/development_docs/language_learning_prd.md and capture/follow the detailes outlined inthe @/docs/development_docs/tasks folder.
-
-Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
-
-# CamelCase Migration Plan
-Identify the next task in @/docs/development_docs/tasks/camelCase-phase-1 .
+Can you identify the next task based on @/docs/development_docs/project_roadmap.md ?
 
 Conduct a detailed analysis of your approach, impacted files, dependencies, and create concrete developing suggestions. Adhere to the PRD in @/docs/development_docs/language_learning_prd.md and capture/follow the detailes outlined inthe @/docs/development_docs/tasks folder.
 
@@ -34,7 +26,7 @@ Now criticise your approach, identifying flaws or ineffiencies, validate that yo
 
 ## ACT MODE
 If you have found tasks for future use, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
-1. Develop the proposed code
+1. Work on the current subtask.
 2. Review your code for consistency, logic and potential flaws
 3. Analyse if changes are needed to other files
 4. Ask me to validate, explaining how I can validate, expected outcome
