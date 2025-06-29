@@ -25,6 +25,22 @@ graph TD
             LearningPath["LearningPath.tsx"]
             LearningUnit["LearningUnit.tsx"]
             LessonNode["LessonNode.tsx"]
+            
+            subgraph "Dynamic Lesson Content"
+                direction TB
+                LessonPage["LessonPage.tsx (Controller)"]
+                DynamicContent["DynamicLessonContent.tsx"]
+                Suspense["React.Suspense (Loading Boundary)"]
+                VocabularyLesson["VocabularyLesson.tsx"]
+                GrammarLesson["GrammarLesson.tsx"]
+                ConversationLesson["ConversationLesson.tsx"]
+                
+                LessonPage --> DynamicContent
+                DynamicContent --> Suspense
+                Suspense --> VocabularyLesson
+                Suspense --> GrammarLesson
+                Suspense --> ConversationLesson
+            end
         end
 
         MainLayout --> BottomNav
@@ -40,7 +56,7 @@ graph TD
         
         AuthContext -- "Provides auth state" --> MainLayout
         useLearningPath -- "Fetches data via" --> ApiService
-        LessonNode -- "Navigates to" --> LessonPage(Lesson Detail Page)
+        LessonNode -- "Navigates to" --> LessonPage
     end
 
     subgraph "Backend API (Node.js + Express)"
