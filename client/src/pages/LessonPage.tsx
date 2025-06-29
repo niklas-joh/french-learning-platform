@@ -1,11 +1,10 @@
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography, Paper, CircularProgress, Alert, Button } from '@mui/material';
 import { ArrowBack, CheckCircle } from '@mui/icons-material';
 import { startLesson, completeLesson } from '../services/learningPathService';
 import { useLearningPath } from '../hooks/useLearningPath';
-import { lessonComponentMap } from '../components/learning/content';
-import { LessonType } from '../types/LessonContentTypes';
+import DynamicLessonContent from '../components/learning/content/DynamicLessonContent';
 
 const LessonPage: React.FC = () => {
   const { lessonId } = useParams<{ lessonId: string }>();
@@ -82,31 +81,7 @@ const LessonPage: React.FC = () => {
         ) : error ? (
           <Alert severity="error">{error}</Alert>
         ) : lesson ? (
-          <Suspense
-            fallback={
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexGrow: 1 }}>
-                <CircularProgress />
-              </Box>
-            }
-          >
-            {(() => {
-              // TODO: Implement robust runtime validation of lesson.contentData
-              // using a library like Zod to prevent crashes from malformed data.
-              const LessonComponent = lessonComponentMap[lesson.type as LessonType];
-              if (!LessonComponent) {
-                return <Alert severity="warning">This lesson type is not supported yet.</Alert>;
-              }
-              try {
-                const content = typeof lesson.contentData === 'string' 
-                  ? JSON.parse(lesson.contentData) 
-                  : lesson.contentData;
-                return <LessonComponent content={content} />;
-              } catch (e) {
-                console.error("Failed to parse lesson content:", e);
-                return <Alert severity="error">Failed to load lesson content.</Alert>;
-              }
-            })()}
-          </Suspense>
+          <DynamicLessonContent lesson={lesson} />
         ) : (
           <Alert severity="warning">Lesson not found.</Alert>
         )}
