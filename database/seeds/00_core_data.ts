@@ -33,9 +33,9 @@ export async function seed(knex: Knex): Promise<void> {
         language: 'french',
         name: 'French for Beginners',
         description: 'Complete French course from A1 to B2 level. (This is a placeholder, actual content will determine levels covered)',
-        total_lessons: 0, // This should be updated dynamically later or by a script
-        estimated_duration: 0, // This should be updated dynamically later
-        is_active: true,
+        totalLessons: 0, // This should be updated dynamically later or by a script
+        estimatedDuration: 0, // This should be updated dynamically later
+        isActive: true,
       },
     ]);
   } else {
@@ -51,9 +51,9 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Complete your first lesson',
         icon: '🎯',
         category: 'lessons',
-        criteria_data: JSON.stringify({ type: 'lessons_completed', value: 1 }),
+        criteriaData: JSON.stringify({ type: 'lessons_completed', value: 1 }),
         rarity: 'common',
-        is_active: true,
+        isActive: true,
       },
       {
         id: 'streak_7',
@@ -61,9 +61,9 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Maintain a 7-day learning streak',
         icon: '🔥',
         category: 'streak',
-        criteria_data: JSON.stringify({ type: 'streak', value: 7 }),
+        criteriaData: JSON.stringify({ type: 'streak', value: 7 }),
         rarity: 'rare',
-        is_active: true,
+        isActive: true,
       },
       {
         id: 'perfect_quiz',
@@ -71,9 +71,9 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Score 100% on any quiz',
         icon: '⭐',
         category: 'accuracy',
-        criteria_data: JSON.stringify({ type: 'accuracy_threshold', value: 100 }),
+        criteriaData: JSON.stringify({ type: 'accuracy_threshold', value: 100 }),
         rarity: 'epic',
-        is_active: true,
+        isActive: true,
       },
       {
         id: 'vocab_master_10',
@@ -81,9 +81,9 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Learn 10 new vocabulary words.',
         icon: '📚',
         category: 'vocabulary',
-        criteria_data: JSON.stringify({ type: 'words_learned', value: 10 }),
+        criteriaData: JSON.stringify({ type: 'words_learned', value: 10 }),
         rarity: 'common',
-        is_active: true,
+        isActive: true,
       }
     ]);
   } else {

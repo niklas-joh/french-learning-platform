@@ -1,14 +1,31 @@
 ## First review
+# App Overhaul Plan
 Identify the next task in @/docs\development_docs\app_overhaul_plan.md.
 
 Conduct a detailed analysis of your approach, impacted files, dependencies, and create concrete developing suggestions. Adhere to the PRD in @/docs/development_docs/language_learning_prd.md and capture/follow the detailes outlined inthe @/docs/development_docs/tasks folder.
 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
+# CamelCase Migration Plan
+Identify the next task in @/docs/development_docs/tasks/camelCase-phase-1 .
+
+Conduct a detailed analysis of your approach, impacted files, dependencies, and create concrete developing suggestions. Adhere to the PRD in @/docs/development_docs/language_learning_prd.md and capture/follow the detailes outlined inthe @/docs/development_docs/tasks folder.
+
+Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
+
 ## Second review
+
+# App Overhaul Plan
 What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
 If the task require larger changes, break down the tasks into subtask, update the @/docs\development_docs\app_overhaul_plan.md with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
+
+Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
+
+# CamelCase Migration Plan
+What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
+
+If the task require larger changes, break down the tasks into subtask, update the @/docs/development_docs/camelCase_migration_plan.md  with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
 
 Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
