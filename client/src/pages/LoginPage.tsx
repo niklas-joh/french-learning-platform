@@ -9,12 +9,13 @@ import {
   Typography,
   Alert,
 } from '@mui/material';
-import { login } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -22,10 +23,10 @@ const LoginPage: React.FC = () => {
     setError(null);
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const response = await login({ email: normalizedEmail, password });
-      console.log('Login successful:', response);
-      navigate('/dashboard', { replace: true });
-      window.location.reload();
+      await login({ email: normalizedEmail, password });
+      // The AuthContext will handle setting the user and token.
+      // We just need to navigate to the new home page.
+      navigate('/', { replace: true });
     } catch (apiError: any) {
       console.error('Login failed raw error:', apiError);
       const errorMessage = apiError && apiError.message

@@ -23,12 +23,6 @@ import {
     deleteContentItemById,
     getAllUsers
 } from '../controllers/admin.controller';
-import {
-    assignContentToUser,
-    getAssignmentsForUser,
-    unassignContentFromUser
-} from '../controllers/assignment.controller';
-
 const router = express.Router();
 
 // Test route for admin access
@@ -58,11 +52,6 @@ router.post('/content', protect, isAdmin, createContentItem);
 router.get('/content/:id', protect, isAdmin, getContentItemById);
 router.put('/content/:id', protect, isAdmin, updateContentItemById);
 router.delete('/content/:id', protect, isAdmin, deleteContentItemById);
-
-// User-Content Assignment Routes
-router.post('/assignments', protect, isAdmin, assignContentToUser);
-router.get('/assignments/user/:userId', protect, isAdmin, getAssignmentsForUser);
-router.delete('/assignments/:assignmentId', protect, isAdmin, unassignContentFromUser);
 
 // User management
 router.get('/users', protect, isAdmin, getAllUsers);

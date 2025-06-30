@@ -11,6 +11,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const migrationsDirectory = path.resolve(__dirname, '..', '..', 'database', 'migrations');
+console.log('[knexfile.ts] __dirname:', __dirname);
+console.log('[knexfile.ts] Resolved migrations directory:', migrationsDirectory);
+
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
@@ -19,7 +23,7 @@ const config: { [key: string]: Knex.Config } = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: path.resolve(__dirname, '..', '..', 'database', 'migrations'),
+      directory: migrationsDirectory,
     },
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),

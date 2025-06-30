@@ -1,0 +1,185 @@
+erDiagram
+    users {
+        int id PK
+        string email UK
+        string passwordHash
+        string firstName "nullable"
+        string lastName "nullable"
+        string role "default: 'user'"
+        datetime createdAt
+        datetime updatedAt
+        json preferences "nullable"
+    }
+
+    topics {
+        int id PK
+        string name UK
+        string description "nullable"
+        string category "nullable"
+        boolean active "default: true"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    content_types {
+        int id PK
+        string name UK
+        string description "nullable"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    content {
+        int id PK
+        string name "notNull default: 'Unnamed Content'"
+        string title "nullable"
+        int topicId FK "nullable"
+        int contentTypeId FK "notNull"
+        json questionData "notNull"
+        json correctAnswer "notNull"
+        json options "nullable"
+        string difficultyLevel "nullable"
+        json tags "nullable"
+        boolean active "default: true notNull"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    user_content_assignments {
+        int id PK
+        int userId FK
+        int contentId FK
+        datetime assignedAt "default: now"
+        string status "default: 'pending' notNull"
+        datetime dueDate "nullable"
+        %% unique userId, contentId
+    }
+
+    user_preferences {
+        int id PK
+        int userId FK
+        json preferences "notNull"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    user_content_completions {
+        int id PK
+        int userId FK
+        int contentId FK
+        datetime completedAt "notNull default: now"
+        int attemptNumber "notNull default: 1"
+        float score "nullable"
+        int explicitAssignmentId FK "nullable"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    user_progress {
+        int id PK
+        int userId FK
+        string currentLevel "notNull default: 'A1'"
+        int currentXp "notNull default: 0"
+        int totalXp "notNull default: 0"
+        int streakDays "notNull default: 0"
+        date lastActivityDate "nullable"
+        int lessonsCompleted "notNull default: 0"
+        int wordsLearned "notNull default: 0"
+        int timeSpentMinutes "notNull default: 0"
+        float accuracyRate "notNull default: 0.0"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    learning_paths {
+        int id PK
+        string language "notNull default: 'french'"
+        string name "notNull"
+        text description "nullable"
+        int totalLessons "notNull default: 0"
+        int estimatedDuration "nullable"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    learning_units {
+        int id PK
+        int learningPathId FK
+        string title "notNull"
+        text description "nullable"
+        string level "notNull"
+        int orderIndex "notNull"
+        text prerequisites "nullable"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    lessons {
+        int id PK
+        int learningUnitId FK
+        string title "notNull"
+        text description "nullable"
+        string type "notNull"
+        int estimatedTime "notNull"
+        int orderIndex "notNull"
+        text contentData "nullable"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    achievements {
+        string id PK
+        string name "notNull"
+        text description "notNull"
+        string icon "notNull"
+        string category "notNull"
+        text criteriaData "notNull"
+        string rarity "notNull default: 'common'"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    user_achievements {
+        int id PK
+        int userId FK
+        string achievementId FK
+        datetime unlockedAt "default: now"
+        %% unique userId, achievementId
+    }
+
+    user_lesson_progress {
+        int id PK
+        int userId FK
+        int lessonId FK
+        string status "notNull default: 'locked'"
+        float score "nullable"
+        int timeSpent "nullable"
+        int attempts "default: 0"
+        datetime startedAt "nullable"
+        datetime completedAt "nullable"
+        datetime createdAt
+        datetime updatedAt
+        %% unique userId, lessonId
+    }
+
+    users ||--o{ user_preferences : "has"
+    users ||--o{ user_content_assignments : "assigned"
+    content ||--o{ user_content_assignments : "is_part_of"
+    users ||--o{ user_content_completions : "completes"
+    content ||--o{ user_content_completions : "is_completed_in"
+    user_content_assignments }o--o| user_content_completions : "can_lead_to"
+
+    topics ||--o{ content : "contains"
+    content_types ||--o{ content : "is_of_type"
+
+    users ||--o{ user_progress : "tracks"
+    learning_paths ||--o{ learning_units : "contains"
+    learning_units ||--o{ lessons : "contains"
+    users ||--o{ user_achievements : "earns"
+    achievements ||--o{ user_achievements : "awarded_to"
+    users ||--o{ user_lesson_progress : "tracks_progress_on"
+    lessons ||--o{ user_lesson_progress : "has_progress_by"

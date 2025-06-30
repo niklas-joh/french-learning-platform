@@ -2,14 +2,14 @@ import knex from '../config/db';
 
 export interface UserContentCompletion {
   id?: number;
-  user_id: number;
-  content_id: number;
-  completed_at?: Date;
-  attempt_number: number;
+  userId: number;
+  contentId: number;
+  completedAt?: Date;
+  attemptNumber: number;
   score?: number;
-  explicit_assignment_id?: number;
-  created_at?: Date;
-  updated_at?: Date;
+  explicitAssignmentId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const UserContentCompletionModel = {
@@ -22,11 +22,11 @@ const UserContentCompletionModel = {
   ): Promise<UserContentCompletion> {
     const [newCompletion] = await knex('user_content_completions')
       .insert({
-        user_id: userId,
-        content_id: contentId,
-        explicit_assignment_id: explicitAssignmentId,
+        userId: userId,
+        contentId: contentId,
+        explicitAssignmentId: explicitAssignmentId,
         score: score,
-        attempt_number: attemptNumber,
+        attemptNumber: attemptNumber,
       })
       .returning('*');
     return newCompletion;
@@ -34,19 +34,19 @@ const UserContentCompletionModel = {
 
   async findByUserAndContent(userId: number, contentId: number): Promise<UserContentCompletion[]> {
     return knex('user_content_completions')
-      .where({ user_id: userId, content_id: contentId })
+      .where({ userId: userId, contentId: contentId })
       .select('*');
   },
 
-  async getCompletionsByTopicForUser(userId: number, topicId: number): Promise<{ content_id: number }[]> {
+  async getCompletionsByTopicForUser(userId: number, topicId: number): Promise<{ contentId: number }[]> {
     return knex('user_content_completions')
-      .join('content', 'user_content_completions.content_id', 'content.id')
+      .join('content', 'user_content_completions.contentId', 'content.id')
       .where({
-        'user_content_completions.user_id': userId,
-        'content.topic_id': topicId,
+        'user_content_completions.userId': userId,
+        'content.topicId': topicId,
       })
-      .distinct('user_content_completions.content_id')
-      .select('user_content_completions.content_id');
+      .distinct('user_content_completions.contentId')
+      .select('user_content_completions.contentId as contentId');
   }
 };
 

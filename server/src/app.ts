@@ -10,11 +10,12 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 
-// Route imports (create these files)
+// Route imports
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
-import contentRoutes from './routes/content.routes';
-import adminRoutes from './routes/admin.routes'; // Added admin routes
+import adminRoutes from './routes/admin.routes';
+import learningRoutes from './routes/learning.routes';
+import metaRoutes from './routes/meta.routes';
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(helmet());
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'http://localhost:5175' }));
 app.use(morgan('combined'));
 app.use(express.json());
 
@@ -35,11 +36,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/content', contentRoutes);
-app.use('/api/admin', adminRoutes); // Added admin routes
+// API v1 Routes
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes); // Note: This now contains more than just profile data
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/learning', learningRoutes);
+app.use('/api/v1/meta', metaRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
