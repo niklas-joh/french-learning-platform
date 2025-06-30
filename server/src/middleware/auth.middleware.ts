@@ -8,7 +8,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 // Extend Express Request type to include user property
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request { // Added export
   user?: {
     userId: number; // Changed from id to userId for consistency
     email?: string;

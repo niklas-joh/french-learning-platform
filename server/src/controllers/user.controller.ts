@@ -3,11 +3,11 @@
  * tracking APIs.
  */
 import { Request, Response } from 'express';
-import knex from '../config/db';
-import { UserSchema } from '../models/User';
+import { getUserById, updateUser, getAllUsers as getAllUsersFromModel } from '../models/User';
 import UserContentAssignmentModel from '../models/UserContentAssignment';
 import UserContentCompletionModel from '../models/UserContentCompletion';
 import UserPreferenceModel from '../models/UserPreference';
+import { getTopicProgress, getAssignedContentProgress } from '../models/UserProgress';
 
 // Extend Express Request type to include the user object populated by the
 // authentication middleware.
@@ -33,17 +33,14 @@ export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Resp
     }
 
     const userId = uid;
-    const user = await knex('users').where({ id: userId }).first();
+    const user = await getUserById(userId);
 
     if (!user) {
       res.status(404).json({ message: 'User not found' });
       return;
     }
 
-    // Exclude password from the response
-    const { password_hash, ...userProfile } = user; 
-
-    res.json(userProfile);
+    res.json(user);
   } catch (error: any) { // Type error as any
     console.error('Error fetching user profile:', error);
     res.status(500).json({ message: 'Failed to fetch user profile' });
@@ -62,7 +59,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
     }
 
     const userId = uid;
-    const { email, first_name, last_name, preferences, password } = req.body;
+    const { email, firstName, lastName, preferences, password } = req.body;
 
     if (password) {
       res.status(400).json({ message: 'Password cannot be updated through this route.' });
@@ -74,23 +71,21 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
       return;
     }
 
-    const updateData: Partial<UserSchema> & { updated_at?: Date } = {};
-    if (email) updateData.email = email;
-    if (first_name) updateData.first_name = first_name;
-    if (last_name) updateData.last_name = last_name;
-    if (preferences) updateData.preferences = JSON.stringify(preferences);
+    const updateData: { [key: string]: any } = { email, firstName, lastName, preferences };
+
+    // Filter out null, undefined, or empty string values
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === null || updateData[key] === undefined || updateData[key] === '') {
+        delete updateData[key];
+      }
+    });
 
     if (Object.keys(updateData).length === 0) {
       res.status(400).json({ message: 'No update fields provided' });
       return;
     }
 
-    updateData.updated_at = new Date();
-
-    const [updatedUser] = await knex('users')
-      .where({ id: userId })
-      .update(updateData)
-      .returning(['id', 'email', 'first_name', 'last_name', 'preferences', 'created_at', 'updated_at']);
+    const updatedUser = await updateUser(userId, updateData);
 
     if (!updatedUser) {
       res.status(404).json({ message: 'User not found or update failed' });
@@ -113,7 +108,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
  */
 export const getAllUsers = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const users = await knex('users').select('id', 'first_name', 'last_name', 'email', 'role');
+    const users = await getAllUsersFromModel();
     res.json(users);
   } catch (error: any) {
     console.error('Error fetching all users:', error);
@@ -155,51 +150,8 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
     }
     const userId = uid;
 
-    // --- Topic Progress Calculation ---
-    const topics = await knex('topics').select('id', 'name');
-    const topicProgress = topics.length > 0 ? await Promise.all(topics.map(async topic => {
-      const totalCountResult = await knex('content').where('topic_id', topic.id).count('* as count').first();
-      const completedCountResult = await knex('user_content_completions')
-        .join('content', 'user_content_completions.content_id', 'content.id')
-        .where({
-          'user_content_completions.user_id': userId,
-          'content.topic_id': topic.id,
-        })
-        .countDistinct('content.id as count')
-        .first();
-      
-      const totalCount = Number(totalCountResult?.count || 0);
-      const completedCount = Number(completedCountResult?.count || 0);
-
-      return {
-        topicId: topic.id,
-        topicName: topic.name,
-        completedCount,
-        totalCount,
-        percentage: totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0,
-      };
-    })) : [];
-
-    // --- Assigned Content Progress Calculation ---
-    const totalAssignedResult = await knex('user_content_assignments')
-      .where({ user_id: userId })
-      .count('* as count')
-      .first();
-
-    const completedAssignedResult = await knex('user_content_completions')
-      .where({ user_id: userId })
-      .whereNotNull('explicit_assignment_id')
-      .countDistinct('explicit_assignment_id as count')
-      .first();
-
-    const totalAssigned = Number(totalAssignedResult?.count || 0);
-    const completedAssigned = Number(completedAssignedResult?.count || 0);
-    
-    const assignedContentProgress = {
-      completedCount: completedAssigned,
-      totalCount: totalAssigned,
-      percentage: totalAssigned > 0 ? Math.round((completedAssigned / totalAssigned) * 100) : 0,
-    };
+    const topicProgress = await getTopicProgress(userId);
+    const assignedContentProgress = await getAssignedContentProgress(userId);
 
     // --- Final Response ---
     const overallProgress = {

@@ -1,53 +1,59 @@
 /**
- * Routes for regular authenticated users.
+ * Routes for user-centric data, including profile, progress, and gamification.
  */
 import { Router } from 'express';
-import { getCurrentUserProfile, updateUserProfile, getAllUsers, getAssignedContent, getUserProgress, getUserPreferences, updateUserPreferences, recordContentItemProgress } from '../controllers/user.controller';
 import { protect } from '../middleware/auth.middleware';
 import { isAdmin } from '../middleware/admin.middleware';
 
+// Import controllers
+import { 
+  getCurrentUserProfile, 
+  updateUserProfile, 
+  getAllUsers, 
+  getAssignedContent, 
+  getUserPreferences, 
+  updateUserPreferences,
+  recordContentItemProgress // This might be deprecated by recordActivityCompleted
+} from '../controllers/user.controller';
+
+import { 
+  getUserProgress, 
+  getUserStreak, 
+  recordActivityCompleted 
+} from '../controllers/progressController';
+
+import { 
+  getUserAchievements,
+  checkNewAchievements
+} from '../controllers/gamificationController';
+
+
 const router = Router();
 
-// @route   GET /api/users/me
-// @desc    Get current user's profile
-// @access  Private
+// === User Profile & Preferences ===
 router.get('/me', protect, getCurrentUserProfile);
-
-// @route   PUT /api/users/me
-// @desc    Update current user's profile
-// @access  Private
 router.put('/me', protect, updateUserProfile);
-
-// TODO: expose route for verifying email changes
-
-// @route   GET /api/users
-// @desc    Get all users
-// @access  Admin
-router.get('/', protect, isAdmin, getAllUsers);
-
-// @route   GET /api/users/me/assignments
-// @desc    Get assigned content for the current user
-// @access  Private
-router.get('/me/assignments', protect, getAssignedContent);
-
-// @route   GET /api/users/me/progress
-// @desc    Get progress for the current user
-// @access  Private
-router.get('/me/progress', protect, getUserProgress);
-
-// @route   GET /api/users/me/preferences
-// @desc    Get preferences for the current user
-// @access  Private
 router.get('/me/preferences', protect, getUserPreferences);
-
-// @route   PUT /api/users/me/preferences
-// @desc    Update preferences for the current user
-// @access  Private
 router.put('/me/preferences', protect, updateUserPreferences);
 
-// @route   POST /api/users/me/progress/content/:contentId
-// @desc    Record progress for a content item
-// @access  Private
+// === User Progress & Activity ===
+router.get('/me/progress', protect, getUserProgress);
+router.get('/me/streak', protect, getUserStreak);
+router.post('/me/activity-completed', protect, recordActivityCompleted);
+
+// === User Gamification ===
+router.get('/me/achievements', protect, getUserAchievements);
+router.post('/me/achievements/check', protect, checkNewAchievements);
+
+// === Legacy & Admin Routes ===
+// @desc    Get assigned content for the current user (Legacy, may be replaced by learning path)
+router.get('/me/assignments', protect, getAssignedContent);
+
+// @desc    Record progress for a single content item (Legacy, may be replaced by activity-completed)
 router.post('/me/progress/content/:contentId', protect, recordContentItemProgress);
+
+// @desc    Get all users (Admin only)
+router.get('/', protect, isAdmin, getAllUsers);
+
 
 export default router;

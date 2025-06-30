@@ -4,9 +4,11 @@
  * These handlers manage topics, content items and perform simple analytics.
  */
 import { Request, Response } from 'express';
-import knex from '../config/db';
 
 import { createContent, getContentById, getAllContent, updateContent, deleteContent } from '../models/Content';
+import { getTotalUsers, getUsersByRole, getAllUsers as getAllUsersModel } from '../models/User';
+import { getAllTopics as getAllTopicsModel, createTopic as createTopicModel, getTopicById as getTopicByIdModel, updateTopicById as updateTopicByIdModel, deleteTopicById as deleteTopicByIdModel } from '../models/Topic';
+import { getAllContentTypes as getAllContentTypesModel, createContentType as createContentTypeModel, updateContentType as updateContentTypeModel, deleteContentType as deleteContentTypeModel } from '../models/ContentType';
 interface AnalyticsSummary {
   totalUsers: number;
   usersByRole: { role: string; count: number }[];
@@ -29,18 +31,10 @@ export const adminTestController = (req: Request, res: Response): void => {
 export const getAnalyticsSummary = async (req: Request, res: Response): Promise<void> => {
   try {
     // 1. Get total number of users
-    const totalUsersResult = await knex('users').count('* as count').first();
-    const totalUsers = Number(totalUsersResult?.count || 0);
+    const totalUsers = await getTotalUsers();
 
     // 2. Get number of users by role
-    const usersByRoleResult = await knex('users')
-      .select('role')
-      .count('* as count')
-      .groupBy('role');
-    const usersByRole = usersByRoleResult.map(row => ({
-      role: String(row.role),
-      count: Number(row.count),
-    }));
+    const usersByRole = await getUsersByRole();
 
     // 3. Get total number of content items
     // TODO: replace file system scanning with a dedicated table once content
@@ -86,7 +80,7 @@ export const getAnalyticsSummary = async (req: Request, res: Response): Promise<
  */
 export const getAllTopics = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const topics = await knex('topics').select('*');
+    const topics = await getAllTopicsModel();
     res.status(200).json(topics);
   } catch (error) {
     console.error('Error fetching topics:', error);
@@ -106,7 +100,7 @@ export const createTopic = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    const [newTopic] = await knex('topics').insert({ name, description }).returning('*');
+    const newTopic = await createTopicModel({ name, description });
     res.status(201).json(newTopic);
   } catch (error) {
     console.error('Error creating topic:', error);
@@ -120,7 +114,7 @@ export const createTopic = async (req: Request, res: Response): Promise<void> =>
 export const getTopicById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const topic = await knex('topics').where({ id }).first();
+    const topic = await getTopicByIdModel(Number(id));
     if (!topic) {
       res.status(404).json({ message: 'Topic not found' });
       return;
@@ -135,8 +129,7 @@ export const getTopicById = async (req: Request, res: Response): Promise<void> =
 export const updateTopicById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    await knex('topics').where({ id }).update(req.body);
-    const updated = await knex('topics').where({ id }).first();
+    const updated = await updateTopicByIdModel(Number(id), req.body);
     if (!updated) {
       res.status(404).json({ message: 'Topic not found' });
       return;
@@ -154,7 +147,7 @@ export const updateTopicById = async (req: Request, res: Response): Promise<void
 export const deleteTopicById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const deleted = await knex('topics').where({ id }).del();
+    const deleted = await deleteTopicByIdModel(Number(id));
     if (!deleted) {
       res.status(404).json({ message: 'Topic not found' });
       return;
@@ -171,7 +164,7 @@ export const deleteTopicById = async (req: Request, res: Response): Promise<void
  */
 export const getAllContentTypes = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const types = await knex('content_types').select('*');
+    const types = await getAllContentTypesModel();
     res.status(200).json(types);
   } catch (error) {
     console.error('Error fetching content types:', error);
@@ -189,7 +182,7 @@ export const createContentType = async (req: Request, res: Response): Promise<vo
       res.status(400).json({ message: 'Name is required' });
       return;
     }
-    const [newType] = await knex('content_types').insert({ name, description }).returning('*');
+    const newType = await createContentTypeModel({ name, description });
     res.status(201).json(newType);
   } catch (error) {
     console.error('Error creating content type:', error);
@@ -204,12 +197,11 @@ export const updateContentType = async (req: Request, res: Response): Promise<vo
   try {
     const { id } = req.params;
     const { name, description } = req.body;
-    const updated = await knex('content_types').where({ id }).update({ name, description });
-    if (!updated) {
+    const updatedType = await updateContentTypeModel(Number(id), { name, description });
+    if (!updatedType) {
       res.status(404).json({ message: 'Content type not found' });
       return;
     }
-    const updatedType = await knex('content_types').where({ id }).first();
     res.status(200).json(updatedType);
   } catch (error) {
     console.error('Error updating content type:', error);
@@ -223,7 +215,7 @@ export const updateContentType = async (req: Request, res: Response): Promise<vo
 export const deleteContentType = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const deleted = await knex('content_types').where({ id }).del();
+    const deleted = await deleteContentTypeModel(Number(id));
     if (!deleted) {
       res.status(404).json({ message: 'Content type not found' });
       return;
@@ -240,11 +232,6 @@ export const deleteContentType = async (req: Request, res: Response): Promise<vo
  */
 export const createContentItem = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name } = req.body;
-    if (!name) {
-      res.status(400).json({ message: 'Name is required for content.' });
-      return;
-    }
     const newItem = await createContent(req.body);
     res.status(201).json(newItem);
   } catch (error) {
@@ -325,15 +312,8 @@ export const deleteContentItemById = async (req: Request, res: Response): Promis
  */
 export const getAllUsers = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const users = await knex('users').select('id', 'email', 'first_name', 'last_name', 'role');
-    const mappedUsers = users.map(user => ({
-      id: user.id,
-      email: user.email,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      role: user.role,
-    }));
-    res.status(200).json(mappedUsers);
+    const users = await getAllUsersModel();
+    res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).json({ message: 'Failed to fetch users' });

@@ -9,7 +9,8 @@ import {
   Typography,
   Alert,
 } from '@mui/material';
-import { register } from '../services/authService';
+import { authService } from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterPage: React.FC = () => {
   const [firstName, setFirstName] = useState('');
@@ -18,6 +19,7 @@ const RegisterPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -30,14 +32,19 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      const response = await register({
+      // First, register the user
+      await authService.register({
         email,
         password,
         firstName,
         lastName,
       });
-      console.log('Registration successful:', response);
-      navigate('/dashboard');
+
+      // Then, log them in to establish the session in the context
+      await login({ email, password });
+
+      // Finally, navigate to the home page
+      navigate('/', { replace: true });
     } catch (apiError: any) {
       console.error('Registration failed:', apiError);
       setError(apiError.message || 'Registration failed. Please try again.');

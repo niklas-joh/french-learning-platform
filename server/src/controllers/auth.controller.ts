@@ -7,7 +7,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { getUserByEmail, createUser, getInternalUserByEmail, UserApplicationData } from '../models/User';
+import { getUserByEmail, createUser, getInternalUserByEmailWithPassword, UserApplicationData } from '../models/User';
+import { progressService } from '../services/progressService';
 
 /**
  * Registers a new user and returns a JWT token.
@@ -28,14 +29,17 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     // TODO: enforce password strength requirements before hashing.
 
     // Create user
-    // The createUser function expects 'password_hash', 'first_name', 'last_name'
+    // The createUser function now expects camelCase properties
     const createdUser: UserApplicationData = await createUser({
       email,
-      password_hash: hashedPassword, // Use snake_case for DB model
-      first_name: firstName,         // Use snake_case for DB model
-      last_name: lastName,           // Use snake_case for DB model
+      passwordHash: hashedPassword,
+      firstName: firstName,
+      lastName: lastName,
       role: 'user'
     });
+
+    // Initialize user progress
+    await progressService.initializeUserProgress(createdUser.id);
 
     // Generate JWT using data from UserApplicationData
     const token = jwt.sign(
@@ -68,23 +72,23 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
 
-    // Find user internally to get password_hash
-    const internalUser = await getInternalUserByEmail(email);
+    // Find user internally to get passwordHash
+    const internalUser = await getInternalUserByEmailWithPassword(email);
 
     if (!internalUser) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
     }
 
-    if (!internalUser.password_hash) {
-        // This case should ideally not happen if user creation enforces password_hash
-        console.error(`Critical: User ${internalUser.email} (ID: ${internalUser.id}) has no password_hash.`);
+    if (!internalUser.passwordHash) {
+        // This case should ideally not happen if user creation enforces passwordHash
+        console.error(`Critical: User ${internalUser.email} (ID: ${internalUser.id}) has no passwordHash.`);
         res.status(500).json({ message: 'User account configuration error.' });
         return;
     }
     
     // Check password
-    const isValidPassword = await bcrypt.compare(password, internalUser.password_hash);
+    const isValidPassword = await bcrypt.compare(password, internalUser.passwordHash);
     
     if (!isValidPassword) {
       res.status(401).json({ message: 'Invalid credentials' });
@@ -95,10 +99,10 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const userForResponse: UserApplicationData = {
         id: internalUser.id!,
         email: internalUser.email,
-        firstName: internalUser.first_name,
-        lastName: internalUser.last_name,
+        firstName: internalUser.firstName,
+        lastName: internalUser.lastName,
         role: internalUser.role || 'user',
-        createdAt: internalUser.created_at!,
+        createdAt: internalUser.createdAt!,
         preferences: internalUser.preferences ? JSON.parse(internalUser.preferences) : null
     };
 

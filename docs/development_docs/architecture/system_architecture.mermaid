@@ -1,0 +1,142 @@
+graph TD
+    subgraph "Frontend (React + TypeScript)"
+        direction TB
+
+        subgraph "State & API Management"
+            AuthContext["AuthContext (User, Token, Auth Status)"]
+            ApiService["Central API Service (Axios with Interceptors)"]
+            useLearningPath["useLearningPath Hook (State for Lessons)"]
+            AuthContext --> ApiService
+            ApiService --> AuthContext
+        end
+
+        subgraph "Core App Screens (Mobile First)"
+            direction LR
+            HomePage(Home)
+            LessonsPage(Lessons)
+            PracticePage(Practice)
+            ProgressPage(Progress)
+            ProfilePage(Profile)
+        end
+
+        subgraph "UI Components"
+            MainLayout["MainLayout (Mobile Frame)"]
+            BottomNav["BottomTabNavigation"]
+            LearningPath["LearningPath.tsx"]
+            LearningUnit["LearningUnit.tsx"]
+            LessonNode["LessonNode.tsx"]
+            
+            subgraph "Dynamic Lesson Content"
+                direction TB
+                LessonPage["LessonPage.tsx (Controller)"]
+                DynamicContent["DynamicLessonContent.tsx"]
+                Suspense["React.Suspense (Loading Boundary)"]
+                VocabularyLesson["VocabularyLesson.tsx"]
+                GrammarLesson["GrammarLesson.tsx"]
+                ConversationLesson["ConversationLesson.tsx"]
+                
+                LessonPage --> DynamicContent
+                DynamicContent --> Suspense
+                Suspense --> VocabularyLesson
+                Suspense --> GrammarLesson
+                Suspense --> ConversationLesson
+            end
+        end
+
+        MainLayout --> BottomNav
+        MainLayout --> HomePage
+        MainLayout --> LessonsPage
+        MainLayout --> PracticePage
+        MainLayout --> ProgressPage
+        MainLayout --> ProfilePage
+        
+        LessonsPage --> LearningPath
+        LearningPath --> LearningUnit
+        LearningUnit --> LessonNode
+        
+        AuthContext -- "Provides auth state" --> MainLayout
+        useLearningPath -- "Fetches data via" --> ApiService
+        LessonNode -- "Navigates to" --> LessonPage
+    end
+
+    subgraph "Backend API (Node.js + Express)"
+        direction TB
+
+        ApiGateway["/api/v1"]
+
+        subgraph "Routes"
+            UserRoutes["user.routes.ts"]
+            LearningRoutes["learning.routes.ts"]
+            MetaRoutes["meta.routes.ts"]
+            AuthRoutes["auth.routes.ts"]
+            AdminRoutes["admin.routes.ts"]
+        end
+
+        subgraph "Controllers"
+            UserController["user.controller.ts"]
+            ProgressController["progress.controller.ts"]
+            GamificationController["gamification.controller.ts"]
+            LearningPathController["learningPath.controller.ts"]
+            AIController["ai.controller.ts"]
+            SpeechController["speech.controller.ts"]
+        end
+
+        subgraph "Services"
+            ProgressService["progress.service.ts"]
+            LearningPathService["learningPath.service.ts"]
+            GamificationService["gamification.service.ts (placeholder)"]
+            AIService["ai.service.ts (placeholder)"]
+            SpeechService["speech.service.ts (placeholder)"]
+        end
+        
+        ApiGateway --> AuthRoutes
+        ApiGateway --> UserRoutes
+        ApiGateway --> LearningRoutes
+        ApiGateway --> MetaRoutes
+        ApiGateway --> AdminRoutes
+
+        UserRoutes --> UserController
+        UserRoutes --> ProgressController
+        UserRoutes --> GamificationController
+        
+        LearningRoutes --> LearningPathController
+        LearningRoutes --> AIController
+        LearningRoutes --> SpeechController
+
+        MetaRoutes --> GamificationController
+
+        ProgressController --> ProgressService
+        GamificationController --> GamificationService
+        LearningPathController --> LearningPathService
+        AIController --> AIService
+        SpeechController --> SpeechService
+    end
+
+    subgraph "Data Layer (SQLite + Knex.js)"
+        direction TB
+        Users["users"]
+        UserProgress["userProgress"]
+        LearningPaths["learningPaths"]
+        LearningUnits["learningUnits"]
+        Lessons["lessons"]
+        UserLessonProgress["userLessonProgress"]
+        Achievements["achievements"]
+        
+        AuthService --> Users
+        ProgressService --> UserProgress
+        LearningPathService --> LearningPaths
+        LearningPathService --> LearningUnits
+        LearningPathService --> Lessons
+        LearningPathService --> UserLessonProgress
+    end
+
+    subgraph "External Services & Deployment"
+        GitHub["GitHub Repository"]
+        Vercel["Vercel Hosting"]
+        AI_Tutor["AI Tutor Service (Future)"]
+        
+        GitHub -- "CI/CD" --> Vercel
+        Vercel -- "Serves" --> Frontend
+    end
+
+    ApiService -- "Makes calls to" --> ApiGateway

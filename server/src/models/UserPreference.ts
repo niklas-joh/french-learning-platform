@@ -5,34 +5,34 @@ import db from '../config/db';
 
 export interface UserPreference {
     id?: number;
-    user_id: number;
+    userId: number;
     preferences: string; // JSON string
-    created_at?: string;
-    updated_at?: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 /**
  * Retrieves a preference row for the specified user.
  */
-const findByUserId = (user_id: number): Promise<UserPreference | undefined> => {
-    return db<UserPreference>('user_preferences').where({ user_id }).first();
+const findByUserId = (userId: number): Promise<UserPreference | undefined> => {
+    return db<UserPreference>('user_preferences').where({ userId }).first();
 };
 
 /**
  * Inserts or updates the preference entry for a user.
  */
-const upsert = async (user_id: number, preferences: object): Promise<UserPreference> => {
-    const existingPreference = await findByUserId(user_id);
+const upsert = async (userId: number, preferences: object): Promise<UserPreference> => {
+    const existingPreference = await findByUserId(userId);
 
     if (existingPreference) {
         const [updatedPreference] = await db<UserPreference>('user_preferences')
-            .where({ user_id })
+            .where({ userId })
             .update({ preferences: JSON.stringify(preferences) })
             .returning('*');
         return updatedPreference;
     } else {
         const [newPreference] = await db<UserPreference>('user_preferences')
-            .insert({ user_id, preferences: JSON.stringify(preferences) })
+            .insert({ userId, preferences: JSON.stringify(preferences) })
             .returning('*');
         return newPreference;
     }

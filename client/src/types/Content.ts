@@ -47,5 +47,5 @@ export interface Content {
   active: boolean;
   createdAt?: string;
   options?: string[];
-  correct_answer?: string;
+  correctAnswer?: string;
 }

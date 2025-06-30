@@ -7,10 +7,10 @@ import { ContentSchema as Content } from './Content';
 
 export interface UserContentAssignment {
   id: number;
-  user_id: number;
-  content_id: number;
-  assigned_at: Date;
-  due_date?: Date;
+  userId: number;
+  contentId: number;
+  assignedAt: Date;
+  dueDate?: Date;
   status: 'pending' | 'in-progress' | 'completed' | 'overdue';
 }
 
@@ -26,9 +26,9 @@ const UserContentAssignmentModel = {
     // Create a new assignment row linking a user and a content item
     const [assignment] = await db('user_content_assignments')
       .insert({
-        user_id: userId,
-        content_id: contentId,
-        due_date: dueDate,
+        userId: userId,
+        contentId: contentId,
+        dueDate: dueDate,
         status: 'pending',
       })
       .returning('*');
@@ -53,22 +53,22 @@ const UserContentAssignmentModel = {
 
     // Restore Original query logic 
     const base = db('user_content_assignments')
-      .where({ 'user_content_assignments.user_id': userId })
-      .leftJoin('content', 'user_content_assignments.content_id', 'content.id') // Changed to leftJoin
+      .where({ 'user_content_assignments.userId': userId })
+      .leftJoin('content', 'user_content_assignments.contentId', 'content.id') // Changed to leftJoin
       .select(
         'user_content_assignments.*',
-        'content.title as content_name',
-        'content.question_data as content_question_data',
-        'content.id as content_id_alias'
+        'content.title as contentName',
+        'content.questionData as contentQuestionData',
+        'content.id as contentIdAlias'
       );
 
     const hasContentTypes = await db.schema.hasTable('content_types');
-    const hasContentTypeId = await db.schema.hasColumn('content', 'content_type_id');
+    const hasContentTypeId = await db.schema.hasColumn('content', 'contentTypeId');
     if (hasContentTypes && hasContentTypeId) {
-      base.leftJoin('content_types', 'content.content_type_id', 'content_types.id'); // Changed to leftJoin
-      base.select('content_types.name as content_type_name', 'content.content_type_id as content_type_id');
+      base.leftJoin('content_types', 'content.contentTypeId', 'content_types.id'); // Changed to leftJoin
+      base.select('content_types.name as contentTypeName', 'content.contentTypeId as contentTypeId');
     } else {
-      base.select('content.type as content_type_name');
+      base.select('content.type as contentTypeName');
     }
     // console.log(`[UserContentAssignmentModel] findByUserId - User ID: ${userId} (Restored Original Query)`); // Log removed
     const assignments = await base;
@@ -82,19 +82,19 @@ const UserContentAssignmentModel = {
     };
 
     return assignments.map(assignment => {
-      const { content_name, content_question_data, content_id_alias, content_type_id, content_type_name, ...assignmentData } = assignment;
-      const type = content_type_name || (content_type_id ? typeIdMap[content_type_id] : undefined) || 'default';
+      const { contentName, contentQuestionData, contentIdAlias, contentTypeId, contentTypeName, ...assignmentData } = assignment;
+      const type = contentTypeName || (contentTypeId ? typeIdMap[contentTypeId] : undefined) || 'default';
       return {
         ...assignmentData,
         content: {
-          id: content_id_alias,
-          name: content_name,
-          question_data: content_question_data,
-          content_type_id: content_type_id,
+          id: contentIdAlias,
+          name: contentName,
+          questionData: contentQuestionData,
+          contentTypeId: contentTypeId,
           type,
           // Create a minimal valid Content object.
           // Most fields are missing, but it satisfies the type for now.
-          correct_answer: '',
+          correctAnswer: '',
         },
       };
     });
@@ -119,7 +119,7 @@ const UserContentAssignmentModel = {
 
   async findByUserIdAndContentId(userId: number, contentId: number): Promise<UserContentAssignment | undefined> {
     return db('user_content_assignments')
-      .where({ user_id: userId, content_id: contentId })
+      .where({ userId: userId, contentId: contentId })
       .first();
   }
 };

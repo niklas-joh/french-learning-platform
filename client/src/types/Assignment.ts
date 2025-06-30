@@ -2,9 +2,9 @@ import { Content } from './Content';
 
 export interface UserContentAssignment {
   id: number;
-  user_id: number;
-  content_id: number;
-  assigned_at: Date;
+  userId: number;
+  contentId: number;
+  assignedAt: Date;
   status: 'pending' | 'in-progress' | 'completed' | 'overdue';
 }
 
