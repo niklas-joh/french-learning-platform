@@ -63,3 +63,7 @@ coverage/
 # Cline temporary files
 Cline/
 .clinerules/
+.cline/
+
+# Gemini CLI files
+.gemini/
