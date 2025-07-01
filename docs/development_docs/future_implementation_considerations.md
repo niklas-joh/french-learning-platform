@@ -256,3 +256,33 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Single Source of Truth**: Schemas define both runtime and compile-time types
   - **API Reliability**: Validate external AI service responses
   - **Developer Experience**: Better error messages and debugging
+
+## 22. Abstract Service Dependencies with Interfaces
+- **Identified**: During refined planning for the AI Orchestration Service (Task 3.1.A).
+- **Current State**: The implementation plan involves injecting concrete service classes (e.g., `CacheService`) into consumers like the `AIOrchestrator`.
+- **Problem**: While this uses Dependency Injection, it still couples the consumer to a specific implementation. This can make mocking for tests more complex and swapping implementations (e.g., moving from a Redis cache to a different provider) more difficult.
+- **Proposed Solution**: Adhere more strictly to the Dependency Inversion Principle by introducing interfaces (e.g., `ICacheService`) for each service. The `AIOrchestrator` would depend on the interface, not the concrete class.
+- **Benefits**:
+  - **Decoupling**: True decoupling of components, as consumers have no knowledge of the specific implementation they are using.
+  - **Testability**: Simplifies testing by making it trivial to provide mock implementations of the interfaces.
+  - **Flexibility**: Allows for different implementations of a service to be swapped out with zero changes to the consuming code.
+
+## 23. Centralized Dependency Injection (DI) Container
+- **Identified**: During refined planning for the AI Orchestration Service (Task 3.1.A).
+- **Current State**: Dependencies will be manually instantiated and injected where needed using a simple factory object.
+- **Problem**: As the number of services and their dependencies grows, manually managing the object graph (i.e., creating instances in the correct order and passing them into constructors) becomes complex and error-prone, even with a factory.
+- **Proposed Solution**: Adopt a lightweight, dedicated DI container for TypeScript, such as `tsyringe` or `InversifyJS`. These libraries manage the lifecycle and injection of dependencies automatically based on decorators or configuration.
+- **Benefits**:
+  - **Simplified Setup**: Reduces boilerplate code for service instantiation.
+  - **Lifecycle Management**: Can manage services as singletons, transient, or request-scoped instances.
+  - **Maintainability**: Makes adding new services or changing dependencies much cleaner and less error-prone.
+
+## 24. Implement Structured Logging
+- **Identified**: During refined planning for the AI Orchestration Service (Task 3.1.A).
+- **Current State**: The implementation plan relies on `console.log` for debugging and informational output.
+- **Problem**: `console.log` is unsuitable for production environments. It lacks log levels (e.g., INFO, WARN, ERROR), is not easily machine-readable, and cannot be configured to output to different destinations (e.g., files, external logging services) without custom wrappers.
+- **Proposed Solution**: Integrate a structured logging library like **Pino** or **Winston**. Pino is generally recommended for Node.js applications due to its extremely high performance.
+- **Benefits**:
+  - **Performance**: Low overhead compared to console logging.
+  - **Structured Output**: Logs are emitted as JSON, making them easy to parse, query, and filter in log management systems (like Datadog, Splunk, or the ELK stack).
+  - **Configurability**: Easily configure log levels and output destinations for different environments (e.g., human-readable logs in development, JSON in production).

@@ -85,8 +85,28 @@ graph TD
             ProgressService["progress.service.ts"]
             LearningPathService["learningPath.service.ts"]
             GamificationService["gamification.service.ts (placeholder)"]
-            AIService["ai.service.ts (placeholder)"]
             SpeechService["speech.service.ts (placeholder)"]
+        end
+
+        subgraph "AI Services Layer"
+            direction TB
+            AIOrchestrator["AIOrchestrator"]
+            
+            subgraph "Supporting AI Services"
+                direction LR
+                CacheService["CacheService"]
+                RateLimitService["RateLimitService"]
+                FallbackHandler["FallbackHandler"]
+                ContextService["ContextService"]
+                AIMetricsService["AIMetricsService (Stub)"]
+                PromptTemplateEngine["PromptTemplateEngine (Stub)"]
+            end
+            
+            AIController --> AIOrchestrator
+            AIOrchestrator --> CacheService
+            AIOrchestrator --> RateLimitService
+            AIOrchestrator --> FallbackHandler
+            AIOrchestrator --> ContextService
         end
         
         ApiGateway --> AuthRoutes
@@ -108,26 +128,19 @@ graph TD
         ProgressController --> ProgressService
         GamificationController --> GamificationService
         LearningPathController --> LearningPathService
-        AIController --> AIService
         SpeechController --> SpeechService
     end
 
-    subgraph "Data Layer (SQLite + Knex.js)"
+    subgraph "Data & External Services"
         direction TB
-        Users["users"]
-        UserProgress["userProgress"]
-        LearningPaths["learningPaths"]
-        LearningUnits["learningUnits"]
-        Lessons["lessons"]
-        UserLessonProgress["userLessonProgress"]
-        Achievements["achievements"]
+        Database["Database (Postgres + Knex)"]
+        Redis["Redis (Caching, Rate Limiting)"]
+        OpenAI["OpenAI API"]
         
-        AuthService --> Users
-        ProgressService --> UserProgress
-        LearningPathService --> LearningPaths
-        LearningPathService --> LearningUnits
-        LearningPathService --> Lessons
-        LearningPathService --> UserLessonProgress
+        CacheService --> Redis
+        RateLimitService --> Redis
+        ContextService --> Database
+        AIOrchestrator --> OpenAI
     end
 
     subgraph "External Services & Deployment"

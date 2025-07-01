@@ -5,17 +5,18 @@
 - **Estimated Time**: 2 hours
 - **Priority**: 🔥 Critical
 - **Dependencies**: 3.1.A.2
-- **Status**: ⏳ Not Started
+- **Status**: ✅ Completed
 
 ## **Objective**
 Implement the modular, reusable services that the `AIOrchestrator` will depend on. This subtask focuses on creating robust, scalable services for caching and rate limiting using Redis, and a foundational service for context management.
 
 ## **Success Criteria**
-- [ ] A new `server/src/services/cacheService.ts` file is created and implemented using `ioredis`.
-- [ ] A new `server/src/services/rateLimitService.ts` file is created and implemented using `ioredis` for distributed rate limiting.
+- [x] A new `server/src/services/ai/CacheService.ts` file is created and implemented using `ioredis`.
+- [x] A new `server/src/services/ai/RateLimitService.ts` file is created and implemented using `ioredis` for distributed rate limiting.
+- [x] A new `server/src/services/ai/FallbackHandler.ts` file is created and implemented.
 - [ ] A new `server/src/services/contextService.ts` file is created with a stubbed implementation for loading user context.
 - [ ] Placeholder files for `aiMetricsService.ts` and `promptTemplateEngine.ts` are created to satisfy future dependencies.
-- [ ] The services are designed to accept dependencies (like a Redis client) via their constructors (Dependency Injection).
+- [x] The services are designed to accept dependencies (like a Redis client) via their constructors (Dependency Injection).
 
 ## **Implementation Details**
 

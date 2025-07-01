@@ -6,11 +6,10 @@ Conduct a detailed analysis of your approach, impacted files, dependencies, and 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
 # AI Integration Phase 3: AI Orchestration
-Can you identify the next immediate task to work on based on @/docs/development_docs/tasks/phase-3_AI_integration/3-1-A-1-setup.md ?
+Can you conduct a detailed analysis of your approach, impacted files, dependencies, and coding suggestions for @/docs/development_docs/tasks/phase-3_AI_integration/3-1-A-2-types.md . Adhere to @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md 
+ and @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md 
 
-Conduct a detailed analysis of your approach, impacted files, dependencies, and create detailed subtasks for larger changes. Adhere to the tasks outlined in the @/docs/development_docs/tasks/phase-3_AI_integration/ folder and especially @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md 
-
-Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
+Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP).
 
 ## Second review
 What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
@@ -20,7 +19,7 @@ If the task require larger changes, break down the tasks into subtask, update th
 Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
 # AI Integration
-What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
+What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid, @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
 If the task require larger changes, break down the tasks into subtasks, updating the @/docs\development_docs\tasks\phase-3_AI_integration\phase3_master_tracking.md with the subtasks and capture your breakdown for each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
 
