@@ -11,6 +11,8 @@ import { FallbackHandler } from './FallbackHandler';
 import { ContextService } from './ContextService';
 import { AIMetricsService } from './AIMetricsService';
 import { PromptTemplateEngine } from './PromptTemplateEngine';
+import { ContentValidator } from './ContentValidator';
+import { ContentEnhancer } from './ContentEnhancer';
 import { ILogger, createLogger } from '../../utils/logger';
 
 /**
@@ -28,6 +30,8 @@ export class AIOrchestrator {
     private readonly contextService: ContextService,
     private readonly metricsService: AIMetricsService, // Stubbed
     private readonly promptEngine: PromptTemplateEngine, // Stubbed
+    private readonly contentValidator: ContentValidator,
+    private readonly contentEnhancer: ContentEnhancer,
     logger?: ILogger
   ) {
     this.logger = logger || createLogger('AIOrchestrator');
@@ -67,7 +71,17 @@ export class AIOrchestrator {
 
       // 3. AI Provider Execution (Stubbed)
       this.logger.debug('Executing request against AI provider (stubbed)');
-      const aiResultPayload = this.executeStubbedAIProvider(request.task, request.payload);
+      let aiResultPayload = this.executeStubbedAIProvider(request.task, request.payload);
+
+      // 4. Validate and Enhance Content
+      if (request.task === 'GENERATE_LESSON') {
+        const validation = await this.contentValidator.validate(aiResultPayload, request.payload as any);
+        if (!validation.isValid) {
+          this.logger.warn('Generated content failed validation', validation.issues);
+          // Handle invalid content, e.g., by retrying or using a fallback
+        }
+        aiResultPayload = await this.contentEnhancer.enhance(aiResultPayload as any, request.context as any);
+      }
 
       const aiResponse: AIResponse<T> = {
         status: 'success',
@@ -80,7 +94,7 @@ export class AIOrchestrator {
         },
       };
 
-      // 4. Cache successful response
+      // 5. Cache successful response
       if (this.config.strategies.caching.enabled) {
         await this.cacheService.set(request.task, request.payload, aiResponse);
       }

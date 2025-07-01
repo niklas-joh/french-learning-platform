@@ -17,6 +17,8 @@ import { ContextService } from './ContextService';
 import { AIMetricsService } from './AIMetricsService';
 import { PromptTemplateEngine } from './PromptTemplateEngine';
 import { CacheService } from './CacheService';
+import { ContentValidator } from './ContentValidator';
+import { ContentEnhancer } from './ContentEnhancer';
 import { redisConnection } from '../../config/redis';
 import { OrchestrationConfig } from '../../types/AI';
 
@@ -91,6 +93,26 @@ const getCacheServiceInstance = (() => {
 export const aiServiceFactory = {
   getCacheService: () => getCacheServiceInstance(),
 
+  getContentValidator: (() => {
+    let instance: ContentValidator;
+    return () => {
+      if (!instance) {
+        instance = new ContentValidator();
+      }
+      return instance;
+    };
+  })(),
+
+  getContentEnhancer: (() => {
+    let instance: ContentEnhancer;
+    return () => {
+      if (!instance) {
+        instance = new ContentEnhancer();
+      }
+      return instance;
+    };
+  })(),
+
   getAIOrchestrator: (() => {
     let instance: AIOrchestrator;
     return () => {
@@ -101,6 +123,8 @@ export const aiServiceFactory = {
         const contextService = new ContextService();
         const metricsService = new AIMetricsService();
         const promptEngine = new PromptTemplateEngine();
+        const contentValidator = aiServiceFactory.getContentValidator();
+        const contentEnhancer = aiServiceFactory.getContentEnhancer();
 
         instance = new AIOrchestrator(
           defaultOrchestrationConfig,
@@ -109,7 +133,9 @@ export const aiServiceFactory = {
           fallbackHandler,
           contextService,
           metricsService,
-          promptEngine
+          promptEngine,
+          contentValidator,
+          contentEnhancer
         );
       }
       return instance;
