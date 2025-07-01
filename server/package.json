@@ -32,7 +32,8 @@
     "object-hash": "^3.0.0",
     "objection": "^3.1.5",
     "openai": "^4.104.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.27.2",
