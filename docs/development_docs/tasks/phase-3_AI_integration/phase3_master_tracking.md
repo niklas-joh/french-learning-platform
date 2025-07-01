@@ -8,7 +8,14 @@ Transform the language learning platform from a traditional quiz-based system to
 ### **Phase 3.1: Core AI Engine (Week 1) - Total: 28 hours**
 | Task ID | Task Name | Estimated Hours | Status | Assignee | Start Date | End Date | Dependencies |
 |---------|-----------|----------------|---------|----------|------------|----------|--------------|
-| 3.1.A | [AI Orchestration Service](./tasks/3-1-A-ai-orchestration-service.md) | 8h | ⏳ Not Started | - | - | - | Authentication, Database |
+| **3.1.A** | **AI Orchestration Service** | **8h** | ⏳ **Not Started** | - | - | - | **Authentication, Database** |
+| 3.1.A.1 | [Setup & Config](./3-1-A-1-setup.md) | 1h | ⏳ Not Started | - | - | - | - |
+| 3.1.A.2 | [Core Types & Interfaces](./3-1-A-2-types.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.A.1 |
+| 3.1.A.3 | [Implement Supporting Services](./3-1-A-3-services.md) | 2h | ⏳ Not Started | - | - | - | 3.1.A.2 |
+| 3.1.A.4 | [Implement AI Orchestrator Core](./3-1-A-4-orchestrator.md) | 2h | ⏳ Not Started | - | - | - | 3.1.A.3 |
+| 3.1.A.5 | [Implement Public Orchestrator Methods](./3-1-A-5-methods.md) | 1h | ⏳ Not Started | - | - | - | 3.1.A.4 |
+| 3.1.A.6 | [API Layer Integration](./3-1-A-6-api.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.A.5 |
+| 3.1.A.7 | [Unit & Integration Testing](./3-1-A-7-testing.md) | 1h | ⏳ Not Started | - | - | - | 3.1.A.6 |
 | 3.1.B | [Dynamic Content Generation](./tasks/3-1-B-dynamic-content-generation.md) | 6h | ⏳ Not Started | - | - | - | 3.1.A |
 | 3.1.C | [AI Assessment & Grading Engine](./tasks/3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | - | - | - | 3.1.A |
 | 3.1.D | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |

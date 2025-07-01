@@ -1,25 +1,19 @@
 ## First review
-Can you identify the next task based on @/docs/development_docs/project_roadmap.md ?
+Can you identify the next immediate task to work on based on the @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md and @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md files?
 
-Conduct a detailed analysis of your approach, impacted files, dependencies, and create concrete developing suggestions. Adhere to the PRD in @/docs/development_docs/language_learning_prd.md and capture/follow the detailes outlined inthe @/docs/development_docs/tasks folder.
+Conduct a detailed analysis of your approach, impacted files, dependencies, and create detailed subtasks for larger changes. Follow or update the tasks outlined in the @/docs/development_docs/tasks/phase-3_AI_integration/ folder.
 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
 ## Second review
 
-# App Overhaul Plan
 What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
 If the task require larger changes, break down the tasks into subtask, update the @/docs\development_docs\app_overhaul_plan.md with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
 
 Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
-# CamelCase Migration Plan
-What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
-If the task require larger changes, break down the tasks into subtask, update the @/docs/development_docs/camelCase_migration_plan.md  with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
-
-Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
 ## Third and final review
 Now criticise your approach, identifying flaws or ineffiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities. When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs\development_docs\app_overhaul_plan.md, capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md 
@@ -37,3 +31,10 @@ If you have found tasks for future use, add them to @/docs/development_docs/futu
 
 ## Creating subtasks
 Provide details of the changes in each of these subtasks, including any example code you have already identified. Also include dependent files, review points you raised above to be aware of, possible solutions.
+
+For each subtask, can you provide details of the needed changes, including any example code you have already identified. 
+What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
+
+Update the @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md  with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
+
+Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
