@@ -63,3 +63,6 @@ coverage/
 # Cline temporary files
 Cline/
 .clinerules/
+
+# Gemini configuration (contains API keys)
+.gemini/
