@@ -32,7 +32,7 @@ If you have found tasks for future use, add them to @/docs/development_docs/futu
 2. Review your code for consistency, logic and potential flaws
 3. Analyse if changes are needed to other files
 4. Ask me to validate, explaining how I can validate, expected outcome
-5. Update documentation plans with our progress
+5. Update [text](../tasks/phase-3_AI_integration/phase3_master_tracking.md), [text](../tasks/phase-3_AI_integration/phase3_complete_summary.md), the subtask including its checklist, and other documentation plans with our progress.
 6. Push to git with comprehensive message and git body in a separate file
 7. Create a new Cline task for the next subtask to keep to atomic changes, repeating these instructions.
 

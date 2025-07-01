@@ -286,3 +286,51 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Performance**: Low overhead compared to console logging.
   - **Structured Output**: Logs are emitted as JSON, making them easy to parse, query, and filter in log management systems (like Datadog, Splunk, or the ELK stack).
   - **Configurability**: Easily configure log levels and output destinations for different environments (e.g., human-readable logs in development, JSON in production).
+
+## 25. End-to-End (E2E) Testing Suite
+- **Identified**: During Task 3.1.A.7 planning (Unit & Integration Testing).
+- **Current State**: No E2E testing framework in place. Only unit and integration tests planned.
+- **Problem**: While unit and integration tests verify individual components and API layers, they don't validate the complete user journey from frontend to backend. Critical user flows could fail due to integration issues not caught by lower-level tests.
+- **Proposed Solution**: Implement comprehensive E2E testing using Cypress or Playwright.
+  1. Set up E2E testing framework with proper configuration
+  2. Create test scenarios for critical user flows (login, lesson completion, progress tracking)
+  3. Add visual regression testing for UI consistency
+  4. Integrate E2E tests into CI/CD pipeline with proper staging environment
+  5. Create test data management strategy for E2E scenarios
+- **Benefits**:
+  - **User Experience Validation**: Ensures complete user journeys work correctly
+  - **Integration Confidence**: Catches issues that unit/integration tests might miss
+  - **Regression Prevention**: Visual and functional regression testing
+  - **Production Readiness**: Higher confidence in deployments
+
+## 26. Containerized Test Database Setup
+- **Identified**: During Task 3.1.A.7 planning (Unit & Integration Testing).
+- **Current State**: Tests rely on mocking for database interactions.
+- **Problem**: While mocking is efficient for most tests, some integration scenarios may require actual database interactions to be meaningful, especially for complex queries, transactions, or data integrity validations.
+- **Proposed Solution**: Implement containerized test database infrastructure.
+  1. Create Docker configuration for isolated test database instances
+  2. Implement test database seeding and cleanup strategies
+  3. Add database migration testing in isolated environments
+  4. Create parallel test execution with database isolation
+  5. Integrate with CI/CD for automated database testing
+- **Benefits**:
+  - **Real Integration Testing**: Test actual database interactions without mocks
+  - **Migration Validation**: Ensure database migrations work correctly
+  - **Data Integrity Testing**: Validate complex business logic with real data constraints
+  - **Isolation**: Each test run gets clean, predictable database state
+
+## 27. Advanced Authentication Testing Utilities
+- **Identified**: During Task 3.1.A.7 planning (Unit & Integration Testing).
+- **Current State**: Basic JWT mocking for authentication in tests.
+- **Problem**: As authentication becomes more complex (role-based access, token refresh, multi-factor authentication), simple mocking strategies become insufficient for comprehensive testing.
+- **Proposed Solution**: Develop sophisticated authentication testing utilities.
+  1. Create test user factory with different roles and permissions
+  2. Implement token generation utilities for different scenarios
+  3. Add authentication flow testing (login, logout, token refresh)
+  4. Create role-based access control (RBAC) testing helpers
+  5. Implement session management testing utilities
+- **Benefits**:
+  - **Security Validation**: Thorough testing of authentication and authorization
+  - **Role Testing**: Validate different user permission levels
+  - **Flow Testing**: Ensure authentication workflows function correctly
+  - **Maintainability**: Reusable utilities reduce test complexity
