@@ -383,3 +383,15 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Monitoring**: Real-time visibility into content generation pipeline
   - **Performance**: Optimized job processing with prioritization
   - **Scalability**: Easy horizontal scaling of background workers
+
+## 31. Storage Optimization for Large JSON Fields
+- **Identified**: During Task 3.1.B.4 analysis (DB Schema for Generated Content).
+- **Current State**: The `ai_generated_content` table uses `json` columns to store potentially large data payloads like `generatedData` and `requestPayload`.
+- **Problem**: As the platform scales and millions of AI content records are generated, storing large, uncompressed JSON objects directly in the database can lead to significant storage costs and slower table/index performance.
+- **Proposed Solution**: Implement a storage optimization strategy for large JSON fields.
+  1.  **Compression**: Before inserting into the database, compress the JSON data using an algorithm like Gzip or Brotli. Decompress it at the application layer after retrieval.
+  2.  **Offloading**: For very large objects, store them in a dedicated object storage service (like AWS S3 or Google Cloud Storage) and save only the reference/URL in the database table.
+- **Benefits**:
+  - **Reduced Storage Costs**: Significantly decreases the database size.
+  - **Improved Performance**: Smaller row sizes can lead to faster query performance and more efficient memory usage by the database.
+  - **Scalability**: Prepares the system to handle a massive volume of generated content without being constrained by database storage limits.
