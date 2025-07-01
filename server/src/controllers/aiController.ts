@@ -17,15 +17,18 @@
  */
 
 import { Response } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 import { AuthenticatedRequest } from '../middleware/auth.middleware';
 import { aiServiceFactory } from '../services/ai';
-import { AIUserContext, AITaskType, AITaskPayloads } from '../types/AI';
+import { AIUserContext, AITaskPayloads } from '../types/AI';
 import {
   ValidatedAITask,
   validateAIPayload,
   formatValidationError,
   validationSchemaMap,
 } from './ai.validators';
+import { contentGenerationJobQueue } from '../services/contentGeneration/ContentGenerationJobQueue';
+import { AiGenerationJobsModel } from '../models/AiGenerationJob';
 
 /**
  * Task handler map - Declarative mapping of AI tasks to their handlers
@@ -169,6 +172,91 @@ async function handleAIRequest<T extends ValidatedAITask>(
 }
 
 /**
+ * [ASYNC] Controller for initiating a content generation job.
+ * POST /api/ai/generate
+ */
+export const generateContentAsync = async (req: AuthenticatedRequest, res: Response) => {
+  const validationResult = validateAIPayload('GENERATE_LESSON', req.body);
+  if (!validationResult.success) {
+    const errorResponse = formatValidationError(validationResult.error);
+    res.status(400).json({
+      message: errorResponse.message,
+      details: errorResponse.details,
+      code: 'VALIDATION_ERROR'
+    });
+    return;
+  }
+
+  const jobId = uuidv4();
+  const payload = {
+    ...validationResult.data,
+    userId: req.user!.userId,
+  };
+
+  try {
+    await AiGenerationJobsModel.create({
+      id: jobId,
+      user_id: req.user!.userId,
+      status: 'queued',
+      job_type: 'content_generation',
+      payload: payload,
+    });
+
+    await contentGenerationJobQueue.addJob(jobId, payload);
+    
+    res.status(202).json({ jobId });
+  } catch (error) {
+    console.error(`[aiController] Failed to schedule job for user ${req.user!.userId}:`, error);
+    res.status(500).json({ message: 'Failed to schedule content generation job.', code: 'JOB_SCHEDULE_FAILED' });
+  }
+};
+
+/**
+ * [ASYNC] Controller for checking the status of a content generation job.
+ * GET /api/ai/generate/status/:jobId
+ */
+export const getGenerationStatus = async (req: AuthenticatedRequest, res: Response) => {
+  const { jobId } = req.params;
+
+  try {
+    const jobRecord = await AiGenerationJobsModel.findById(jobId);
+
+    if (!jobRecord) {
+      res.status(404).json({ message: 'Job not found.', code: 'JOB_NOT_FOUND' });
+      return;
+    }
+
+    // Ensure users can only access their own jobs
+    if (jobRecord.user_id !== req.user!.userId) {
+      res.status(403).json({ message: 'Forbidden.', code: 'FORBIDDEN' });
+      return;
+    }
+
+    if (jobRecord.status === 'completed') {
+      // Attempt to get from cache first for performance
+      const cacheService = aiServiceFactory.getCacheService();
+      const cachedResult = await cacheService.get('GENERATE_LESSON', jobRecord.payload as any);
+      
+      if (cachedResult) {
+        res.status(200).json({ status: 'completed', data: cachedResult });
+        return;
+      }
+      // If not in cache, return from DB
+      res.status(200).json({ status: 'completed', data: JSON.parse(jobRecord.result!) });
+      return;
+    }
+
+    res.status(200).json({ status: jobRecord.status, error: jobRecord.error_message });
+
+  } catch (error) {
+    console.error(`[aiController] Error fetching status for job ${jobId}:`, error);
+    res.status(500).json({ message: 'An unexpected error occurred.', code: 'INTERNAL_ERROR' });
+  }
+};
+
+
+/**
+ * @deprecated Use generateContentAsync instead.
  * Controller function for lesson generation
  * POST /api/ai/generate-lesson
  */

@@ -6,17 +6,17 @@
 - **Estimated Time**: 2 hours
 - **Priority**: ⚡ High
 - **Dependencies**: Task 3.1.B.1 (Initial Scaffolding & Type Definition)
-- **Status**: ⏳ Not Started
+- **Status**: ✅ Completed
 
 ## **Objective**
 Refactor the content generation service to operate asynchronously. This is a critical architectural change to prevent API timeouts and improve user experience by providing immediate feedback while content is generated in the background.
 
 ## **Success Criteria**
-- [ ] `generateContent` endpoint returns `202 Accepted` with a job ID.
-- [ ] A message queue (e.g., using Redis and BullMQ) is implemented for job processing.
-- [ ] A background worker service is created to process content generation jobs.
-- [ ] A new endpoint is created to check the status of a generation job.
-- [ ] The system remains robust and handles errors gracefully during background processing.
+- [x] `generateContent` endpoint returns `202 Accepted` with a job ID.
+- [x] A message queue (e.g., using Redis and BullMQ) is implemented for job processing.
+- [x] A background worker service is created to process content generation jobs.
+- [x] A new endpoint is created to check the status of a generation job.
+- [x] The system remains robust and handles errors gracefully during background processing.
 
 ## **Implementation Details**
 
@@ -40,8 +40,12 @@ Refactor the content generation service to operate asynchronously. This is a cri
 - If the job is 'completed', it will also return the final `GeneratedContent`.
 
 ## **Files to Create/Modify**
-- `server/src/services/contentGeneration/ContentGenerationJobQueue.ts`
-- `server/src/workers/contentGenerationWorker.ts`
+- `server/src/config/redis.ts` (Create)
+- `server/src/services/contentGeneration/ContentGenerationJobQueue.ts` (Create)
+- `database/migrations/20250701172400_create_ai_generation_jobs_table.ts` (Create)
+- `server/src/models/AiGenerationJob.ts` (Create)
+- `server/src/workers/contentGenerationWorker.ts` (Create)
+- `server/src/services/ai/index.ts` (Modify)
 - `server/src/controllers/aiController.ts` (Modify)
 - `server/src/routes/ai.routes.ts` (Modify)
 

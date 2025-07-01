@@ -12,10 +12,17 @@ router.use(protect);
 // =================================================================
 
 /**
- * POST /api/ai/generate-lesson
- * Generate a lesson using AI based on topic and difficulty
+ * POST /api/ai/generate
+ * Asynchronously generate lesson content.
  */
-router.post('/generate-lesson', aiController.generateLesson);
+router.post('/generate', aiController.generateContentAsync);
+
+/**
+ * GET /api/ai/generate/status/:jobId
+ * Check the status of a content generation job.
+ */
+router.get('/generate/status/:jobId', aiController.getGenerationStatus);
+
 
 /**
  * POST /api/ai/assess-pronunciation

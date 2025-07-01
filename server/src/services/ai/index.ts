@@ -16,17 +16,13 @@ import { AIOrchestrator } from './AIOrchestrator';
 import { ContextService } from './ContextService';
 import { AIMetricsService } from './AIMetricsService';
 import { PromptTemplateEngine } from './PromptTemplateEngine';
+import { CacheService } from './CacheService';
+import { redisConnection } from '../../config/redis';
 import { OrchestrationConfig } from '../../types/AI';
 
-/**
- * Simplified orchestration configuration for API integration phase
- * This uses in-memory implementations for development and testing.
- * 
- * TODO: Move to environment-based configuration with Redis as per aiConfig.ts patterns
- */
 const defaultOrchestrationConfig: OrchestrationConfig = {
   defaultProvider: 'OpenAI',
-  redisUrl: 'redis://localhost:6379', // Not used in stub mode
+  redisUrl: process.env.REDIS_URL || 'redis://localhost:6379',
   providers: {
     openAI: {
       apiKey: process.env.OPENAI_API_KEY || 'stub-key',
@@ -35,7 +31,7 @@ const defaultOrchestrationConfig: OrchestrationConfig = {
   },
   strategies: {
     caching: {
-      enabled: false, // Disabled for API integration phase
+      enabled: true,
       ttlSeconds: 3600,
     },
     rateLimiting: {
@@ -46,7 +42,6 @@ const defaultOrchestrationConfig: OrchestrationConfig = {
     fallback: {
       enabled: true,
       staticContent: {
-        // Minimal fallback content for each task type
         GENERATE_LESSON: {
           title: 'Service temporarily unavailable',
         },
@@ -64,18 +59,8 @@ const defaultOrchestrationConfig: OrchestrationConfig = {
   },
 };
 
-/**
- * Simplified in-memory implementations for development
- * These replace the full Redis-based services during API integration phase
- */
-
-class StubCacheService {
-  async get(): Promise<any> { return null; } // No caching in stub mode
-  async set(): Promise<void> { /* No-op */ }
-}
-
 class StubRateLimitService {
-  async isAllowed(): Promise<boolean> { return true; } // No rate limiting in stub mode
+  async isAllowed(): Promise<boolean> { return true; }
 }
 
 class StubFallbackHandler {
@@ -93,31 +78,30 @@ class StubFallbackHandler {
   }
 }
 
-/**
- * Centralized factory for AI services
- * 
- * This factory manages singleton instances to ensure consistent service usage
- * across the application while providing a clean interface for dependency access.
- */
+const getCacheServiceInstance = (() => {
+  let instance: CacheService;
+  return () => {
+    if (!instance) {
+      instance = new CacheService(redisConnection, defaultOrchestrationConfig.strategies.caching);
+    }
+    return instance;
+  };
+})();
+
 export const aiServiceFactory = {
-  /**
-   * Get the singleton instance of AIOrchestrator
-   * 
-   * @returns {AIOrchestrator} The AI orchestrator instance
-   */
+  getCacheService: () => getCacheServiceInstance(),
+
   getAIOrchestrator: (() => {
     let instance: AIOrchestrator;
     return () => {
       if (!instance) {
-        // Instantiate all required dependencies with stub implementations
-        const cacheService = new StubCacheService() as any;
+        const cacheService = getCacheServiceInstance();
         const rateLimitService = new StubRateLimitService() as any;
         const fallbackHandler = new StubFallbackHandler() as any;
         const contextService = new ContextService();
         const metricsService = new AIMetricsService();
         const promptEngine = new PromptTemplateEngine();
 
-        // Create the orchestrator with all dependencies
         instance = new AIOrchestrator(
           defaultOrchestrationConfig,
           cacheService,
