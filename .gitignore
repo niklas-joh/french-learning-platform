@@ -64,5 +64,7 @@ coverage/
 Cline/
 .clinerules/
 
+.cline/
+
 # Gemini configuration (contains API keys)
 .gemini/
