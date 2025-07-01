@@ -70,8 +70,8 @@ export interface CacheStrategyConfig {
 export interface RateLimitStrategyConfig {
   /** Whether rate limiting is enabled */
   enabled: boolean;
-  /** Time window for rate limiting in milliseconds */
-  windowMs: number;
+  /** Time window for rate limiting in minutes */
+  windowMinutes: number;
   /** Maximum requests allowed per window */
   maxRequests: number;
 }
@@ -82,6 +82,10 @@ export interface RateLimitStrategyConfig {
 export interface FallbackStrategyConfig {
   /** Whether fallback is enabled */
   enabled: boolean;
+  /** Type-safe static content fallbacks for each AI task type */
+  staticContent: {
+    [K in AITaskType]?: Partial<AITaskResponsePayload<K>>;
+  };
   // TODO: Task 3.1.A.3 - Add fallback provider configuration when supporting services are implemented
   // fallbackProvider?: 'OpenAI' | 'Azure' | 'Gemini';
 }
