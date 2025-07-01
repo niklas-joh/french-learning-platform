@@ -106,6 +106,29 @@ export class AIOrchestrator {
           title: `Generated Lesson on ${(payload as AITaskPayloads['GENERATE_LESSON']['request']).topic}`,
           // ... other Lesson fields
         } as any; // Using 'any' here is acceptable for a stub
+      
+      case 'ASSESS_PRONUNCIATION':
+        const pronunciationPayload = payload as AITaskPayloads['ASSESS_PRONUNCIATION']['request'];
+        return {
+          score: Math.floor(Math.random() * 30) + 70, // Random score between 70-100
+          feedback: `Your pronunciation of "${pronunciationPayload.expectedPhrase}" was quite good overall. Focus on clearer consonant pronunciation.`,
+          improvements: ['Work on consonant clarity', 'Practice tongue positioning for French R sounds']
+        } as any;
+      
+      case 'GRADE_RESPONSE':
+        const gradingPayload = payload as AITaskPayloads['GRADE_RESPONSE']['request'];
+        const isCorrect = gradingPayload.userResponse.toLowerCase().includes(gradingPayload.correctAnswer.toLowerCase());
+        return {
+          score: isCorrect ? Math.floor(Math.random() * 20) + 80 : Math.floor(Math.random() * 40) + 30,
+          feedback: isCorrect 
+            ? 'Excellent work! Your response demonstrates good understanding of the concept.'
+            : 'Your response shows some understanding, but could be improved. Review the key concepts.',
+          isCorrect,
+          suggestions: isCorrect 
+            ? ['Try practicing more complex variations of this concept']
+            : ['Review the lesson material', 'Practice similar exercises', 'Focus on key vocabulary']
+        } as any;
+      
       default:
         return {
           message: `This is a stubbed response for task ${taskType}.`,
@@ -119,6 +142,42 @@ export class AIOrchestrator {
   ): Promise<AIResponse<'GENERATE_LESSON'>> {
     const request: AIRequest<'GENERATE_LESSON'> = {
       task: 'GENERATE_LESSON',
+      context,
+      payload,
+    };
+    return this.processAIRequest(request);
+  }
+
+  /**
+   * @description Assess pronunciation quality from audio recording
+   * @param context User context for personalization
+   * @param payload Audio URL and expected phrase for assessment
+   * @returns Promise resolving to pronunciation assessment with score and feedback
+   */
+  public async assessPronunciation(
+    context: AIRequest<'ASSESS_PRONUNCIATION'>['context'],
+    payload: AIRequest<'ASSESS_PRONUNCIATION'>['payload']
+  ): Promise<AIResponse<'ASSESS_PRONUNCIATION'>> {
+    const request: AIRequest<'ASSESS_PRONUNCIATION'> = {
+      task: 'ASSESS_PRONUNCIATION',
+      context,
+      payload,
+    };
+    return this.processAIRequest(request);
+  }
+
+  /**
+   * @description Grade user response against correct answer
+   * @param context User context for personalization
+   * @param payload User response, correct answer, and question type for grading
+   * @returns Promise resolving to grading result with score, feedback, and suggestions
+   */
+  public async gradeResponse(
+    context: AIRequest<'GRADE_RESPONSE'>['context'],
+    payload: AIRequest<'GRADE_RESPONSE'>['payload']
+  ): Promise<AIResponse<'GRADE_RESPONSE'>> {
+    const request: AIRequest<'GRADE_RESPONSE'> = {
+      task: 'GRADE_RESPONSE',
       context,
       payload,
     };

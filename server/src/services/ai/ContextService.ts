@@ -52,7 +52,7 @@ export class ContextService {
     
     // Mock data for now
     return {
-      id: userId,
+      id: parseInt(userId, 10), // Convert string to number to match User model
       firstName: 'MockUser',
       role: 'user',
       preferences: {

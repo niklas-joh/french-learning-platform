@@ -18,7 +18,7 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.A.3d| Create ContextService stub | 0.25h | ✅ **Completed** | - | - | - | 3.1.A.2 |
 | 3.1.A.3e| Create AIMetricsService and PromptTemplateEngine stubs | 0.25h | ✅ **Completed** | - | - | - | 3.1.A.2 |
 | 3.1.A.4 | [Implement AI Orchestrator Core](./3-1-A-4-orchestrator.md) | 2h | ✅ **Completed** | - | - | - | 3.1.A.3 |
-| 3.1.A.5 | [Implement Public Orchestrator Methods](./3-1-A-5-methods.md) | 1h | ⏳ Not Started | - | - | - | 3.1.A.4 |
+| 3.1.A.5 | [Implement Public Orchestrator Methods](./3-1-A-5-public-methods.md) | 1h | ✅ **Completed** | - | Jan 7, 2025 | Jan 7, 2025 | 3.1.A.4 |
 | 3.1.A.6 | [API Layer Integration](./3-1-A-6-api.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.A.5 |
 | 3.1.A.7 | [Unit & Integration Testing](./3-1-A-7-testing.md) | 1h | ⏳ Not Started | - | - | - | 3.1.A.6 |
 | 3.1.B | [Dynamic Content Generation](./tasks/3-1-B-dynamic-content-generation.md) | 6h | ⏳ Not Started | - | - | - | 3.1.A |
