@@ -13,7 +13,7 @@ const config: Config.InitialOptions = {
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ['src/**/*.ts', '!src/server.ts', '!src/config/**'], // Exclude server entry point and config from coverage for now
+  collectCoverageFrom: ['src/**/*.ts', '!src/server.ts', '!src/config/**', '!src/_archive/**'], // Exclude server entry point, config, and archive files from coverage
 };
 
 export default config;

@@ -16,6 +16,7 @@ import userRoutes from './routes/user.routes';
 import adminRoutes from './routes/admin.routes';
 import learningRoutes from './routes/learning.routes';
 import metaRoutes from './routes/meta.routes';
+import aiRoutes from './routes/ai.routes';
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use('/api/v1/users', userRoutes); // Note: This now contains more than just 
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/learning', learningRoutes);
 app.use('/api/v1/meta', metaRoutes);
+app.use('/api/ai', aiRoutes); // AI routes (no versioning yet)
 
 // Health check
 app.get('/api/health', (req, res) => {
