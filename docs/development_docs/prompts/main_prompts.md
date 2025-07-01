@@ -5,18 +5,27 @@ Conduct a detailed analysis of your approach, impacted files, dependencies, and 
 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
-## Second review
+# AI Integration Phase 3: AI Orchestration
+Can you identify the next immediate task to work on based on @/docs/development_docs/tasks/phase-3_AI_integration/3-1-A-1-setup.md ?
 
-What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
+Conduct a detailed analysis of your approach, impacted files, dependencies, and create detailed subtasks for larger changes. Adhere to the tasks outlined in the @/docs/development_docs/tasks/phase-3_AI_integration/ folder and especially @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md 
+
+Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
+
+## Second review
+What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
 If the task require larger changes, break down the tasks into subtask, update the @/docs\development_docs\app_overhaul_plan.md with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
 
 Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
+# AI Integration
+What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
+If the task require larger changes, break down the tasks into subtasks, updating the @/docs\development_docs\tasks\phase-3_AI_integration\phase3_master_tracking.md with the subtasks and capture your breakdown for each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
 
 ## Third and final review
-Now criticise your approach, identifying flaws or ineffiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities. When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs\development_docs\app_overhaul_plan.md, capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md 
+Now criticise your approach, identifying flaws or ineffiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities. When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md 
 
 ## ACT MODE
 If you have found tasks for future use, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:

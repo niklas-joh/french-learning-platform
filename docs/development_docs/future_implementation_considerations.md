@@ -193,3 +193,36 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Performance**: Low overhead compared to console logging.
   - **Structured Output**: Logs are emitted as JSON, making them easy to parse, query, and filter in log management systems (like Datadog, Splunk, or the ELK stack).
   - **Configurability**: Easily configure log levels and output destinations for different environments (e.g., human-readable logs in development, JSON in production).
+
+## 17. Database-First AI Type Generation Strategy
+- **Identified**: During Task 3.1.A.1 analysis (AI Orchestration Setup).
+- **Current State**: The existing codebase uses a robust pattern with database models and separate client/server types.
+- **Problem**: The original AI implementation plan proposed creating standalone AI types without following existing patterns, potentially causing type drift and maintenance issues.
+- **Proposed Solution**: Leverage existing database schema and model patterns for AI features rather than creating separate type systems.
+- **Benefits**:
+  - **Consistency**: Follows established codebase patterns and conventions
+  - **Maintainability**: Reduces duplication and keeps types aligned with actual data
+  - **Performance**: Leverages existing indexes and relationships
+  - **Future-Proof**: Easy to extend with AI-specific tables when needed
+
+## 18. AI Context Service Optimization Strategy
+- **Identified**: During Task 3.1.A.1 analysis (AI Orchestration Setup).
+- **Current State**: Plan to create context loading from existing user_progress, user_lesson_progress, and user_content_completions tables.
+- **Problem**: Loading full user context for every AI request could become a performance bottleneck as user data grows.
+- **Proposed Solution**: Implement lazy loading and intelligent caching for AI context data.
+- **Benefits**:
+  - **Performance**: Load only what's needed for each request type
+  - **Scalability**: Reduces database load as user base grows
+  - **Flexibility**: Can adapt context loading based on AI service requirements
+  - **Cost Efficiency**: Minimizes unnecessary data processing
+
+## 19. Incremental AI Type Enhancement Strategy
+- **Identified**: During Task 3.1.A.1 analysis (AI Orchestration Setup).
+- **Current State**: Comprehensive AI orchestration types planned for immediate implementation.
+- **Problem**: Creating complex type systems before understanding actual service requirements may lead to over-engineering.
+- **Proposed Solution**: Start with minimal essential types and enhance incrementally as services are built.
+- **Benefits**:
+  - **YAGNI Compliance**: Avoid building features before they're needed
+  - **Iterative Development**: Types evolve based on real requirements
+  - **Maintainability**: Simpler initial implementation with focused complexity growth
+  - **Risk Reduction**: Lower chance of architectural misalignment

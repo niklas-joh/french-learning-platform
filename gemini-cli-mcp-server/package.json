@@ -1,0 +1,19 @@
+{
+  "name": "gemini-cli-mcp-server",
+  "version": "1.0.0",
+  "description": "An MCP server to wrap the Gemini CLI",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "mcp",
+    "gemini-cli"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "dotenv": "^16.4.5"
+  }
+}
