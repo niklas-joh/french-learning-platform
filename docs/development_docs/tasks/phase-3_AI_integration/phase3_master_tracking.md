@@ -8,7 +8,7 @@ Transform the language learning platform from a traditional quiz-based system to
 ### **Phase 3.1: Core AI Engine (Week 1) - Total: 28 hours**
 | Task ID | Task Name | Estimated Hours | Status | Assignee | Start Date | End Date | Dependencies |
 |---------|-----------|----------------|---------|----------|------------|----------|--------------|
-| **3.1.A** | **AI Orchestration Service** | **8h** | ⏳ **Not Started** | - | - | - | **Authentication, Database** |
+| **3.1.A** | **AI Orchestration Service** | **8h** | 🟡 **In Progress** | - | - | - | **Authentication, Database** |
 | 3.1.A.1 | [Setup & Config](./3-1-A-1-setup.md) | 1h | ✅ **Completed** | - | - | - | - |
 | 3.1.A.2 | [Core Types & Interfaces](./3-1-A-2-types.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.A.1 |
 | 3.1.A.3 | [Implement Supporting Services](./3-1-A-3-services.md) | 2h | ⏳ Not Started | - | - | - | 3.1.A.2 |
