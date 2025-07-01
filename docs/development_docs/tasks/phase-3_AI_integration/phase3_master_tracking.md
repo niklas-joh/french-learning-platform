@@ -26,7 +26,7 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.B.2 | [Refactor to Async Workflow](./3-1-B-2-async-workflow.md) | 2h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.1 |
 | 3.1.B.3 | [Implement Core Generation Logic](./3-1-B-3-generation-logic.md) | 2h | ⏳ Not Started | - | - | - | 3.1.B.2 |
 | 3.1.B.3a| Create reusable DB trigger for updatedAt | 0.25h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.2 |
-| 3.1.B.4 | [DB Schema for Generated Content](./3-1-B-4-db-schema.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.B.3a |
+| 3.1.B.4 | [DB Schema for Generated Content](./3-1-B-4-db-schema.md) | 0.5h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.3a |
 | 3.1.B.5 | [Implement Validator & Enhancer Services](./3-1-B-5-validator-enhancer-services.md) | 1.5h | ⏳ Not Started | - | - | - | 3.1.B.4 |
 | 3.1.C | [AI Assessment & Grading Engine](./3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | - | - | - | 3.1.A |
 | 3.1.D | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |
