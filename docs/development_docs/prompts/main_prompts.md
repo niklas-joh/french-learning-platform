@@ -6,17 +6,12 @@ Conduct a detailed analysis of your approach, impacted files, dependencies, and 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
 # AI Integration Phase 3: AI Orchestration
-Can you conduct a detailed analysis of your approach, impacted files, dependencies, and coding suggestions for @/docs/development_docs/tasks/phase-3_AI_integration/3-1-A-2-types.md . Adhere to @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md 
+Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for @/docs/development_docs/tasks/phase-3_AI_integration/3-1-A-2-types.md . Adhere to @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md 
  and @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md 
 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP).
 
 ## Second review
-What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
-
-If the task require larger changes, break down the tasks into subtask, update the @/docs\development_docs\app_overhaul_plan.md with the subtasks and capture your breakdown in each subtask. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md.
-
-Consider impacts on Architecture and technical documents, plans etc., before starting any code work.
 
 # AI Integration
 What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid, @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
@@ -38,7 +33,7 @@ If you have found tasks for future use, add them to @/docs/development_docs/futu
 
 
 ## Creating subtasks
-Provide details of the changes in each of these subtasks, including any example code you have already identified. Also include dependent files, review points you raised above to be aware of, possible solutions.
+Create each of your identified subtasks as separate files, provide details of the changes in each of these subtasks, including any example code you have already identified. Also include dependent files, review points you raised above to be aware of, possible solutions.
 
 For each subtask, can you provide details of the needed changes, including any example code you have already identified. 
 What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid  , @/database\schema.sql , @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 

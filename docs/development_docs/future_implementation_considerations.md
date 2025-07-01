@@ -334,3 +334,52 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Role Testing**: Validate different user permission levels
   - **Flow Testing**: Ensure authentication workflows function correctly
   - **Maintainability**: Reusable utilities reduce test complexity
+
+## 28. Asynchronous Content Generation Workflow
+- **Identified**: During Task 3.1.B.1 implementation (Dynamic Content Generation Scaffolding).
+- **Current State**: Planned synchronous content generation where API endpoints wait for complete AI processing before responding.
+- **Problem**: AI content generation can take 10-30 seconds, leading to API timeouts, poor user experience, and potential server resource exhaustion under load. This is a critical architectural flaw that prevents scalable AI content generation.
+- **Proposed Solution**: Implement event-driven asynchronous content generation workflow.
+  1. API endpoints immediately return `202 Accepted` with a job ID
+  2. Content generation runs in background workers using message queues
+  3. Client polls for completion status or uses WebSocket updates
+  4. Generated content is cached and served when ready
+  5. Implement job status tracking and error handling
+- **Benefits**:
+  - **User Experience**: Immediate API responses with progress tracking
+  - **Scalability**: Handle multiple concurrent generation requests efficiently
+  - **Reliability**: Isolate AI processing failures from API availability
+  - **Resource Management**: Better server resource utilization and load distribution
+  - **Cost Control**: Easier to implement rate limiting and cost monitoring
+
+## 29. Enhanced Exercise Type System for AI Content
+- **Identified**: During Task 3.1.B.1 implementation (Dynamic Content Generation Scaffolding).
+- **Current State**: Exercise items typed as `any[]`, providing no type safety for different question formats.
+- **Problem**: Lack of type safety for exercise content makes it impossible to validate question formats, leading to potential runtime errors and inconsistent user experiences.
+- **Proposed Solution**: Implement comprehensive discriminated union for exercise types.
+  1. Create specific interfaces for each exercise type (multiple-choice, fill-in-blank, matching, etc.)
+  2. Use discriminated unions to ensure type safety across all exercise formats
+  3. Add validation schemas for each exercise type
+  4. Implement exercise rendering components that leverage strong typing
+- **Benefits**:
+  - **Type Safety**: Compile-time validation of exercise structures
+  - **Maintainability**: Clear contracts for each exercise type
+  - **Extensibility**: Easy to add new exercise formats
+  - **Quality Assurance**: Prevent malformed exercises from reaching users
+
+## 30. AI Content Generation Job Queue System
+- **Identified**: During Task 3.1.B.1 implementation (Dynamic Content Generation Scaffolding).
+- **Current State**: No infrastructure for background job processing planned.
+- **Problem**: Asynchronous content generation requires robust job queue infrastructure for reliability, monitoring, and scaling.
+- **Proposed Solution**: Implement comprehensive job queue system for AI content generation.
+  1. Choose appropriate queue technology (Redis + Bull, AWS SQS, or similar)
+  2. Implement job prioritization based on user tiers and request urgency
+  3. Add comprehensive job monitoring and retry logic
+  4. Implement dead letter queues for failed jobs
+  5. Create admin dashboard for job queue monitoring
+  6. Add job scheduling for batch content generation
+- **Benefits**:
+  - **Reliability**: Robust handling of failed AI requests with retry logic
+  - **Monitoring**: Real-time visibility into content generation pipeline
+  - **Performance**: Optimized job processing with prioritization
+  - **Scalability**: Easy horizontal scaling of background workers
