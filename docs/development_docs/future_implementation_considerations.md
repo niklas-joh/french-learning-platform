@@ -491,3 +491,16 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Testing Quality**: Dedicated testing for each component
   - **Progress Tracking**: Better visibility into development progress
   - **Risk Reduction**: Smaller, more manageable implementation units
+
+## 38. Efficient Timeout Handling with AbortController
+- **Identified**: During Task 3.1.B.3.a critique (Raw Content Generation).
+- **Current State**: The proposed timeout mechanism uses `Promise.race`, which is a common but inefficient pattern.
+- **Problem**: `Promise.race` does not actually cancel the underlying asynchronous operation (e.g., the `fetch` or `axios` call in the `AIOrchestrator`). The AI request continues to run in the background, consuming server resources and incurring API costs, even though its result will be discarded. This is known as a "floating promise".
+- **Proposed Solution**: Refactor the `AIOrchestrator` and its consumers to use an `AbortController`.
+  1. The calling service (e.g., `DynamicContentGenerator`) would create an `AbortController` and pass its `signal` to the `AIOrchestrator`.
+  2. A `setTimeout` would call `controller.abort()` after the desired duration.
+  3. The `AIOrchestrator` would pass the `signal` to its underlying HTTP client, which can then properly terminate the request when the signal is aborted.
+- **Benefits**:
+  - **Resource Management**: Prevents wasted CPU cycles and network resources on timed-out requests.
+  - **Cost Savings**: Avoids paying for AI API calls that are no longer needed.
+  - **Clean Architecture**: Provides a standard, robust, and explicit way to handle request cancellation throughout the call stack.

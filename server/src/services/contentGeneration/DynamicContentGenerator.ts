@@ -18,8 +18,11 @@ import {
   LearningContext,
   ContentValidation,
   StructuredContent,
-  generateContentId
+  generateContentId,
+  ContentType
 } from '../../types/Content';
+import { AI_CONTENT_CONFIG, DEFAULT_AI_CONFIG, AIModelConfig } from '../../config/aiContentConfig';
+import { AIGenerationError } from '../../utils/errors';
 
 /**
  * Main implementation of dynamic content generation
@@ -162,16 +165,142 @@ export class DynamicContentGenerator implements IContentGenerator {
 
   /**
    * Generate raw content using AI orchestrator
-   * TODO: Implementation in subsequent task 3.1.B.2
+   * Implemented in Task 3.1.B.3.a
    */
   private async generateRawContent(
-    request: ContentRequest, 
-    template: any, 
+    request: ContentRequest,
+    template: any,
     context: LearningContext
   ): Promise<any> {
-    // This will be implemented when we create the actual AI integration
-    // For now, this is a placeholder that will be filled in the next task
-    throw new Error('generateRawContent not yet implemented - placeholder for task 3.1.B.2');
+    // TODO: #28 - Refactor to an async job queue. This synchronous approach is a major bottleneck.
+    // The API should return a job ID immediately, and a worker should handle this process.
+    const startTime = Date.now();
+    
+    try {
+      const prompt = await this.promptEngine.generateContentPrompt({
+        request,
+        template,
+        context,
+      });
+
+      const aiConfig = this.getAIConfigForType(request.type);
+      
+      // TODO: Implement AbortController signal in AIOrchestrator to prevent floating promises.
+      const aiResponse = await this.executeAIRequestWithTimeout(request, prompt, aiConfig);
+
+      if (!aiResponse.success) {
+        throw new AIGenerationError(`AI generation failed: ${aiResponse.error}`, { request });
+      }
+
+      const rawContent = this.parseAIResponse(aiResponse.data, request.type);
+      
+      this.addGenerationMetadata(rawContent, {
+        generationTime: Date.now() - startTime,
+        tokenUsage: aiResponse.tokenUsage,
+        model: aiConfig.model,
+        promptLength: prompt.length,
+      });
+
+      return rawContent;
+    } catch (error) {
+      const generationTime = Date.now() - startTime;
+      
+      // TODO: #24 - Implement a dedicated, structured Logger service (e.g., Pino).
+      console.error('Raw content generation failed:', {
+        // correlationId: request.correlationId, // Add for traceability
+        userId: request.userId,
+        type: request.type,
+        duration: generationTime,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      
+      // Re-throw a more specific error
+      throw new AIGenerationError('Failed to generate raw content', { originalError: error });
+    }
+  }
+
+  /**
+   * Execute AI request with timeout handling
+   */
+  private async executeAIRequestWithTimeout(request: ContentRequest, prompt: string, aiConfig: AIModelConfig): Promise<any> {
+    return Promise.race([
+      this.aiOrchestrator.generateContent(
+        String(request.userId),
+        request.type,
+        {
+          prompt,
+          maxTokens: aiConfig.maxTokens,
+          temperature: aiConfig.temperature,
+          model: aiConfig.model,
+        }
+      ),
+      this.createTimeoutPromise(aiConfig.timeout)
+    ]);
+  }
+
+  /**
+   * Add generation metadata to raw content
+   */
+  private addGenerationMetadata(rawContent: any, metadata: { generationTime: number, tokenUsage: any, model: string, promptLength: number }): void {
+    rawContent._metadata = {
+      ...metadata,
+      timestamp: new Date().toISOString(),
+    };
+  }
+
+  /**
+   * Get AI configuration for content type
+   */
+  private getAIConfigForType(type: ContentType): AIModelConfig {
+    return AI_CONTENT_CONFIG[type] || DEFAULT_AI_CONFIG;
+  }
+
+  /**
+   * Parse AI response with defensive handling
+   */
+  private parseAIResponse(response: any, contentType: ContentType): any {
+    // TODO: #32 - Replace this with a robust Zod schema validation in Task 3.1.B.3b.
+    // This current implementation is a defensive fallback, not a long-term solution.
+    try {
+      if (typeof response === 'object' && response !== null) {
+        return response; // Already a valid object.
+      }
+
+      if (typeof response === 'string') {
+        // Attempt to find and parse a JSON object within the string, e.g., ```json\n{...}\n```
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        if (jsonMatch && jsonMatch[0]) {
+          try {
+            return JSON.parse(jsonMatch[0]);
+          } catch (e) {
+            // Fall through if the extracted JSON is malformed
+          }
+        }
+        // If no JSON found or parsing failed, treat as plain text.
+        return { content: response, type: contentType };
+      }
+      
+      throw new Error('AI response is not a valid object or string.');
+    } catch (error) {
+      // TODO: #24 - Use structured logger
+      console.error('Error parsing AI response:', {
+        contentType,
+        responsePreview: typeof response === 'string' ? response.substring(0, 200) : String(response),
+        error: error instanceof Error ? error.message : String(error)
+      });
+      throw new AIGenerationError('Invalid or unparsable AI response format');
+    }
+  }
+
+  /**
+   * Create timeout promise for AI requests
+   */
+  private createTimeoutPromise(timeout: number): Promise<never> {
+    return new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`AI generation timeout after ${timeout}ms`));
+      }, timeout);
+    });
   }
 
   /**

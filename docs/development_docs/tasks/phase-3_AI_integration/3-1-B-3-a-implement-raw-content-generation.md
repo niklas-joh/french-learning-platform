@@ -6,17 +6,17 @@
 - **Estimated Time**: 0.75 hours
 - **Priority**: ⚡ High
 - **Dependencies**: Task 3.1.B.2 (Async Workflow), Task 3.1.A (AI Orchestrator)
-- **Status**: ⏳ Not Started
+- **Status**: ✅ Completed
 
 ## **Objective**
 Implement the `generateRawContent` method in `DynamicContentGenerator` to handle AI interaction, prompt generation, and response parsing.
 
 ## **Success Criteria**
-- [ ] `generateRawContent` method fully implemented
-- [ ] AI interaction with error handling
-- [ ] Response parsing with validation
-- [ ] Performance metrics tracking
-- [ ] Proper integration with AIOrchestrator
+- [x] `generateRawContent` method fully implemented
+- [x] AI interaction with error handling
+- [x] Response parsing with validation
+- [x] Performance metrics tracking
+- [x] Proper integration with AIOrchestrator
 
 ## **Implementation Details**
 
@@ -36,59 +36,64 @@ export interface AIModelConfig {
   maxTokens: number;
   temperature: number;
   model: string;
-  timeout?: number;
+  timeout: number;
 }
+
+// Helper to get config from environment variables with a default value
+const getEnv = (key: string, defaultValue: string): string => process.env[key] || defaultValue;
+const getEnvInt = (key: string, defaultValue: number): number => parseInt(getEnv(key, String(defaultValue)), 10);
+const getEnvFloat = (key: string, defaultValue: number): number => parseFloat(getEnv(key, String(defaultValue)));
 
 export const AI_CONTENT_CONFIG: Record<ContentType, AIModelConfig> = {
   lesson: {
-    maxTokens: 2000,
-    temperature: 0.7,
-    model: 'gpt-3.5-turbo',
-    timeout: 30000,
+    maxTokens: getEnvInt('AI_LESSON_MAX_TOKENS', 2000),
+    temperature: getEnvFloat('AI_LESSON_TEMPERATURE', 0.7),
+    model: getEnv('AI_LESSON_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_LESSON_TIMEOUT', 30000),
   },
   vocabulary_drill: {
-    maxTokens: 1200,
-    temperature: 0.6,
-    model: 'gpt-3.5-turbo',
-    timeout: 25000,
+    maxTokens: getEnvInt('AI_VOCAB_MAX_TOKENS', 1200),
+    temperature: getEnvFloat('AI_VOCAB_TEMPERATURE', 0.6),
+    model: getEnv('AI_VOCAB_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_VOCAB_TIMEOUT', 25000),
   },
   grammar_exercise: {
-    maxTokens: 1500,
-    temperature: 0.4,
-    model: 'gpt-3.5-turbo',
-    timeout: 25000,
+    maxTokens: getEnvInt('AI_GRAMMAR_MAX_TOKENS', 1500),
+    temperature: getEnvFloat('AI_GRAMMAR_TEMPERATURE', 0.4),
+    model: getEnv('AI_GRAMMAR_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_GRAMMAR_TIMEOUT', 25000),
   },
   cultural_content: {
-    maxTokens: 1800,
-    temperature: 0.8,
-    model: 'gpt-3.5-turbo',
-    timeout: 30000,
+    maxTokens: getEnvInt('AI_CULTURE_MAX_TOKENS', 1800),
+    temperature: getEnvFloat('AI_CULTURE_TEMPERATURE', 0.8),
+    model: getEnv('AI_CULTURE_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_CULTURE_TIMEOUT', 30000),
   },
   personalized_exercise: {
-    maxTokens: 1000,
-    temperature: 0.7,
-    model: 'gpt-3.5-turbo',
-    timeout: 20000,
+    maxTokens: getEnvInt('AI_PERSONALIZED_MAX_TOKENS', 1000),
+    temperature: getEnvFloat('AI_PERSONALIZED_TEMPERATURE', 0.7),
+    model: getEnv('AI_PERSONALIZED_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_PERSONALIZED_TIMEOUT', 20000),
   },
   pronunciation_drill: {
-    maxTokens: 800,
-    temperature: 0.5,
-    model: 'gpt-3.5-turbo',
-    timeout: 20000,
+    maxTokens: getEnvInt('AI_PRONUNCIATION_MAX_TOKENS', 800),
+    temperature: getEnvFloat('AI_PRONUNCIATION_TEMPERATURE', 0.5),
+    model: getEnv('AI_PRONUNCIATION_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_PRONUNCIATION_TIMEOUT', 20000),
   },
   conversation_practice: {
-    maxTokens: 1500,
-    temperature: 0.8,
-    model: 'gpt-3.5-turbo',
-    timeout: 25000,
+    maxTokens: getEnvInt('AI_CONVERSATION_MAX_TOKENS', 1500),
+    temperature: getEnvFloat('AI_CONVERSATION_TEMPERATURE', 0.8),
+    model: getEnv('AI_CONVERSATION_MODEL', 'gpt-3.5-turbo'),
+    timeout: getEnvInt('AI_CONVERSATION_TIMEOUT', 25000),
   },
 };
 
 export const DEFAULT_AI_CONFIG: AIModelConfig = {
-  maxTokens: 1500,
-  temperature: 0.7,
-  model: 'gpt-3.5-turbo',
-  timeout: 25000,
+  maxTokens: getEnvInt('AI_DEFAULT_MAX_TOKENS', 1500),
+  temperature: getEnvFloat('AI_DEFAULT_TEMPERATURE', 0.7),
+  model: getEnv('AI_DEFAULT_MODEL', 'gpt-3.5-turbo'),
+  timeout: getEnvInt('AI_DEFAULT_TIMEOUT', 25000),
 };
 ```
 
@@ -101,65 +106,74 @@ private async generateRawContent(
   template: ContentTemplate,
   context: LearningContext
 ): Promise<any> {
+  // TODO: #28 - Refactor to an async job queue. This synchronous approach is a major bottleneck.
+  // The API should return a job ID immediately, and a worker should handle this process.
   const startTime = Date.now();
   
   try {
-    // Generate the prompt using the template engine
     const prompt = await this.promptEngine.generateContentPrompt({
       request,
       template,
       context,
     });
 
-    // Get AI configuration for this content type
     const aiConfig = this.getAIConfigForType(request.type);
     
-    // Call AI Orchestrator with timeout
-    const aiResponse = await Promise.race([
-      this.aiOrchestrator.generateContent(
-        request.userId,
-        request.type,
-        {
-          prompt,
-          maxTokens: aiConfig.maxTokens,
-          temperature: aiConfig.temperature,
-          model: aiConfig.model,
-        }
-      ),
-      this.createTimeoutPromise(aiConfig.timeout || 30000)
-    ]);
+    // TODO: Implement AbortController signal in AIOrchestrator to prevent floating promises.
+    const aiResponse = await this.executeAIRequestWithTimeout(request, prompt, aiConfig);
 
     if (!aiResponse.success) {
-      throw new Error(`AI generation failed: ${aiResponse.error}`);
+      throw new AIGenerationError(`AI generation failed: ${aiResponse.error}`, { request });
     }
 
-    // Parse the AI response
     const rawContent = this.parseAIResponse(aiResponse.data, request.type);
     
-    // Store generation metadata
-    const generationTime = Date.now() - startTime;
-    rawContent._metadata = {
-      generationTime,
+    this.addGenerationMetadata(rawContent, {
+      generationTime: Date.now() - startTime,
       tokenUsage: aiResponse.tokenUsage,
       model: aiConfig.model,
       promptLength: prompt.length,
-      timestamp: new Date().toISOString(),
-    };
+    });
 
     return rawContent;
   } catch (error) {
     const generationTime = Date.now() - startTime;
     
-    // TODO: Reference Future Implementation #24 - Implement Structured Logging
+    // TODO: #24 - Implement a dedicated, structured Logger service (e.g., Pino).
     console.error('Raw content generation failed:', {
+      // correlationId: request.correlationId, // Add for traceability
       userId: request.userId,
       type: request.type,
       duration: generationTime,
       error: error instanceof Error ? error.message : String(error)
     });
     
-    throw error;
+    // Re-throw a more specific error
+    throw new AIGenerationError('Failed to generate raw content', { originalError: error });
   }
+}
+
+private async executeAIRequestWithTimeout(request: ContentRequest, prompt: string, aiConfig: AIModelConfig): Promise<any> {
+  return Promise.race([
+    this.aiOrchestrator.generateContent(
+      request.userId,
+      request.type,
+      {
+        prompt,
+        maxTokens: aiConfig.maxTokens,
+        temperature: aiConfig.temperature,
+        model: aiConfig.model,
+      }
+    ),
+    this.createTimeoutPromise(aiConfig.timeout)
+  ]);
+}
+
+private addGenerationMetadata(rawContent: any, metadata: { generationTime: number, tokenUsage: any, model: string, promptLength: number }): void {
+  rawContent._metadata = {
+    ...metadata,
+    timestamp: new Date().toISOString(),
+  };
 }
 
 private getAIConfigForType(type: ContentType): AIModelConfig {
@@ -167,31 +181,36 @@ private getAIConfigForType(type: ContentType): AIModelConfig {
 }
 
 private parseAIResponse(response: any, contentType: ContentType): any {
+  // TODO: #32 - Replace this with a robust Zod schema validation in Task 3.1.B.3b.
+  // This current implementation is a defensive fallback, not a long-term solution.
   try {
-    // Handle different response formats from AI
+    if (typeof response === 'object' && response !== null) {
+      return response; // Already a valid object.
+    }
+
     if (typeof response === 'string') {
-      // Try to parse as JSON first
-      try {
-        return JSON.parse(response);
-      } catch {
-        // If not JSON, treat as plain text content
-        return { content: response, type: contentType };
+      // Attempt to find and parse a JSON object within the string, e.g., ```json\n{...}\n```
+      const jsonMatch = response.match(/\{[\s\S]*\}/);
+      if (jsonMatch && jsonMatch[0]) {
+        try {
+          return JSON.parse(jsonMatch[0]);
+        } catch (e) {
+          // Fall through if the extracted JSON is malformed
+        }
       }
+      // If no JSON found or parsing failed, treat as plain text.
+      return { content: response, type: contentType };
     }
     
-    // Validate that response has expected structure
-    if (!response || typeof response !== 'object') {
-      throw new Error('AI response is not a valid object');
-    }
-    
-    return response;
+    throw new Error('AI response is not a valid object or string.');
   } catch (error) {
+    // TODO: #24 - Use structured logger
     console.error('Error parsing AI response:', {
       contentType,
-      response: typeof response === 'string' ? response.substring(0, 200) : response,
+      responsePreview: typeof response === 'string' ? response.substring(0, 200) : String(response),
       error: error instanceof Error ? error.message : String(error)
     });
-    throw new Error('Invalid AI response format');
+    throw new AIGenerationError('Invalid or unparsable AI response format');
   }
 }
 

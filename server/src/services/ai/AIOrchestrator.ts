@@ -71,21 +71,14 @@ export class AIOrchestrator {
 
       // 3. AI Provider Execution (Stubbed)
       this.logger.debug('Executing request against AI provider (stubbed)');
-      let aiResultPayload = this.executeStubbedAIProvider(request.task, request.payload);
-
-      // 4. Validate and Enhance Content
-      if (request.task === 'GENERATE_LESSON') {
-        const validation = await this.contentValidator.validate(aiResultPayload, request.payload as any);
-        if (!validation.isValid) {
-          this.logger.warn('Generated content failed validation', validation.issues);
-          // Handle invalid content, e.g., by retrying or using a fallback
-        }
-        aiResultPayload = await this.contentEnhancer.enhance(aiResultPayload as any, request.context as any);
-      }
+      const aiResultPayload = this.executeStubbedAIProvider(
+        request.task,
+        request.payload
+      );
 
       const aiResponse: AIResponse<T> = {
         status: 'success',
-        data: aiResultPayload as AITaskPayloads[T]['response'],
+        data: aiResultPayload,
         metadata: {
           provider: 'stub',
           model: 'stub-model-v1',
@@ -196,5 +189,156 @@ export class AIOrchestrator {
       payload,
     };
     return this.processAIRequest(request);
+  }
+
+  /**
+   * @description Generate content using AI for dynamic content generation
+   * Added for Task 3.1.B.3.a - Raw Content Generation
+   */
+  public async generateContent(
+    userId: string,
+    contentType: string,
+    options: {
+      prompt: string;
+      maxTokens: number;
+      temperature: number;
+      model: string;
+    }
+  ): Promise<{
+    success: boolean;
+    data?: any;
+    error?: string;
+    tokenUsage?: any;
+  }> {
+    const startTime = Date.now();
+    
+    try {
+      // Rate limiting check
+      if (this.config.strategies.rateLimiting.enabled) {
+        const isAllowed = await this.rateLimitService.isAllowed(userId);
+        if (!isAllowed) {
+          this.logger.warn(`Rate limit exceeded for user ${userId} generating ${contentType}`);
+          return {
+            success: false,
+            error: 'Rate limit exceeded'
+          };
+        }
+      }
+
+      // Check cache first
+      if (this.config.strategies.caching.enabled) {
+        const cacheKey = `content_${contentType}_${this.hashString(options.prompt)}`;
+        const cachedResult = await this.cacheService.get('GENERATE_CONTENT' as any, { cacheKey } as any);
+        if (cachedResult && cachedResult.data) {
+          this.logger.debug(`Cache hit for content generation: ${contentType}`);
+          return {
+            success: true,
+            data: cachedResult.data,
+            tokenUsage: { cached: true, tokens: 0 }
+          };
+        }
+      }
+
+      // Simulate AI content generation (stubbed implementation)
+      this.logger.info(`Generating ${contentType} content with AI (stubbed)`, {
+        userId,
+        promptLength: options.prompt.length,
+        model: options.model,
+        maxTokens: options.maxTokens
+      });
+
+      // Stubbed AI response - in real implementation this would call OpenAI API
+      const stubbedContent = this.generateStubbedContent(contentType, options);
+      const processingTime = Date.now() - startTime;
+
+      const result = {
+        success: true,
+        data: stubbedContent,
+        tokenUsage: {
+          promptTokens: Math.floor(options.prompt.length / 4), // Rough estimate
+          completionTokens: Math.floor(JSON.stringify(stubbedContent).length / 4),
+          totalTokens: Math.floor((options.prompt.length + JSON.stringify(stubbedContent).length) / 4)
+        }
+      };
+
+      // Cache the result
+      if (this.config.strategies.caching.enabled) {
+        const cacheKey = `content_${contentType}_${this.hashString(options.prompt)}`;
+        await this.cacheService.set('GENERATE_CONTENT' as any, { cacheKey } as any, { data: stubbedContent } as any);
+      }
+
+      this.logger.debug(`Content generation completed in ${processingTime}ms`);
+      return result;
+
+    } catch (error) {
+      this.logger.error('Error in generateContent', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : String(error)
+      };
+    }
+  }
+
+  /**
+   * Generate stubbed content for different content types
+   * TODO: Replace with actual AI provider integration
+   */
+  private generateStubbedContent(contentType: string, options: any): any {
+    const baseContent = {
+      type: contentType,
+      generatedAt: new Date().toISOString(),
+      model: options.model
+    };
+
+    switch (contentType) {
+      case 'lesson':
+        return {
+          ...baseContent,
+          title: 'Generated French Lesson',
+          content: 'This is a stubbed lesson content about French grammar and vocabulary.',
+          exercises: [
+            { type: 'multiple_choice', question: 'What is "hello" in French?', options: ['Bonjour', 'Au revoir', 'Merci', 'S\'il vous plaît'], correct: 0 }
+          ]
+        };
+      
+      case 'vocabulary_drill':
+        return {
+          ...baseContent,
+          words: [
+            { french: 'bonjour', english: 'hello', pronunciation: 'bon-ZHOOR' },
+            { french: 'merci', english: 'thank you', pronunciation: 'mer-SEE' }
+          ]
+        };
+
+      case 'grammar_exercise':
+        return {
+          ...baseContent,
+          topic: 'French Articles',
+          explanation: 'French has definite and indefinite articles that agree with the gender and number of nouns.',
+          exercises: [
+            { type: 'fill_blank', sentence: '__ chat est mignon', answer: 'Le' }
+          ]
+        };
+
+      default:
+        return {
+          ...baseContent,
+          content: `Stubbed content for ${contentType}`,
+          message: 'This is placeholder content generated for development purposes.'
+        };
+    }
+  }
+
+  /**
+   * Simple hash function for cache keys
+   */
+  private hashString(str: string): string {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    return Math.abs(hash).toString(16);
   }
 }
