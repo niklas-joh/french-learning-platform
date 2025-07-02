@@ -16,10 +16,11 @@ import { AIOrchestrator } from './AIOrchestrator';
 import { ContextService } from './ContextService';
 import { AIMetricsService } from './AIMetricsService';
 import { PromptTemplateEngine } from './PromptTemplateEngine';
-import { CacheService } from './CacheService';
+import { RedisCacheService } from '../common/RedisCacheService';
 import { ContentValidator } from './ContentValidator';
 import { ContentEnhancer } from './ContentEnhancer';
 import { redisConnection } from '../../config/redis';
+import { ILogger } from '../../types/ILogger';
 import { OrchestrationConfig } from '../../types/AI';
 
 const defaultOrchestrationConfig: OrchestrationConfig = {
@@ -81,17 +82,39 @@ class StubFallbackHandler {
 }
 
 const getCacheServiceInstance = (() => {
-  let instance: CacheService;
+  let instance: RedisCacheService;
   return () => {
     if (!instance) {
-      instance = new CacheService(redisConnection, defaultOrchestrationConfig.strategies.caching);
+      instance = new RedisCacheService();
+    }
+    return instance;
+  };
+})();
+
+const getContextServiceInstance = (() => {
+  let instance: ContextService;
+  return (logger: ILogger = console) => {
+    if (!instance) {
+      const cacheService = getCacheServiceInstance();
+      instance = new ContextService(cacheService, logger);
     }
     return instance;
   };
 })();
 
 export const aiServiceFactory = {
-  getCacheService: () => getCacheServiceInstance(),
+  getCacheService: getCacheServiceInstance,
+  getContextService: getContextServiceInstance,
+
+  getPromptEngine: (() => {
+    let instance: PromptTemplateEngine;
+    return () => {
+      if (!instance) {
+        instance = new PromptTemplateEngine();
+      }
+      return instance;
+    };
+  })(),
 
   getContentValidator: (() => {
     let instance: ContentValidator;
@@ -120,7 +143,7 @@ export const aiServiceFactory = {
         const cacheService = getCacheServiceInstance();
         const rateLimitService = new StubRateLimitService() as any;
         const fallbackHandler = new StubFallbackHandler() as any;
-        const contextService = new ContextService();
+        const contextService = getContextServiceInstance();
         const metricsService = new AIMetricsService();
         const promptEngine = new PromptTemplateEngine();
         const contentValidator = aiServiceFactory.getContentValidator();

@@ -5,7 +5,7 @@ import {
   AITaskType,
   AITaskPayloads
 } from '../../types/AI';
-import { CacheService } from './CacheService';
+import { ICacheService } from '../common/ICacheService';
 import { RateLimitService } from './RateLimitService';
 import { FallbackHandler } from './FallbackHandler';
 import { ContextService } from './ContextService';
@@ -24,7 +24,7 @@ export class AIOrchestrator {
 
   constructor(
     private readonly config: OrchestrationConfig,
-    private readonly cacheService: CacheService,
+    private readonly cacheService: ICacheService,
     private readonly rateLimitService: RateLimitService,
     private readonly fallbackHandler: FallbackHandler,
     private readonly contextService: ContextService,
@@ -56,7 +56,8 @@ export class AIOrchestrator {
 
       // 2. Caching
       if (this.config.strategies.caching.enabled) {
-        const cachedResponse = await this.cacheService.get(request.task, request.payload);
+        const cacheKey = this.generateCacheKey(request.task, request.payload);
+        const cachedResponse = await this.cacheService.get<AIResponse<T>>(cacheKey);
         if (cachedResponse) {
           return {
             ...cachedResponse,
@@ -89,7 +90,8 @@ export class AIOrchestrator {
 
       // 5. Cache successful response
       if (this.config.strategies.caching.enabled) {
-        await this.cacheService.set(request.task, request.payload, aiResponse);
+        const cacheKey = this.generateCacheKey(request.task, request.payload);
+        await this.cacheService.set(cacheKey, aiResponse, this.config.strategies.caching.ttlSeconds);
       }
 
       return aiResponse;
@@ -228,7 +230,7 @@ export class AIOrchestrator {
       // Check cache first
       if (this.config.strategies.caching.enabled) {
         const cacheKey = `content_${contentType}_${this.hashString(options.prompt)}`;
-        const cachedResult = await this.cacheService.get('GENERATE_CONTENT' as any, { cacheKey } as any);
+        const cachedResult = await this.cacheService.get<{ data: any }>(cacheKey);
         if (cachedResult && cachedResult.data) {
           this.logger.debug(`Cache hit for content generation: ${contentType}`);
           return {
@@ -264,7 +266,7 @@ export class AIOrchestrator {
       // Cache the result
       if (this.config.strategies.caching.enabled) {
         const cacheKey = `content_${contentType}_${this.hashString(options.prompt)}`;
-        await this.cacheService.set('GENERATE_CONTENT' as any, { cacheKey } as any, { data: stubbedContent } as any);
+        await this.cacheService.set(cacheKey, { data: stubbedContent }, this.config.strategies.caching.ttlSeconds);
       }
 
       this.logger.debug(`Content generation completed in ${processingTime}ms`);
@@ -340,5 +342,10 @@ export class AIOrchestrator {
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(16);
+  }
+
+  private generateCacheKey<T extends AITaskType>(task: T, payload: any): string {
+    const payloadString = JSON.stringify(payload, Object.keys(payload).sort());
+    return `${task}:${this.hashString(payloadString)}`;
   }
 }

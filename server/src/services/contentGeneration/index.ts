@@ -1,61 +1,57 @@
-// Barrel exports for Dynamic Content Generation module
-// Provides clean imports for all content generation components
+/**
+ * @file server/src/services/contentGeneration/index.ts
+ * @description Content Generation Service Factory
+ * 
+ * This factory creates and configures the DynamicContentGenerator and its dependencies.
+ * It ensures that all components of the content generation pipeline are wired correctly.
+ */
 
-// Main service class
-export { DynamicContentGenerator } from './DynamicContentGenerator';
+import { DynamicContentGenerator } from './DynamicContentGenerator';
+import { ContentStructurerFactory } from './ContentStructurerFactory';
+import { ContentValidatorFactory } from './ContentValidatorFactory';
+import { ContentEnhancerFactory } from './ContentEnhancerFactory';
+import { ContentTemplateManager } from './ContentTemplateManager';
+import { ContentFallbackHandler } from './ContentFallbackHandler';
+import { ContentGenerationMetrics } from './ContentGenerationMetrics';
+import { aiServiceFactory } from '../ai';
 
-// Interface definitions
-export type {
-  IContentGenerator,
-  IContentValidator,
-  IContentEnhancer,
-  IContentTemplateManager,
-  IContentValidatorFactory,
-  IContentEnhancerFactory,
-  IContentCache,
-  ILearningContextService,
-  IContentGenerationJobQueue,
-  IContentFallbackHandler,
-  IContentGenerationMetrics,
-  JobStatus
-} from './interfaces';
+const createDynamicContentGenerator = (() => {
+  let instance: DynamicContentGenerator;
 
-// Re-export types from Content.ts for convenience
-export type {
-  ContentRequest,
-  ContentGenerationOptions,
-  GeneratedContent,
-  ContentMetadata,
-  ContentValidation,
-  ContentTemplate,
-  LearningContext,
-  ContentType,
-  StructuredContent,
-  BaseStructuredContent,
-  IStructuredLesson,
-  IStructuredVocabularyDrill,
-  IStructuredGrammarExercise,
-  IStructuredCulturalContent,
-  IStructuredPersonalizedExercise,
-  Exercise,
-  ExerciseType,
-  ExerciseItem,
-  MultipleChoiceItem,
-  FillInBlankItem,
-  MatchingItem,
-  OrderingItem,
-  TrueFalseItem,
-  DragDropItem,
-  ListeningComprehensionItem,
-  PronunciationPracticeItem
-} from '../../types/Content';
+  return () => {
+    if (instance) {
+      return instance;
+    }
 
-// Utility functions
-export { 
-  generateContentId,
-  isLesson,
-  isVocabularyDrill,
-  isGrammarExercise,
-  isCulturalContent,
-  isPersonalizedExercise
-} from '../../types/Content';
+    // Dependencies from other factories
+    const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
+    const promptEngine = aiServiceFactory.getPromptEngine(); // Assuming this will be added to aiServiceFactory
+    const contextService = aiServiceFactory.getContextService();
+
+    // Local dependencies
+    const structurerFactory = new ContentStructurerFactory();
+    const validatorFactory = new ContentValidatorFactory();
+    const enhancerFactory = new ContentEnhancerFactory();
+    const templateManager = new ContentTemplateManager();
+    const fallbackHandler = new ContentFallbackHandler();
+    const metricsService = new ContentGenerationMetrics();
+
+    instance = new DynamicContentGenerator(
+      aiOrchestrator,
+      promptEngine,
+      validatorFactory,
+      enhancerFactory,
+      templateManager,
+      contextService,
+      fallbackHandler,
+      metricsService,
+      structurerFactory
+    );
+
+    return instance;
+  };
+})();
+
+export const contentGenerationServiceFactory = {
+  getDynamicContentGenerator: createDynamicContentGenerator,
+};

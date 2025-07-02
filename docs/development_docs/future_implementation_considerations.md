@@ -510,4 +510,18 @@ This document tracks architectural improvements, refactoring opportunities, and 
 - **Benefits**:
   - **Performance**: Reduces CPU load by avoiding redundant parsing and validation.
   - **Efficiency**: Speeds up the response time for requests that hit this cache.
-  - **Robustness**: Further isolates the system from repeated processing of potentially problematic (but valid) raw content.
+- **Robustness**: Further isolates the system from repeated processing of potentially problematic (but valid) raw content.
+
+## 40. Asynchronous User Learning Analytics Aggregation
+- **Identified**: During critique of the `UserContextService` implementation plan (Task 3.1.B.3.c).
+- **Current State**: The `UserContextService` will perform synchronous, on-demand database queries across multiple tables to calculate user strengths and weaknesses.
+- **Problem**: As a user's activity history grows, these real-time aggregation queries will become increasingly slow and resource-intensive. This will create a significant performance bottleneck, slowing down every AI-powered feature that relies on user context.
+- **Proposed Solution**: Implement a background processing system to handle learning analytics.
+  1.  Create a dedicated, denormalized table (e.g., `user_learning_summary`) to store pre-calculated analytics like weak topics, recent performance, etc.
+  2.  Develop a background job (e.g., using a queue like BullMQ or a scheduled task) that runs periodically or is triggered by user activity events.
+  3.  This job will process raw progress data and update the summary table.
+  4.  The `UserContextService` will then perform a simple, fast query against this pre-aggregated summary table instead of running complex queries in real-time.
+- **Benefits**:
+  - **Performance**: Ensures that fetching user context is always fast, regardless of the user's history size.
+  - **Scalability**: Decouples heavy analytical processing from the synchronous API request path, allowing the application to scale more effectively.
+  - **Resilience**: A failure or delay in the analytics aggregation job will not impact the real-time performance of the application for the user.
