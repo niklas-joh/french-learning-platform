@@ -395,3 +395,99 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Reduced Storage Costs**: Significantly decreases the database size.
   - **Improved Performance**: Smaller row sizes can lead to faster query performance and more efficient memory usage by the database.
   - **Scalability**: Prepares the system to handle a massive volume of generated content without being constrained by database storage limits.
+
+## 32. AI Response Schema Validation with Zod
+- **Identified**: During Task 3.1.B.3 analysis (Core Generation Logic).
+- **Current State**: The `parseAIResponse` method uses simple try/catch around `JSON.parse` without validating the structure of AI responses.
+- **Problem**: AI can return valid JSON that is missing required fields or has incorrect data types, leading to runtime errors in content structuring methods.
+- **Proposed Solution**: Implement comprehensive schema validation for all AI responses using Zod.
+  1. Create Zod schemas for each content type (lesson, vocabulary, grammar, etc.)
+  2. Validate AI responses at runtime before processing
+  3. Provide clear error messages for malformed responses
+  4. Implement automatic type inference from schemas
+  5. Add graceful fallback when validation fails
+- **Benefits**:
+  - **Runtime Safety**: Catch malformed AI data before it affects the system
+  - **Single Source of Truth**: Schemas define both runtime and compile-time types
+  - **Better Error Handling**: Clear error messages for debugging AI issues
+  - **Robust Content Generation**: Prevents malformed content from reaching users
+
+## 33. User Context Service Extraction
+- **Identified**: During Task 3.1.B.3 analysis (Core Generation Logic).
+- **Current State**: User context loading and analysis logic (`getLearningContext`, `analyzeWeakAreas`, `analyzeStrengths`) is embedded within `DynamicContentGenerator`.
+- **Problem**: Violates Single Responsibility Principle, makes the main class bloated, and prevents reuse of context logic by other AI services like the Adaptive Curriculum Engine.
+- **Proposed Solution**: Extract user context functionality into dedicated service.
+  1. Create `UserContextService` for fetching and analyzing user data
+  2. Implement intelligent caching with Redis for context data
+  3. Add lazy loading based on AI service requirements
+  4. Create context profiles for different AI task types
+  5. Enable reuse across multiple AI services
+- **Benefits**:
+  - **Single Responsibility**: Focused, maintainable classes
+  - **Performance**: Optimized caching and lazy loading
+  - **Reusability**: Context logic available to all AI services
+  - **Scalability**: Independent optimization and scaling
+
+## 34. Content Structurer Modularization
+- **Identified**: During Task 3.1.B.3 analysis (Core Generation Logic).
+- **Current State**: Content structuring methods (`structureLesson`, `structureVocabulary`, etc.) are part of the main `DynamicContentGenerator` class.
+- **Problem**: Makes the main class too large, reduces maintainability, and makes it difficult to add new content types or modify existing structuring logic.
+- **Proposed Solution**: Extract content structuring into dedicated modular classes.
+  1. Create individual `Structurer` classes for each content type
+  2. Implement common interface for all structurers
+  3. Add factory pattern for structurer selection
+  4. Enable easy addition of new content types
+  5. Improve testability of structuring logic
+- **Benefits**:
+  - **Modularity**: Independent development and testing of structurers
+  - **Maintainability**: Focused classes with clear responsibilities
+  - **Extensibility**: Easy addition of new content types
+  - **Testability**: Isolated testing of structuring logic
+
+## 35. External Content Configuration System
+- **Identified**: During Task 3.1.B.3 analysis (Core Generation Logic).
+- **Current State**: Fallback content, pronunciation mappings, and other static content are hardcoded within service methods.
+- **Problem**: Makes content management difficult for non-developers, prevents easy updates, and couples content with application logic.
+- **Proposed Solution**: Implement external content configuration system.
+  1. Store fallback content in JSON files under `/content` directory
+  2. Create pronunciation mapping files for easy updates
+  3. Implement content versioning and validation
+  4. Add hot-reloading for content updates without deployment
+  5. Create content management interface for non-technical users
+- **Benefits**:
+  - **Content Management**: Easy updates without code changes
+  - **Non-Developer Access**: Content team can manage fallbacks
+  - **Versioning**: Track content changes over time
+  - **Flexibility**: Hot-reload content without service restarts
+
+## 36. Enhanced System Architecture Documentation
+- **Identified**: During Task 3.1.B.3 breakdown analysis.
+- **Current State**: System architecture exists but needs AI service integration documentation.
+- **Problem**: New AI services architecture needs to be documented to ensure proper system understanding and future development alignment.
+- **Proposed Solution**: Create comprehensive system architecture documentation.
+  1. Document AI service architecture with Mermaid diagrams
+  2. Create data flow diagrams for AI content generation
+  3. Document security architecture for AI services
+  4. Add performance and scalability considerations
+  5. Create integration guidelines for new AI services
+- **Benefits**:
+  - **System Understanding**: Clear architectural overview for developers
+  - **Integration Guidance**: Standardized approach for adding new AI services
+  - **Security Documentation**: Clear security requirements and implementations
+  - **Performance Planning**: Architectural considerations for scalability
+
+## 37. AI Content Generation Subtask Modularization
+- **Identified**: During Task 3.1.B.3 detailed breakdown analysis.
+- **Current State**: Task 3.1.B.3 was originally defined as a monolithic 2-hour task.
+- **Problem**: Large tasks are difficult to track, test, and debug. Individual components need focused implementation and testing.
+- **Proposed Solution**: Break down large AI tasks into focused subtasks.
+  1. Create subtasks with specific, testable objectives (0.5-0.75h each)
+  2. Define clear dependencies between subtasks
+  3. Implement focused testing strategies for each component
+  4. Enable parallel development where possible
+  5. Improve tracking granularity and progress visibility
+- **Benefits**:
+  - **Development Efficiency**: Focused development on specific components
+  - **Testing Quality**: Dedicated testing for each component
+  - **Progress Tracking**: Better visibility into development progress
+  - **Risk Reduction**: Smaller, more manageable implementation units
