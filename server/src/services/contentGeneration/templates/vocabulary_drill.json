@@ -1,0 +1,15 @@
+{
+  "structure": {
+    "title": "string",
+    "description": "string",
+    "vocabulary": "array of objects with word, definition, examples",
+    "exercises": "array of objects with instruction, items, feedback"
+  },
+  "requirements": {
+    "level": "{level}",
+    "topic": "{topic}"
+  },
+  "prompts": {
+    "main": "Generate a vocabulary drill for a user at the {level} level, based on the topic '{topic}'. The drill should introduce a list of relevant vocabulary words, each with a clear definition and an example sentence. Follow this with a series of exercises to reinforce learning."
+  }
+}

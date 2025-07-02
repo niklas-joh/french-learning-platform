@@ -129,7 +129,7 @@ export class DynamicContentGenerator implements IContentGenerator {
       };
       
       // Record successful generation
-      this.metricsService.recordGenerationSuccess(request, Date.now() - startTime);
+      this.metricsService.recordGenerationSuccess(request, Date.now() - startTime, validation.score);
       
       return generatedContent;
       
@@ -144,7 +144,7 @@ export class DynamicContentGenerator implements IContentGenerator {
       });
       
       const errorObj = error instanceof Error ? error : new Error(String(error));
-      this.metricsService.recordGenerationFailure(request, errorObj);
+      this.metricsService.recordGenerationFailure(request, Date.now() - startTime, errorObj);
       
       // Attempt fallback content if retries are exhausted
       if (retryCount >= DynamicContentGenerator.MAX_RETRIES) {

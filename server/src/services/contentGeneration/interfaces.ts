@@ -139,7 +139,8 @@ export interface IContentFallbackHandler {
  */
 export interface IContentGenerationMetrics {
   recordGenerationAttempt(request: ContentRequest): void;
-  recordGenerationSuccess(request: ContentRequest, duration: number): void;
-  recordGenerationFailure(request: ContentRequest, error: Error): void;
+  recordGenerationSuccess(request: ContentRequest, duration: number, validationScore: number): void;
+  recordGenerationFailure(request: ContentRequest, duration: number, error: Error): void;
   recordValidationFailure(request: ContentRequest, validation: ContentValidation): void;
+  recordFallbackUsed(request: ContentRequest, error: Error): void;
 }

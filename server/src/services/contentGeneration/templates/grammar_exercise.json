@@ -1,0 +1,17 @@
+{
+  "structure": {
+    "title": "string",
+    "description": "string",
+    "grammarRule": "string",
+    "explanation": "string",
+    "examples": "array of strings",
+    "exercises": "array of objects with instruction, items, feedback"
+  },
+  "requirements": {
+    "level": "{level}",
+    "grammarFocus": "{grammarFocus}"
+  },
+  "prompts": {
+    "main": "Generate a grammar exercise for a user at the {level} level, focusing on '{grammarFocus}'. The exercise should include a clear explanation of the rule, several examples, and a set of practice questions (e.g., fill-in-the-blank, multiple choice) with feedback."
+  }
+}

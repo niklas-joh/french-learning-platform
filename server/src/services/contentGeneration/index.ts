@@ -6,6 +6,7 @@
  * It ensures that all components of the content generation pipeline are wired correctly.
  */
 
+import { ILogger } from '../../types/ILogger';
 import { DynamicContentGenerator } from './DynamicContentGenerator';
 import { ContentStructurerFactory } from './ContentStructurerFactory';
 import { ContentValidatorFactory } from './ContentValidatorFactory';
@@ -25,16 +26,17 @@ const createDynamicContentGenerator = (() => {
 
     // Dependencies from other factories
     const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
-    const promptEngine = aiServiceFactory.getPromptEngine(); // Assuming this will be added to aiServiceFactory
+    const promptEngine = aiServiceFactory.getPromptEngine();
     const contextService = aiServiceFactory.getContextService();
+    const logger: ILogger = console; // Using console as a basic logger for now
 
     // Local dependencies
     const structurerFactory = new ContentStructurerFactory();
-    const validatorFactory = new ContentValidatorFactory();
-    const enhancerFactory = new ContentEnhancerFactory();
-    const templateManager = new ContentTemplateManager();
-    const fallbackHandler = new ContentFallbackHandler();
-    const metricsService = new ContentGenerationMetrics();
+    const validatorFactory = new ContentValidatorFactory(logger);
+    const enhancerFactory = new ContentEnhancerFactory(logger);
+    const templateManager = new ContentTemplateManager(logger);
+    const fallbackHandler = new ContentFallbackHandler(logger);
+    const metricsService = new ContentGenerationMetrics(logger);
 
     instance = new DynamicContentGenerator(
       aiOrchestrator,

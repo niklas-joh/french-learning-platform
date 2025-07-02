@@ -524,4 +524,17 @@ This document tracks architectural improvements, refactoring opportunities, and 
 - **Benefits**:
   - **Performance**: Ensures that fetching user context is always fast, regardless of the user's history size.
   - **Scalability**: Decouples heavy analytical processing from the synchronous API request path, allowing the application to scale more effectively.
-  - **Resilience**: A failure or delay in the analytics aggregation job will not impact the real-time performance of the application for the user.
+- **Resilience**: A failure or delay in the analytics aggregation job will not impact the real-time performance of the application for the user.
+
+## 41. AI-Powered Content Enhancement & Validation
+- **Identified**: During critique of Task 3.1.B.3.d.
+- **Current State**: The current implementation for `ContentEnhancer` and `ContentValidator` uses simple, rule-based logic.
+- **Problem**: Rule-based logic can be brittle and may not catch all nuances of high-quality educational content.
+- **Proposed Solution**: Evolve these services to be AI-powered.
+  1.  An `AIContentValidator` could make a separate, low-cost AI call to score the generated content for coherence, accuracy, and pedagogical value.
+  2.  An `AIContentEnhancer` could use an AI call to perform more sophisticated tasks, like adding analogies, generating better examples, or rewriting sections for clarity.
+- **Benefits**:
+  - **Higher Quality**: Significantly increases the quality and reliability of the generated content.
+  - **More Robust**: Can identify subtle issues that rules might miss.
+  - **Flexibility**: Can adapt to new content requirements without needing new code.
+- **Reason for Deferral**: This adds complexity and cost (more AI calls). It's better to first build the foundational pipeline with rule-based services and introduce AI-powered enhancements later as an optimization.

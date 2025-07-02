@@ -1,0 +1,17 @@
+{
+  "structure": {
+    "title": "string",
+    "description": "string",
+    "sections": "array of objects with title, content",
+    "vocabulary": "array of objects with word, definition, examples",
+    "estimatedTime": "number in minutes"
+  },
+  "requirements": {
+    "level": "{level}",
+    "topic": "{topic}",
+    "learningObjectives": "array of strings"
+  },
+  "prompts": {
+    "main": "Generate a comprehensive and engaging French lesson for a user at the {level} level, focusing on the topic of '{topic}'. The lesson should include an introduction, several explanatory sections with clear examples, a vocabulary list, and a concluding summary. Ensure the tone is encouraging and clear."
+  }
+}
