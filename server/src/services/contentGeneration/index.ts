@@ -7,7 +7,9 @@
  */
 
 import { ILogger } from '../../types/ILogger';
+import knex from '../../config/db';
 import { DynamicContentGenerator } from './DynamicContentGenerator';
+import { DatabaseJobQueueService } from './DatabaseJobQueueService';
 import { ContentGenerationJobHandler } from './ContentGenerationJobHandler';
 import { ContentStructurerFactory } from './ContentStructurerFactory';
 import { ContentValidatorFactory } from './ContentValidatorFactory';
@@ -17,6 +19,19 @@ import { ContentFallbackHandler } from './ContentFallbackHandler';
 import { ContentGenerationMetrics } from './ContentGenerationMetrics';
 import { aiServiceFactory } from '../ai';
 
+const createDatabaseJobQueueService = (() => {
+  let instance: DatabaseJobQueueService;
+
+  return () => {
+    if (instance) {
+      return instance;
+    }
+    const logger: ILogger = console;
+    instance = new DatabaseJobQueueService(knex, logger);
+    return instance;
+  };
+})();
+
 const createDynamicContentGenerator = (() => {
   let instance: DynamicContentGenerator;
 
@@ -24,33 +39,8 @@ const createDynamicContentGenerator = (() => {
     if (instance) {
       return instance;
     }
-
-    // Dependencies from other factories
-    const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
-    const promptEngine = aiServiceFactory.getPromptEngine();
-    const contextService = aiServiceFactory.getContextService();
-    const logger: ILogger = console; // Using console as a basic logger for now
-
-    // Local dependencies
-    const structurerFactory = new ContentStructurerFactory();
-    const validatorFactory = new ContentValidatorFactory(logger);
-    const enhancerFactory = new ContentEnhancerFactory(logger);
-    const templateManager = new ContentTemplateManager(logger);
-    const fallbackHandler = new ContentFallbackHandler(logger);
-    const metricsService = new ContentGenerationMetrics(logger);
-
-    instance = new DynamicContentGenerator(
-      aiOrchestrator,
-      promptEngine,
-      validatorFactory,
-      enhancerFactory,
-      templateManager,
-      contextService,
-      fallbackHandler,
-      metricsService,
-      structurerFactory
-    );
-
+    const jobQueueService = createDatabaseJobQueueService();
+    instance = new DynamicContentGenerator(jobQueueService);
     return instance;
   };
 })();
@@ -97,4 +87,5 @@ const createContentGenerationJobHandler = (() => {
 export const contentGenerationServiceFactory = {
   getDynamicContentGenerator: createDynamicContentGenerator,
   getContentGenerationJobHandler: createContentGenerationJobHandler,
+  getDatabaseJobQueueService: createDatabaseJobQueueService,
 };

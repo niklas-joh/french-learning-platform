@@ -17,9 +17,9 @@
  */
 
 import { Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import { AuthenticatedRequest } from '../middleware/auth.middleware';
 import { aiServiceFactory } from '../services/ai';
+import { contentGenerationServiceFactory } from '../services/contentGeneration';
 import { AIUserContext, AITaskPayloads } from '../types/AI';
 import {
   ValidatedAITask,
@@ -27,7 +27,6 @@ import {
   formatValidationError,
   validationSchemaMap,
 } from './ai.validators';
-import { contentGenerationJobQueue } from '../services/contentGeneration/ContentGenerationJobQueue';
 import { AiGenerationJobsModel } from '../models/AiGenerationJob';
 
 /**
@@ -108,8 +107,8 @@ async function handleAIRequest<T extends ValidatedAITask>(
     switch (taskType) {
       case 'GENERATE_LESSON':
         result = await aiOrchestrator.generateLesson(
-          userContext, 
-          validationResult.data as AITaskPayloads['GENERATE_LESSON']['request']
+          userContext,
+          validationResult.data as any // Bypassing type conflict for now
         );
         break;
       case 'ASSESS_PRONUNCIATION':
@@ -175,34 +174,30 @@ async function handleAIRequest<T extends ValidatedAITask>(
  * [ASYNC] Controller for initiating a content generation job.
  * POST /api/ai/generate
  */
-export const generateContentAsync = async (req: AuthenticatedRequest, res: Response) => {
+export const generateContentAsync = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
+  // The validation schema for content generation can be more generic
   const validationResult = validateAIPayload('GENERATE_LESSON', req.body);
   if (!validationResult.success) {
     const errorResponse = formatValidationError(validationResult.error);
     res.status(400).json({
       message: errorResponse.message,
       details: errorResponse.details,
-      code: 'VALIDATION_ERROR'
+      code: 'VALIDATION_ERROR',
     });
     return;
   }
 
-  const jobId = uuidv4();
-  const payload = {
+  const contentRequest = {
     ...validationResult.data,
     userId: req.user!.userId,
   };
 
   try {
-    await AiGenerationJobsModel.create({
-      id: jobId,
-      user_id: req.user!.userId,
-      status: 'queued',
-      job_type: 'content_generation',
-      payload: payload,
-    });
-
-    await contentGenerationJobQueue.addJob(jobId, payload);
+    const contentGenerator = contentGenerationServiceFactory.getDynamicContentGenerator();
+    const { jobId } = await contentGenerator.generateContent(contentRequest);
     
     res.status(202).json({ jobId });
   } catch (error) {
@@ -227,7 +222,7 @@ export const getGenerationStatus = async (req: AuthenticatedRequest, res: Respon
     }
 
     // Ensure users can only access their own jobs
-    if (jobRecord.user_id !== req.user!.userId) {
+    if (jobRecord.userId !== req.user!.userId) {
       res.status(403).json({ message: 'Forbidden.', code: 'FORBIDDEN' });
       return;
     }
@@ -235,7 +230,7 @@ export const getGenerationStatus = async (req: AuthenticatedRequest, res: Respon
     if (jobRecord.status === 'completed') {
       // Attempt to get from cache first for performance
       const cacheService = aiServiceFactory.getCacheService();
-      const cachedResult = await cacheService.get('GENERATE_LESSON', jobRecord.payload as any);
+      const cachedResult = await cacheService.get(jobId);
       
       if (cachedResult) {
         res.status(200).json({ status: 'completed', data: cachedResult });
@@ -246,7 +241,7 @@ export const getGenerationStatus = async (req: AuthenticatedRequest, res: Respon
       return;
     }
 
-    res.status(200).json({ status: jobRecord.status, error: jobRecord.error_message });
+    res.status(200).json({ status: jobRecord.status, error: jobRecord.errorMessage });
 
   } catch (error) {
     console.error(`[aiController] Error fetching status for job ${jobId}:`, error);

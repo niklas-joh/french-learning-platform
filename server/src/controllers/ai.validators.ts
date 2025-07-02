@@ -21,11 +21,12 @@ import { z } from 'zod';
  * Corresponds to AITaskPayloads['GENERATE_LESSON']['request']
  */
 export const generateLessonPayloadSchema = z.object({
+  type: z.literal('lesson'),
   topic: z.string()
     .min(1, 'Topic is required')
     .max(100, 'Topic must be less than 100 characters'),
-  difficulty: z.enum(['beginner', 'intermediate', 'advanced'], {
-    errorMap: () => ({ message: 'Difficulty must be beginner, intermediate, or advanced' })
+  difficulty: z.enum(['easy', 'medium', 'hard', 'adaptive'], {
+    errorMap: () => ({ message: 'Difficulty must be easy, medium, hard, or adaptive' })
   }),
   estimatedTime: z.number()
     .int('Estimated time must be an integer')

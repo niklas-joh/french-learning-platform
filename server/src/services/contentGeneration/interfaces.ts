@@ -20,10 +20,12 @@ import {
  */
 export interface IContentGenerator {
   /**
-   * Generate content based on request parameters with retry capability
-   * TODO: Reference Future Implementation #28 - Asynchronous Content Generation Workflow
+   * Enqueues a content generation request and returns a job ID.
+   * The actual content generation is handled asynchronously.
+   * @param request The content generation request.
+   * @returns A promise that resolves with the ID of the enqueued job.
    */
-  generateContent(request: ContentRequest, retryCount?: number): Promise<GeneratedContent>;
+  generateContent(request: ContentRequest): Promise<{ jobId: string }>;
 }
 
 // ========================================
@@ -104,13 +106,16 @@ export interface ILearningContextService {
 // ========================================
 
 /**
- * Interface for background job processing
- * TODO: Reference Future Implementation #30 - AI Content Generation Job Queue System
+ * Interface for a job queue service.
+ * This service is responsible for enqueuing jobs for asynchronous processing.
  */
-export interface IContentGenerationJobQueue {
-  enqueue(request: ContentRequest): Promise<string>; // returns job ID
-  getJobStatus(jobId: string): Promise<JobStatus>;
-  getJobResult(jobId: string): Promise<GeneratedContent | null>;
+export interface IJobQueueService {
+  /**
+   * Enqueues a job for processing.
+   * @param jobData The data required to process the job.
+   * @returns A promise that resolves with the ID of the enqueued job.
+   */
+  enqueueJob(jobData: any): Promise<string>;
 }
 
 export interface JobStatus {

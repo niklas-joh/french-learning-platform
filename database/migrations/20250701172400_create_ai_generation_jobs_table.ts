@@ -7,17 +7,17 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('id').primary();
     
     table
-      .integer('user_id')
+      .integer('userId')
       .unsigned()
       .references('id')
       .inTable('users')
       .onDelete('SET NULL');
 
     table.string('status', 50).notNullable().index();
-    table.string('job_type', 100).notNullable().index();
+    table.string('jobType', 100).notNullable().index();
     table.jsonb('payload').notNullable();
     table.text('result');
-    table.text('error_message');
+    table.text('errorMessage');
     
     table.timestamps(true, true);
   });

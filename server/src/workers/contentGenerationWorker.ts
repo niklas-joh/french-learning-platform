@@ -36,25 +36,29 @@ const processJob = async (job: Job<JobPayload, JobResponse>) => {
     console.error(`Job ${jobId} failed:`, error);
     await AiGenerationJobsModel.update(jobId!, {
       status: 'failed',
-      error_message: error.message || 'An unknown error occurred.',
+      errorMessage: error.message || 'An unknown error occurred.',
     });
     throw error;
   }
 };
 
-const worker = new Worker<JobPayload, JobResponse>(
-  QUEUE_NAMES.CONTENT_GENERATION,
-  processJob,
-  { 
-    connection: redisConnection, 
-    concurrency: 5
-  }
-);
+if (redisConnection) {
+  const worker = new Worker<JobPayload, JobResponse>(
+    QUEUE_NAMES.CONTENT_GENERATION,
+    processJob,
+    { 
+      connection: redisConnection, 
+      concurrency: 5
+    }
+  );
 
-worker.on('failed', (job, err) => {
-  console.error(`Job ${job?.id} failed with error: ${err.message}`);
-});
+  worker.on('failed', (job, err) => {
+    console.error(`Job ${job?.id} failed with error: ${err.message}`);
+  });
 
-worker.on('error', err => {
-  console.error('Worker encountered an error:', err);
-});
+  worker.on('error', err => {
+    console.error('Worker encountered an error:', err);
+  });
+} else {
+    console.log('Redis is not enabled, so the content generation worker is disabled.');
+}

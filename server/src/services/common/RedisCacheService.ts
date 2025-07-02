@@ -7,17 +7,20 @@
  */
 
 import { ICacheService } from './ICacheService';
-import { redisConnection } from '../../config/redis';
+import { redisConnection, isRedisEnabled } from '../../config/redis';
 import IORedis from 'ioredis';
 
 export class RedisCacheService implements ICacheService {
-  private client: IORedis;
+  private client: IORedis | null;
 
   constructor() {
-    this.client = redisConnection;
+    this.client = isRedisEnabled ? redisConnection : null;
   }
 
   async get<T>(key: string): Promise<T | null> {
+    if (!this.client) {
+      return null;
+    }
     const data = await this.client.get(key);
     if (!data) {
       return null;
@@ -34,6 +37,9 @@ export class RedisCacheService implements ICacheService {
   }
 
   async set<T>(key: string, value: T, ttlSeconds?: number): Promise<void> {
+    if (!this.client) {
+      return;
+    }
     const data = JSON.stringify(value);
     if (ttlSeconds) {
       await this.client.set(key, data, 'EX', ttlSeconds);
@@ -43,10 +49,16 @@ export class RedisCacheService implements ICacheService {
   }
 
   async delete(key: string): Promise<void> {
+    if (!this.client) {
+      return;
+    }
     await this.client.del(key);
   }
 
   async clear(): Promise<void> {
+    if (!this.client) {
+      return;
+    }
     // Note: In a production environment with a shared Redis instance,
     // FLUSHDB might be too destructive. A key prefixing strategy would be safer.
     await this.client.flushdb();

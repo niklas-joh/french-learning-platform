@@ -4,18 +4,18 @@ const TABLE_NAME = 'ai_generation_jobs';
 
 export interface AiGenerationJob {
   id: string;
-  user_id: number;
+  userId: number;
   status: 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled';
-  job_type: string;
+  jobType: string;
   payload: object;
   result?: string;
-  error_message?: string;
-  created_at: Date;
-  updated_at: Date;
+  errorMessage?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const AiGenerationJobsModel = {
-  async create(job: Omit<AiGenerationJob, 'created_at' | 'updated_at'>): Promise<AiGenerationJob> {
+  async create(job: Omit<AiGenerationJob, 'createdAt' | 'updatedAt'>): Promise<AiGenerationJob> {
     const [newJob] = await knex(TABLE_NAME).insert(job).returning('*');
     return newJob;
   },
@@ -24,10 +24,10 @@ export const AiGenerationJobsModel = {
     return knex(TABLE_NAME).where({ id }).first();
   },
 
-  async update(id: string, updates: Partial<Omit<AiGenerationJob, 'id' | 'created_at'>>): Promise<AiGenerationJob | undefined> {
+  async update(id: string, updates: Partial<Omit<AiGenerationJob, 'id' | 'createdAt'>>): Promise<AiGenerationJob | undefined> {
     const [updatedJob] = await knex(TABLE_NAME)
       .where({ id })
-      .update({ ...updates, updated_at: new Date() })
+      .update({ ...updates, updatedAt: new Date() })
       .returning('*');
     return updatedJob;
   },

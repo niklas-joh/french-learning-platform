@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { IContentGenerationJobQueue, JobStatus } from './interfaces';
+import { IJobQueueService, JobStatus } from './interfaces';
 import { ContentRequest, GeneratedContent } from '../../types/Content';
 import { ILogger } from '../../types/ILogger';
 import { AiGenerationJob, AiGenerationJobsModel } from '../../models/AiGenerationJob';
@@ -9,7 +9,7 @@ import { AiGenerationJob, AiGenerationJobsModel } from '../../models/AiGeneratio
  * This implementation leverages the `ai_generation_jobs` table
  * to provide a reliable and scalable job queue.
  */
-export class DatabaseJobQueueService implements IContentGenerationJobQueue {
+export class DatabaseJobQueueService implements IJobQueueService {
   /**
    * Creates an instance of DatabaseJobQueueService.
    * @param {Knex} knex - The Knex instance for database connectivity.
@@ -24,11 +24,11 @@ export class DatabaseJobQueueService implements IContentGenerationJobQueue {
    * @param {ContentRequest} request - The content generation request payload.
    * @returns {Promise<string>} A promise that resolves with the ID of the newly created job.
    */
-  async enqueue(request: ContentRequest): Promise<string> {
-    const jobData: Omit<AiGenerationJob, 'id' | 'created_at' | 'updated_at'> = {
-      user_id: request.userId,
+  async enqueueJob(request: ContentRequest): Promise<string> {
+    const jobData: Omit<AiGenerationJob, 'id' | 'createdAt' | 'updatedAt'> = {
+      userId: request.userId,
       status: 'queued',
-      job_type: request.type,
+      jobType: request.type,
       payload: request,
     };
 
@@ -55,7 +55,7 @@ export class DatabaseJobQueueService implements IContentGenerationJobQueue {
       id: job.id,
       status: job.status as JobStatus['status'],
       progress: this.calculateProgress(job.status),
-      error: job.error_message || undefined,
+      error: job.errorMessage || undefined,
     };
   }
 
@@ -106,7 +106,7 @@ export class DatabaseJobQueueService implements IContentGenerationJobQueue {
     const job = await this.knex.transaction(async (trx) => {
       const nextJob = await trx('ai_generation_jobs')
         .where({ status: 'queued' })
-        .orderBy('created_at', 'asc')
+        .orderBy('createdAt', 'asc')
         .first()
         .forUpdate()
         .skipLocked();
@@ -114,7 +114,7 @@ export class DatabaseJobQueueService implements IContentGenerationJobQueue {
       if (nextJob) {
         await trx('ai_generation_jobs')
           .where({ id: nextJob.id })
-          .update({ status: 'processing', updated_at: new Date() });
+          .update({ status: 'processing', updatedAt: new Date() });
       }
       return nextJob;
     });
@@ -139,7 +139,7 @@ export class DatabaseJobQueueService implements IContentGenerationJobQueue {
   async updateJobStatus(jobId: string, status: JobStatus['status'], error?: string): Promise<void> {
     await AiGenerationJobsModel.update(jobId, {
         status,
-        error_message: error || undefined,
+        errorMessage: error || undefined,
       });
     this.logger.info(`Job ${jobId} status updated to ${status}`);
   }
