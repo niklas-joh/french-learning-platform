@@ -183,3 +183,28 @@ erDiagram
     achievements ||--o{ user_achievements : "awarded_to"
     users ||--o{ user_lesson_progress : "tracks_progress_on"
     lessons ||--o{ user_lesson_progress : "has_progress_by"
+
+    ai_generated_content {
+        string id PK
+        int user_id FK "nullable"
+        string job_id FK "nullable"
+        string content_type "notNull"
+        json content_data "notNull"
+        json metadata "nullable"
+        datetime created_at "default: now()"
+    }
+
+    ai_generation_jobs {
+        string id PK
+        int user_id FK
+        string status "notNull"
+        string job_type "notNull"
+        json payload "notNull"
+        text result "nullable"
+        string error_message "nullable"
+        datetime created_at "default: now()"
+        datetime updated_at "default: now()"
+    }
+
+    users ||--o{ ai_generation_jobs : "requests"
+    ai_generation_jobs }o--o| ai_generated_content : "produces"

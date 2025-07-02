@@ -36,8 +36,13 @@ french-learning-platform/
 │   │   │   └── auth.middleware.ts
 │   │   ├── models/                 # Data interfaces (e.g., UserProgress, LearningPath)
 │   │   ├── services/               # Business logic
+│   │   │   ├── ai/
+│   │   │   ├── common/
+│   │   │   ├── contentGeneration/
 │   │   │   ├── progress.service.ts
 │   │   │   └── learningPath.service.ts
+│   │   ├── types/
+│   │   ├── workers/
 │   │   ├── routes/
 │   │   │   ├── auth.routes.ts
 │   │   │   ├── progress.routes.ts

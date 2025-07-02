@@ -91,10 +91,13 @@ graph TD
         subgraph "AI Services Layer"
             direction TB
             AIOrchestrator["AIOrchestrator"]
+            DynamicContentGenerator["DynamicContentGenerator"]
+            ContentGenerationJobQueue["ContentGenerationJobQueue"]
             
             subgraph "Supporting AI Services"
                 direction LR
-                CacheService["CacheService"]
+                RedisCacheService["RedisCacheService"]
+                ICacheService["ICacheService (Interface)"]
                 RateLimitService["RateLimitService"]
                 FallbackHandler["FallbackHandler"]
                 ContextService["ContextService"]
@@ -102,11 +105,14 @@ graph TD
                 PromptTemplateEngine["PromptTemplateEngine (Stub)"]
             end
             
-            AIController --> AIOrchestrator
-            AIOrchestrator --> CacheService
+            AIController -- "Adds job to" --> ContentGenerationJobQueue
+            AIOrchestrator --> RedisCacheService
             AIOrchestrator --> RateLimitService
             AIOrchestrator --> FallbackHandler
             AIOrchestrator --> ContextService
+            DynamicContentGenerator --> AIOrchestrator
+            DynamicContentGenerator --> ContextService
+            RedisCacheService -- "Implements" --> ICacheService
         end
         
         ApiGateway --> AuthRoutes
@@ -131,14 +137,21 @@ graph TD
         SpeechController --> SpeechService
     end
 
+    subgraph "Workers"
+        ContentGenerationWorker["ContentGenerationWorker"]
+        ContentGenerationWorker -- "Pulls job from" --> ContentGenerationJobQueue
+        ContentGenerationWorker --> DynamicContentGenerator
+    end
+
     subgraph "Data & External Services"
         direction TB
         Database["Database (Postgres + Knex)"]
-        Redis["Redis (Caching, Rate Limiting)"]
+        Redis["Redis (Caching, Rate Limiting, Queues)"]
         OpenAI["OpenAI API"]
         
-        CacheService --> Redis
+        RedisCacheService --> Redis
         RateLimitService --> Redis
+        ContentGenerationJobQueue --> Redis
         ContextService --> Database
         AIOrchestrator --> OpenAI
     end
