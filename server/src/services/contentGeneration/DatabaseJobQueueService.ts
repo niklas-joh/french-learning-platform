@@ -104,7 +104,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
    */
   async getNextJob(): Promise<{ id: string; payload: ContentRequest } | null> {
     const job = await this.knex.transaction(async (trx) => {
-      const nextJob = await trx('ai_generation_jobs')
+      const nextJob = await trx('aiGenerationJobs')
         .where({ status: 'queued' })
         .orderBy('createdAt', 'asc')
         .first()
@@ -112,7 +112,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
         .skipLocked();
 
       if (nextJob) {
-        await trx('ai_generation_jobs')
+        await trx('aiGenerationJobs')
           .where({ id: nextJob.id })
           .update({ status: 'processing', updatedAt: new Date() });
       }

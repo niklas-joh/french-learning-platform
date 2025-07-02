@@ -20,6 +20,7 @@ The Phase 3 implementation plan successfully transforms your language learning p
 | **3.1.B.6** | [Async Job Queue](./3-1-B-6-async-job-queue.md) | 2.5h | 🟡 **In Progress** | `DatabaseJobQueueService`, `ContentGenerationJobHandler` |
 | | <i>3.1.B.6a: DatabaseJobQueueService</i> | <i>1h</i> | <i>✅ Completed</i> | <i>Persistent job queue using database</i> |
 | | <i>3.1.B.6b: ContentGenerationJobHandler</i> | <i>0.75h</i> | <i>✅ Completed</i> | <i>Core logic for processing generation jobs</i> |
+| | <i>3.1.B.6c: Refactor DynamicContentGenerator</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>Refactored to use the job queue</i> |
 | **3.1.C** | [AI Assessment & Grading](./tasks/3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | Intelligent grading, personalized feedback |
 | **3.1.D** | [AI-First Dashboard](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | Complete UI transformation, AI-driven UX |
 

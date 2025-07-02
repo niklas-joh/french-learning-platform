@@ -1,6 +1,6 @@
 import knex from '../config/db';
 
-const TABLE_NAME = 'ai_generation_jobs';
+const TABLE_NAME = 'aiGenerationJobs';
 
 export interface AiGenerationJob {
   id: string;

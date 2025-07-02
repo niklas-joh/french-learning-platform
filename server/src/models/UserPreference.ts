@@ -15,7 +15,7 @@ export interface UserPreference {
  * Retrieves a preference row for the specified user.
  */
 const findByUserId = (userId: number): Promise<UserPreference | undefined> => {
-    return db<UserPreference>('user_preferences').where({ userId }).first();
+    return db<UserPreference>('userPreferences').where({ userId }).first();
 };
 
 /**
@@ -25,13 +25,13 @@ const upsert = async (userId: number, preferences: object): Promise<UserPreferen
     const existingPreference = await findByUserId(userId);
 
     if (existingPreference) {
-        const [updatedPreference] = await db<UserPreference>('user_preferences')
+        const [updatedPreference] = await db<UserPreference>('userPreferences')
             .where({ userId })
             .update({ preferences: JSON.stringify(preferences) })
             .returning('*');
         return updatedPreference;
     } else {
-        const [newPreference] = await db<UserPreference>('user_preferences')
+        const [newPreference] = await db<UserPreference>('userPreferences')
             .insert({ userId, preferences: JSON.stringify(preferences) })
             .returning('*');
         return newPreference;

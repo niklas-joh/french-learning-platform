@@ -22,13 +22,13 @@ export const getLessonProgressForUser = async (userId: number, lessonIds: number
     if (lessonIds.length === 0) {
         return [];
     }
-    return db<UserLessonProgress>('user_lesson_progress')
+    return db<UserLessonProgress>('userLessonProgress')
         .where('userId', userId)
         .whereIn('lessonId', lessonIds);
 };
 
 export const startLesson = async (userId: number, lessonId: number): Promise<UserLessonProgress> => {
-    const existingProgress = await db<UserLessonProgress>('user_lesson_progress')
+    const existingProgress = await db<UserLessonProgress>('userLessonProgress')
         .where({ userId, lessonId })
         .first();
 
@@ -37,14 +37,14 @@ export const startLesson = async (userId: number, lessonId: number): Promise<Use
             return existingProgress;
         }
 
-        const [updated] = await db('user_lesson_progress')
+        const [updated] = await db('userLessonProgress')
             .where('id', existingProgress.id)
             .update({ status: 'in-progress', startedAt: new Date().toISOString() })
             .returning('*');
         return updated;
     }
 
-    const [newProgress] = await db<UserLessonProgress>('user_lesson_progress')
+    const [newProgress] = await db<UserLessonProgress>('userLessonProgress')
         .insert({
             userId,
             lessonId,
@@ -56,7 +56,7 @@ export const startLesson = async (userId: number, lessonId: number): Promise<Use
 };
 
 export const completeLesson = async (userId: number, lessonId: number, trx: Knex.Transaction): Promise<UserLessonProgress> => {
-    const progressToUpdate = await trx<UserLessonProgress>('user_lesson_progress')
+    const progressToUpdate = await trx<UserLessonProgress>('userLessonProgress')
         .where({ userId, lessonId })
         .first();
 
@@ -68,7 +68,7 @@ export const completeLesson = async (userId: number, lessonId: number, trx: Knex
         throw new Error(`Cannot complete lesson with status: ${progressToUpdate.status}`);
     }
 
-    const [updatedProgress] = await trx<UserLessonProgress>('user_lesson_progress')
+    const [updatedProgress] = await trx<UserLessonProgress>('userLessonProgress')
         .where('id', progressToUpdate.id)
         .update({
             status: 'completed',
