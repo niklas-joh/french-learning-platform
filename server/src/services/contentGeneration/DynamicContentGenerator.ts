@@ -27,7 +27,6 @@ export class DynamicContentGenerator implements IContentGenerator {
   public async generateContent(request: ContentRequest): Promise<{ jobId: string }> {
     try {
       const jobId = await this.jobQueueService.enqueueJob(request);
-      console.log(`[DynamicContentGenerator] Enqueued job ${jobId} for type: ${request.type}`);
       return { jobId };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);

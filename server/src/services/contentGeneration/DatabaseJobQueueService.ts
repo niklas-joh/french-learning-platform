@@ -25,15 +25,14 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @returns {Promise<string>} A promise that resolves with the ID of the newly created job.
    */
   async enqueueJob(request: ContentRequest): Promise<string> {
-    const jobData: Omit<AiGenerationJob, 'id' | 'createdAt' | 'updatedAt'> = {
+    const jobData: Partial<AiGenerationJob> = {
       userId: request.userId,
       status: 'queued',
       jobType: request.type,
       payload: request,
     };
 
-    // The model requires omitting 'id' as well for creation
-    const insertedJob = await AiGenerationJobsModel.create(jobData as any);
+    const insertedJob = await AiGenerationJobsModel.query().insertAndFetch(jobData);
     this.logger.info(`Job ${insertedJob.id} enqueued for user ${request.userId}`);
     return insertedJob.id;
   }
@@ -44,7 +43,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @returns {Promise<JobStatus>} A promise that resolves with the job's status.
    */
   async getJobStatus(jobId: string): Promise<JobStatus> {
-    const job = await AiGenerationJobsModel.findById(jobId);
+    const job = await AiGenerationJobsModel.query().findById(jobId);
 
     if (!job) {
       this.logger.warn(`Job status requested for non-existent job ID: ${jobId}`);
@@ -65,7 +64,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @returns {Promise<GeneratedContent | null>} A promise that resolves with the generated content, or null if the job is not complete or not found.
    */
   async getJobResult(jobId: string): Promise<GeneratedContent | null> {
-    const job = await AiGenerationJobsModel.findById(jobId);
+    const job = await AiGenerationJobsModel.query().findById(jobId);
     if (!job || job.status !== 'completed' || !job.result) {
       return null;
     }
@@ -104,7 +103,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
    */
   async getNextJob(): Promise<{ id: string; payload: ContentRequest } | null> {
     const job = await this.knex.transaction(async (trx) => {
-      const nextJob = await trx('aiGenerationJobs')
+      const nextJob = await AiGenerationJobsModel.query(trx)
         .where({ status: 'queued' })
         .orderBy('createdAt', 'asc')
         .first()
@@ -112,9 +111,9 @@ export class DatabaseJobQueueService implements IJobQueueService {
         .skipLocked();
 
       if (nextJob) {
-        await trx('aiGenerationJobs')
-          .where({ id: nextJob.id })
-          .update({ status: 'processing', updatedAt: new Date() });
+        await AiGenerationJobsModel.query(trx).patchAndFetchById(nextJob.id, {
+          status: 'processing',
+        });
       }
       return nextJob;
     });
@@ -137,10 +136,10 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @param error Optional error message if the job failed.
    */
   async updateJobStatus(jobId: string, status: JobStatus['status'], error?: string): Promise<void> {
-    await AiGenerationJobsModel.update(jobId, {
-        status,
-        errorMessage: error || undefined,
-      });
+    await AiGenerationJobsModel.query().patchAndFetchById(jobId, {
+      status,
+      errorMessage: error || undefined,
+    });
     this.logger.info(`Job ${jobId} status updated to ${status}`);
   }
 
@@ -150,10 +149,10 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @param result The generated content.
    */
   async setJobResult(jobId: string, result: GeneratedContent): Promise<void> {
-    await AiGenerationJobsModel.update(jobId, {
-        result: JSON.stringify(result),
-        status: 'completed',
-      });
+    await AiGenerationJobsModel.query().patchAndFetchById(jobId, {
+      result: JSON.stringify(result),
+      status: 'completed',
+    });
     this.logger.info(`Job ${jobId} completed and result stored.`);
   }
 }

@@ -198,7 +198,6 @@ export const generateContentAsync = async (
   try {
     const contentGenerator = contentGenerationServiceFactory.getDynamicContentGenerator();
     const { jobId } = await contentGenerator.generateContent(contentRequest);
-    
     res.status(202).json({ jobId });
   } catch (error) {
     console.error(`[aiController] Failed to schedule job for user ${req.user!.userId}:`, error);
@@ -214,7 +213,7 @@ export const getGenerationStatus = async (req: AuthenticatedRequest, res: Respon
   const { jobId } = req.params;
 
   try {
-    const jobRecord = await AiGenerationJobsModel.findById(jobId);
+    const jobRecord = await AiGenerationJobsModel.query().findById(jobId);
 
     if (!jobRecord) {
       res.status(404).json({ message: 'Job not found.', code: 'JOB_NOT_FOUND' });

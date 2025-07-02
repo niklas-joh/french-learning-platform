@@ -5,9 +5,10 @@
  * environments. Tests run against an in-memory SQLite database to avoid
  * touching the developer's local data.
  */
-import type { Knex } from 'knex';
+import { Knex } from 'knex';
 import path from 'path';
 import dotenv from 'dotenv';
+import { knexSnakeCaseMappers } from 'objection';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
     },
+    ...knexSnakeCaseMappers(),
   },
 
   test: {
@@ -44,6 +46,7 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
     },
+    ...knexSnakeCaseMappers(),
   },
 };
 

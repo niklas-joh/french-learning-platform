@@ -15,17 +15,17 @@ const processJob = async (job: Job<JobPayload, JobResponse>) => {
   console.log(`Processing job ${jobId}`);
 
   try {
-    const dbJob = await AiGenerationJobsModel.findById(jobId!);
+    const dbJob = await AiGenerationJobsModel.query().findById(jobId!);
     if (!dbJob) {
       throw new Error(`Job with ID ${jobId} not found in database.`);
     }
 
-    await AiGenerationJobsModel.update(jobId!, { status: 'processing' });
+    await AiGenerationJobsModel.query().patchAndFetchById(jobId!, { status: 'processing' });
 
     const jobHandler = contentGenerationServiceFactory.getContentGenerationJobHandler();
     const generatedContent = await jobHandler.handleJob(dbJob);
 
-    await AiGenerationJobsModel.update(jobId!, {
+    await AiGenerationJobsModel.query().patchAndFetchById(jobId!, {
       status: 'completed',
       result: JSON.stringify(generatedContent),
     });
@@ -34,7 +34,7 @@ const processJob = async (job: Job<JobPayload, JobResponse>) => {
     return generatedContent;
   } catch (error: any) {
     console.error(`Job ${jobId} failed:`, error);
-    await AiGenerationJobsModel.update(jobId!, {
+    await AiGenerationJobsModel.query().patchAndFetchById(jobId!, {
       status: 'failed',
       errorMessage: error.message || 'An unknown error occurred.',
     });
