@@ -8,15 +8,9 @@ import { Knex } from 'knex';
  * @returns {Promise<void>}
  */
 export async function up(knex: Knex): Promise<void> {
-  await knex.raw(`
-    CREATE OR REPLACE FUNCTION update_updated_at_column()
-    RETURNS TRIGGER AS $$
-    BEGIN
-        NEW."updatedAt" = CURRENT_TIMESTAMP;
-        RETURN NEW;
-    END;
-    $$ language 'plpgsql';
-  `);
+  // This function is PostgreSQL-specific and not used with SQLite.
+  // Leaving this empty to prevent errors in a non-PostgreSQL environment.
+  return Promise.resolve();
 }
 
 /**
@@ -26,5 +20,6 @@ export async function up(knex: Knex): Promise<void> {
  * @returns {Promise<void>}
  */
 export async function down(knex: Knex): Promise<void> {
-  await knex.raw('DROP FUNCTION IF EXISTS update_updated_at_column();');
+  // The function does not exist in SQLite, so no action is needed.
+  return Promise.resolve();
 }

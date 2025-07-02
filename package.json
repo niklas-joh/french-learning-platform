@@ -12,8 +12,8 @@
     "db:status": "npm --prefix server run db:status",
     "db:reset": "rimraf database/french_learning.db",
     "db:seed": "npm --prefix server run db:seed",
-    "db:setup": "run-s migrate db:seed db:status",
-    "db:rebuild": "run-s db:reset db:setup"
+    "db:setup": "run-s db:rebuild migrate db:seed db:status",
+    "db:rebuild": "run-s db:reset"
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,7 @@ import { Knex } from 'knex';
 export async function up(knex: Knex): Promise<void> {
   console.log('Starting migration: 20250625000000_create_core_learning_tables.ts');
 
-  await knex.schema.createTable('user_progress', (table) => {
+  await knex.schema.createTable('userProgress', (table) => {
     table.increments('id').primary();
     table.integer('userId').notNullable().references('id').inTable('users');
     table.string('currentLevel').notNullable().defaultTo('A1');
@@ -18,9 +18,9 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('createdAt').defaultTo(knex.fn.now());
     table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
-  console.log('Created table: user_progress');
+  console.log('Created table: userProgress');
 
-  await knex.schema.createTable('learning_paths', (table) => {
+  await knex.schema.createTable('learningPaths', (table) => {
     table.increments('id').primary();
     table.string('language').notNullable().defaultTo('french');
     table.string('name').notNullable();
@@ -31,11 +31,11 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('createdAt').defaultTo(knex.fn.now());
     table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
-  console.log('Created table: learning_paths');
+  console.log('Created table: learningPaths');
 
-  await knex.schema.createTable('learning_units', (table) => {
+  await knex.schema.createTable('learningUnits', (table) => {
     table.increments('id').primary();
-    table.integer('learningPathId').notNullable().references('id').inTable('learning_paths');
+    table.integer('learningPathId').notNullable().references('id').inTable('learningPaths');
     table.string('title').notNullable();
     table.text('description');
     table.string('level').notNullable();
@@ -45,11 +45,11 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamp('createdAt').defaultTo(knex.fn.now());
     table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
-  console.log('Created table: learning_units');
+  console.log('Created table: learningUnits');
 
   await knex.schema.createTable('lessons', (table) => {
     table.increments('id').primary();
-    table.integer('learningUnitId').notNullable().references('id').inTable('learning_units');
+    table.integer('learningUnitId').notNullable().references('id').inTable('learningUnits');
     table.string('title').notNullable();
     table.text('description');
     table.string('type').notNullable();
@@ -76,23 +76,23 @@ export async function up(knex: Knex): Promise<void> {
   });
   console.log('Created table: achievements');
 
-  await knex.schema.createTable('user_achievements', (table) => {
+  await knex.schema.createTable('userAchievements', (table) => {
     table.increments('id').primary();
     table.integer('userId').notNullable().references('id').inTable('users');
     table.string('achievementId').notNullable().references('id').inTable('achievements');
     table.timestamp('unlockedAt').defaultTo(knex.fn.now());
     table.unique(['userId', 'achievementId']);
   });
-  console.log('Created table: user_achievements');
+  console.log('Created table: userAchievements');
 
   console.log('Finished migration: 20250625000000_create_core_learning_tables.ts');
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.dropTableIfExists('user_achievements');
+  await knex.schema.dropTableIfExists('userAchievements');
   await knex.schema.dropTableIfExists('achievements');
   await knex.schema.dropTableIfExists('lessons');
-  await knex.schema.dropTableIfExists('learning_units');
-  await knex.schema.dropTableIfExists('learning_paths');
-  await knex.schema.dropTableIfExists('user_progress');
+  await knex.schema.dropTableIfExists('learningUnits');
+  await knex.schema.dropTableIfExists('learningPaths');
+  await knex.schema.dropTableIfExists('userProgress');
 }

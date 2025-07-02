@@ -1,14 +1,14 @@
 import { Knex } from 'knex';
 
 export async function seed(knex: Knex): Promise<void> {
-  // Deletes ALL existing entries in lessons and learning_units to prevent duplicates.
+  // Deletes ALL existing entries in lessons and learningUnits to prevent duplicates.
   await knex('lessons').del();
-  await knex('learning_units').del();
+  await knex('learningUnits').del();
 
   // Seed Learning Units
-  const learningPathId = 1; // Assumes 'French for Beginners' learning_paths.id = 1
+  const learningPathId = 1; // Assumes 'French for Beginners' learningPaths.id = 1
 
-  const unitIds = await knex('learning_units').insert([
+  const unitIds = await knex('learningUnits').insert([
     {
       learningPathId: learningPathId,
       title: 'Unit 1: Greetings & Basics',

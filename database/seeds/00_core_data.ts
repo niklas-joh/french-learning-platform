@@ -1,12 +1,12 @@
 import { Knex } from 'knex';
 
 export async function seed(knex: Knex): Promise<void> {
-  // Check and delete from user_achievements if it exists
-  const hasUserAchievements = await knex.schema.hasTable('user_achievements');
+  // Check and delete from userAchievements if it exists
+  const hasUserAchievements = await knex.schema.hasTable('userAchievements');
   if (hasUserAchievements) {
-    await knex('user_achievements').del();
+    await knex('userAchievements').del();
   } else {
-    console.warn("Table 'user_achievements' does not exist. Skipping deletion.");
+    console.warn("Table 'userAchievements' does not exist. Skipping deletion.");
   }
 
   // Check and delete from achievements if it exists
@@ -17,17 +17,17 @@ export async function seed(knex: Knex): Promise<void> {
     console.warn("Table 'achievements' does not exist. Skipping deletion.");
   }
 
-  // Check and delete from learning_paths if it exists
-  const hasLearningPaths = await knex.schema.hasTable('learning_paths');
+  // Check and delete from learningPaths if it exists
+  const hasLearningPaths = await knex.schema.hasTable('learningPaths');
   if (hasLearningPaths) {
-    await knex('learning_paths').del();
+    await knex('learningPaths').del();
   } else {
-    console.warn("Table 'learning_paths' does not exist. Skipping deletion.");
+    console.warn("Table 'learningPaths' does not exist. Skipping deletion.");
   }
 
   // Seed Learning Paths - only if table exists (it should have been created by migrations)
   if (hasLearningPaths) {
-    await knex('learning_paths').insert([
+    await knex('learningPaths').insert([
       {
         id: 1, // Explicitly set ID for predictability in other seeds
         language: 'french',
@@ -39,7 +39,7 @@ export async function seed(knex: Knex): Promise<void> {
       },
     ]);
   } else {
-    console.error("Cannot seed 'learning_paths' as table does not exist. Migration may have failed.");
+    console.error("Cannot seed 'learningPaths' as table does not exist. Migration may have failed.");
   }
 
   // Seed Achievements - only if table exists
@@ -51,7 +51,7 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Complete your first lesson',
         icon: '🎯',
         category: 'lessons',
-        criteriaData: JSON.stringify({ type: 'lessons_completed', value: 1 }),
+        criteriaData: JSON.stringify({ type: 'lessonsCompleted', value: 1 }),
         rarity: 'common',
         isActive: true,
       },
@@ -71,7 +71,7 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Score 100% on any quiz',
         icon: '⭐',
         category: 'accuracy',
-        criteriaData: JSON.stringify({ type: 'accuracy_threshold', value: 100 }),
+        criteriaData: JSON.stringify({ type: 'accuracyThreshold', value: 100 }),
         rarity: 'epic',
         isActive: true,
       },
@@ -81,7 +81,7 @@ export async function seed(knex: Knex): Promise<void> {
         description: 'Learn 10 new vocabulary words.',
         icon: '📚',
         category: 'vocabulary',
-        criteriaData: JSON.stringify({ type: 'words_learned', value: 10 }),
+        criteriaData: JSON.stringify({ type: 'wordsLearned', value: 10 }),
         rarity: 'common',
         isActive: true,
       }
@@ -90,5 +90,5 @@ export async function seed(knex: Knex): Promise<void> {
     console.error("Cannot seed 'achievements' as table does not exist. Migration may have failed.");
   }
 
-  console.log('Attempted to seed core data (learning_paths, achievements)');
+  console.log('Attempted to seed core data (learningPaths, achievements)');
 }
