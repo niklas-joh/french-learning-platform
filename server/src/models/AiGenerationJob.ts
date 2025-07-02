@@ -5,7 +5,7 @@ const TABLE_NAME = 'ai_generation_jobs';
 export interface AiGenerationJob {
   id: string;
   user_id: number;
-  status: 'queued' | 'processing' | 'completed' | 'failed';
+  status: 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled';
   job_type: string;
   payload: object;
   result?: string;

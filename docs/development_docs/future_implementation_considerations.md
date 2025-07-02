@@ -538,3 +538,17 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **More Robust**: Can identify subtle issues that rules might miss.
   - **Flexibility**: Can adapt to new content requirements without needing new code.
 - **Reason for Deferral**: This adds complexity and cost (more AI calls). It's better to first build the foundational pipeline with rule-based services and introduce AI-powered enhancements later as an optimization.
+
+## 42. Transition to Event-Driven Job Notification
+- **Identified**: During critique of the asynchronous workflow plan (Task 3.1.B.6).
+- **Current State**: The worker implementation will use database polling (`SELECT ... SKIP LOCKED`) to find new jobs.
+- **Problem**: While polling is reliable and prevents race conditions, it can be inefficient. The worker constantly queries the database even when there are no jobs, and there can be a delay (the polling interval) between a job being created and the worker picking it up.
+- **Proposed Solution**: Evolve the system to be event-driven.
+  1.  When a job is inserted into the `ai_generation_jobs` table, the service would also publish a notification to a channel (e.g., using Redis PUB/SUB or PostgreSQL's `NOTIFY` command).
+  2.  Workers would subscribe to this channel. Instead of polling, they would listen for notifications.
+  3.  Upon receiving a notification, a worker would then attempt to claim a job from the database.
+- **Benefits**:
+  - **Efficiency**: Reduces unnecessary database load, as workers only query when they know a job is available.
+  - **Lower Latency**: Jobs are picked up almost instantly, rather than waiting for the next polling cycle.
+  - **Scalability**: A more elegant and scalable solution for a high-throughput system.
+- **Reason for Deferral**: The `SKIP LOCKED` polling pattern is a very robust and common solution that is perfectly adequate for the current scale. Implementing a full pub/sub system adds another layer of complexity (e.g., managing subscriber connections, ensuring notification delivery) that can be deferred until performance requirements demand it.
