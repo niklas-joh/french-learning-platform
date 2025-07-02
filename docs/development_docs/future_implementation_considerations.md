@@ -81,7 +81,7 @@ This document tracks architectural improvements, refactoring opportunities, and 
 
 ## 8. Implement Runtime Schema Validation for Lesson Content
 - **Identified**: During planning for dynamic lesson content rendering (Task 2.4).
-- **Current State**: The frontend relies on TypeScript interfaces to trust the shape of the `lesson.content_data` JSON blob coming from the API.
+- **Current State**: The frontend relies on TypeScript interfaces to trust the shape of the `lesson.content_data` JSON blob coming from the API. **UPDATE**: Zod has been implemented on the backend for validating raw AI responses (see Task 3.1.B.3.b), but not yet for validating content retrieved from the database before sending to the client.
 - **Problem**: There is no runtime guarantee that the data from the database actually conforms to these frontend types. A data entry error or a migration issue could lead to malformed JSON, causing runtime crashes on the client.
 - **Proposed Solution**: Introduce a schema validation library like **Zod**.
   1.  **Backend**: Before sending lesson data, parse the `content_data` JSON using a Zod schema to ensure it's valid.
@@ -181,7 +181,6 @@ This document tracks architectural improvements, refactoring opportunities, and 
 - **Proposed Solution**: Adopt a lightweight, dedicated DI container for TypeScript, such as `tsyringe` or `InversifyJS`. These libraries manage the lifecycle and injection of dependencies automatically based on decorators or configuration.
 - **Benefits**:
   - **Simplified Setup**: Reduces boilerplate code for service instantiation.
-  - **Lifecycle Management**: Can manage services as singletons, transient, or request-scoped instances.
   - **Maintainability**: Makes adding new services or changing dependencies much cleaner and less error-prone.
 
 ## 16. Implement Structured Logging
@@ -244,18 +243,18 @@ This document tracks architectural improvements, refactoring opportunities, and 
 
 ## 21. AI Type System Schema Validation Integration
 - **Identified**: During Task 3.1.A.2 implementation (AI Types & Interfaces).
-- **Current State**: TypeScript interfaces provide compile-time type safety only.
+- **Current State**: **Partially Implemented**. Zod schemas have been created and integrated for validating raw AI vocabulary responses as part of the content structuring pipeline (Task 3.1.B.3.b). This pattern needs to be expanded.
 - **Problem**: AI payloads from external services or dynamic generation need runtime validation to prevent malformed data from causing system failures.
-- **Proposed Solution**: Integrate schema validation (Zod) with AI type definitions.
-  1. Create Zod schemas that mirror TypeScript interfaces
-  2. Add runtime validation for all AI request/response data
-  3. Implement automatic type inference from schemas
-  4. Add validation error handling with graceful degradation
+- **Proposed Solution**: Continue integrating schema validation (Zod) with AI type definitions.
+  1. Create Zod schemas for all remaining content types (lessons, exercises, etc.).
+  2. Ensure runtime validation is applied to all AI request/response data.
+  3. Implement automatic type inference from schemas where possible.
+  4. Add robust validation error handling with graceful degradation for all types.
 - **Benefits**:
-  - **Runtime Safety**: Catch malformed data before it affects the system
-  - **Single Source of Truth**: Schemas define both runtime and compile-time types
-  - **API Reliability**: Validate external AI service responses
-  - **Developer Experience**: Better error messages and debugging
+  - **Runtime Safety**: Catch malformed data before it affects the system.
+  - **Single Source of Truth**: Schemas define both runtime and compile-time types.
+  - **API Reliability**: Validate external AI service responses.
+  - **Developer Experience**: Better error messages and debugging.
 
 ## 22. Abstract Service Dependencies with Interfaces
 - **Identified**: During refined planning for the AI Orchestration Service (Task 3.1.A).
@@ -398,19 +397,14 @@ This document tracks architectural improvements, refactoring opportunities, and 
 
 ## 32. AI Response Schema Validation with Zod
 - **Identified**: During Task 3.1.B.3 analysis (Core Generation Logic).
-- **Current State**: The `parseAIResponse` method uses simple try/catch around `JSON.parse` without validating the structure of AI responses.
-- **Problem**: AI can return valid JSON that is missing required fields or has incorrect data types, leading to runtime errors in content structuring methods.
-- **Proposed Solution**: Implement comprehensive schema validation for all AI responses using Zod.
-  1. Create Zod schemas for each content type (lesson, vocabulary, grammar, etc.)
-  2. Validate AI responses at runtime before processing
-  3. Provide clear error messages for malformed responses
-  4. Implement automatic type inference from schemas
-  5. Add graceful fallback when validation fails
+- **Current State**: **Implemented**. As part of Task 3.1.B.3.b, the `parseAIResponse` method was removed and replaced with a factory-based system of `Structurer` classes. These classes now use Zod schemas for runtime validation of the AI's JSON output.
+- **Problem**: N/A - This has been addressed.
+- **Proposed Solution**: N/A - The proposed solution has been implemented. The next step is to continue creating Zod schemas and structurer classes for the remaining content types.
 - **Benefits**:
-  - **Runtime Safety**: Catch malformed AI data before it affects the system
-  - **Single Source of Truth**: Schemas define both runtime and compile-time types
-  - **Better Error Handling**: Clear error messages for debugging AI issues
-  - **Robust Content Generation**: Prevents malformed content from reaching users
+  - **Runtime Safety**: Catch malformed AI data before it affects the system.
+  - **Single Source of Truth**: Schemas define both runtime and compile-time types.
+  - **Better Error Handling**: Clear error messages for debugging AI issues.
+  - **Robust Content Generation**: Prevents malformed content from reaching users.
 
 ## 33. User Context Service Extraction
 - **Identified**: During Task 3.1.B.3 analysis (Core Generation Logic).
@@ -504,3 +498,16 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Resource Management**: Prevents wasted CPU cycles and network resources on timed-out requests.
   - **Cost Savings**: Avoids paying for AI API calls that are no longer needed.
   - **Clean Architecture**: Provides a standard, robust, and explicit way to handle request cancellation throughout the call stack.
+
+## 39. Structured Content Caching
+- **Identified**: During critique of content structuring plan (Task 3.1.B.3.b).
+- **Current State**: The system caches raw AI responses but does not cache the result of the structuring process.
+- **Problem**: If the same raw AI content is processed multiple times (e.g., due to cache eviction of the raw response or different user requests yielding the same raw content), the application performs redundant JSON parsing, validation, and transformation. While this is less expensive than an AI call, it's still unnecessary computational overhead.
+- **Proposed Solution**: Implement a second layer of caching for the structured content.
+  1. After successfully structuring content, store the final, type-safe object in a cache (e.g., Redis).
+  2. Use a hash of the raw content string as the cache key.
+  3. Before attempting to structure new raw content, check this cache first.
+- **Benefits**:
+  - **Performance**: Reduces CPU load by avoiding redundant parsing and validation.
+  - **Efficiency**: Speeds up the response time for requests that hit this cache.
+  - **Robustness**: Further isolates the system from repeated processing of potentially problematic (but valid) raw content.

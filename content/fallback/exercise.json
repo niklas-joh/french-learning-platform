@@ -1,0 +1,62 @@
+{
+  "type": "grammar_exercise",
+  "title": "Basic Verb Conjugation",
+  "description": "Practice conjugating common -er verbs in the present tense.",
+  "learningObjectives": [
+    "Identify the stem of an -er verb.",
+    "Apply the correct present tense endings for -er verbs."
+  ],
+  "estimatedTime": 10,
+  "grammarRule": "Present Tense of -er Verbs",
+  "explanation": "To conjugate regular -er verbs in the present tense, remove the -er ending to find the stem, and then add the appropriate ending: -e, -es, -e, -ons, -ez, -ent.",
+  "examples": [
+    "Je parle (I speak)",
+    "Tu parles (You speak)",
+    "Il/Elle/On parle (He/She/One speaks)",
+    "Nous parlons (We speak)",
+    "Vous parlez (You speak - formal/plural)",
+    "Ils/Elles parlent (They speak)"
+  ],
+  "exercises": [
+    {
+      "type": "fill_in_blank",
+      "instruction": "Fill in the blank with the correct form of the verb in parentheses.",
+      "items": [
+        {
+          "type": "fill_in_blank",
+          "sentence": "Nous ______ (aimer) le chocolat.",
+          "blanks": [
+            {
+              "position": 5,
+              "length": 6
+            }
+          ],
+          "correctAnswers": [
+            "aimons"
+          ]
+        },
+        {
+          "type": "fill_in_blank",
+          "sentence": "Elle ______ (chanter) très bien.",
+          "blanks": [
+            {
+              "position": 5,
+              "length": 7
+            }
+          ],
+          "correctAnswers": [
+            "chante"
+          ]
+        }
+      ],
+      "feedback": "Remember to match the verb ending with the subject pronoun."
+    }
+  ],
+  "tips": [
+    "The 'nous' form always ends in -ons.",
+    "The 'vous' form always ends in -ez."
+  ],
+  "commonMistakes": [
+    "Forgetting that 'ils/elles' uses the '-ent' ending, which is silent."
+  ]
+}

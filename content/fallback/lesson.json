@@ -1,0 +1,55 @@
+{
+  "type": "lesson",
+  "title": "Introduction to French Greetings",
+  "description": "Learn the most common ways to greet people in French.",
+  "learningObjectives": [
+    "Learn to say hello and goodbye.",
+    "Understand the difference between formal and informal greetings."
+  ],
+  "estimatedTime": 15,
+  "sections": [
+    {
+      "type": "introduction",
+      "title": "Why Greetings Matter",
+      "content": "In France, politeness is very important. Using the correct greeting is the first step to having a good conversation.",
+      "duration": 3
+    },
+    {
+      "type": "presentation",
+      "title": "Common Greetings",
+      "content": "Here are the most essential greetings you need to know.",
+      "duration": 7,
+      "vocabulary": [
+        {
+          "word": "Bonjour",
+          "definition": "Hello (formal, used during the day)",
+          "pronunciation": "bon-zhoor",
+          "examples": ["Bonjour, Madame."],
+          "difficulty": "easy"
+        },
+        {
+          "word": "Salut",
+          "definition": "Hi (informal)",
+          "pronunciation": "sa-loo",
+          "examples": ["Salut, ça va ?"],
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "type": "wrap_up",
+      "title": "Summary",
+      "content": "You've now learned the basic French greetings. Practice them every day!",
+      "duration": 5
+    }
+  ],
+  "vocabulary": [],
+  "grammar": null,
+  "culturalNotes": [
+    {
+      "title": "La Bise",
+      "content": "It is common for friends and family in France to greet each other with a kiss on the cheek, known as 'la bise'.",
+      "relevance": "Understanding social customs."
+    }
+  ]
+}

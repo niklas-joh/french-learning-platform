@@ -1,0 +1,26 @@
+[
+  {
+    "french": "Bonjour",
+    "english": "Hello",
+    "exampleSentence": "Bonjour, comment ça va ?",
+    "exampleTranslation": "Hello, how are you?"
+  },
+  {
+    "french": "Merci",
+    "english": "Thank you",
+    "exampleSentence": "Merci beaucoup pour votre aide.",
+    "exampleTranslation": "Thank you very much for your help."
+  },
+  {
+    "french": "Au revoir",
+    "english": "Goodbye",
+    "exampleSentence": "Au revoir, à la prochaine.",
+    "exampleTranslation": "Goodbye, see you next time."
+  },
+  {
+    "french": "S'il vous plaît",
+    "english": "Please",
+    "exampleSentence": "Un café, s'il vous plaît.",
+    "exampleTranslation": "A coffee, please."
+  }
+]

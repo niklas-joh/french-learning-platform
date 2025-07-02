@@ -23,6 +23,7 @@ import {
 } from '../../types/Content';
 import { AI_CONTENT_CONFIG, DEFAULT_AI_CONFIG, AIModelConfig } from '../../config/aiContentConfig';
 import { AIGenerationError } from '../../utils/errors';
+import { ContentStructurerFactory } from './ContentStructurerFactory';
 
 /**
  * Main implementation of dynamic content generation
@@ -41,7 +42,8 @@ export class DynamicContentGenerator implements IContentGenerator {
     private templateManager: IContentTemplateManager,
     private contextService: ILearningContextService,
     private fallbackHandler: IContentFallbackHandler,
-    private metricsService: IContentGenerationMetrics
+    private metricsService: IContentGenerationMetrics,
+    private structurerFactory: ContentStructurerFactory
   ) {}
 
   /**
@@ -103,7 +105,7 @@ export class DynamicContentGenerator implements IContentGenerator {
       const enhancedContent = await enhancer.enhance(rawContent, learningContext);
       
       // Structure the final content
-      const structuredContent = await this.structureContent(enhancedContent, request);
+      const structuredContent = await this.structureContent(enhancedContent, request.type);
       
       // Generate final response
       const generatedContent: GeneratedContent = {
@@ -192,16 +194,9 @@ export class DynamicContentGenerator implements IContentGenerator {
         throw new AIGenerationError(`AI generation failed: ${aiResponse.error}`, { request });
       }
 
-      const rawContent = this.parseAIResponse(aiResponse.data, request.type);
-      
-      this.addGenerationMetadata(rawContent, {
-        generationTime: Date.now() - startTime,
-        tokenUsage: aiResponse.tokenUsage,
-        model: aiConfig.model,
-        promptLength: prompt.length,
-      });
-
-      return rawContent;
+      // The raw response data (likely a string) is returned directly.
+      // The responsibility of parsing and validating is now with the structurer.
+      return aiResponse.data;
     } catch (error) {
       const generationTime = Date.now() - startTime;
       
@@ -255,42 +250,6 @@ export class DynamicContentGenerator implements IContentGenerator {
     return AI_CONTENT_CONFIG[type] || DEFAULT_AI_CONFIG;
   }
 
-  /**
-   * Parse AI response with defensive handling
-   */
-  private parseAIResponse(response: any, contentType: ContentType): any {
-    // TODO: #32 - Replace this with a robust Zod schema validation in Task 3.1.B.3b.
-    // This current implementation is a defensive fallback, not a long-term solution.
-    try {
-      if (typeof response === 'object' && response !== null) {
-        return response; // Already a valid object.
-      }
-
-      if (typeof response === 'string') {
-        // Attempt to find and parse a JSON object within the string, e.g., ```json\n{...}\n```
-        const jsonMatch = response.match(/\{[\s\S]*\}/);
-        if (jsonMatch && jsonMatch[0]) {
-          try {
-            return JSON.parse(jsonMatch[0]);
-          } catch (e) {
-            // Fall through if the extracted JSON is malformed
-          }
-        }
-        // If no JSON found or parsing failed, treat as plain text.
-        return { content: response, type: contentType };
-      }
-      
-      throw new Error('AI response is not a valid object or string.');
-    } catch (error) {
-      // TODO: #24 - Use structured logger
-      console.error('Error parsing AI response:', {
-        contentType,
-        responsePreview: typeof response === 'string' ? response.substring(0, 200) : String(response),
-        error: error instanceof Error ? error.message : String(error)
-      });
-      throw new AIGenerationError('Invalid or unparsable AI response format');
-    }
-  }
 
   /**
    * Create timeout promise for AI requests
@@ -320,13 +279,20 @@ export class DynamicContentGenerator implements IContentGenerator {
   }
 
   /**
-   * Structure raw content into typed format
-   * TODO: Implementation in subsequent task 3.1.B.2
+   * Structure raw content into typed format using a factory-based approach.
    */
-  private async structureContent(content: any, request: ContentRequest): Promise<StructuredContent> {
-    // Transform raw AI output into strongly-typed structured content
-    // This will include parsing and validation of the AI response format
-    throw new Error('structureContent not yet implemented - placeholder for task 3.1.B.2');
+  private async structureContent(rawContent: string, contentType: ContentType): Promise<StructuredContent> {
+    // TODO: Implement a caching layer here. See future implementation consideration #39.
+    try {
+      const structurer = this.structurerFactory.getStructurer(contentType);
+      return await structurer.structure(rawContent);
+    } catch (error) {
+      console.error(`Structuring content of type '${contentType}' failed. Using fallback.`, {
+        error: (error as Error).message,
+      });
+      const fallback = await this.fallbackHandler.getFallbackContent({ type: contentType } as ContentRequest, error as Error);
+      return fallback.content;
+    }
   }
 
   /**

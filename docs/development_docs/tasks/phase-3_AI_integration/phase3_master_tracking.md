@@ -26,7 +26,7 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.B.2 | [Refactor to Async Workflow](./3-1-B-2-async-workflow.md) | 2h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.1 |
 | 3.1.B.3 | [Implement Core Generation Logic](./3-1-B-3-generation-logic.md) | 2.5h | 🟡 **In Progress** | - | - | - | 3.1.B.2 |
 | 3.1.B.3a| [Implement Raw Content Generation](./3-1-B-3-a-implement-raw-content-generation.md) | 0.75h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.2 |
-| 3.1.B.3b| [Implement Content Structuring](./3-1-B-3-b-implement-content-structuring.md) | 0.75h | ⏳ Not Started | - | - | - | 3.1.B.3a |
+| 3.1.B.3b| [Implement Content Structuring](./3-1-B-3-b-implement-content-structuring.md) | 0.75h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.3a |
 | 3.1.B.3c| [Implement User Context Service](./3-1-B-3-c-implement-user-context-service.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.B.3b |
 | 3.1.B.3d| [Implement Supporting Services](./3-1-B-3-d-implement-supporting-services.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.B.3c |
 | 3.1.B.3a| Create reusable DB trigger for updatedAt | 0.25h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.2 |
