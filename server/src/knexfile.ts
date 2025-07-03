@@ -8,7 +8,6 @@
 import { Knex } from 'knex';
 import path from 'path';
 import dotenv from 'dotenv';
-import { knexSnakeCaseMappers } from 'objection';
 // Determine the project root based on the current working directory
 // When running via Knex CLI, the working directory is changed to server/src
 // When running from migration scripts, the working directory is the project root
@@ -36,7 +35,6 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.join(projectRoot, 'database', 'seeds'),
     },
-    ...knexSnakeCaseMappers(),
   },
 
   test: {
@@ -53,7 +51,6 @@ const config: { [key: string]: Knex.Config } = {
     seeds: {
       directory: path.join(projectRoot, 'database', 'seeds'),
     },
-    ...knexSnakeCaseMappers(),
   },
 };
 
