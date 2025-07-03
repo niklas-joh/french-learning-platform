@@ -36,7 +36,7 @@ export interface ContentRequest {
   vocabulary?: string[];
   context?: string;
   grammarFocus?: string;
-  difficulty?: 'easy' | 'medium' | 'hard' | 'adaptive';
+  difficulty?: 'beginner' | 'intermediate' | 'advanced' | 'adaptive';
   exerciseCount?: number;
   culturalTopic?: string;
   options?: ContentGenerationOptions;

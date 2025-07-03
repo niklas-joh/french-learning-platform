@@ -28,6 +28,7 @@ import {
   validationSchemaMap,
 } from './ai.validators';
 import { AiGenerationJobsModel } from '../models/AiGenerationJob';
+import { paginationSchema } from './ai.validators'; // Import the new schema
 
 /**
  * Task handler map - Declarative mapping of AI tasks to their handlers
@@ -168,7 +169,61 @@ async function handleAIRequest<T extends ValidatedAITask>(
       code: 'INTERNAL_ERROR' 
     });
   }
-}
+};
+
+/**
+ * [ASYNC] Controller for listing a user's content generation jobs.
+ * GET /api/ai/jobs
+ */
+export const listJobs = async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user!.userId;
+  
+  // Validate pagination query parameters
+  const validationResult = paginationSchema.safeParse(req.query);
+  if (!validationResult.success) {
+    return res.status(400).json({ message: 'Invalid pagination parameters.', details: validationResult.error.flatten().fieldErrors });
+  }
+  
+    const { page, pageSize } = validationResult.data;
+
+    try {
+      const jobQueueService = contentGenerationServiceFactory.getDatabaseJobQueueService(); // FIX: Corrected method name
+      const paginatedResult = await jobQueueService.listJobsByUser(userId, page, pageSize);
+      console.log('[aiController] Data before sending response:', JSON.stringify(paginatedResult, null, 2));
+      // Return full pagination data for the frontend
+      res.status(200).json({ success: true, data: paginatedResult.results, total: paginatedResult.total });
+    } catch (error) {
+      console.error(`[aiController] Error listing jobs for user ${userId}:`, error);
+      res.status(500).json({ message: 'Failed to retrieve jobs.', code: 'JOB_LIST_FAILED' });
+    }
+  };
+
+  /**
+   * [ASYNC] Controller for cancelling a content generation job.
+   * DELETE /api/ai/jobs/:jobId
+   */
+  export const cancelJob = async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user!.userId;
+    const { jobId } = req.params;
+
+    try {
+      const jobQueueService = contentGenerationServiceFactory.getDatabaseJobQueueService(); // FIX: Corrected method name
+      const wasCancelled = await jobQueueService.cancelJob(jobId, userId);
+
+      if (wasCancelled) {
+        res.status(200).json({ success: true, message: 'Job cancelled successfully.' });
+      } else {
+        // Use 404 for a more specific error when the target is not found or in the wrong state
+        res.status(404).json({ success: false, message: 'Job not found or cannot be cancelled.', code: 'CANCEL_FAILED' });
+      }
+    } catch (error: unknown) { // FIX: Add type annotation for error
+      if (error instanceof Error && error.message === 'Forbidden') { // FIX: Add instanceof Error check
+          return res.status(403).json({ message: 'Forbidden.', code: 'FORBIDDEN' });
+      }
+      console.error(`[aiController] Error cancelling job ${jobId} for user ${userId}:`, error);
+      res.status(500).json({ message: 'An unexpected error occurred while cancelling the job.', code: 'INTERNAL_ERROR' });
+    }
+  };
 
 /**
  * [ASYNC] Controller for initiating a content generation job.

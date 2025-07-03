@@ -14,6 +14,8 @@ export async function seed(knex: Knex): Promise<void> {
       firstName: 'admin',
       lastName: 'example',
       role: 'admin',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       email: 'user@example.com',
@@ -21,6 +23,8 @@ export async function seed(knex: Knex): Promise<void> {
       firstName: 'user',
       lastName: 'example',
       role: 'user',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   ]);
 }

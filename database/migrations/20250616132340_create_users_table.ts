@@ -8,8 +8,8 @@ export async function up(knex: Knex): Promise<void> {
     table.string('firstName').nullable();
     table.string('lastName').nullable();
     table.string('role').notNullable().defaultTo('user');
-    table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table.timestamp('updatedAt').defaultTo(knex.fn.now());
+    table.timestamp('createdAt').notNullable();
+    table.timestamp('updatedAt').notNullable();
     table.json('preferences').nullable(); // Stored as TEXT in SQLite
   });
   console.log('Table "users" creation attempted.'); // Simplified log

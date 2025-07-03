@@ -25,8 +25,8 @@ export const generateLessonPayloadSchema = z.object({
   topic: z.string()
     .min(1, 'Topic is required')
     .max(100, 'Topic must be less than 100 characters'),
-  difficulty: z.enum(['easy', 'medium', 'hard', 'adaptive'], {
-    errorMap: () => ({ message: 'Difficulty must be easy, medium, hard, or adaptive' })
+  difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'adaptive'], {
+    errorMap: () => ({ message: 'Difficulty must be beginner, intermediate, advanced, or adaptive' })
   }),
   estimatedTime: z.number()
     .int('Estimated time must be an integer')
@@ -58,10 +58,18 @@ export const gradeResponsePayloadSchema = z.object({
     .max(1000, 'User response must be less than 1000 characters'),
   correctAnswer: z.string()
     .min(1, 'Correct answer is required')
-    .max(1000, 'Correct answer must be less than 1000 characters'),
+  .max(1000, 'Correct answer must be less than 1000 characters'),
   questionType: z.enum(['multiple_choice', 'fill_blank', 'translation', 'essay'], {
     errorMap: () => ({ message: 'Question type must be multiple_choice, fill_blank, translation, or essay' })
   }),
+});
+
+/**
+ * Validation schema for pagination query parameters
+ */
+export const paginationSchema = z.object({
+  page: z.coerce.number().int().min(1).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(20),
 });
 
 /**

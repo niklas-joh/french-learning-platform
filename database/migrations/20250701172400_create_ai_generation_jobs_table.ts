@@ -4,7 +4,7 @@ const TABLE_NAME = 'aiGenerationJobs';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(TABLE_NAME, (table) => {
-    table.uuid('id').primary();
+    table.increments('id').primary();
     
     table
       .integer('userId')

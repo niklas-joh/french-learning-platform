@@ -211,8 +211,8 @@ export class ContentGenerationJobHandler {
       case 'cultural_content': baseTime = 25; break;
       case 'personalized_exercise': baseTime = 12; break;
     }
-    if (request.difficulty === 'hard') baseTime *= 1.3;
-    else if (request.difficulty === 'easy') baseTime *= 0.8;
+    if (request.difficulty === 'advanced') baseTime *= 1.3;
+    else if (request.difficulty === 'beginner') baseTime *= 0.8;
     if (request.exerciseCount && request.exerciseCount > 5) {
       baseTime += (request.exerciseCount - 5) * 2;
     }

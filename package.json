@@ -10,7 +10,7 @@
     "populate:content": "npx ts-node --project server/tsconfig.json scripts/populate_content.ts",
     "migrate": "npx ts-node --project server/tsconfig.json scripts/run-migration.ts",
     "db:status": "npm --prefix server run db:status",
-    "db:reset": "rimraf database/french_learning.db",
+    "db:reset": "rimraf database/french_learning.db database/test.sqlite3",
     "db:seed": "npm --prefix server run db:seed",
     "db:setup": "run-s db:rebuild migrate db:seed db:status",
     "db:rebuild": "run-s db:reset"

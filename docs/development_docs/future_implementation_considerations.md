@@ -552,3 +552,17 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Lower Latency**: Jobs are picked up almost instantly, rather than waiting for the next polling cycle.
   - **Scalability**: A more elegant and scalable solution for a high-throughput system.
 - **Reason for Deferral**: The `SKIP LOCKED` polling pattern is a very robust and common solution that is perfectly adequate for the current scale. Implementing a full pub/sub system adds another layer of complexity (e.g., managing subscriber connections, ensuring notification delivery) that can be deferred until performance requirements demand it.
+
+## 43. Retry Mechanism for Failed AI Jobs
+
+-   **Identified**: During the implementation of the Job Management API (Task 3.1.B.6d).
+-   **Current State**: Jobs that fail (e.g., due to a temporary OpenAI API outage) are permanently marked as 'failed'.
+-   **Problem**: There is no way to automatically or manually retry these jobs. The user must create a new request from scratch.
+-   **Proposed Solution**: Implement a retry system for failed jobs.
+    1.  Add `retry_count` and `last_attempted_at` columns to the `ai_generation_jobs` table.
+    2.  When a job fails due to a transient error, the worker should increment the retry count and schedule the job to be run again after a delay (exponential backoff).
+    3.  Expose a `POST /api/ai/jobs/:jobId/retry` endpoint to allow users to manually trigger a retry.
+-   **Benefits**:
+    -   **Resilience**: The system can automatically recover from temporary external service failures.
+    -   **User Experience**: Users don't have to manually resubmit failed requests.
+    -   **Reliability**: Increases the overall success rate of content generation.

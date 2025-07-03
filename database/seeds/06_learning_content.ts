@@ -56,8 +56,8 @@ export async function seed(knex: Knex): Promise<void> {
       orderIndex: 1,
       contentData: JSON.stringify({
         items: [
-          { word: 'Bonjour', translation: 'Hello (formal)', example_sentence: 'Bonjour Madame Dubois.' },
-          { word: 'Salut', translation: 'Hi (informal)', example_sentence: 'Salut Paul!' },
+          { word: 'Bonjour', translation: 'Hello (formal)', exampleSentence: 'Bonjour Madame Dubois.' },
+          { word: 'Salut', translation: 'Hi (informal)', exampleSentence: 'Salut Paul!' },
         ]
       }),
       isActive: true,
@@ -87,9 +87,9 @@ export async function seed(knex: Knex): Promise<void> {
       orderIndex: 3,
       contentData: JSON.stringify({
         vocabulary: [
-          { french: 'Au revoir', english: 'Goodbye', audio_url: 'path/to/au_revoir.mp3' },
-          { french: 'À bientôt', english: 'See you soon', audio_url: 'path/to/a_bientot.mp3' },
-          { french: 'À demain', english: 'See you tomorrow', audio_url: 'path/to/a_demain.mp3' },
+          { french: 'Au revoir', english: 'Goodbye', audioUrl: 'path/to/au_revoir.mp3' },
+          { french: 'À bientôt', english: 'See you soon', audioUrl: 'path/to/a_bientot.mp3' },
+          { french: 'À demain', english: 'See you tomorrow', audioUrl: 'path/to/a_demain.mp3' },
         ]
       }),
       isActive: true,
@@ -124,9 +124,9 @@ export async function seed(knex: Knex): Promise<void> {
       orderIndex: 2,
       contentData: JSON.stringify({
         items: [
-          { word: 'Un', translation: 'One', example_sentence: 'J\'ai un stylo.' },
-          { word: 'Deux', translation: 'Two', example_sentence: 'Il a deux frères.' },
-          { word: 'Trois', translation: 'Three', example_sentence: 'Nous avons trois chats.' },
+          { word: 'Un', translation: 'One', exampleSentence: 'J\'ai un stylo.' },
+          { word: 'Deux', translation: 'Two', exampleSentence: 'Il a deux frères.' },
+          { word: 'Trois', translation: 'Three', exampleSentence: 'Nous avons trois chats.' },
         ]
       }),
       isActive: true,
@@ -166,7 +166,7 @@ export async function seed(knex: Knex): Promise<void> {
           { speaker: "A", line: "Comment t''appelles-tu?" },
           { speaker: "B", line: "Je m''appelle Sophie. Et toi?" }
         ],
-        key_phrases: ["Comment t'appelles-tu?", "Je m'appelle..."]
+        keyPhrases: ["Comment t'appelles-tu?", "Je m'appelle..."]
       }),
       isActive: true,
     },

@@ -33,6 +33,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
     };
 
     const insertedJob = await AiGenerationJobsModel.query().insertAndFetch(jobData);
+    this.logger.info('Job created in DB:', JSON.stringify(insertedJob, null, 2));
     this.logger.info(`Job ${insertedJob.id} enqueued for user ${request.userId}`);
     return insertedJob.id;
   }
@@ -70,6 +71,58 @@ export class DatabaseJobQueueService implements IJobQueueService {
     }
     // Assuming job.result is stored as a JSON string
     return JSON.parse(job.result as string) as GeneratedContent;
+  }
+
+  /**
+   * Lists jobs for a user, selecting only necessary fields for performance.
+   * @param {number} userId - The ID of the user.
+   * @param {number} page - The page number to retrieve.
+   * @param {number} pageSize - The number of jobs per page.
+   * @returns {Promise<{ results: AiGenerationJob[]; total: number }>} A promise that resolves with the paginated result, including total count.
+   */
+  async listJobsByUser(userId: number, page: number, pageSize: number): Promise<{ results: AiGenerationJob[]; total: number }> {
+    this.logger.info(`Fetching jobs for user ${userId}, page ${page}`);
+    
+    const queryResult = await AiGenerationJobsModel.query()
+      .where({ userId })
+      .select(
+        'aiGenerationJobs.id as id',
+        'status',
+        'jobType',
+        'errorMessage',
+        'createdAt',
+        'updatedAt'
+      )
+      .orderBy('createdAt', 'desc')
+      .page(page - 1, pageSize);
+
+    this.logger.info('Raw query result from listJobsByUser:', JSON.stringify(queryResult, null, 2));
+
+    return queryResult;
+  }
+
+  /**
+   * Atomically cancels a job for a specific user.
+   * This single query is more efficient and prevents race conditions.
+   * @param {string} jobId - The ID of the job to cancel.
+   * @param {number} userId - The ID of the user requesting the cancellation for authorization.
+   * @returns {Promise<boolean>} A promise that resolves to true if a job was cancelled.
+   */
+  async cancelJob(jobId: string, userId: number): Promise<boolean> {
+    this.logger.info(`User ${userId} attempting to cancel job ${jobId}`);
+    
+    const updatedCount = await AiGenerationJobsModel.query()
+      .where({ id: jobId, userId }) // Ensures user can only cancel their own job
+      .whereIn('status', ['queued', 'processing']) // Ensures job is in a cancellable state
+      .patch({ status: 'cancelled' });
+
+    if (updatedCount > 0) {
+      this.logger.info(`Job ${jobId} was successfully cancelled.`);
+      return true;
+    }
+
+    this.logger.warn(`Job ${jobId} could not be cancelled. It may not exist, not belong to the user, or not be in a cancellable state.`);
+    return false;
   }
 
   /**

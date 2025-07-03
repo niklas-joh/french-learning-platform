@@ -20,7 +20,7 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.A.4 | [Implement AI Orchestrator Core](./3-1-A-4-orchestrator.md) | 2h | ✅ **Completed** | - | - | - | 3.1.A.3 |
 | 3.1.A.5 | [Implement Public Orchestrator Methods](./3-1-A-5-public-methods.md) | 1h | ✅ **Completed** | - | Jan 7, 2025 | Jan 7, 2025 | 3.1.A.4 |
 | 3.1.A.6 | [API Layer Integration](./3-1-A-6-api.md) | 0.5h | ✅ **Completed** | - | Jan 7, 2025 | Jan 7, 2025 | 3.1.A.5 |
-| 3.1.A.7 | [Unit & Integration Testing](./3-1-A-7-testing.md) | 1h | ⏳ Not Started | - | - | - | 3.1.A.6 |
+| 3.1.A.7 | [Unit & Integration Testing](./3-1-A-7-testing.md) | 1h | 🔵 **Deferred** | - | - | - | 3.1.A.6 |
 | 3.1.B | [Dynamic Content Generation](./3-1-B-dynamic-content-generation.md) | 6h | 🟡 **In Progress** | - | - | - | 3.1.A |
 | 3.1.B.1 | [Initial Scaffolding & Type Definition](./3-1-B-1-scaffolding-types.md) | 1h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.A |
 | 3.1.B.2 | [Refactor to Async Workflow](./3-1-B-2-async-workflow.md) | 2h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.1 |
@@ -41,7 +41,10 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.B.6a| Implement `DatabaseJobQueueService` | 1h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.3 |
 | 3.1.B.6b| Implement `ContentGenerationJobHandler` | 0.75h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.6a |
 | 3.1.B.6c| Refactor `DynamicContentGenerator` & Implement Worker | 0.5h | ✅ **Completed** | - | - | - | 3.1.B.6b |
-| 3.1.B.6d| Implement API Endpoints for Job Management | 0.25h | ⏳ Not Started | - | - | - | 3.1.B.6c |
+| 3.1.B.6d| Implement API Endpoints for Job Management | 1.25h | 🟡 **In Progress** | - | - | - | 3.1.B.6c |
+| 3.1.B.6d.1| Implement "List Jobs" Endpoint | 0.5h | ⏳ Not Started | - | - | - | 3.1.B.6c |
+| 3.1.B.6d.2| Implement "Cancel Job" Endpoint | 0.5h | ⏳ Not Started | - | - | - | 3.1.B.6c |
+| 3.1.B.6d.3| Update API & Architecture Documentation | 0.25h | ⏳ Not Started | - | - | - | 3.1.B.6d.2 |
 | 3.1.C | [AI Assessment & Grading Engine](./3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | - | - | - | 3.1.A |
 | 3.1.D | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |
 
@@ -56,6 +59,7 @@ Transform the language learning platform from a traditional quiz-based system to
 ## **Status Legend**
 - ⏳ **Not Started**: Task not yet begun
 - 🟡 **In Progress**: Task currently being worked on
+- 🔵 **Deferred**: Task postponed to a later time
 - 🔄 **Review**: Task completed, pending review
 - ✅ **Completed**: Task fully completed and tested
 - ❌ **Blocked**: Task blocked by dependencies or issues
