@@ -9,25 +9,32 @@ import { Knex } from 'knex';
 import path from 'path';
 import dotenv from 'dotenv';
 import { knexSnakeCaseMappers } from 'objection';
+// Determine the project root based on the current working directory
+// When running via Knex CLI, the working directory is changed to server/src
+// When running from migration scripts, the working directory is the project root
+const isRunningFromServerSrc = process.cwd().endsWith(path.join('server', 'src'));
+const projectRoot = isRunningFromServerSrc 
+  ? path.resolve(process.cwd(), '..', '..')
+  : process.cwd();
 
 dotenv.config();
 
-const migrationsDirectory = path.resolve(__dirname, '..', '..', 'database', 'migrations');
-console.log('[knexfile.ts] __dirname:', __dirname);
+const migrationsDirectory = path.join(projectRoot, 'database', 'migrations');
+console.log('[knexfile.ts] projectRoot:', projectRoot);
 console.log('[knexfile.ts] Resolved migrations directory:', migrationsDirectory);
 
 const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: path.resolve(__dirname, '..', '..', 'database', 'french_learning.db'),
+      filename: path.join(projectRoot, 'database', 'french_learning.db'),
     },
     useNullAsDefault: true,
     migrations: {
       directory: migrationsDirectory,
     },
     seeds: {
-      directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
+      directory: path.join(projectRoot, 'database', 'seeds'),
     },
     ...knexSnakeCaseMappers(),
   },
@@ -41,10 +48,10 @@ const config: { [key: string]: Knex.Config } = {
     // failing tests.
     useNullAsDefault: true,
     migrations: {
-      directory: path.resolve(__dirname, '..', '..', 'database', 'migrations'),
+      directory: path.join(projectRoot, 'database', 'migrations'),
     },
     seeds: {
-      directory: path.resolve(__dirname, '..', '..', 'database', 'seeds'),
+      directory: path.join(projectRoot, 'database', 'seeds'),
     },
     ...knexSnakeCaseMappers(),
   },
