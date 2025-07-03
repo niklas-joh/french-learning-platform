@@ -1,0 +1,78 @@
+graph TB
+    subgraph "Content Generation Architecture"
+        direction TB
+        
+        subgraph "API Layer"
+            AIController["AIController"]
+            ContentRoutes["Content Routes"]
+            ValidationMiddleware["Validation Middleware"]
+        end
+
+        subgraph "Service Layer"
+            DynamicContentGenerator["DynamicContentGenerator<br/>(Main Orchestrator)"]
+            ServiceFactory["ServiceFactory<br/>(Dependency Manager)"]
+        end
+
+        subgraph "Strategy Pattern Implementation"
+            direction LR
+            
+            subgraph "Factories"
+                ValidatorFactory["ContentValidatorFactory"]
+                EnhancerFactory["ContentEnhancerFactory"]
+                TemplateManager["ContentTemplateManager"]
+            end
+
+            subgraph "Validator Strategies"
+                LessonVal["LessonValidator"]
+                VocabVal["VocabularyDrillValidator"]
+                GrammarVal["GrammarExerciseValidator"]
+                CulturalVal["CulturalContentValidator"]
+                PersonalVal["PersonalizedExerciseValidator"]
+            end
+
+            subgraph "Enhancer Strategies"
+                LessonEnh["LessonEnhancer"]
+                VocabEnh["VocabularyDrillEnhancer"]
+                GrammarEnh["GrammarExerciseEnhancer"]
+                CulturalEnh["CulturalContentEnhancer"]
+                PersonalEnh["PersonalizedExerciseEnhancer"]
+            end
+        end
+
+        subgraph "External Dependencies"
+            AIOrchestrator["AIOrchestrator"]
+            PromptEngine["PromptTemplateEngine"]
+            Database["Database Models"]
+            OpenAI["OpenAI API"]
+        end
+
+        %% API Layer connections
+        ContentRoutes --> ValidationMiddleware
+        ValidationMiddleware --> AIController
+        AIController --> ServiceFactory
+
+        %% Service Layer connections
+        ServiceFactory --> DynamicContentGenerator
+        DynamicContentGenerator --> ValidatorFactory
+        DynamicContentGenerator --> EnhancerFactory
+        DynamicContentGenerator --> TemplateManager
+        DynamicContentGenerator --> AIOrchestrator
+        DynamicContentGenerator --> PromptEngine
+
+        %% Factory connections
+        ValidatorFactory --> LessonVal
+        ValidatorFactory --> VocabVal
+        ValidatorFactory --> GrammarVal
+        ValidatorFactory --> CulturalVal
+        ValidatorFactory --> PersonalVal
+
+        EnhancerFactory --> LessonEnh
+        EnhancerFactory --> VocabEnh
+        EnhancerFactory --> GrammarEnh
+        EnhancerFactory --> CulturalEnh
+        EnhancerFactory --> PersonalEnh
+
+        %% External dependencies
+        AIOrchestrator --> OpenAI
+        DynamicContentGenerator --> Database
+    end

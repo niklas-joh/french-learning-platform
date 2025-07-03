@@ -166,6 +166,30 @@ erDiagram
         %% unique userId, lessonId
     }
 
+    ai_generated_content {
+        string id PK "UUID, primary key"
+        int userId FK "User who requested the content"
+        string type "lesson, vocabulary_drill, etc."
+        string status "generating, completed, failed"
+        json requestPayload "The original ContentRequest"
+        json generatedData "The final structured content"
+        json validationResults "Results from ContentValidator"
+        json metadata "Generation metadata"
+        string level "User level when generated"
+        json topics "Array of topics covered"
+        json focusAreas "Areas of focus"
+        int estimatedCompletionTime "Estimated time in minutes"
+        float validationScore "Content validation score 0-1"
+        int generationTimeMs "Generation time in milliseconds"
+        int tokenUsage "AI tokens used"
+        string modelUsed "AI model used"
+        int usageCount "Access count"
+        datetime lastAccessedAt "Last access time"
+        datetime expiresAt "Content expiration"
+        datetime createdAt
+        datetime updatedAt
+    }
+
     users ||--o{ user_preferences : "has"
     users ||--o{ user_content_assignments : "assigned"
     content ||--o{ user_content_assignments : "is_part_of"
@@ -184,27 +208,4 @@ erDiagram
     users ||--o{ user_lesson_progress : "tracks_progress_on"
     lessons ||--o{ user_lesson_progress : "has_progress_by"
 
-    ai_generated_content {
-        string id PK
-        int user_id FK "nullable"
-        string job_id FK "nullable"
-        string content_type "notNull"
-        json content_data "notNull"
-        json metadata "nullable"
-        datetime created_at "default: now()"
-    }
-
-    ai_generation_jobs {
-        string id PK
-        int user_id FK
-        string status "notNull"
-        string job_type "notNull"
-        json payload "notNull"
-        text result "nullable"
-        string error_message "nullable"
-        datetime created_at "default: now()"
-        datetime updated_at "default: now()"
-    }
-
-    users ||--o{ ai_generation_jobs : "requests"
-    ai_generation_jobs }o--o| ai_generated_content : "produces"
+    users ||--o{ ai_generated_content : "requests"

@@ -17,10 +17,11 @@ The Phase 3 implementation plan successfully transforms your language learning p
 | | <i>3.1.B.3b: Content Structuring</i> | <i>0.75h</i> | <i>✅ Completed</i> | <i>Type-safe content transformation</i> |
 | | <i>3.1.B.3c: User Context Service</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>Context loading and caching</i> |
 | | <i>3.1.B.3d: Supporting Services</i> | <i>1.75h</i> | <i>✅ Completed</i> | <i>Validation, enhancement, templates, fallback, metrics</i> |
-| **3.1.B.6** | [Async Job Queue](./3-1-B-6-async-job-queue.md) | 2.5h | 🟡 **In Progress** | `DatabaseJobQueueService`, `ContentGenerationJobHandler` |
+| **3.1.B.6** | [Async Job Queue](./3-1-B-6-async-job-queue.md) | 2.5h | ✅ **Completed** | `DatabaseJobQueueService`, `ContentGenerationJobHandler` |
 | | <i>3.1.B.6a: DatabaseJobQueueService</i> | <i>1h</i> | <i>✅ Completed</i> | <i>Persistent job queue using database</i> |
 | | <i>3.1.B.6b: ContentGenerationJobHandler</i> | <i>0.75h</i> | <i>✅ Completed</i> | <i>Core logic for processing generation jobs</i> |
 | | <i>3.1.B.6c: Refactor DynamicContentGenerator</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>Refactored to use the job queue</i> |
+| | <i>3.1.B.6d: Implement API Endpoints for Job Management</i> | <i>1.25h</i> | <i>✅ Completed</i> | <i>API for listing and cancelling jobs</i> |
 | **3.1.C** | [AI Assessment & Grading](./tasks/3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | Intelligent grading, personalized feedback |
 | **3.1.D** | [AI-First Dashboard](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | Complete UI transformation, AI-driven UX |
 

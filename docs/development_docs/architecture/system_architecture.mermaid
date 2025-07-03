@@ -70,6 +70,7 @@ graph TD
             MetaRoutes["meta.routes.ts"]
             AuthRoutes["auth.routes.ts"]
             AdminRoutes["admin.routes.ts"]
+            AIRoutes["ai.routes.ts"]
         end
 
         subgraph "Controllers"
@@ -91,28 +92,67 @@ graph TD
         subgraph "AI Services Layer"
             direction TB
             AIOrchestrator["AIOrchestrator"]
-            DynamicContentGenerator["DynamicContentGenerator"]
-            ContentGenerationJobQueue["ContentGenerationJobQueue"]
+
+            subgraph "Content Generation Engine"
+                direction TB
+                DynamicContentGenerator["DynamicContentGenerator"]
+                
+                subgraph "Strategy Pattern Services"
+                    direction LR
+                    ContentValidatorFactory["ContentValidatorFactory"]
+                    ContentEnhancerFactory["ContentEnhancerFactory"]
+                    ContentTemplateManager["ContentTemplateManager"]
+                end
+
+                subgraph "Content Validators"
+                    direction LR
+                    LessonValidator["LessonValidator"]
+                    VocabularyValidator["VocabularyDrillValidator"]
+                    GrammarValidator["GrammarExerciseValidator"]
+                    CulturalValidator["CulturalContentValidator"]
+                end
+
+                subgraph "Content Enhancers"
+                    direction LR
+                    LessonEnhancer["LessonEnhancer"]
+                    VocabularyEnhancer["VocabularyDrillEnhancer"]
+                    GrammarEnhancer["GrammarExerciseEnhancer"]
+                    CulturalEnhancer["CulturalContentEnhancer"]
+                end
+            end
             
             subgraph "Supporting AI Services"
                 direction LR
-                RedisCacheService["RedisCacheService"]
-                ICacheService["ICacheService (Interface)"]
+                CacheService["CacheService"]
                 RateLimitService["RateLimitService"]
                 FallbackHandler["FallbackHandler"]
                 ContextService["ContextService"]
-                AIMetricsService["AIMetricsService (Stub)"]
-                PromptTemplateEngine["PromptTemplateEngine (Stub)"]
+                AIMetricsService["AIMetricsService"]
+                PromptTemplateEngine["PromptTemplateEngine"]
             end
             
-            AIController -- "Adds job to" --> ContentGenerationJobQueue
-            AIOrchestrator --> RedisCacheService
+            AIController --> AIOrchestrator
+            AIController --> DynamicContentGenerator
+            AIOrchestrator --> CacheService
             AIOrchestrator --> RateLimitService
             AIOrchestrator --> FallbackHandler
             AIOrchestrator --> ContextService
+            
             DynamicContentGenerator --> AIOrchestrator
-            DynamicContentGenerator --> ContextService
-            RedisCacheService -- "Implements" --> ICacheService
+            DynamicContentGenerator --> ContentValidatorFactory
+            DynamicContentGenerator --> ContentEnhancerFactory
+            DynamicContentGenerator --> ContentTemplateManager
+            DynamicContentGenerator --> PromptTemplateEngine
+            
+            ContentValidatorFactory --> LessonValidator
+            ContentValidatorFactory --> VocabularyValidator
+            ContentValidatorFactory --> GrammarValidator
+            ContentValidatorFactory --> CulturalValidator
+            
+            ContentEnhancerFactory --> LessonEnhancer
+            ContentEnhancerFactory --> VocabularyEnhancer
+            ContentEnhancerFactory --> GrammarEnhancer
+            ContentEnhancerFactory --> CulturalEnhancer
         end
         
         ApiGateway --> AuthRoutes
@@ -120,6 +160,7 @@ graph TD
         ApiGateway --> LearningRoutes
         ApiGateway --> MetaRoutes
         ApiGateway --> AdminRoutes
+        ApiGateway --> AIRoutes
 
         UserRoutes --> UserController
         UserRoutes --> ProgressController
@@ -129,6 +170,8 @@ graph TD
         LearningRoutes --> AIController
         LearningRoutes --> SpeechController
 
+        AIRoutes --> AIController
+
         MetaRoutes --> GamificationController
 
         ProgressController --> ProgressService
@@ -137,23 +180,17 @@ graph TD
         SpeechController --> SpeechService
     end
 
-    subgraph "Workers"
-        ContentGenerationWorker["ContentGenerationWorker"]
-        ContentGenerationWorker -- "Pulls job from" --> ContentGenerationJobQueue
-        ContentGenerationWorker --> DynamicContentGenerator
-    end
-
     subgraph "Data & External Services"
         direction TB
         Database["Database (Postgres + Knex)"]
-        Redis["Redis (Caching, Rate Limiting, Queues)"]
+        Redis["Redis (Caching, Rate Limiting)"]
         OpenAI["OpenAI API"]
         
-        RedisCacheService --> Redis
+        CacheService --> Redis
         RateLimitService --> Redis
-        ContentGenerationJobQueue --> Redis
         ContextService --> Database
         AIOrchestrator --> OpenAI
+        DynamicContentGenerator --> Database
     end
 
     subgraph "External Services & Deployment"
