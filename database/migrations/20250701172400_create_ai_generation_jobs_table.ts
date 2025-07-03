@@ -19,7 +19,8 @@ export async function up(knex: Knex): Promise<void> {
     table.text('result');
     table.text('errorMessage');
     
-    table.timestamps(true, true);
+    table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
 }
 
