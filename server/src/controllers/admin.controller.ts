@@ -5,10 +5,10 @@
  */
 import { Request, Response } from 'express';
 
-import { createContent, getContentById, getAllContent, updateContent, deleteContent } from '../models/Content';
-import { getTotalUsers, getUsersByRole, getAllUsers as getAllUsersModel } from '../models/User';
-import { getAllTopics as getAllTopicsModel, createTopic as createTopicModel, getTopicById as getTopicByIdModel, updateTopicById as updateTopicByIdModel, deleteTopicById as deleteTopicByIdModel } from '../models/Topic';
-import { getAllContentTypes as getAllContentTypesModel, createContentType as createContentTypeModel, updateContentType as updateContentTypeModel, deleteContentType as deleteContentTypeModel } from '../models/ContentType';
+import { createContent, getContentById, getAllContent, updateContent, deleteContent } from '../models/Content.js';
+import { getTotalUsers, getUsersByRole, getAllUsers as getAllUsersModel } from '../models/User.js';
+import { getAllTopics as getAllTopicsModel, createTopic as createTopicModel, getTopicById as getTopicByIdModel, updateTopicById as updateTopicByIdModel, deleteTopicById as deleteTopicByIdModel } from '../models/Topic.js';
+import { getAllContentTypes as getAllContentTypesModel, createContentType as createContentTypeModel, updateContentType as updateContentTypeModel, deleteContentType as deleteContentTypeModel } from '../models/ContentType.js';
 interface AnalyticsSummary {
   totalUsers: number;
   usersByRole: { role: string; count: number }[];

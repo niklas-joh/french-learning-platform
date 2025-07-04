@@ -1,7 +1,7 @@
 // server/src/models/AIGeneratedContent.ts
 
 import { Model } from 'objection';
-import { User } from './User';
+import { User } from './User.js';
 
 export interface AIGeneratedContentData {
   id: string;

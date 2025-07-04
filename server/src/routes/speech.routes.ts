@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import * as speechController from '../controllers/speechController';
-import { protect } from '../middleware/auth.middleware';
+import * as speechController from '../controllers/speechController.js';
+import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 

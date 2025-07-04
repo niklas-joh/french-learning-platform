@@ -101,7 +101,7 @@ export interface LearningContext {
   strengths: string[];
   interests: string[];
   recentTopics: string[];
-  performanceHistory: any[]; // TODO: Define proper type for performance records
+  performanceHistory: Record<string, unknown>[]; // TODO: Define proper type for performance records
   lastActivity?: Date;
   streakDays?: number;
   totalLessons?: number;

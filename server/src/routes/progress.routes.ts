@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import * as progressController from '../controllers/progressController';
-import { protect } from '../middleware/auth.middleware';
+import * as progressController from '../controllers/progressController.js';
+import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 

@@ -2,12 +2,12 @@
  * Routes for learning content, AI interactions, and speech analysis.
  */
 import { Router } from 'express';
-import { protect } from '../middleware/auth.middleware';
+import { protect } from '../middleware/auth.middleware.js';
 
 // Import controllers
-import learningPathController from '../controllers/learningPathController';
-import { chatWithAI, getPrompts } from '../controllers/aiController';
-import { analyzeSpeech } from '../controllers/speechController';
+import learningPathController from '../controllers/learningPathController.js';
+import { chatWithAI, getPrompts } from '../controllers/aiController.js';
+import { analyzeSpeech } from '../controllers/speechController.js';
 
 const router = Router();
 

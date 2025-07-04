@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction, RequestHandler } from 'express'; // Import RequestHandler
-import * as aiController from '../controllers/aiController';
-import { protect, AuthenticatedRequest } from '../middleware/auth.middleware'; // Import AuthenticatedRequest
+import * as aiController from '../controllers/aiController.js';
+import { protect, AuthenticatedRequest } from '../middleware/auth.middleware.js'; // Import AuthenticatedRequest
 
 const router = Router();
 

@@ -1,8 +1,8 @@
 import { Worker, Job } from 'bullmq';
-import { redisConnection, QUEUE_NAMES } from '../config/redis';
-import { contentGenerationServiceFactory } from '../services/contentGeneration';
-import { AiGenerationJobsModel, AiGenerationJob } from '../models/AiGenerationJob';
-import { ContentRequest, GeneratedContent } from '../types/Content';
+import { redisConnection, QUEUE_NAMES } from '../config/redis.js';
+import { contentGenerationServiceFactory } from '../services/contentGeneration/index.js';
+import { AiGenerationJobsModel, AiGenerationJob } from '../models/AiGenerationJob.js';
+import { ContentRequest, GeneratedContent } from '../types/Content.js';
 
 type JobPayload = ContentRequest;
 type JobResponse = GeneratedContent;

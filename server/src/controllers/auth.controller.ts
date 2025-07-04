@@ -7,8 +7,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { getUserByEmail, createUser, getInternalUserByEmailWithPassword, UserApplicationData } from '../models/User';
-import { progressService } from '../services/progressService';
+import { getUserByEmail, createUser, getInternalUserByEmailWithPassword, UserApplicationData } from '../models/User.js';
+import { progressService } from '../services/progressService.js';
 
 /**
  * Registers a new user and returns a JWT token.

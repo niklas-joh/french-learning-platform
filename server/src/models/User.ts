@@ -1,7 +1,22 @@
 /**
  * Model functions for interacting with the `users` table.
  */
-import db from '../config/db';
+import { Model } from 'objection';
+import db from '../config/db.js';
+
+export class User extends Model {
+  static tableName = 'users';
+
+  id!: number;
+  email!: string;
+  passwordHash!: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  role!: string;
+  createdAt!: string;
+  updatedAt?: string;
+  preferences?: string | null;
+}
 
 // Interface representing the User table structure
 export interface UserSchema {

@@ -86,7 +86,7 @@ export const paginationSchema = z.object({
 // TODO: Task 3.2.B - Add conversationalTutorPayloadSchema when Conversational AI Tutor is implemented
 // export const conversationalTutorPayloadSchema = z.object({
 //   message: z.string().min(1, 'Message is required').max(500, 'Message too long'),
-//   conversationHistory: z.array(z.any()).optional(),
+//   conversationHistory: z.array(z.unknown()).optional(),
 // });
 
 /**

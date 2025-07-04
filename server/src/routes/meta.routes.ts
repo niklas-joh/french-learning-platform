@@ -2,10 +2,10 @@
  * Routes for application-wide metadata, such as lists of available achievements.
  */
 import { Router } from 'express';
-import { protect } from '../middleware/auth.middleware';
+import { protect } from '../middleware/auth.middleware.js';
 
 // Import controllers
-import { getAllAchievements } from '../controllers/gamificationController';
+import { getAllAchievements } from '../controllers/gamificationController.js';
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import * as gamificationController from '../controllers/gamificationController';
-import { protect } from '../middleware/auth.middleware';
+import * as gamificationController from '../controllers/gamificationController.js';
+import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 

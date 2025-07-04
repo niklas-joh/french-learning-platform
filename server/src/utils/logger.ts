@@ -6,10 +6,10 @@
  * @todo Replace with a full-featured structured logger like Pino (Future Consideration #16).
  */
 export interface ILogger {
-  info(message: string, ...args: any[]): void;
-  warn(message: string, ...args: any[]): void;
-  error(message: string, ...args: any[]): void;
-  debug(message: string, ...args: any[]): void;
+  info(message: string, ...args: unknown[]): void;
+  warn(message: string, ...args: unknown[]): void;
+  error(message: string, ...args: unknown[]): void;
+  debug(message: string, ...args: unknown[]): void;
 }
 
 /**
@@ -18,8 +18,8 @@ export interface ILogger {
  * @returns An ILogger instance.
  */
 export const createLogger = (context: string): ILogger => ({
-  info: (message: string, ...args: any[]) => console.log(`[INFO] [${context}] ${message}`, ...args),
-  warn: (message: string, ...args: any[]) => console.warn(`[WARN] [${context}] ${message}`, ...args),
-  error: (message: string, ...args: any[]) => console.error(`[ERROR] [${context}] ${message}`, ...args),
-  debug: (message: string, ...args: any[]) => console.debug(`[DEBUG] [${context}] ${message}`, ...args),
+  info: (message: string, ...args: unknown[]) => console.log(`[INFO] [${context}] ${message}`, ...args),
+  warn: (message: string, ...args: unknown[]) => console.warn(`[WARN] [${context}] ${message}`, ...args),
+  error: (message: string, ...args: unknown[]) => console.error(`[ERROR] [${context}] ${message}`, ...args),
+  debug: (message: string, ...args: unknown[]) => console.debug(`[DEBUG] [${context}] ${message}`, ...args),
 });

@@ -1,7 +1,7 @@
 /**
  * Data access helpers for the `content` table and related lookups.
  */
-import db from '../config/db'; // Knex instance
+import db from '../config/db.js'; // Knex instance
 import { Knex } from 'knex';
 
 

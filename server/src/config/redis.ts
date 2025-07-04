@@ -30,7 +30,7 @@ if (isRedisEnabled && redisConnection) {
       console.log('Successfully connected to Redis.');
   });
 
-  redisConnection.on('error', (err) => {
+  redisConnection.on('error', (err: Error) => {
       console.error('Could not connect to Redis.', err);
   });
 } else {

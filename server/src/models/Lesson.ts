@@ -1,4 +1,4 @@
-import { LessonStatus } from './UserLessonProgress';
+import { LessonStatus } from './UserLessonProgress.js';
 
 export interface Lesson {
   id: number;

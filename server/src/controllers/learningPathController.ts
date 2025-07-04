@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import * as learningPathService from '../services/learningPathService';
-import { AuthenticatedRequest } from '../middleware/auth.middleware';
-import knex from '../config/db';
+import * as learningPathService from '../services/learningPathService.js';
+import { AuthenticatedRequest } from '../middleware/auth.middleware.js';
+import knex from '../config/db.js';
 
 /**
  * @controller LearningPathController

@@ -1,9 +1,9 @@
 /**
  * Model helpers for the `user_content_assignments` join table.
  */
-import db from '../config/db';
+import db from '../config/db.js';
 
-import { ContentSchema as Content } from './Content';
+import { ContentSchema as Content } from './Content.js';
 
 export interface UserContentAssignment {
   id: number;

@@ -17,18 +17,18 @@
  */
 
 import { Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/auth.middleware';
-import { aiServiceFactory } from '../services/ai';
-import { contentGenerationServiceFactory } from '../services/contentGeneration';
-import { AIUserContext, AITaskPayloads } from '../types/AI';
+import { AuthenticatedRequest } from '../middleware/auth.middleware.js';
+import { aiServiceFactory } from '../services/ai/index.js';
+import { contentGenerationServiceFactory } from '../services/contentGeneration/index.js';
+import { AIUserContext, AITaskPayloads } from '../types/AI.js';
 import {
   ValidatedAITask,
   validateAIPayload,
   formatValidationError,
   validationSchemaMap,
-} from './ai.validators';
-import { AiGenerationJobsModel } from '../models/AiGenerationJob';
-import { paginationSchema } from './ai.validators'; // Import the new schema
+} from './ai.validators.js';
+import { AiGenerationJobsModel } from '../models/AiGenerationJob.js';
+import { paginationSchema } from './ai.validators.js'; // Import the new schema
 
 /**
  * Task handler map - Declarative mapping of AI tasks to their handlers

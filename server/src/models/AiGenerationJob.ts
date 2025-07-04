@@ -1,5 +1,5 @@
 import { Model } from 'objection';
-import knex from '../config/db';
+import knex from '../config/db.js';
 
 Model.knex(knex);
 

@@ -1,5 +1,5 @@
-import { LessonWithUserProgress } from './Lesson';
-import db from '../config/db';
+import { LessonWithUserProgress } from './Lesson.js';
+import db from '../config/db.js';
 
 export interface LearningUnit {
   id: number;

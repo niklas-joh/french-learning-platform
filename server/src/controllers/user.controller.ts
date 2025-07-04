@@ -3,11 +3,11 @@
  * tracking APIs.
  */
 import { Request, Response } from 'express';
-import { getUserById, updateUser, getAllUsers as getAllUsersFromModel } from '../models/User';
-import UserContentAssignmentModel from '../models/UserContentAssignment';
-import UserContentCompletionModel from '../models/UserContentCompletion';
-import UserPreferenceModel from '../models/UserPreference';
-import { getTopicProgress, getAssignedContentProgress } from '../models/UserProgress';
+import { getUserById, updateUser, getAllUsers as getAllUsersFromModel } from '../models/User.js';
+import UserContentAssignmentModel from '../models/UserContentAssignment.js';
+import UserContentCompletionModel from '../models/UserContentCompletion.js';
+import UserPreferenceModel from '../models/UserPreference.js';
+import { getTopicProgress, getAssignedContentProgress } from '../models/UserProgress.js';
 
 // Extend Express Request type to include the user object populated by the
 // authentication middleware.

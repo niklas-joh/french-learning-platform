@@ -2,8 +2,8 @@
  * Administrative routes for managing content and users.
  */
 import express from 'express';
-import { protect } from '../middleware/auth.middleware';
-import { isAdmin } from '../middleware/admin.middleware';
+import { protect } from '../middleware/auth.middleware.js';
+import { isAdmin } from '../middleware/admin.middleware.js';
 import {
     adminTestController,
     getAnalyticsSummary,
@@ -22,7 +22,7 @@ import {
     updateContentItemById,
     deleteContentItemById,
     getAllUsers
-} from '../controllers/admin.controller';
+} from '../controllers/admin.controller.js';
 const router = express.Router();
 
 // Test route for admin access

@@ -11,12 +11,12 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 // Route imports
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
-import adminRoutes from './routes/admin.routes';
-import learningRoutes from './routes/learning.routes';
-import metaRoutes from './routes/meta.routes';
-import aiRoutes from './routes/ai.routes';
+import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import learningRoutes from './routes/learning.routes.js';
+import metaRoutes from './routes/meta.routes.js';
+import aiRoutes from './routes/ai.routes.js';
 
 dotenv.config();
 

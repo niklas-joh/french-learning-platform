@@ -1,7 +1,7 @@
 /**
  * Helpers for managing persisted user preferences.
  */
-import db from '../config/db';
+import db from '../config/db.js';
 
 export interface UserPreference {
     id?: number;

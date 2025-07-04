@@ -1,6 +1,6 @@
 import express from 'express';
-import learningPathController from '../controllers/learningPathController';
-import { protect as authenticateToken } from '../middleware/auth.middleware'; // Assuming 'protect' is the auth middleware
+import learningPathController from '../controllers/learningPathController.js';
+import { protect as authenticateToken } from '../middleware/auth.middleware.js'; // Assuming 'protect' is the auth middleware
 
 const router = express.Router();
 

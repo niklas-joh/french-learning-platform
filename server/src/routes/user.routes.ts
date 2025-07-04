@@ -2,8 +2,8 @@
  * Routes for user-centric data, including profile, progress, and gamification.
  */
 import { Router } from 'express';
-import { protect } from '../middleware/auth.middleware';
-import { isAdmin } from '../middleware/admin.middleware';
+import { protect } from '../middleware/auth.middleware.js';
+import { isAdmin } from '../middleware/admin.middleware.js';
 
 // Import controllers
 import { 
@@ -14,18 +14,18 @@ import {
   getUserPreferences, 
   updateUserPreferences,
   recordContentItemProgress // This might be deprecated by recordActivityCompleted
-} from '../controllers/user.controller';
+} from '../controllers/user.controller.js';
 
 import { 
   getUserProgress, 
   getUserStreak, 
   recordActivityCompleted 
-} from '../controllers/progressController';
+} from '../controllers/progressController.js';
 
 import { 
   getUserAchievements,
   checkNewAchievements
-} from '../controllers/gamificationController';
+} from '../controllers/gamificationController.js';
 
 
 const router = Router();

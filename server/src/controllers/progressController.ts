@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as progressService from '../services/progressService';
+import * as progressService from '../services/progressService.js';
 
 export const getUserProgress = async (req: Request, res: Response) => {
   try {

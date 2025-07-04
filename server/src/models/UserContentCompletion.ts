@@ -1,4 +1,4 @@
-import knex from '../config/db';
+import knex from '../config/db.js';
 
 export interface UserContentCompletion {
   id?: number;

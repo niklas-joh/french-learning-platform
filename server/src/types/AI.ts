@@ -12,9 +12,9 @@
  */
 
 // Importing existing models to maintain consistency with established patterns
-import { UserApplicationData } from '../models/User';
-import { UserPreference } from '../models/UserPreference';
-import { Lesson } from '../models/Lesson';
+import { UserApplicationData } from '../models/User.js';
+import { UserPreference } from '../models/UserPreference.js';
+import { Lesson } from '../models/Lesson.js';
 
 // =================================================================
 // AI TASK DEFINITIONS

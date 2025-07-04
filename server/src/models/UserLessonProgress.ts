@@ -1,4 +1,4 @@
-import db from '../config/db';
+import db from '../config/db.js';
 import { Knex } from 'knex';
 
 // Shared type for lesson statuses
