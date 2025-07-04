@@ -1,0 +1,5596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Global - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AIGenerationError.html">AIGenerationError</a></li><li><a href="AIMetricsService.html">AIMetricsService</a></li><li><a href="AIOrchestrator.html">AIOrchestrator</a><ul class='methods'><li data-type='method'><a href="AIOrchestrator.html#assessPronunciation">assessPronunciation</a></li><li data-type='method'><a href="AIOrchestrator.html#generateContent">generateContent</a></li><li data-type='method'><a href="AIOrchestrator.html#generateStubbedContent">generateStubbedContent</a></li><li data-type='method'><a href="AIOrchestrator.html#gradeResponse">gradeResponse</a></li><li data-type='method'><a href="AIOrchestrator.html#hashString">hashString</a></li></ul></li><li><a href="BaseEnhancer.html">BaseEnhancer</a></li><li><a href="BaseValidator.html">BaseValidator</a><ul class='methods'><li data-type='method'><a href="BaseValidator.html#checkArrayNonEmpty">checkArrayNonEmpty</a></li><li data-type='method'><a href="BaseValidator.html#checkNonEmpty">checkNonEmpty</a></li></ul></li><li><a href="CacheService.html">CacheService</a><ul class='methods'><li data-type='method'><a href="CacheService.html#clear">clear</a></li><li data-type='method'><a href="CacheService.html#get">get</a></li><li data-type='method'><a href="CacheService.html#getStats">getStats</a></li><li data-type='method'><a href="CacheService.html#set">set</a></li></ul></li><li><a href="CacheService_CacheService.html">CacheService</a></li><li><a href="ContentGenerationJobHandler.html">ContentGenerationJobHandler</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobHandler.html#handleJob">handleJob</a></li></ul></li><li><a href="ContentGenerationJobQueue.html">ContentGenerationJobQueue</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobQueue.html#addJob">addJob</a></li><li data-type='method'><a href="ContentGenerationJobQueue.html#getJob">getJob</a></li></ul></li><li><a href="ContextService.html">ContextService</a><ul class='methods'><li data-type='method'><a href="ContextService.html#fetchAndBuildContext">fetchAndBuildContext</a></li><li data-type='method'><a href="ContextService.html#getAIUserContext">getAIUserContext</a></li><li data-type='method'><a href="ContextService.html#getUserContext">getUserContext</a></li><li data-type='method'><a href="ContextService.html#updateContext">updateContext</a></li></ul></li><li><a href="DatabaseJobQueueService.html">DatabaseJobQueueService</a><ul class='methods'><li data-type='method'><a href="DatabaseJobQueueService.html#calculateProgress">calculateProgress</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#cancelJob">cancelJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#enqueueJob">enqueueJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobResult">getJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobStatus">getJobStatus</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getNextJob">getNextJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#listJobsByUser">listJobsByUser</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#setJobResult">setJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#updateJobStatus">updateJobStatus</a></li></ul></li><li><a href="DynamicContentGenerator.html">DynamicContentGenerator</a><ul class='methods'><li data-type='method'><a href="DynamicContentGenerator.html#generateContent">generateContent</a></li></ul></li><li><a href="ExerciseValidator.html">ExerciseValidator</a><ul class='methods'><li data-type='method'><a href="ExerciseValidator.html#validate">validate</a></li></ul></li><li><a href="FallbackHandler.html">FallbackHandler</a><ul class='methods'><li data-type='method'><a href="FallbackHandler.html#getConfigurationSummary">getConfigurationSummary</a></li><li data-type='method'><a href="FallbackHandler.html#getFallback">getFallback</a></li><li data-type='method'><a href="FallbackHandler.html#validateAllConfigurations">validateAllConfigurations</a></li><li data-type='method'><a href="FallbackHandler.html#validateFallbackConfig">validateFallbackConfig</a></li></ul></li><li><a href="FallbackHandler_FallbackHandler.html">FallbackHandler</a></li><li><a href="LearningPathController.html">LearningPathController</a><ul class='methods'><li data-type='method'><a href="LearningPathController.html#completeLesson">completeLesson</a></li><li data-type='method'><a href="LearningPathController.html#getLearningPathForUser">getLearningPathForUser</a></li><li data-type='method'><a href="LearningPathController.html#startLesson">startLesson</a></li></ul></li><li><a href="LessonEnhancer.html">LessonEnhancer</a><ul class='methods'><li data-type='method'><a href="LessonEnhancer.html#enhance">enhance</a></li></ul></li><li><a href="LessonValidator.html">LessonValidator</a><ul class='methods'><li data-type='method'><a href="LessonValidator.html#validate">validate</a></li></ul></li><li><a href="PromptTemplateEngine.html">PromptTemplateEngine</a><ul class='methods'><li data-type='method'><a href="PromptTemplateEngine.html#generateContentPrompt">generateContentPrompt</a></li></ul></li><li><a href="RateLimitService.html">RateLimitService</a><ul class='methods'><li data-type='method'><a href="RateLimitService.html#cleanup">cleanup</a></li><li data-type='method'><a href="RateLimitService.html#getGlobalStats">getGlobalStats</a></li><li data-type='method'><a href="RateLimitService.html#getStatus">getStatus</a></li><li data-type='method'><a href="RateLimitService.html#isAllowed">isAllowed</a></li><li data-type='method'><a href="RateLimitService.html#resetUserLimit">resetUserLimit</a></li></ul></li><li><a href="RateLimitService_RateLimitService.html">RateLimitService</a></li><li><a href="VocabularyValidator.html">VocabularyValidator</a><ul class='methods'><li data-type='method'><a href="VocabularyValidator.html#validate">validate</a></li></ul></li></ul><h3>Interfaces</h3><ul><li><a href="ILogger.html">ILogger</a></li><li></li><li></li><li></li></ul><h3>Global</h3><ul><li><a href="global.html#AIVocabularyItemSchema">AIVocabularyItemSchema</a></li><li><a href="global.html#AIVocabularyListSchema">AIVocabularyListSchema</a></li><li><a href="global.html#QUEUE_NAMES">QUEUE_NAMES</a></li><li><a href="global.html#UserContentAssignmentModel">UserContentAssignmentModel</a></li><li><a href="global.html#adminTestController">adminTestController</a></li><li><a href="global.html#assessPronunciation">assessPronunciation</a></li><li><a href="global.html#assessPronunciationPayloadSchema">assessPronunciationPayloadSchema</a></li><li><a href="global.html#cancelJob">cancelJob</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#completeUserLesson">completeUserLesson</a></li><li><a href="global.html#contentGenerationJobQueue">contentGenerationJobQueue</a></li><li><a href="global.html#createContent">createContent</a></li><li><a href="global.html#createContentItem">createContentItem</a></li><li><a href="global.html#createContentType">createContentType</a></li><li><a href="global.html#createLogger">createLogger</a></li><li><a href="global.html#createTopic">createTopic</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteContent">deleteContent</a></li><li><a href="global.html#deleteContentItemById">deleteContentItemById</a></li><li><a href="global.html#deleteContentType">deleteContentType</a></li><li><a href="global.html#deleteTopicById">deleteTopicById</a></li><li><a href="global.html#findByUserId">findByUserId</a></li><li><a href="global.html#formatValidationError">formatValidationError</a></li><li><a href="global.html#generateContentAsync">generateContentAsync</a></li><li><a href="global.html#generateContentId">generateContentId</a></li><li><a href="global.html#generateLesson">generateLesson</a></li><li><a href="global.html#generateLessonPayloadSchema">generateLessonPayloadSchema</a></li><li><a href="global.html#getAllContent">getAllContent</a></li><li><a href="global.html#getAllContentItems">getAllContentItems</a></li><li><a href="global.html#getAllContentTypes">getAllContentTypes</a></li><li><a href="global.html#getAllTopics">getAllTopics</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAnalyticsSummary">getAnalyticsSummary</a></li><li><a href="global.html#getAssignedContent">getAssignedContent</a></li><li><a href="global.html#getContentById">getContentById</a></li><li><a href="global.html#getContentByTopicId">getContentByTopicId</a></li><li><a href="global.html#getContentItemById">getContentItemById</a></li><li><a href="global.html#getCurrentUserProfile">getCurrentUserProfile</a></li><li><a href="global.html#getGenerationStatus">getGenerationStatus</a></li><li><a href="global.html#getInternalUserByEmailWithPassword">getInternalUserByEmailWithPassword</a></li><li><a href="global.html#getLearningPathUserView">getLearningPathUserView</a></li><li><a href="global.html#getPrompts">getPrompts</a></li><li><a href="global.html#getTopicById">getTopicById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getUserProgress">getUserProgress</a></li><li><a href="global.html#gradeResponse">gradeResponse</a></li><li><a href="global.html#gradeResponsePayloadSchema">gradeResponsePayloadSchema</a></li><li><a href="global.html#handleAIRequest">handleAIRequest</a></li><li><a href="global.html#isAdmin">isAdmin</a></li><li><a href="global.html#isLesson">isLesson</a></li><li><a href="global.html#listJobs">listJobs</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#paginationSchema">paginationSchema</a></li><li><a href="global.html#recordContentItemProgress">recordContentItemProgress</a></li><li><a href="global.html#redisConnection">redisConnection</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startUserLesson">startUserLesson</a></li><li><a href="global.html#taskHandlerMap">taskHandlerMap</a></li><li><a href="global.html#updateContent">updateContent</a></li><li><a href="global.html#updateContentItemById">updateContentItemById</a></li><li><a href="global.html#updateContentType">updateContentType</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateUserPreferences">updateUserPreferences</a></li><li><a href="global.html#updateUserProfile">updateUserProfile</a></li><li><a href="global.html#upsert">upsert</a></li><li><a href="global.html#validateAIPayload">validateAIPayload</a></li><li><a href="global.html#validationSchemaMap">validationSchemaMap</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Global</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        
+            
+        
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="AIVocabularyItemSchema"><span class="type-signature type-signature-constant">(constant) </span>AIVocabularyItemSchema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Defines the expected structure of a single vocabulary item from the AI.
+This schema is used to validate the raw AI output before transforming it
+into our internal <code>VocabularyItem</code> domain model.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_ai-schemas.ts.html">types/ai-schemas.ts</a>, <a href="types_ai-schemas.ts.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Defines the expected structure of a single vocabulary item from the AI.
+This schema is used to validate the raw AI output before transforming it
+into our internal <code>VocabularyItem</code> domain model.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="AIVocabularyListSchema"><span class="type-signature type-signature-constant">(constant) </span>AIVocabularyListSchema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Defines the expected structure for a list of vocabulary items.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_ai-schemas.ts.html">types/ai-schemas.ts</a>, <a href="types_ai-schemas.ts.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Defines the expected structure for a list of vocabulary items.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="QUEUE_NAMES"><span class="type-signature type-signature-constant">(constant) </span>QUEUE_NAMES<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Centralized queue names to prevent typos and ensure consistency.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="config_redis.ts.html">config/redis.ts</a>, <a href="config_redis.ts.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Centralized queue names to prevent typos and ensure consistency.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="UserContentAssignmentModel"><span class="type-signature type-signature-constant">(constant) </span>UserContentAssignmentModel<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>CRUD helpers for content assignments.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_UserContentAssignment.ts.html">models/UserContentAssignment.ts</a>, <a href="models_UserContentAssignment.ts.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>CRUD helpers for content assignments.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="adminTestController"><span class="type-signature type-signature-constant">(constant) </span>adminTestController<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Simple endpoint used by tests to verify that admin routes are reachable.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Simple endpoint used by tests to verify that admin routes are reachable.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="assessPronunciation"><span class="type-signature type-signature-constant">(constant) </span>assessPronunciation<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Controller function for pronunciation assessment
+POST /api/ai/assess-pronunciation</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line315">line 315</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Controller function for pronunciation assessment
+POST /api/ai/assess-pronunciation</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="assessPronunciationPayloadSchema"><span class="type-signature type-signature-constant">(constant) </span>assessPronunciationPayloadSchema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Validation schema for pronunciation assessment requests
+Corresponds to AITaskPayloads['ASSESS_PRONUNCIATION']['request']</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Validation schema for pronunciation assessment requests
+Corresponds to AITaskPayloads['ASSESS_PRONUNCIATION']['request']</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="cancelJob"><span class="type-signature type-signature-constant">(constant) </span>cancelJob<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>[ASYNC] Controller for cancelling a content generation job.
+DELETE /api/ai/jobs/:jobId</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line201">line 201</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>[ASYNC] Controller for cancelling a content generation job.
+DELETE /api/ai/jobs/:jobId</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="chatWithAI"><span class="type-signature type-signature-constant">(constant) </span>chatWithAI<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Legacy chat endpoint - maintained for backward compatibility</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line334">line 334</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Use the new AI orchestration endpoints instead</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Legacy chat endpoint - maintained for backward compatibility</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="contentGenerationJobQueue"><span class="type-signature type-signature-constant">(constant) </span>contentGenerationJobQueue<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Singleton instance of the ContentGenerationJobQueue service.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_contentGeneration_ContentGenerationJobQueue.ts.html">services/contentGeneration/ContentGenerationJobQueue.ts</a>, <a href="services_contentGeneration_ContentGenerationJobQueue.ts.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Singleton instance of the ContentGenerationJobQueue service.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="createContent"><span class="type-signature type-signature-constant">(constant) </span>createContent<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Inserts a new content record and returns the mapped result.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_Content.ts.html">models/Content.ts</a>, <a href="models_Content.ts.html#line133">line 133</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Inserts a new content record and returns the mapped result.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="createContentItem"><span class="type-signature type-signature-constant">(constant) </span>createContentItem<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Creates a new content item entry.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line230">line 230</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a new content item entry.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="createContentType"><span class="type-signature type-signature-constant">(constant) </span>createContentType<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Creates a new content type.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line175">line 175</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a new content type.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="createLogger"><span class="type-signature type-signature-constant">(constant) </span>createLogger<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Creates a basic logger instance that prefixes messages.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_logger.ts.html">utils/logger.ts</a>, <a href="utils_logger.ts.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a basic logger instance that prefixes messages.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="createTopic"><span class="type-signature type-signature-constant">(constant) </span>createTopic<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Creates a new topic entry.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line91">line 91</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Creates a new topic entry.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="createUser"><span class="type-signature type-signature-constant">(constant) </span>createUser<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Inserts a new user record and returns it in application data format.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_User.ts.html">models/User.ts</a>, <a href="models_User.ts.html#line92">line 92</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Inserts a new user record and returns it in application data format.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="deleteContent"><span class="type-signature type-signature-constant">(constant) </span>deleteContent<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Removes a content record.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_Content.ts.html">models/Content.ts</a>, <a href="models_Content.ts.html#line205">line 205</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Removes a content record.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="deleteContentItemById"><span class="type-signature type-signature-constant">(constant) </span>deleteContentItemById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Deletes a content item.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line292">line 292</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Deletes a content item.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="deleteContentType"><span class="type-signature type-signature-constant">(constant) </span>deleteContentType<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Removes a content type from the system.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line212">line 212</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Removes a content type from the system.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="deleteTopicById"><span class="type-signature type-signature-constant">(constant) </span>deleteTopicById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Deletes a topic from the database.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line144">line 144</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Deletes a topic from the database.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="generateContentAsync"><span class="type-signature type-signature-constant">(constant) </span>generateContentAsync<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>[ASYNC] Controller for initiating a content generation job.
+POST /api/ai/generate</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line228">line 228</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>[ASYNC] Controller for initiating a content generation job.
+POST /api/ai/generate</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="generateLesson"><span class="type-signature type-signature-constant">(constant) </span>generateLesson<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line307">line 307</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Use generateContentAsync instead.
+Controller function for lesson generation
+POST /api/ai/generate-lesson</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="generateLessonPayloadSchema"><span class="type-signature type-signature-constant">(constant) </span>generateLessonPayloadSchema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Validation schema for lesson generation requests
+Corresponds to AITaskPayloads['GENERATE_LESSON']['request']</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Validation schema for lesson generation requests
+Corresponds to AITaskPayloads['GENERATE_LESSON']['request']</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllContent"><span class="type-signature type-signature-constant">(constant) </span>getAllContent<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves all content records.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_Content.ts.html">models/Content.ts</a>, <a href="models_Content.ts.html#line163">line 163</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Retrieves all content records.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllContentItems"><span class="type-signature type-signature-constant">(constant) </span>getAllContentItems<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Fetches all content items.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line243">line 243</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Fetches all content items.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllContentTypes"><span class="type-signature type-signature-constant">(constant) </span>getAllContentTypes<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Returns the list of configured content types.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns the list of configured content types.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllTopics"><span class="type-signature type-signature-constant">(constant) </span>getAllTopics<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Fetches all topics available in the system.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Fetches all topics available in the system.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllUsers"><span class="type-signature type-signature-constant">(constant) </span>getAllUsers<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves a list of all users in the system.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line310">line 310</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Retrieves a list of all users in the system.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllUsers"><span class="type-signature type-signature-constant">(constant) </span>getAllUsers<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Lists all users. Admin only endpoint.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line106">line 106</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Lists all users. Admin only endpoint.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAllUsers"><span class="type-signature type-signature-constant">(constant) </span>getAllUsers<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Fetches all users.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_User.ts.html">models/User.ts</a>, <a href="models_User.ts.html#line138">line 138</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Fetches all users.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAnalyticsSummary"><span class="type-signature type-signature-constant">(constant) </span>getAnalyticsSummary<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Returns a high level analytics summary of the application.</p>
+<p>Currently counts users and basic content items. File system reads are used
+to approximate the total amount of content available.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns a high level analytics summary of the application.</p>
+<p>Currently counts users and basic content items. File system reads are used
+to approximate the total amount of content available.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getAssignedContent"><span class="type-signature type-signature-constant">(constant) </span>getAssignedContent<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Returns all content assignments for the authenticated user.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns all content assignments for the authenticated user.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getContentById"><span class="type-signature type-signature-constant">(constant) </span>getContentById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves a single content item by id.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_Content.ts.html">models/Content.ts</a>, <a href="models_Content.ts.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Retrieves a single content item by id.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getContentByTopicId"><span class="type-signature type-signature-constant">(constant) </span>getContentByTopicId<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Returns all content belonging to the provided topic id.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_Content.ts.html">models/Content.ts</a>, <a href="models_Content.ts.html#line124">line 124</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns all content belonging to the provided topic id.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getContentItemById"><span class="type-signature type-signature-constant">(constant) </span>getContentItemById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Returns a single content item by id.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line256">line 256</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns a single content item by id.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getCurrentUserProfile"><span class="type-signature type-signature-constant">(constant) </span>getCurrentUserProfile<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Returns the authenticated user's profile without the password hash.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line24">line 24</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns the authenticated user's profile without the password hash.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getGenerationStatus"><span class="type-signature type-signature-constant">(constant) </span>getGenerationStatus<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>[ASYNC] Controller for checking the status of a content generation job.
+GET /api/ai/generate/status/:jobId</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line263">line 263</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>[ASYNC] Controller for checking the status of a content generation job.
+GET /api/ai/generate/status/:jobId</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getInternalUserByEmailWithPassword"><span class="type-signature type-signature-constant">(constant) </span>getInternalUserByEmailWithPassword<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Looks up a user by email but returns the raw database schema including the
+password hash. Used internally for authentication checks.
+The knex-stringcase mapper will automatically convert the column names.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_User.ts.html">models/User.ts</a>, <a href="models_User.ts.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Looks up a user by email but returns the raw database schema including the
+password hash. Used internally for authentication checks.
+The knex-stringcase mapper will automatically convert the column names.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getPrompts"><span class="type-signature type-signature-constant">(constant) </span>getPrompts<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Legacy prompts endpoint - maintained for backward compatibility</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line360">line 360</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>Use the new AI orchestration endpoints instead</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Legacy prompts endpoint - maintained for backward compatibility</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getTopicById"><span class="type-signature type-signature-constant">(constant) </span>getTopicById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves a single topic by its id.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line111">line 111</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Retrieves a single topic by its id.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getUserByEmail"><span class="type-signature type-signature-constant">(constant) </span>getUserByEmail<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Looks up a user by email and maps the result to application data shape.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_User.ts.html">models/User.ts</a>, <a href="models_User.ts.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Looks up a user by email and maps the result to application data shape.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getUserById"><span class="type-signature type-signature-constant">(constant) </span>getUserById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Fetches a user by primary key.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_User.ts.html">models/User.ts</a>, <a href="models_User.ts.html#line81">line 81</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Fetches a user by primary key.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getUserPreferences"><span class="type-signature type-signature-constant">(constant) </span>getUserPreferences<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves the persisted preferences for the authenticated user.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line169">line 169</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Retrieves the persisted preferences for the authenticated user.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="getUserProgress"><span class="type-signature type-signature-constant">(constant) </span>getUserProgress<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Aggregates progress for the authenticated user across all topics and assigned content.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Aggregates progress for the authenticated user across all topics and assigned content.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gradeResponse"><span class="type-signature type-signature-constant">(constant) </span>gradeResponse<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Controller function for response grading
+POST /api/ai/grade-response</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line322">line 322</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Controller function for response grading
+POST /api/ai/grade-response</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="gradeResponsePayloadSchema"><span class="type-signature type-signature-constant">(constant) </span>gradeResponsePayloadSchema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Validation schema for response grading requests
+Corresponds to AITaskPayloads['GRADE_RESPONSE']['request']</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line51">line 51</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Validation schema for response grading requests
+Corresponds to AITaskPayloads['GRADE_RESPONSE']['request']</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="isAdmin"><span class="type-signature type-signature-constant">(constant) </span>isAdmin<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Simple middleware to guard routes that require an admin role.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="middleware_admin.middleware.ts.html">middleware/admin.middleware.ts</a>, <a href="middleware_admin.middleware.ts.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Simple middleware to guard routes that require an admin role.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="listJobs"><span class="type-signature type-signature-constant">(constant) </span>listJobs<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>[ASYNC] Controller for listing a user's content generation jobs.
+GET /api/ai/jobs</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line174">line 174</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>[ASYNC] Controller for listing a user's content generation jobs.
+GET /api/ai/jobs</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="login"><span class="type-signature type-signature-constant">(constant) </span>login<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Validates user credentials and returns a JWT token on success.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_auth.controller.ts.html">controllers/auth.controller.ts</a>, <a href="controllers_auth.controller.ts.html#line68">line 68</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Validates user credentials and returns a JWT token on success.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="paginationSchema"><span class="type-signature type-signature-constant">(constant) </span>paginationSchema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Validation schema for pagination query parameters</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Validation schema for pagination query parameters</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="recordContentItemProgress"><span class="type-signature type-signature-constant">(constant) </span>recordContentItemProgress<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Records progress for a specific content item for the authenticated user.
+Sets the status of the corresponding user_content_assignment to 'completed'.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line218">line 218</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Records progress for a specific content item for the authenticated user.
+Sets the status of the corresponding user_content_assignment to 'completed'.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="redisConnection"><span class="type-signature type-signature-constant">(constant) </span>redisConnection<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Singleton instance of the IORedis connection.
+This connection is only created if Redis is enabled.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="config_redis.ts.html">config/redis.ts</a>, <a href="config_redis.ts.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Singleton instance of the IORedis connection.
+This connection is only created if Redis is enabled.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="register"><span class="type-signature type-signature-constant">(constant) </span>register<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Registers a new user and returns a JWT token.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_auth.controller.ts.html">controllers/auth.controller.ts</a>, <a href="controllers_auth.controller.ts.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Registers a new user and returns a JWT token.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="taskHandlerMap"><span class="type-signature type-signature-constant">(constant) </span>taskHandlerMap<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Task handler map - Declarative mapping of AI tasks to their handlers</p>
+<p>This approach is more scalable and maintainable than switch statements.
+Each task type is mapped to its handler method and validation schema.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Task handler map - Declarative mapping of AI tasks to their handlers</p>
+<p>This approach is more scalable and maintainable than switch statements.
+Each task type is mapped to its handler method and validation schema.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="updateContent"><span class="type-signature type-signature-constant">(constant) </span>updateContent<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates a content record and returns the updated version.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_Content.ts.html">models/Content.ts</a>, <a href="models_Content.ts.html#line172">line 172</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Updates a content record and returns the updated version.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="updateContentItemById"><span class="type-signature type-signature-constant">(constant) </span>updateContentItemById<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates a content item identified by id.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line274">line 274</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Updates a content item identified by id.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="updateContentType"><span class="type-signature type-signature-constant">(constant) </span>updateContentType<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates an existing content type record.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_admin.controller.ts.html">controllers/admin.controller.ts</a>, <a href="controllers_admin.controller.ts.html#line193">line 193</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Updates an existing content type record.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="updateUser"><span class="type-signature type-signature-constant">(constant) </span>updateUser<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates an existing user record and returns it in application data format.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_User.ts.html">models/User.ts</a>, <a href="models_User.ts.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Updates an existing user record and returns it in application data format.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="updateUserPreferences"><span class="type-signature type-signature-constant">(constant) </span>updateUserPreferences<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Stores new preference values for the authenticated user.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line192">line 192</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Stores new preference values for the authenticated user.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="updateUserProfile"><span class="type-signature type-signature-constant">(constant) </span>updateUserProfile<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Updates the authenticated user's profile fields.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_user.controller.ts.html">controllers/user.controller.ts</a>, <a href="controllers_user.controller.ts.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Updates the authenticated user's profile fields.</p>
+</div>
+
+
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="validationSchemaMap"><span class="type-signature type-signature-constant">(constant) </span>validationSchemaMap<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Map of AI task types to their corresponding validation schemas
+This provides a type-safe way to access validators based on task type</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line92">line 92</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Map of AI task types to their corresponding validation schemas
+This provides a type-safe way to access validators based on task type</p>
+</div>
+
+
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="completeUserLesson"><span class="type-signature"></span>completeUserLesson<span class="signature">(userId, lessonId, trx)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Completes a lesson for a user within a database transaction.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_learningPathService.ts.html">services/learningPathService.ts</a>, <a href="services_learningPathService.ts.html#line147">line 147</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the user.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lessonId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the lesson to complete.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>trx</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Knex transaction object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-throws">Throws:</h5>
+
+        
+
+    <div class="param-desc usertext">
+    
+        <p>An error if the lesson progress does not exist or is not 'in_progress'.</p>
+    
+    </div>
+
+
+    
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The updated user lesson progress record.</p>
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="findByUserId"><span class="type-signature"></span>findByUserId<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves a preference row for the specified user.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_UserPreference.ts.html">models/UserPreference.ts</a>, <a href="models_UserPreference.ts.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="formatValidationError"><span class="type-signature"></span>formatValidationError<span class="signature">(error)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Formats Zod validation errors for API responses</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line135">line 135</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Zod validation error</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>User-friendly error message and details</p>
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="generateContentId"><span class="type-signature"></span>generateContentId<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Generates a unique content ID using UUID
+Replaces the insecure Date.now() + Math.random() approach</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_Content.ts.html">types/Content.ts</a>, <a href="types_Content.ts.html#line369">line 369</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getLearningPathUserView"><span class="type-signature"></span>getLearningPathUserView<span class="signature">(pathId, userId)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Retrieves a learning path with its units and lessons, including user-specific progress
+for each lesson.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_learningPathService.ts.html">services/learningPathService.ts</a>, <a href="services_learningPathService.ts.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pathId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the learning path to retrieve.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the user for whom to retrieve progress.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A Promise resolving to LearningPathWithUserProgress object or null if not found.</p>
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="handleAIRequest"><span class="type-signature type-signature-async">(async) </span>handleAIRequest<span class="signature">(req, res, taskType)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Generic AI request handler - Centralized logic for all AI requests</p>
+<p>This function provides a consistent, reusable pattern for handling AI requests
+with validation, error handling, and proper response formatting.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_aiController.ts.html">controllers/aiController.ts</a>, <a href="controllers_aiController.ts.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>req</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Authenticated Express request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>res</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Express response</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>taskType</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The specific AI task to execute</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="isLesson"><span class="type-signature"></span>isLesson<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Type guard functions for content type checking</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="types_Content.ts.html">types/Content.ts</a>, <a href="types_Content.ts.html#line377">line 377</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="startUserLesson"><span class="type-signature"></span>startUserLesson<span class="signature">(userId, lessonId)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Starts a lesson for a user by creating or updating their progress record.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="services_learningPathService.ts.html">services/learningPathService.ts</a>, <a href="services_learningPathService.ts.html#line129">line 129</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the user.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lessonId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the lesson to start.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The created or updated user lesson progress record.</p>
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="upsert"><span class="type-signature type-signature-async">(async) </span>upsert<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Inserts or updates the preference entry for a user.</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_UserPreference.ts.html">models/UserPreference.ts</a>, <a href="models_UserPreference.ts.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="validateAIPayload"><span class="type-signature"></span>validateAIPayload<span class="signature">(taskType, payload)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+    
+    <dt class="tag-description">Description:</dt>
+    <dd class="tag-description"><ul class="dummy"><li><p>Utility function to validate a payload against its corresponding schema</p></li></ul></dd>
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="controllers_ai.validators.ts.html">controllers/ai.validators.ts</a>, <a href="controllers_ai.validators.ts.html#line108">line 108</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5 class="h5-parameters">Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>taskType</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The AI task type</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>payload</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The payload to validate</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5 class="h5-returns">Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Validation result with parsed data or error details</p>
+</div>
+
+
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 19:07:31 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

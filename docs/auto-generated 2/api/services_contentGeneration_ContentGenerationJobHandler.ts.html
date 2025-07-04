@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>services/contentGeneration/ContentGenerationJobHandler.ts - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AIGenerationError.html">AIGenerationError</a></li><li><a href="AIMetricsService.html">AIMetricsService</a></li><li><a href="AIOrchestrator.html">AIOrchestrator</a><ul class='methods'><li data-type='method'><a href="AIOrchestrator.html#assessPronunciation">assessPronunciation</a></li><li data-type='method'><a href="AIOrchestrator.html#generateContent">generateContent</a></li><li data-type='method'><a href="AIOrchestrator.html#generateStubbedContent">generateStubbedContent</a></li><li data-type='method'><a href="AIOrchestrator.html#gradeResponse">gradeResponse</a></li><li data-type='method'><a href="AIOrchestrator.html#hashString">hashString</a></li></ul></li><li><a href="BaseEnhancer.html">BaseEnhancer</a></li><li><a href="BaseValidator.html">BaseValidator</a><ul class='methods'><li data-type='method'><a href="BaseValidator.html#checkArrayNonEmpty">checkArrayNonEmpty</a></li><li data-type='method'><a href="BaseValidator.html#checkNonEmpty">checkNonEmpty</a></li></ul></li><li><a href="CacheService.html">CacheService</a><ul class='methods'><li data-type='method'><a href="CacheService.html#clear">clear</a></li><li data-type='method'><a href="CacheService.html#get">get</a></li><li data-type='method'><a href="CacheService.html#getStats">getStats</a></li><li data-type='method'><a href="CacheService.html#set">set</a></li></ul></li><li><a href="CacheService_CacheService.html">CacheService</a></li><li><a href="ContentGenerationJobHandler.html">ContentGenerationJobHandler</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobHandler.html#handleJob">handleJob</a></li></ul></li><li><a href="ContentGenerationJobQueue.html">ContentGenerationJobQueue</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobQueue.html#addJob">addJob</a></li><li data-type='method'><a href="ContentGenerationJobQueue.html#getJob">getJob</a></li></ul></li><li><a href="ContextService.html">ContextService</a><ul class='methods'><li data-type='method'><a href="ContextService.html#fetchAndBuildContext">fetchAndBuildContext</a></li><li data-type='method'><a href="ContextService.html#getAIUserContext">getAIUserContext</a></li><li data-type='method'><a href="ContextService.html#getUserContext">getUserContext</a></li><li data-type='method'><a href="ContextService.html#updateContext">updateContext</a></li></ul></li><li><a href="DatabaseJobQueueService.html">DatabaseJobQueueService</a><ul class='methods'><li data-type='method'><a href="DatabaseJobQueueService.html#calculateProgress">calculateProgress</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#cancelJob">cancelJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#enqueueJob">enqueueJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobResult">getJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobStatus">getJobStatus</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getNextJob">getNextJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#listJobsByUser">listJobsByUser</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#setJobResult">setJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#updateJobStatus">updateJobStatus</a></li></ul></li><li><a href="DynamicContentGenerator.html">DynamicContentGenerator</a><ul class='methods'><li data-type='method'><a href="DynamicContentGenerator.html#generateContent">generateContent</a></li></ul></li><li><a href="ExerciseValidator.html">ExerciseValidator</a><ul class='methods'><li data-type='method'><a href="ExerciseValidator.html#validate">validate</a></li></ul></li><li><a href="FallbackHandler.html">FallbackHandler</a><ul class='methods'><li data-type='method'><a href="FallbackHandler.html#getConfigurationSummary">getConfigurationSummary</a></li><li data-type='method'><a href="FallbackHandler.html#getFallback">getFallback</a></li><li data-type='method'><a href="FallbackHandler.html#validateAllConfigurations">validateAllConfigurations</a></li><li data-type='method'><a href="FallbackHandler.html#validateFallbackConfig">validateFallbackConfig</a></li></ul></li><li><a href="FallbackHandler_FallbackHandler.html">FallbackHandler</a></li><li><a href="LearningPathController.html">LearningPathController</a><ul class='methods'><li data-type='method'><a href="LearningPathController.html#completeLesson">completeLesson</a></li><li data-type='method'><a href="LearningPathController.html#getLearningPathForUser">getLearningPathForUser</a></li><li data-type='method'><a href="LearningPathController.html#startLesson">startLesson</a></li></ul></li><li><a href="LessonEnhancer.html">LessonEnhancer</a><ul class='methods'><li data-type='method'><a href="LessonEnhancer.html#enhance">enhance</a></li></ul></li><li><a href="LessonValidator.html">LessonValidator</a><ul class='methods'><li data-type='method'><a href="LessonValidator.html#validate">validate</a></li></ul></li><li><a href="PromptTemplateEngine.html">PromptTemplateEngine</a><ul class='methods'><li data-type='method'><a href="PromptTemplateEngine.html#generateContentPrompt">generateContentPrompt</a></li></ul></li><li><a href="RateLimitService.html">RateLimitService</a><ul class='methods'><li data-type='method'><a href="RateLimitService.html#cleanup">cleanup</a></li><li data-type='method'><a href="RateLimitService.html#getGlobalStats">getGlobalStats</a></li><li data-type='method'><a href="RateLimitService.html#getStatus">getStatus</a></li><li data-type='method'><a href="RateLimitService.html#isAllowed">isAllowed</a></li><li data-type='method'><a href="RateLimitService.html#resetUserLimit">resetUserLimit</a></li></ul></li><li><a href="RateLimitService_RateLimitService.html">RateLimitService</a></li><li><a href="VocabularyValidator.html">VocabularyValidator</a><ul class='methods'><li data-type='method'><a href="VocabularyValidator.html#validate">validate</a></li></ul></li></ul><h3>Interfaces</h3><ul><li><a href="ILogger.html">ILogger</a></li><li></li><li></li><li></li></ul><h3>Global</h3><ul><li><a href="global.html#AIVocabularyItemSchema">AIVocabularyItemSchema</a></li><li><a href="global.html#AIVocabularyListSchema">AIVocabularyListSchema</a></li><li><a href="global.html#QUEUE_NAMES">QUEUE_NAMES</a></li><li><a href="global.html#UserContentAssignmentModel">UserContentAssignmentModel</a></li><li><a href="global.html#adminTestController">adminTestController</a></li><li><a href="global.html#assessPronunciation">assessPronunciation</a></li><li><a href="global.html#assessPronunciationPayloadSchema">assessPronunciationPayloadSchema</a></li><li><a href="global.html#cancelJob">cancelJob</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#completeUserLesson">completeUserLesson</a></li><li><a href="global.html#contentGenerationJobQueue">contentGenerationJobQueue</a></li><li><a href="global.html#createContent">createContent</a></li><li><a href="global.html#createContentItem">createContentItem</a></li><li><a href="global.html#createContentType">createContentType</a></li><li><a href="global.html#createLogger">createLogger</a></li><li><a href="global.html#createTopic">createTopic</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteContent">deleteContent</a></li><li><a href="global.html#deleteContentItemById">deleteContentItemById</a></li><li><a href="global.html#deleteContentType">deleteContentType</a></li><li><a href="global.html#deleteTopicById">deleteTopicById</a></li><li><a href="global.html#findByUserId">findByUserId</a></li><li><a href="global.html#formatValidationError">formatValidationError</a></li><li><a href="global.html#generateContentAsync">generateContentAsync</a></li><li><a href="global.html#generateContentId">generateContentId</a></li><li><a href="global.html#generateLesson">generateLesson</a></li><li><a href="global.html#generateLessonPayloadSchema">generateLessonPayloadSchema</a></li><li><a href="global.html#getAllContent">getAllContent</a></li><li><a href="global.html#getAllContentItems">getAllContentItems</a></li><li><a href="global.html#getAllContentTypes">getAllContentTypes</a></li><li><a href="global.html#getAllTopics">getAllTopics</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAnalyticsSummary">getAnalyticsSummary</a></li><li><a href="global.html#getAssignedContent">getAssignedContent</a></li><li><a href="global.html#getContentById">getContentById</a></li><li><a href="global.html#getContentByTopicId">getContentByTopicId</a></li><li><a href="global.html#getContentItemById">getContentItemById</a></li><li><a href="global.html#getCurrentUserProfile">getCurrentUserProfile</a></li><li><a href="global.html#getGenerationStatus">getGenerationStatus</a></li><li><a href="global.html#getInternalUserByEmailWithPassword">getInternalUserByEmailWithPassword</a></li><li><a href="global.html#getLearningPathUserView">getLearningPathUserView</a></li><li><a href="global.html#getPrompts">getPrompts</a></li><li><a href="global.html#getTopicById">getTopicById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getUserProgress">getUserProgress</a></li><li><a href="global.html#gradeResponse">gradeResponse</a></li><li><a href="global.html#gradeResponsePayloadSchema">gradeResponsePayloadSchema</a></li><li><a href="global.html#handleAIRequest">handleAIRequest</a></li><li><a href="global.html#isAdmin">isAdmin</a></li><li><a href="global.html#isLesson">isLesson</a></li><li><a href="global.html#listJobs">listJobs</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#paginationSchema">paginationSchema</a></li><li><a href="global.html#recordContentItemProgress">recordContentItemProgress</a></li><li><a href="global.html#redisConnection">redisConnection</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startUserLesson">startUserLesson</a></li><li><a href="global.html#taskHandlerMap">taskHandlerMap</a></li><li><a href="global.html#updateContent">updateContent</a></li><li><a href="global.html#updateContentItemById">updateContentItemById</a></li><li><a href="global.html#updateContentType">updateContentType</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateUserPreferences">updateUserPreferences</a></li><li><a href="global.html#updateUserProfile">updateUserProfile</a></li><li><a href="global.html#upsert">upsert</a></li><li><a href="global.html#validateAIPayload">validateAIPayload</a></li><li><a href="global.html#validationSchemaMap">validationSchemaMap</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">services/contentGeneration/ContentGenerationJobHandler.ts</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { AIOrchestrator } from '../ai/AIOrchestrator';
+import { PromptTemplateEngine } from '../ai/PromptTemplateEngine';
+import {
+  IContentValidatorFactory,
+  IContentEnhancerFactory,
+  IContentTemplateManager,
+  ILearningContextService,
+  IContentFallbackHandler,
+  IContentGenerationMetrics,
+} from './interfaces';
+import {
+  ContentRequest,
+  GeneratedContent,
+  LearningContext,
+  ContentValidation,
+  StructuredContent,
+  generateContentId,
+  ContentType,
+} from '../../types/Content';
+import { ILogger } from '../../types/ILogger';
+import { AIGenerationError } from '../../utils/errors';
+import { ContentStructurerFactory } from './ContentStructurerFactory';
+import { AI_CONTENT_CONFIG, DEFAULT_AI_CONFIG, AIModelConfig } from '../../config/aiContentConfig';
+import { AiGenerationJob } from '../../models/AiGenerationJob';
+
+/**
+ * Handles the processing of a single content generation job.
+ * This class encapsulates the core logic of generating content,
+ * moving it from the synchronous `DynamicContentGenerator` to a
+ * job-based asynchronous workflow.
+ */
+export class ContentGenerationJobHandler {
+  private static readonly DEFAULT_COMPLETION_TIME = 15; // minutes
+
+  constructor(
+    private aiOrchestrator: AIOrchestrator,
+    private promptEngine: PromptTemplateEngine,
+    private validatorFactory: IContentValidatorFactory,
+    private enhancerFactory: IContentEnhancerFactory,
+    private templateManager: IContentTemplateManager,
+    private contextService: ILearningContextService,
+    private fallbackHandler: IContentFallbackHandler,
+    private metricsService: IContentGenerationMetrics,
+    private structurerFactory: ContentStructurerFactory,
+    private logger: ILogger
+  ) {}
+
+  /**
+   * Processes a single content generation job.
+   * @param job The AI generation job to process.
+   * @returns The generated content.
+   * @throws {AIGenerationError} If a non-recoverable error occurs during generation.
+   */
+  public async handleJob(job: AiGenerationJob): Promise&lt;GeneratedContent> {
+    const startTime = Date.now();
+    const request = job.payload as ContentRequest;
+
+    this.metricsService.recordGenerationAttempt(request);
+    this.logger.info(`Starting content generation job`, { jobId: job.id, requestType: request.type });
+
+    try {
+      const learningContext = await this.contextService.getUserContext(request.userId);
+      const template = this.templateManager.getTemplate(request.type, learningContext);
+      const rawContent = await this.generateRawContent(request, template, learningContext);
+
+      const validator = this.validatorFactory.getValidator(request.type);
+      const validation = await validator.validate(rawContent, request);
+
+      if (!validation.isValid) {
+        this.logger.warn(`Content validation failed for job`, { jobId: job.id, issues: validation.issues });
+        // In the job system, retry logic is handled by the worker,
+        // so we throw an error to signal failure for this attempt.
+        throw new AIGenerationError('Content validation failed', { validation, job });
+      }
+
+      const enhancer = this.enhancerFactory.getEnhancer(request.type);
+      const enhancedContent = await enhancer.enhance(rawContent, learningContext);
+      const structuredContent = await this.structureContent(enhancedContent, request.type);
+
+      const generatedContent = this.createGeneratedContent(
+        request,
+        structuredContent,
+        learningContext,
+        validation,
+        startTime
+      );
+
+      this.metricsService.recordGenerationSuccess(request, Date.now() - startTime, validation.score);
+      this.logger.info(`Successfully completed content generation job`, { jobId: job.id });
+
+      return generatedContent;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      const errorObj = error instanceof Error ? error : new Error(String(error));
+      this.metricsService.recordGenerationFailure(request, duration, errorObj);
+      this.logger.error(`Critical error in content generation job`, {
+        jobId: job.id,
+        error: errorObj.message,
+        stack: errorObj.stack,
+      });
+
+      // Re-throw to be caught by the worker for retry/failure handling.
+      // The worker will decide whether to use the fallback handler.
+      throw error;
+    }
+  }
+
+  private async generateRawContent(
+    request: ContentRequest,
+    template: any,
+    context: LearningContext
+  ): Promise&lt;any> {
+    const startTime = Date.now();
+    try {
+      const prompt = await this.promptEngine.generateContentPrompt({
+        request,
+        template,
+        context,
+      });
+
+      const aiConfig = this.getAIConfigForType(request.type);
+      const aiResponse = await this.executeAIRequestWithTimeout(request, prompt, aiConfig);
+
+      if (!aiResponse.success) {
+        throw new AIGenerationError(`AI generation failed: ${aiResponse.error}`, { request });
+      }
+      return aiResponse.data;
+    } catch (error) {
+      this.logger.error('Raw content generation failed', {
+        userId: request.userId,
+        type: request.type,
+        duration: Date.now() - startTime,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw new AIGenerationError('Failed to generate raw content', { originalError: error });
+    }
+  }
+
+  private async executeAIRequestWithTimeout(request: ContentRequest, prompt: string, aiConfig: AIModelConfig): Promise&lt;any> {
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => {
+        reject(new Error(`AI generation timeout after ${aiConfig.timeout}ms`));
+      }, aiConfig.timeout);
+    });
+
+    return Promise.race([
+      this.aiOrchestrator.generateContent(
+        String(request.userId),
+        request.type,
+        {
+          prompt,
+          maxTokens: aiConfig.maxTokens,
+          temperature: aiConfig.temperature,
+          model: aiConfig.model,
+        }
+      ),
+      timeoutPromise,
+    ]);
+  }
+
+  private getAIConfigForType(type: ContentType): AIModelConfig {
+    return AI_CONTENT_CONFIG[type] || DEFAULT_AI_CONFIG;
+  }
+
+  private async structureContent(rawContent: string, contentType: ContentType): Promise&lt;StructuredContent> {
+    try {
+      const structurer = this.structurerFactory.getStructurer(contentType);
+      return await structurer.structure(rawContent);
+    } catch (error) {
+      this.logger.error(`Structuring content of type '${contentType}' failed.`, {
+        error: (error as Error).message,
+      });
+      // Let the main error handler decide on fallback logic
+      throw new AIGenerationError('Failed to structure content', { originalError: error });
+    }
+  }
+
+  private createGeneratedContent(
+    request: ContentRequest,
+    structuredContent: StructuredContent,
+    learningContext: LearningContext,
+    validation: ContentValidation,
+    startTime: number
+  ): GeneratedContent {
+    return {
+      id: generateContentId(),
+      type: request.type,
+      content: structuredContent,
+      metadata: {
+        userId: request.userId,
+        generatedAt: new Date(),
+        level: learningContext.currentLevel,
+        topics: request.topics || [],
+        aiGenerated: true,
+        version: '1.0',
+        fallback: !validation.isValid,
+        generationTime: Date.now() - startTime,
+      },
+      validation,
+      estimatedCompletionTime: this.estimateCompletionTime(structuredContent, request),
+      learningObjectives: this.extractLearningObjectives(structuredContent),
+    };
+  }
+
+  private estimateCompletionTime(content: StructuredContent, request: ContentRequest): number {
+    let baseTime = ContentGenerationJobHandler.DEFAULT_COMPLETION_TIME;
+    switch (request.type) {
+      case 'lesson': baseTime = 20; break;
+      case 'vocabulary_drill': baseTime = 10; break;
+      case 'grammar_exercise': baseTime = 15; break;
+      case 'cultural_content': baseTime = 25; break;
+      case 'personalized_exercise': baseTime = 12; break;
+    }
+    if (request.difficulty === 'advanced') baseTime *= 1.3;
+    else if (request.difficulty === 'beginner') baseTime *= 0.8;
+    if (request.exerciseCount &amp;&amp; request.exerciseCount > 5) {
+      baseTime += (request.exerciseCount - 5) * 2;
+    }
+    return Math.round(baseTime);
+  }
+
+  private extractLearningObjectives(content: StructuredContent): string[] {
+    if ('learningObjectives' in content &amp;&amp; Array.isArray(content.learningObjectives)) {
+      return content.learningObjectives;
+    }
+    const fallbackObjectives = {
+      lesson: ['Practice French language skills', 'Improve comprehension'],
+      vocabulary_drill: ['Learn new vocabulary', 'Practice word recognition'],
+      grammar_exercise: ['Master grammar rules', 'Apply grammar in context'],
+      cultural_content: ['Understand French culture', 'Develop cultural awareness'],
+      personalized_exercise: ['Address learning gaps', 'Reinforce weak areas'],
+      pronunciation_drill: ['Improve pronunciation', 'Practice phonetics'],
+      conversation_practice: ['Practice speaking', 'Improve conversational skills']
+    };
+    return fallbackObjectives[content.type] || ['Practice French language skills'];
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 19:07:31 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

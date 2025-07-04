@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>services/ai/CacheService.ts - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AIGenerationError.html">AIGenerationError</a></li><li><a href="AIMetricsService.html">AIMetricsService</a></li><li><a href="AIOrchestrator.html">AIOrchestrator</a><ul class='methods'><li data-type='method'><a href="AIOrchestrator.html#assessPronunciation">assessPronunciation</a></li><li data-type='method'><a href="AIOrchestrator.html#generateContent">generateContent</a></li><li data-type='method'><a href="AIOrchestrator.html#generateStubbedContent">generateStubbedContent</a></li><li data-type='method'><a href="AIOrchestrator.html#gradeResponse">gradeResponse</a></li><li data-type='method'><a href="AIOrchestrator.html#hashString">hashString</a></li></ul></li><li><a href="BaseEnhancer.html">BaseEnhancer</a></li><li><a href="BaseValidator.html">BaseValidator</a><ul class='methods'><li data-type='method'><a href="BaseValidator.html#checkArrayNonEmpty">checkArrayNonEmpty</a></li><li data-type='method'><a href="BaseValidator.html#checkNonEmpty">checkNonEmpty</a></li></ul></li><li><a href="CacheService.html">CacheService</a><ul class='methods'><li data-type='method'><a href="CacheService.html#clear">clear</a></li><li data-type='method'><a href="CacheService.html#get">get</a></li><li data-type='method'><a href="CacheService.html#getStats">getStats</a></li><li data-type='method'><a href="CacheService.html#set">set</a></li></ul></li><li><a href="CacheService_CacheService.html">CacheService</a></li><li><a href="ContentGenerationJobHandler.html">ContentGenerationJobHandler</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobHandler.html#handleJob">handleJob</a></li></ul></li><li><a href="ContentGenerationJobQueue.html">ContentGenerationJobQueue</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobQueue.html#addJob">addJob</a></li><li data-type='method'><a href="ContentGenerationJobQueue.html#getJob">getJob</a></li></ul></li><li><a href="ContextService.html">ContextService</a><ul class='methods'><li data-type='method'><a href="ContextService.html#fetchAndBuildContext">fetchAndBuildContext</a></li><li data-type='method'><a href="ContextService.html#getAIUserContext">getAIUserContext</a></li><li data-type='method'><a href="ContextService.html#getUserContext">getUserContext</a></li><li data-type='method'><a href="ContextService.html#updateContext">updateContext</a></li></ul></li><li><a href="DatabaseJobQueueService.html">DatabaseJobQueueService</a><ul class='methods'><li data-type='method'><a href="DatabaseJobQueueService.html#calculateProgress">calculateProgress</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#cancelJob">cancelJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#enqueueJob">enqueueJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobResult">getJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobStatus">getJobStatus</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getNextJob">getNextJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#listJobsByUser">listJobsByUser</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#setJobResult">setJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#updateJobStatus">updateJobStatus</a></li></ul></li><li><a href="DynamicContentGenerator.html">DynamicContentGenerator</a><ul class='methods'><li data-type='method'><a href="DynamicContentGenerator.html#generateContent">generateContent</a></li></ul></li><li><a href="ExerciseValidator.html">ExerciseValidator</a><ul class='methods'><li data-type='method'><a href="ExerciseValidator.html#validate">validate</a></li></ul></li><li><a href="FallbackHandler.html">FallbackHandler</a><ul class='methods'><li data-type='method'><a href="FallbackHandler.html#getConfigurationSummary">getConfigurationSummary</a></li><li data-type='method'><a href="FallbackHandler.html#getFallback">getFallback</a></li><li data-type='method'><a href="FallbackHandler.html#validateAllConfigurations">validateAllConfigurations</a></li><li data-type='method'><a href="FallbackHandler.html#validateFallbackConfig">validateFallbackConfig</a></li></ul></li><li><a href="FallbackHandler_FallbackHandler.html">FallbackHandler</a></li><li><a href="LearningPathController.html">LearningPathController</a><ul class='methods'><li data-type='method'><a href="LearningPathController.html#completeLesson">completeLesson</a></li><li data-type='method'><a href="LearningPathController.html#getLearningPathForUser">getLearningPathForUser</a></li><li data-type='method'><a href="LearningPathController.html#startLesson">startLesson</a></li></ul></li><li><a href="LessonEnhancer.html">LessonEnhancer</a><ul class='methods'><li data-type='method'><a href="LessonEnhancer.html#enhance">enhance</a></li></ul></li><li><a href="LessonValidator.html">LessonValidator</a><ul class='methods'><li data-type='method'><a href="LessonValidator.html#validate">validate</a></li></ul></li><li><a href="PromptTemplateEngine.html">PromptTemplateEngine</a><ul class='methods'><li data-type='method'><a href="PromptTemplateEngine.html#generateContentPrompt">generateContentPrompt</a></li></ul></li><li><a href="RateLimitService.html">RateLimitService</a><ul class='methods'><li data-type='method'><a href="RateLimitService.html#cleanup">cleanup</a></li><li data-type='method'><a href="RateLimitService.html#getGlobalStats">getGlobalStats</a></li><li data-type='method'><a href="RateLimitService.html#getStatus">getStatus</a></li><li data-type='method'><a href="RateLimitService.html#isAllowed">isAllowed</a></li><li data-type='method'><a href="RateLimitService.html#resetUserLimit">resetUserLimit</a></li></ul></li><li><a href="RateLimitService_RateLimitService.html">RateLimitService</a></li><li><a href="VocabularyValidator.html">VocabularyValidator</a><ul class='methods'><li data-type='method'><a href="VocabularyValidator.html#validate">validate</a></li></ul></li></ul><h3>Interfaces</h3><ul><li><a href="ILogger.html">ILogger</a></li><li></li><li></li><li></li></ul><h3>Global</h3><ul><li><a href="global.html#AIVocabularyItemSchema">AIVocabularyItemSchema</a></li><li><a href="global.html#AIVocabularyListSchema">AIVocabularyListSchema</a></li><li><a href="global.html#QUEUE_NAMES">QUEUE_NAMES</a></li><li><a href="global.html#UserContentAssignmentModel">UserContentAssignmentModel</a></li><li><a href="global.html#adminTestController">adminTestController</a></li><li><a href="global.html#assessPronunciation">assessPronunciation</a></li><li><a href="global.html#assessPronunciationPayloadSchema">assessPronunciationPayloadSchema</a></li><li><a href="global.html#cancelJob">cancelJob</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#completeUserLesson">completeUserLesson</a></li><li><a href="global.html#contentGenerationJobQueue">contentGenerationJobQueue</a></li><li><a href="global.html#createContent">createContent</a></li><li><a href="global.html#createContentItem">createContentItem</a></li><li><a href="global.html#createContentType">createContentType</a></li><li><a href="global.html#createLogger">createLogger</a></li><li><a href="global.html#createTopic">createTopic</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteContent">deleteContent</a></li><li><a href="global.html#deleteContentItemById">deleteContentItemById</a></li><li><a href="global.html#deleteContentType">deleteContentType</a></li><li><a href="global.html#deleteTopicById">deleteTopicById</a></li><li><a href="global.html#findByUserId">findByUserId</a></li><li><a href="global.html#formatValidationError">formatValidationError</a></li><li><a href="global.html#generateContentAsync">generateContentAsync</a></li><li><a href="global.html#generateContentId">generateContentId</a></li><li><a href="global.html#generateLesson">generateLesson</a></li><li><a href="global.html#generateLessonPayloadSchema">generateLessonPayloadSchema</a></li><li><a href="global.html#getAllContent">getAllContent</a></li><li><a href="global.html#getAllContentItems">getAllContentItems</a></li><li><a href="global.html#getAllContentTypes">getAllContentTypes</a></li><li><a href="global.html#getAllTopics">getAllTopics</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAnalyticsSummary">getAnalyticsSummary</a></li><li><a href="global.html#getAssignedContent">getAssignedContent</a></li><li><a href="global.html#getContentById">getContentById</a></li><li><a href="global.html#getContentByTopicId">getContentByTopicId</a></li><li><a href="global.html#getContentItemById">getContentItemById</a></li><li><a href="global.html#getCurrentUserProfile">getCurrentUserProfile</a></li><li><a href="global.html#getGenerationStatus">getGenerationStatus</a></li><li><a href="global.html#getInternalUserByEmailWithPassword">getInternalUserByEmailWithPassword</a></li><li><a href="global.html#getLearningPathUserView">getLearningPathUserView</a></li><li><a href="global.html#getPrompts">getPrompts</a></li><li><a href="global.html#getTopicById">getTopicById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getUserProgress">getUserProgress</a></li><li><a href="global.html#gradeResponse">gradeResponse</a></li><li><a href="global.html#gradeResponsePayloadSchema">gradeResponsePayloadSchema</a></li><li><a href="global.html#handleAIRequest">handleAIRequest</a></li><li><a href="global.html#isAdmin">isAdmin</a></li><li><a href="global.html#isLesson">isLesson</a></li><li><a href="global.html#listJobs">listJobs</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#paginationSchema">paginationSchema</a></li><li><a href="global.html#recordContentItemProgress">recordContentItemProgress</a></li><li><a href="global.html#redisConnection">redisConnection</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startUserLesson">startUserLesson</a></li><li><a href="global.html#taskHandlerMap">taskHandlerMap</a></li><li><a href="global.html#updateContent">updateContent</a></li><li><a href="global.html#updateContentItemById">updateContentItemById</a></li><li><a href="global.html#updateContentType">updateContentType</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateUserPreferences">updateUserPreferences</a></li><li><a href="global.html#updateUserProfile">updateUserProfile</a></li><li><a href="global.html#upsert">upsert</a></li><li><a href="global.html#validateAIPayload">validateAIPayload</a></li><li><a href="global.html#validationSchemaMap">validationSchemaMap</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">services/ai/CacheService.ts</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * CacheService - Robust AI Response Caching with Redis
+ * 
+ * Provides a performant caching layer for AI responses using Redis with deterministic
+ * cache key generation and graceful error handling. Implements "fail open" pattern
+ * to ensure AI requests continue working even if Redis is unavailable.
+ * 
+ * Key improvements from initial design:
+ * - Uses SHA256 hashing for collision-resistant, fixed-length cache keys
+ * - Canonicalizes JSON payloads for deterministic key generation
+ * - Implements graceful degradation when Redis operations fail
+ * - Full type safety using the centralized AI type system
+ */
+
+import { createHash } from 'crypto';
+import { Redis } from 'ioredis';
+import { 
+  CacheStrategyConfig, 
+  AIResponse, 
+  AITaskRequestPayload, 
+  AITaskResponsePayload,
+  AITaskType 
+} from '../../types/AI';
+
+/**
+ * @interface ILogger
+ * @description Temporary logger interface to support future structured logging implementation.
+ *              TODO: Replace with proper structured logger (Future Consideration #16)
+ */
+interface ILogger {
+  info(message: string, ...args: any[]): void;
+  warn(message: string, ...args: any[]): void;
+  error(message: string, error?: any): void;
+}
+
+/**
+ * @class CacheService
+ * @description Provides a robust, type-safe caching layer for AI responses using Redis.
+ *              Implements semantic caching with deterministic key generation to maximize
+ *              cache hit rates while maintaining full type safety.
+ */
+export class CacheService {
+  private redis: Redis;
+  private config: CacheStrategyConfig;
+  private logger: ILogger;
+
+  /**
+   * @constructor
+   * @param redis - Configured Redis client instance
+   * @param config - Cache strategy configuration
+   * @param logger - Logger instance (defaults to console for now)
+   */
+  constructor(redis: Redis, config: CacheStrategyConfig, logger: ILogger = console) {
+    this.redis = redis;
+    this.config = config;
+    this.logger = logger;
+    this.logger.info('[CacheService] Initialized with Redis caching');
+  }
+
+  /**
+   * Generates a deterministic, collision-resistant cache key from task type and payload.
+   * 
+   * Key improvements:
+   * - Sorts object keys to ensure consistent JSON string representation
+   * - Uses SHA256 for collision-resistant, fixed-length keys
+   * - Includes task type in key for namespace separation
+   * 
+   * @private
+   * @param taskType - The AI task type for namespace separation
+   * @param payload - The request payload to hash
+   * @returns A deterministic SHA256-based cache key
+   */
+  private generateCacheKey&lt;T extends AITaskType>(
+    taskType: T, 
+    payload: AITaskRequestPayload&lt;T>
+  ): string {
+    // Sort keys for deterministic JSON string generation
+    const sortedPayload = this.sortObjectKeys(payload);
+    const payloadString = JSON.stringify(sortedPayload);
+    
+    // Generate collision-resistant hash
+    const hash = createHash('sha256')
+      .update(payloadString)
+      .digest('hex');
+    
+    return `ai-cache:${taskType}:${hash}`;
+  }
+
+  /**
+   * Recursively sorts object keys to ensure deterministic JSON serialization.
+   * 
+   * @private
+   * @param obj - Object to sort
+   * @returns Object with sorted keys at all levels
+   */
+  private sortObjectKeys(obj: any): any {
+    if (obj === null || typeof obj !== 'object' || Array.isArray(obj)) {
+      return obj;
+    }
+    
+    return Object.keys(obj)
+      .sort()
+      .reduce((sorted, key) => {
+        sorted[key] = this.sortObjectKeys(obj[key]);
+        return sorted;
+      }, {} as any);
+  }
+
+  /**
+   * Retrieves a cached AI response if available.
+   * 
+   * Implements "fail open" pattern - if Redis fails, returns null rather than
+   * throwing an error, allowing the AI request to proceed without caching.
+   * 
+   * @param taskType - The AI task type
+   * @param payload - The request payload to look up
+   * @returns Cached response or null if not found/error occurred
+   */
+  async get&lt;T extends AITaskType>(
+    taskType: T, 
+    payload: AITaskRequestPayload&lt;T>
+  ): Promise&lt;AIResponse&lt;T> | null> {
+    if (!this.config.enabled) {
+      return null;
+    }
+
+    const key = this.generateCacheKey(taskType, payload);
+    
+    try {
+      const cachedData = await this.redis.get(key);
+      
+      if (cachedData) {
+        this.logger.info(`[CacheService] Cache HIT for key: ${key.substring(0, 32)}...`);
+        return JSON.parse(cachedData) as AIResponse&lt;T>;
+      }
+      
+      this.logger.info(`[CacheService] Cache MISS for key: ${key.substring(0, 32)}...`);
+      return null;
+    } catch (error) {
+      this.logger.error('[CacheService] Redis GET operation failed. Bypassing cache.', error);
+      return null; // Fail open - allow request to proceed without cache
+    }
+  }
+
+  /**
+   * Caches an AI response with the configured TTL.
+   * 
+   * Implements "fail open" pattern - if Redis fails, logs the error but doesn't
+   * throw, allowing the main AI request flow to continue successfully.
+   * 
+   * @param taskType - The AI task type
+   * @param payload - The request payload used for key generation
+   * @param response - The AI response to cache
+   */
+  async set&lt;T extends AITaskType>(
+    taskType: T, 
+    payload: AITaskRequestPayload&lt;T>, 
+    response: AIResponse&lt;T>
+  ): Promise&lt;void> {
+    if (!this.config.enabled) {
+      return;
+    }
+
+    const key = this.generateCacheKey(taskType, payload);
+    const ttl = this.config.ttlSeconds;
+    
+    try {
+      this.logger.info(`[CacheService] Caching response for key: ${key.substring(0, 32)}... with TTL: ${ttl}s`);
+      await this.redis.set(key, JSON.stringify(response), 'EX', ttl);
+    } catch (error) {
+      this.logger.error('[CacheService] Redis SET operation failed. Skipping cache set.', error);
+      // Fail open - don't throw error, just skip caching
+    }
+  }
+
+  /**
+   * Clears all cached AI responses (useful for testing or cache invalidation).
+   * 
+   * @param pattern - Redis key pattern to match (defaults to all AI cache keys)
+   */
+  async clear(pattern: string = 'ai-cache:*'): Promise&lt;void> {
+    try {
+      const keys = await this.redis.keys(pattern);
+      if (keys.length > 0) {
+        await this.redis.del(...keys);
+        this.logger.info(`[CacheService] Cleared ${keys.length} cached entries matching pattern: ${pattern}`);
+      }
+    } catch (error) {
+      this.logger.error('[CacheService] Cache clear operation failed.', error);
+      // Don't throw - this is typically a maintenance operation
+    }
+  }
+
+  /**
+   * Gets cache statistics for monitoring and optimization.
+   * 
+   * @returns Basic cache statistics
+   */
+  async getStats(): Promise&lt;{ totalKeys: number; memoryUsage?: string }> {
+    try {
+      const keys = await this.redis.keys('ai-cache:*');
+      const info = await this.redis.info('memory');
+      const memoryMatch = info.match(/used_memory_human:(.+)/);
+      
+      return {
+        totalKeys: keys.length,
+        memoryUsage: memoryMatch ? memoryMatch[1].trim() : undefined
+      };
+    } catch (error) {
+      this.logger.error('[CacheService] Failed to get cache statistics.', error);
+      return { totalKeys: 0 };
+    }
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 19:07:31 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

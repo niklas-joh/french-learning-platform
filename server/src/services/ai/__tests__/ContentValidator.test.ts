@@ -15,25 +15,46 @@ describe('ContentValidator', () => {
     topics: ['greetings'],
   });
 
-  const createMockContent = (overrides: Partial<StructuredContent> = {}): StructuredContent => ({
-    type: 'lesson',
-    title: 'Leçon de Salutations',
-    description: 'Apprenez les salutations de base en français.',
-    learningObjectives: ['Savoir dire bonjour et au revoir', 'Utiliser les salutations formelles et informelles'],
-    estimatedTime: 10,
-    sections: [
-      { type: 'introduction', title: 'Intro', content: '...', duration: 2 },
-      { type: 'presentation', title: 'Présentation', content: '...', duration: 5 },
-      { type: 'practice', title: 'Pratique', content: '...', duration: 3 },
-    ],
-    vocabulary: [
-      { word: 'Bonjour', definition: 'Hello', pronunciation: 'bon-zhoor', examples: ['Bonjour, comment ça va?'], difficulty: 'easy' },
-    ],
-    ...overrides,
-  });
+  const createMockContent = (type: StructuredContent['type'] = 'lesson', overrides: Partial<StructuredContent> = {}): StructuredContent => {
+    const baseContent: any = {
+      title: 'Mock Title',
+      description: 'Mock description in French.',
+      learningObjectives: ['Objective 1', 'Objective 2'],
+      estimatedTime: 10,
+    };
+
+    let content: any;
+
+    switch (type) {
+      case 'lesson':
+        content = {
+          ...baseContent,
+          type: 'lesson',
+          sections: [{ type: 'introduction', title: 'Intro', content: '...', duration: 2 }],
+          vocabulary: [{ word: 'Bonjour', definition: 'Hello', pronunciation: 'bon-zhoor', examples: ['Bonjour, comment ça va?'], difficulty: 'easy' }],
+        };
+        break;
+      case 'grammar_exercise':
+        content = {
+          ...baseContent,
+          type: 'grammar_exercise',
+          grammarRule: 'passé composé',
+          explanation: 'The passé composé is formed with...',
+          examples: ['J\'ai mangé', 'Tu as parlé'],
+          exercises: [{ type: 'fill_in_blank', instruction: '...', items: [], feedback: '...' }],
+          tips: [],
+          commonMistakes: [],
+        };
+        break;
+      default:
+        content = { ...baseContent, type };
+    }
+
+    return { ...content, ...overrides };
+  };
 
   it('should validate correctly structured content', async () => {
-    const content = createMockContent();
+    const content = createMockContent('lesson');
     const request = createMockRequest();
     const validation = await validator.validate(content, request);
     expect(validation.isValid).toBe(true);
@@ -41,7 +62,7 @@ describe('ContentValidator', () => {
   });
 
   it('should invalidate content with missing title', async () => {
-    const content = createMockContent({ title: '' });
+    const content = createMockContent('lesson', { title: '' });
     const request = createMockRequest();
     const validation = await validator.validate(content, request);
     expect(validation.isValid).toBe(false);
@@ -49,7 +70,7 @@ describe('ContentValidator', () => {
   });
 
   it('should invalidate content with insufficient French language elements', async () => {
-    const content = createMockContent({ title: 'Greetings Lesson', description: 'Learn basic greetings.' });
+    const content = createMockContent('lesson', { title: 'Greetings Lesson', description: 'Learn basic greetings.' });
     const request = createMockRequest();
     const validation = await validator.validate(content, request);
     expect(validation.issues).toContain('Content may not contain sufficient French language elements');

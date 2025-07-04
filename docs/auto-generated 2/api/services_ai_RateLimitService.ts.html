@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>services/ai/RateLimitService.ts - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AIGenerationError.html">AIGenerationError</a></li><li><a href="AIMetricsService.html">AIMetricsService</a></li><li><a href="AIOrchestrator.html">AIOrchestrator</a><ul class='methods'><li data-type='method'><a href="AIOrchestrator.html#assessPronunciation">assessPronunciation</a></li><li data-type='method'><a href="AIOrchestrator.html#generateContent">generateContent</a></li><li data-type='method'><a href="AIOrchestrator.html#generateStubbedContent">generateStubbedContent</a></li><li data-type='method'><a href="AIOrchestrator.html#gradeResponse">gradeResponse</a></li><li data-type='method'><a href="AIOrchestrator.html#hashString">hashString</a></li></ul></li><li><a href="BaseEnhancer.html">BaseEnhancer</a></li><li><a href="BaseValidator.html">BaseValidator</a><ul class='methods'><li data-type='method'><a href="BaseValidator.html#checkArrayNonEmpty">checkArrayNonEmpty</a></li><li data-type='method'><a href="BaseValidator.html#checkNonEmpty">checkNonEmpty</a></li></ul></li><li><a href="CacheService.html">CacheService</a><ul class='methods'><li data-type='method'><a href="CacheService.html#clear">clear</a></li><li data-type='method'><a href="CacheService.html#get">get</a></li><li data-type='method'><a href="CacheService.html#getStats">getStats</a></li><li data-type='method'><a href="CacheService.html#set">set</a></li></ul></li><li><a href="CacheService_CacheService.html">CacheService</a></li><li><a href="ContentGenerationJobHandler.html">ContentGenerationJobHandler</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobHandler.html#handleJob">handleJob</a></li></ul></li><li><a href="ContentGenerationJobQueue.html">ContentGenerationJobQueue</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobQueue.html#addJob">addJob</a></li><li data-type='method'><a href="ContentGenerationJobQueue.html#getJob">getJob</a></li></ul></li><li><a href="ContextService.html">ContextService</a><ul class='methods'><li data-type='method'><a href="ContextService.html#fetchAndBuildContext">fetchAndBuildContext</a></li><li data-type='method'><a href="ContextService.html#getAIUserContext">getAIUserContext</a></li><li data-type='method'><a href="ContextService.html#getUserContext">getUserContext</a></li><li data-type='method'><a href="ContextService.html#updateContext">updateContext</a></li></ul></li><li><a href="DatabaseJobQueueService.html">DatabaseJobQueueService</a><ul class='methods'><li data-type='method'><a href="DatabaseJobQueueService.html#calculateProgress">calculateProgress</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#cancelJob">cancelJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#enqueueJob">enqueueJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobResult">getJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobStatus">getJobStatus</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getNextJob">getNextJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#listJobsByUser">listJobsByUser</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#setJobResult">setJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#updateJobStatus">updateJobStatus</a></li></ul></li><li><a href="DynamicContentGenerator.html">DynamicContentGenerator</a><ul class='methods'><li data-type='method'><a href="DynamicContentGenerator.html#generateContent">generateContent</a></li></ul></li><li><a href="ExerciseValidator.html">ExerciseValidator</a><ul class='methods'><li data-type='method'><a href="ExerciseValidator.html#validate">validate</a></li></ul></li><li><a href="FallbackHandler.html">FallbackHandler</a><ul class='methods'><li data-type='method'><a href="FallbackHandler.html#getConfigurationSummary">getConfigurationSummary</a></li><li data-type='method'><a href="FallbackHandler.html#getFallback">getFallback</a></li><li data-type='method'><a href="FallbackHandler.html#validateAllConfigurations">validateAllConfigurations</a></li><li data-type='method'><a href="FallbackHandler.html#validateFallbackConfig">validateFallbackConfig</a></li></ul></li><li><a href="FallbackHandler_FallbackHandler.html">FallbackHandler</a></li><li><a href="LearningPathController.html">LearningPathController</a><ul class='methods'><li data-type='method'><a href="LearningPathController.html#completeLesson">completeLesson</a></li><li data-type='method'><a href="LearningPathController.html#getLearningPathForUser">getLearningPathForUser</a></li><li data-type='method'><a href="LearningPathController.html#startLesson">startLesson</a></li></ul></li><li><a href="LessonEnhancer.html">LessonEnhancer</a><ul class='methods'><li data-type='method'><a href="LessonEnhancer.html#enhance">enhance</a></li></ul></li><li><a href="LessonValidator.html">LessonValidator</a><ul class='methods'><li data-type='method'><a href="LessonValidator.html#validate">validate</a></li></ul></li><li><a href="PromptTemplateEngine.html">PromptTemplateEngine</a><ul class='methods'><li data-type='method'><a href="PromptTemplateEngine.html#generateContentPrompt">generateContentPrompt</a></li></ul></li><li><a href="RateLimitService.html">RateLimitService</a><ul class='methods'><li data-type='method'><a href="RateLimitService.html#cleanup">cleanup</a></li><li data-type='method'><a href="RateLimitService.html#getGlobalStats">getGlobalStats</a></li><li data-type='method'><a href="RateLimitService.html#getStatus">getStatus</a></li><li data-type='method'><a href="RateLimitService.html#isAllowed">isAllowed</a></li><li data-type='method'><a href="RateLimitService.html#resetUserLimit">resetUserLimit</a></li></ul></li><li><a href="RateLimitService_RateLimitService.html">RateLimitService</a></li><li><a href="VocabularyValidator.html">VocabularyValidator</a><ul class='methods'><li data-type='method'><a href="VocabularyValidator.html#validate">validate</a></li></ul></li></ul><h3>Interfaces</h3><ul><li><a href="ILogger.html">ILogger</a></li><li></li><li></li><li></li></ul><h3>Global</h3><ul><li><a href="global.html#AIVocabularyItemSchema">AIVocabularyItemSchema</a></li><li><a href="global.html#AIVocabularyListSchema">AIVocabularyListSchema</a></li><li><a href="global.html#QUEUE_NAMES">QUEUE_NAMES</a></li><li><a href="global.html#UserContentAssignmentModel">UserContentAssignmentModel</a></li><li><a href="global.html#adminTestController">adminTestController</a></li><li><a href="global.html#assessPronunciation">assessPronunciation</a></li><li><a href="global.html#assessPronunciationPayloadSchema">assessPronunciationPayloadSchema</a></li><li><a href="global.html#cancelJob">cancelJob</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#completeUserLesson">completeUserLesson</a></li><li><a href="global.html#contentGenerationJobQueue">contentGenerationJobQueue</a></li><li><a href="global.html#createContent">createContent</a></li><li><a href="global.html#createContentItem">createContentItem</a></li><li><a href="global.html#createContentType">createContentType</a></li><li><a href="global.html#createLogger">createLogger</a></li><li><a href="global.html#createTopic">createTopic</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteContent">deleteContent</a></li><li><a href="global.html#deleteContentItemById">deleteContentItemById</a></li><li><a href="global.html#deleteContentType">deleteContentType</a></li><li><a href="global.html#deleteTopicById">deleteTopicById</a></li><li><a href="global.html#findByUserId">findByUserId</a></li><li><a href="global.html#formatValidationError">formatValidationError</a></li><li><a href="global.html#generateContentAsync">generateContentAsync</a></li><li><a href="global.html#generateContentId">generateContentId</a></li><li><a href="global.html#generateLesson">generateLesson</a></li><li><a href="global.html#generateLessonPayloadSchema">generateLessonPayloadSchema</a></li><li><a href="global.html#getAllContent">getAllContent</a></li><li><a href="global.html#getAllContentItems">getAllContentItems</a></li><li><a href="global.html#getAllContentTypes">getAllContentTypes</a></li><li><a href="global.html#getAllTopics">getAllTopics</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAnalyticsSummary">getAnalyticsSummary</a></li><li><a href="global.html#getAssignedContent">getAssignedContent</a></li><li><a href="global.html#getContentById">getContentById</a></li><li><a href="global.html#getContentByTopicId">getContentByTopicId</a></li><li><a href="global.html#getContentItemById">getContentItemById</a></li><li><a href="global.html#getCurrentUserProfile">getCurrentUserProfile</a></li><li><a href="global.html#getGenerationStatus">getGenerationStatus</a></li><li><a href="global.html#getInternalUserByEmailWithPassword">getInternalUserByEmailWithPassword</a></li><li><a href="global.html#getLearningPathUserView">getLearningPathUserView</a></li><li><a href="global.html#getPrompts">getPrompts</a></li><li><a href="global.html#getTopicById">getTopicById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getUserProgress">getUserProgress</a></li><li><a href="global.html#gradeResponse">gradeResponse</a></li><li><a href="global.html#gradeResponsePayloadSchema">gradeResponsePayloadSchema</a></li><li><a href="global.html#handleAIRequest">handleAIRequest</a></li><li><a href="global.html#isAdmin">isAdmin</a></li><li><a href="global.html#isLesson">isLesson</a></li><li><a href="global.html#listJobs">listJobs</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#paginationSchema">paginationSchema</a></li><li><a href="global.html#recordContentItemProgress">recordContentItemProgress</a></li><li><a href="global.html#redisConnection">redisConnection</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startUserLesson">startUserLesson</a></li><li><a href="global.html#taskHandlerMap">taskHandlerMap</a></li><li><a href="global.html#updateContent">updateContent</a></li><li><a href="global.html#updateContentItemById">updateContentItemById</a></li><li><a href="global.html#updateContentType">updateContentType</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateUserPreferences">updateUserPreferences</a></li><li><a href="global.html#updateUserProfile">updateUserProfile</a></li><li><a href="global.html#upsert">upsert</a></li><li><a href="global.html#validateAIPayload">validateAIPayload</a></li><li><a href="global.html#validationSchemaMap">validationSchemaMap</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">services/ai/RateLimitService.ts</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * RateLimitService - Efficient AI Request Rate Limiting with Redis
+ * 
+ * Manages AI API request rate limits using an efficient fixed-window counter algorithm
+ * implemented in Redis. Provides cost control and prevents API abuse while maintaining
+ * high performance with minimal Redis operations.
+ * 
+ * Key improvements from initial design:
+ * - Uses efficient fixed-window counter instead of complex sliding window
+ * - Atomic Redis operations (INCR + EXPIRE) for better performance
+ * - Implements "fail open" pattern for graceful degradation
+ * - Full type safety using the centralized AI type system
+ */
+
+import { Redis } from 'ioredis';
+import { RateLimitStrategyConfig } from '../../types/AI';
+
+/**
+ * @interface ILogger
+ * @description Temporary logger interface to support future structured logging implementation.
+ *              TODO: Replace with proper structured logger (Future Consideration #16)
+ */
+interface ILogger {
+  info(message: string, ...args: any[]): void;
+  warn(message: string, ...args: any[]): void;
+  error(message: string, error?: any): void;
+}
+
+/**
+ * @class RateLimitService
+ * @description Manages AI request rate limits using an efficient fixed-window counter algorithm.
+ *              Provides cost control and prevents API abuse while maintaining excellent performance.
+ */
+export class RateLimitService {
+  private redis: Redis;
+  private config: RateLimitStrategyConfig;
+  private logger: ILogger;
+
+  /**
+   * @constructor
+   * @param redis - Configured Redis client instance
+   * @param config - Rate limiting strategy configuration
+   * @param logger - Logger instance (defaults to console for now)
+   */
+  constructor(redis: Redis, config: RateLimitStrategyConfig, logger: ILogger = console) {
+    this.redis = redis;
+    this.config = config;
+    this.logger = logger;
+    this.logger.info('[RateLimitService] Initialized with Redis rate limiting');
+  }
+
+  /**
+   * Checks if a request from a user is allowed based on configured rate limits.
+   * 
+   * Uses an efficient fixed-window counter algorithm:
+   * 1. INCR the counter for the user's current time window
+   * 2. If this is the first request (count = 1), set expiry on the key
+   * 3. Check if count exceeds the configured maximum
+   * 
+   * This approach is much more efficient than sliding windows and provides
+   * adequate rate limiting for cost control purposes.
+   * 
+   * Implements "fail open" pattern - if Redis fails, allows the request to proceed
+   * rather than blocking legitimate users due to infrastructure issues.
+   * 
+   * @param userId - The ID of the user making the request
+   * @returns Promise&lt;boolean> - true if request is allowed, false if rate limited
+   */
+  async isAllowed(userId: string): Promise&lt;boolean> {
+    if (!this.config.enabled) {
+      return true;
+    }
+
+    // Generate time-based key for fixed window
+    const windowStart = Math.floor(Date.now() / (this.config.windowMinutes * 60 * 1000));
+    const key = `rate-limit:${userId}:${windowStart}`;
+
+    try {
+      // Atomic increment - this is the core of the fixed-window algorithm
+      const currentRequests = await this.redis.incr(key);
+
+      // Set expiry only on the first request in this window
+      if (currentRequests === 1) {
+        await this.redis.expire(key, this.config.windowMinutes * 60);
+      }
+
+      // Check against limit
+      if (currentRequests > this.config.maxRequests) {
+        this.logger.warn(`[RateLimitService] Rate limit EXCEEDED for user: ${userId} (${currentRequests}/${this.config.maxRequests})`);
+        return false;
+      }
+
+      this.logger.info(`[RateLimitService] Rate limit check PASSED for user: ${userId} (${currentRequests}/${this.config.maxRequests})`);
+      return true;
+
+    } catch (error) {
+      this.logger.error('[RateLimitService] Redis rate limit check failed. Bypassing rate limit.', error);
+      return true; // Fail open - allow request to proceed
+    }
+  }
+
+  /**
+   * Gets current rate limit status for a user without incrementing the counter.
+   * Useful for displaying remaining requests to users or for monitoring.
+   * 
+   * @param userId - The ID of the user to check
+   * @returns Promise with current usage and remaining requests
+   */
+  async getStatus(userId: string): Promise&lt;{
+    currentRequests: number;
+    maxRequests: number;
+    remainingRequests: number;
+    windowMinutes: number;
+  }> {
+    if (!this.config.enabled) {
+      return {
+        currentRequests: 0,
+        maxRequests: this.config.maxRequests,
+        remainingRequests: this.config.maxRequests,
+        windowMinutes: this.config.windowMinutes
+      };
+    }
+
+    const windowStart = Math.floor(Date.now() / (this.config.windowMinutes * 60 * 1000));
+    const key = `rate-limit:${userId}:${windowStart}`;
+
+    try {
+      const currentRequests = await this.redis.get(key);
+      const current = currentRequests ? parseInt(currentRequests, 10) : 0;
+
+      return {
+        currentRequests: current,
+        maxRequests: this.config.maxRequests,
+        remainingRequests: Math.max(0, this.config.maxRequests - current),
+        windowMinutes: this.config.windowMinutes
+      };
+
+    } catch (error) {
+      this.logger.error('[RateLimitService] Failed to get rate limit status.', error);
+      // Return safe defaults on error
+      return {
+        currentRequests: 0,
+        maxRequests: this.config.maxRequests,
+        remainingRequests: this.config.maxRequests,
+        windowMinutes: this.config.windowMinutes
+      };
+    }
+  }
+
+  /**
+   * Resets rate limit for a specific user (admin function).
+   * Useful for customer support or testing scenarios.
+   * 
+   * @param userId - The ID of the user whose rate limit should be reset
+   */
+  async resetUserLimit(userId: string): Promise&lt;void> {
+    const windowStart = Math.floor(Date.now() / (this.config.windowMinutes * 60 * 1000));
+    const key = `rate-limit:${userId}:${windowStart}`;
+
+    try {
+      await this.redis.del(key);
+      this.logger.info(`[RateLimitService] Reset rate limit for user: ${userId}`);
+    } catch (error) {
+      this.logger.error(`[RateLimitService] Failed to reset rate limit for user: ${userId}`, error);
+    }
+  }
+
+  /**
+   * Gets global rate limiting statistics for monitoring and optimization.
+   * 
+   * @returns Promise with aggregated rate limiting statistics
+   */
+  async getGlobalStats(): Promise&lt;{
+    totalActiveUsers: number;
+    totalActiveKeys: number;
+  }> {
+    try {
+      const keys = await this.redis.keys('rate-limit:*');
+      const activeUsers = new Set();
+
+      // Extract unique user IDs from keys
+      keys.forEach(key => {
+        const parts = key.split(':');
+        if (parts.length >= 3) {
+          activeUsers.add(parts[1]); // Extract userId from rate-limit:userId:timestamp
+        }
+      });
+
+      return {
+        totalActiveUsers: activeUsers.size,
+        totalActiveKeys: keys.length
+      };
+
+    } catch (error) {
+      this.logger.error('[RateLimitService] Failed to get global statistics.', error);
+      return {
+        totalActiveUsers: 0,
+        totalActiveKeys: 0
+      };
+    }
+  }
+
+  /**
+   * Cleans up expired rate limit keys (maintenance function).
+   * Redis should handle this automatically with EXPIRE, but this provides
+   * a manual cleanup option if needed.
+   */
+  async cleanup(): Promise&lt;void> {
+    try {
+      const keys = await this.redis.keys('rate-limit:*');
+      let cleanedCount = 0;
+
+      for (const key of keys) {
+        const ttl = await this.redis.ttl(key);
+        if (ttl === -1) { // Key exists but has no expiry set
+          await this.redis.del(key);
+          cleanedCount++;
+        }
+      }
+
+      if (cleanedCount > 0) {
+        this.logger.info(`[RateLimitService] Cleaned up ${cleanedCount} orphaned rate limit keys`);
+      }
+
+    } catch (error) {
+      this.logger.error('[RateLimitService] Cleanup operation failed.', error);
+    }
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 19:07:31 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

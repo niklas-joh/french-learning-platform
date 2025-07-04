@@ -1,0 +1,24 @@
+# Developer Guide
+
+## Project Structure
+
+```
+/Users/niklas/Documents/Coding/french-learning-platform
+├── LICENSE
+├── README.md
+├── client
+├── cline
+├── content
+├── database
+├── docs
+├── node_modules
+├── package-lock.json
+├── package.json
+├── scripts
+├── server
+└── setup
+
+directory: 8 file: 5
+
+
+```

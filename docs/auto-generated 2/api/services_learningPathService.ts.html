@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>services/learningPathService.ts - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AIGenerationError.html">AIGenerationError</a></li><li><a href="AIMetricsService.html">AIMetricsService</a></li><li><a href="AIOrchestrator.html">AIOrchestrator</a><ul class='methods'><li data-type='method'><a href="AIOrchestrator.html#assessPronunciation">assessPronunciation</a></li><li data-type='method'><a href="AIOrchestrator.html#generateContent">generateContent</a></li><li data-type='method'><a href="AIOrchestrator.html#generateStubbedContent">generateStubbedContent</a></li><li data-type='method'><a href="AIOrchestrator.html#gradeResponse">gradeResponse</a></li><li data-type='method'><a href="AIOrchestrator.html#hashString">hashString</a></li></ul></li><li><a href="BaseEnhancer.html">BaseEnhancer</a></li><li><a href="BaseValidator.html">BaseValidator</a><ul class='methods'><li data-type='method'><a href="BaseValidator.html#checkArrayNonEmpty">checkArrayNonEmpty</a></li><li data-type='method'><a href="BaseValidator.html#checkNonEmpty">checkNonEmpty</a></li></ul></li><li><a href="CacheService.html">CacheService</a><ul class='methods'><li data-type='method'><a href="CacheService.html#clear">clear</a></li><li data-type='method'><a href="CacheService.html#get">get</a></li><li data-type='method'><a href="CacheService.html#getStats">getStats</a></li><li data-type='method'><a href="CacheService.html#set">set</a></li></ul></li><li><a href="CacheService_CacheService.html">CacheService</a></li><li><a href="ContentGenerationJobHandler.html">ContentGenerationJobHandler</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobHandler.html#handleJob">handleJob</a></li></ul></li><li><a href="ContentGenerationJobQueue.html">ContentGenerationJobQueue</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobQueue.html#addJob">addJob</a></li><li data-type='method'><a href="ContentGenerationJobQueue.html#getJob">getJob</a></li></ul></li><li><a href="ContextService.html">ContextService</a><ul class='methods'><li data-type='method'><a href="ContextService.html#fetchAndBuildContext">fetchAndBuildContext</a></li><li data-type='method'><a href="ContextService.html#getAIUserContext">getAIUserContext</a></li><li data-type='method'><a href="ContextService.html#getUserContext">getUserContext</a></li><li data-type='method'><a href="ContextService.html#updateContext">updateContext</a></li></ul></li><li><a href="DatabaseJobQueueService.html">DatabaseJobQueueService</a><ul class='methods'><li data-type='method'><a href="DatabaseJobQueueService.html#calculateProgress">calculateProgress</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#cancelJob">cancelJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#enqueueJob">enqueueJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobResult">getJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobStatus">getJobStatus</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getNextJob">getNextJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#listJobsByUser">listJobsByUser</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#setJobResult">setJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#updateJobStatus">updateJobStatus</a></li></ul></li><li><a href="DynamicContentGenerator.html">DynamicContentGenerator</a><ul class='methods'><li data-type='method'><a href="DynamicContentGenerator.html#generateContent">generateContent</a></li></ul></li><li><a href="ExerciseValidator.html">ExerciseValidator</a><ul class='methods'><li data-type='method'><a href="ExerciseValidator.html#validate">validate</a></li></ul></li><li><a href="FallbackHandler.html">FallbackHandler</a><ul class='methods'><li data-type='method'><a href="FallbackHandler.html#getConfigurationSummary">getConfigurationSummary</a></li><li data-type='method'><a href="FallbackHandler.html#getFallback">getFallback</a></li><li data-type='method'><a href="FallbackHandler.html#validateAllConfigurations">validateAllConfigurations</a></li><li data-type='method'><a href="FallbackHandler.html#validateFallbackConfig">validateFallbackConfig</a></li></ul></li><li><a href="FallbackHandler_FallbackHandler.html">FallbackHandler</a></li><li><a href="LearningPathController.html">LearningPathController</a><ul class='methods'><li data-type='method'><a href="LearningPathController.html#completeLesson">completeLesson</a></li><li data-type='method'><a href="LearningPathController.html#getLearningPathForUser">getLearningPathForUser</a></li><li data-type='method'><a href="LearningPathController.html#startLesson">startLesson</a></li></ul></li><li><a href="LessonEnhancer.html">LessonEnhancer</a><ul class='methods'><li data-type='method'><a href="LessonEnhancer.html#enhance">enhance</a></li></ul></li><li><a href="LessonValidator.html">LessonValidator</a><ul class='methods'><li data-type='method'><a href="LessonValidator.html#validate">validate</a></li></ul></li><li><a href="PromptTemplateEngine.html">PromptTemplateEngine</a><ul class='methods'><li data-type='method'><a href="PromptTemplateEngine.html#generateContentPrompt">generateContentPrompt</a></li></ul></li><li><a href="RateLimitService.html">RateLimitService</a><ul class='methods'><li data-type='method'><a href="RateLimitService.html#cleanup">cleanup</a></li><li data-type='method'><a href="RateLimitService.html#getGlobalStats">getGlobalStats</a></li><li data-type='method'><a href="RateLimitService.html#getStatus">getStatus</a></li><li data-type='method'><a href="RateLimitService.html#isAllowed">isAllowed</a></li><li data-type='method'><a href="RateLimitService.html#resetUserLimit">resetUserLimit</a></li></ul></li><li><a href="RateLimitService_RateLimitService.html">RateLimitService</a></li><li><a href="VocabularyValidator.html">VocabularyValidator</a><ul class='methods'><li data-type='method'><a href="VocabularyValidator.html#validate">validate</a></li></ul></li></ul><h3>Interfaces</h3><ul><li><a href="ILogger.html">ILogger</a></li><li></li><li></li><li></li></ul><h3>Global</h3><ul><li><a href="global.html#AIVocabularyItemSchema">AIVocabularyItemSchema</a></li><li><a href="global.html#AIVocabularyListSchema">AIVocabularyListSchema</a></li><li><a href="global.html#QUEUE_NAMES">QUEUE_NAMES</a></li><li><a href="global.html#UserContentAssignmentModel">UserContentAssignmentModel</a></li><li><a href="global.html#adminTestController">adminTestController</a></li><li><a href="global.html#assessPronunciation">assessPronunciation</a></li><li><a href="global.html#assessPronunciationPayloadSchema">assessPronunciationPayloadSchema</a></li><li><a href="global.html#cancelJob">cancelJob</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#completeUserLesson">completeUserLesson</a></li><li><a href="global.html#contentGenerationJobQueue">contentGenerationJobQueue</a></li><li><a href="global.html#createContent">createContent</a></li><li><a href="global.html#createContentItem">createContentItem</a></li><li><a href="global.html#createContentType">createContentType</a></li><li><a href="global.html#createLogger">createLogger</a></li><li><a href="global.html#createTopic">createTopic</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteContent">deleteContent</a></li><li><a href="global.html#deleteContentItemById">deleteContentItemById</a></li><li><a href="global.html#deleteContentType">deleteContentType</a></li><li><a href="global.html#deleteTopicById">deleteTopicById</a></li><li><a href="global.html#findByUserId">findByUserId</a></li><li><a href="global.html#formatValidationError">formatValidationError</a></li><li><a href="global.html#generateContentAsync">generateContentAsync</a></li><li><a href="global.html#generateContentId">generateContentId</a></li><li><a href="global.html#generateLesson">generateLesson</a></li><li><a href="global.html#generateLessonPayloadSchema">generateLessonPayloadSchema</a></li><li><a href="global.html#getAllContent">getAllContent</a></li><li><a href="global.html#getAllContentItems">getAllContentItems</a></li><li><a href="global.html#getAllContentTypes">getAllContentTypes</a></li><li><a href="global.html#getAllTopics">getAllTopics</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAnalyticsSummary">getAnalyticsSummary</a></li><li><a href="global.html#getAssignedContent">getAssignedContent</a></li><li><a href="global.html#getContentById">getContentById</a></li><li><a href="global.html#getContentByTopicId">getContentByTopicId</a></li><li><a href="global.html#getContentItemById">getContentItemById</a></li><li><a href="global.html#getCurrentUserProfile">getCurrentUserProfile</a></li><li><a href="global.html#getGenerationStatus">getGenerationStatus</a></li><li><a href="global.html#getInternalUserByEmailWithPassword">getInternalUserByEmailWithPassword</a></li><li><a href="global.html#getLearningPathUserView">getLearningPathUserView</a></li><li><a href="global.html#getPrompts">getPrompts</a></li><li><a href="global.html#getTopicById">getTopicById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getUserProgress">getUserProgress</a></li><li><a href="global.html#gradeResponse">gradeResponse</a></li><li><a href="global.html#gradeResponsePayloadSchema">gradeResponsePayloadSchema</a></li><li><a href="global.html#handleAIRequest">handleAIRequest</a></li><li><a href="global.html#isAdmin">isAdmin</a></li><li><a href="global.html#isLesson">isLesson</a></li><li><a href="global.html#listJobs">listJobs</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#paginationSchema">paginationSchema</a></li><li><a href="global.html#recordContentItemProgress">recordContentItemProgress</a></li><li><a href="global.html#redisConnection">redisConnection</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startUserLesson">startUserLesson</a></li><li><a href="global.html#taskHandlerMap">taskHandlerMap</a></li><li><a href="global.html#updateContent">updateContent</a></li><li><a href="global.html#updateContentItemById">updateContentItemById</a></li><li><a href="global.html#updateContentType">updateContentType</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateUserPreferences">updateUserPreferences</a></li><li><a href="global.html#updateUserProfile">updateUserProfile</a></li><li><a href="global.html#upsert">upsert</a></li><li><a href="global.html#validateAIPayload">validateAIPayload</a></li><li><a href="global.html#validationSchemaMap">validationSchemaMap</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">services/learningPathService.ts</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Knex } from 'knex';
+import { LearningPath, LearningPathWithUserProgress, getLearningPathById } from '../models/LearningPath';
+import { LearningUnit, LearningUnitWithUserProgress, getUnitsAndLessonsByPathId, UnitAndLessonRow } from '../models/LearningUnit';
+import { Lesson, LessonWithUserProgress } from '../models/Lesson';
+import { UserLessonProgress, LessonStatus, getLessonProgressForUser, startLesson, completeLesson } from '../models/UserLessonProgress';
+
+/**
+ * Retrieves a learning path with its units and lessons, including user-specific progress
+ * for each lesson.
+ * @param pathId - The ID of the learning path to retrieve.
+ * @param userId - The ID of the user for whom to retrieve progress.
+ * @returns A Promise resolving to LearningPathWithUserProgress object or null if not found.
+ */
+export async function getLearningPathUserView(
+  pathId: number,
+  userId: number
+): Promise&lt;LearningPathWithUserProgress | null> {
+  // 1. Fetch Learning Path Details
+  const learningPath = await getLearningPathById(pathId);
+
+  if (!learningPath) {
+    return null;
+  }
+
+  // 2. Fetch All Units and Lessons for the Path in One Go
+  const unitsAndLessonsRaw = await getUnitsAndLessonsByPathId(pathId);
+
+  if (!unitsAndLessonsRaw || unitsAndLessonsRaw.length === 0) {
+    // Path exists but has no units or lessons, return with empty units
+    return { ...learningPath, units: [] };
+  }
+
+  // 3. Fetch All Relevant User Lesson Progress in One Go
+  const lessonIds = unitsAndLessonsRaw
+    .map(item => item.lessonId)
+    .filter((id): id is number => id !== null &amp;&amp; id !== undefined);
+    
+  const userProgressRecords = await getLessonProgressForUser(userId, lessonIds);
+
+  // Create a map for quick progress lookup
+  const progressMap = new Map&lt;number, UserLessonProgress>();
+  userProgressRecords.forEach(p => progressMap.set(p.lessonId, p));
+
+  // 4. Data Restructuring and Status Determination
+  const unitsMap = new Map&lt;number, LearningUnitWithUserProgress>();
+  // This variable tracks if the PREVIOUS lesson is marked as 'completed' in the database,
+  // which is the condition for unlocking the current lesson.
+  // We initialize it to true to ensure the very first lesson is always available.
+  let previousLessonWasCompleted = true;
+
+  for (const row of unitsAndLessonsRaw) {
+    // Get or create the unit
+    let unit = unitsMap.get(row.unitId);
+    if (!unit) {
+      unit = {
+        id: row.unitId,
+        learningPathId: pathId,
+        title: row.unitTitle,
+        description: row.unitDescription,
+        level: row.unitLevel,
+        orderIndex: row.unitOrderIndex,
+        prerequisites: undefined,
+        isActive: row.unitIsActive,
+        createdAt: row.unitCreatedAt,
+        updatedAt: row.unitUpdatedAt,
+        lessons: [],
+      };
+      unitsMap.set(row.unitId, unit);
+    }
+
+    const lessonProgress = progressMap.get(row.lessonId);
+    let currentStatus: LessonStatus;
+
+    if (lessonProgress) {
+      // If a progress record exists, it is the source of truth.
+      currentStatus = lessonProgress.status;
+    } else {
+      // If no record exists, the status depends on the completion of the previous lesson.
+      currentStatus = previousLessonWasCompleted ? 'available' : 'locked';
+    }
+
+    // Create a base lesson object from the row data
+    const lesson: Lesson = {
+      id: row.lessonId,
+      learningUnitId: row.unitId,
+      title: row.lessonTitle,
+      description: row.lessonDescription,
+      type: row.lessonType,
+      estimatedTime: row.lessonEstimatedTime,
+      orderIndex: row.lessonOrderIndex,
+      contentData: row.lessonContentData,
+      isActive: row.lessonIsActive,
+      createdAt: row.lessonCreatedAt,
+      updatedAt: row.lessonUpdatedAt,
+    };
+
+    // Combine the base lesson with user progress to create the final object
+    const lessonWithProgress: LessonWithUserProgress = {
+      ...lesson,
+      status: currentStatus,
+      score: lessonProgress?.score,
+      startedAt: lessonProgress?.startedAt,
+      completedAt: lessonProgress?.completedAt,
+    };
+    
+    if (unit) {
+      unit.lessons.push(lessonWithProgress);
+    }
+
+    // For the next lesson to be available, THIS lesson must have a 'completed' status
+    // in the database. We check the original progress record, not the calculated `currentStatus`.
+    previousLessonWasCompleted = lessonProgress?.status === 'completed';
+  }
+
+  // TODO: Implement robust prerequisite logic for non-linear paths.
+  // The current logic assumes a linear path. Future enhancements should parse
+  // `learning_units.prerequisites` (e.g., a JSON array of unit IDs) to handle
+  // complex dependencies, which might allow multiple lessons or units to be
+  // 'available' simultaneously based on the completion of other units.
+
+  const assembledUnits = Array.from(unitsMap.values()).sort((a, b) => a.orderIndex - b.orderIndex);
+
+  return {
+    ...learningPath,
+    units: assembledUnits,
+  };
+}
+
+/**
+ * Starts a lesson for a user by creating or updating their progress record.
+ * @param userId - The ID of the user.
+ * @param lessonId - The ID of the lesson to start.
+ * @returns The created or updated user lesson progress record.
+ */
+export async function startUserLesson(
+  userId: number,
+  lessonId: number
+): Promise&lt;UserLessonProgress> {
+  try {
+    return await startLesson(userId, lessonId);
+  } catch (error) {
+    console.error('startUserLesson error:', error);
+    throw error;
+  }
+}
+
+/**
+ * Completes a lesson for a user within a database transaction.
+ * @param userId - The ID of the user.
+ * @param lessonId - The ID of the lesson to complete.
+ * @param trx - The Knex transaction object.
+ * @returns The updated user lesson progress record.
+ * @throws An error if the lesson progress does not exist or is not 'in_progress'.
+ */
+export async function completeUserLesson(
+  userId: number,
+  lessonId: number,
+  trx: Knex.Transaction
+): Promise&lt;UserLessonProgress> {
+  return await completeLesson(userId, lessonId, trx);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 19:07:31 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

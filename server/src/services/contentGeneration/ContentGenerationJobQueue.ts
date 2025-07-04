@@ -14,6 +14,9 @@ class ContentGenerationJobQueue {
   private queue: Queue;
 
   constructor() {
+    if (!redisConnection) {
+      throw new Error('Redis connection is not available.');
+    }
     this.queue = new Queue(QUEUE_NAMES.CONTENT_GENERATION, {
       connection: redisConnection,
       defaultJobOptions: {

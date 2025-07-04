@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>services/ai/ContentValidator.ts - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AIGenerationError.html">AIGenerationError</a></li><li><a href="AIMetricsService.html">AIMetricsService</a></li><li><a href="AIOrchestrator.html">AIOrchestrator</a><ul class='methods'><li data-type='method'><a href="AIOrchestrator.html#assessPronunciation">assessPronunciation</a></li><li data-type='method'><a href="AIOrchestrator.html#generateContent">generateContent</a></li><li data-type='method'><a href="AIOrchestrator.html#generateStubbedContent">generateStubbedContent</a></li><li data-type='method'><a href="AIOrchestrator.html#gradeResponse">gradeResponse</a></li><li data-type='method'><a href="AIOrchestrator.html#hashString">hashString</a></li></ul></li><li><a href="BaseEnhancer.html">BaseEnhancer</a></li><li><a href="BaseValidator.html">BaseValidator</a><ul class='methods'><li data-type='method'><a href="BaseValidator.html#checkArrayNonEmpty">checkArrayNonEmpty</a></li><li data-type='method'><a href="BaseValidator.html#checkNonEmpty">checkNonEmpty</a></li></ul></li><li><a href="CacheService.html">CacheService</a><ul class='methods'><li data-type='method'><a href="CacheService.html#clear">clear</a></li><li data-type='method'><a href="CacheService.html#get">get</a></li><li data-type='method'><a href="CacheService.html#getStats">getStats</a></li><li data-type='method'><a href="CacheService.html#set">set</a></li></ul></li><li><a href="CacheService_CacheService.html">CacheService</a></li><li><a href="ContentGenerationJobHandler.html">ContentGenerationJobHandler</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobHandler.html#handleJob">handleJob</a></li></ul></li><li><a href="ContentGenerationJobQueue.html">ContentGenerationJobQueue</a><ul class='methods'><li data-type='method'><a href="ContentGenerationJobQueue.html#addJob">addJob</a></li><li data-type='method'><a href="ContentGenerationJobQueue.html#getJob">getJob</a></li></ul></li><li><a href="ContextService.html">ContextService</a><ul class='methods'><li data-type='method'><a href="ContextService.html#fetchAndBuildContext">fetchAndBuildContext</a></li><li data-type='method'><a href="ContextService.html#getAIUserContext">getAIUserContext</a></li><li data-type='method'><a href="ContextService.html#getUserContext">getUserContext</a></li><li data-type='method'><a href="ContextService.html#updateContext">updateContext</a></li></ul></li><li><a href="DatabaseJobQueueService.html">DatabaseJobQueueService</a><ul class='methods'><li data-type='method'><a href="DatabaseJobQueueService.html#calculateProgress">calculateProgress</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#cancelJob">cancelJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#enqueueJob">enqueueJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobResult">getJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getJobStatus">getJobStatus</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#getNextJob">getNextJob</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#listJobsByUser">listJobsByUser</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#setJobResult">setJobResult</a></li><li data-type='method'><a href="DatabaseJobQueueService.html#updateJobStatus">updateJobStatus</a></li></ul></li><li><a href="DynamicContentGenerator.html">DynamicContentGenerator</a><ul class='methods'><li data-type='method'><a href="DynamicContentGenerator.html#generateContent">generateContent</a></li></ul></li><li><a href="ExerciseValidator.html">ExerciseValidator</a><ul class='methods'><li data-type='method'><a href="ExerciseValidator.html#validate">validate</a></li></ul></li><li><a href="FallbackHandler.html">FallbackHandler</a><ul class='methods'><li data-type='method'><a href="FallbackHandler.html#getConfigurationSummary">getConfigurationSummary</a></li><li data-type='method'><a href="FallbackHandler.html#getFallback">getFallback</a></li><li data-type='method'><a href="FallbackHandler.html#validateAllConfigurations">validateAllConfigurations</a></li><li data-type='method'><a href="FallbackHandler.html#validateFallbackConfig">validateFallbackConfig</a></li></ul></li><li><a href="FallbackHandler_FallbackHandler.html">FallbackHandler</a></li><li><a href="LearningPathController.html">LearningPathController</a><ul class='methods'><li data-type='method'><a href="LearningPathController.html#completeLesson">completeLesson</a></li><li data-type='method'><a href="LearningPathController.html#getLearningPathForUser">getLearningPathForUser</a></li><li data-type='method'><a href="LearningPathController.html#startLesson">startLesson</a></li></ul></li><li><a href="LessonEnhancer.html">LessonEnhancer</a><ul class='methods'><li data-type='method'><a href="LessonEnhancer.html#enhance">enhance</a></li></ul></li><li><a href="LessonValidator.html">LessonValidator</a><ul class='methods'><li data-type='method'><a href="LessonValidator.html#validate">validate</a></li></ul></li><li><a href="PromptTemplateEngine.html">PromptTemplateEngine</a><ul class='methods'><li data-type='method'><a href="PromptTemplateEngine.html#generateContentPrompt">generateContentPrompt</a></li></ul></li><li><a href="RateLimitService.html">RateLimitService</a><ul class='methods'><li data-type='method'><a href="RateLimitService.html#cleanup">cleanup</a></li><li data-type='method'><a href="RateLimitService.html#getGlobalStats">getGlobalStats</a></li><li data-type='method'><a href="RateLimitService.html#getStatus">getStatus</a></li><li data-type='method'><a href="RateLimitService.html#isAllowed">isAllowed</a></li><li data-type='method'><a href="RateLimitService.html#resetUserLimit">resetUserLimit</a></li></ul></li><li><a href="RateLimitService_RateLimitService.html">RateLimitService</a></li><li><a href="VocabularyValidator.html">VocabularyValidator</a><ul class='methods'><li data-type='method'><a href="VocabularyValidator.html#validate">validate</a></li></ul></li></ul><h3>Interfaces</h3><ul><li><a href="ILogger.html">ILogger</a></li><li></li><li></li><li></li></ul><h3>Global</h3><ul><li><a href="global.html#AIVocabularyItemSchema">AIVocabularyItemSchema</a></li><li><a href="global.html#AIVocabularyListSchema">AIVocabularyListSchema</a></li><li><a href="global.html#QUEUE_NAMES">QUEUE_NAMES</a></li><li><a href="global.html#UserContentAssignmentModel">UserContentAssignmentModel</a></li><li><a href="global.html#adminTestController">adminTestController</a></li><li><a href="global.html#assessPronunciation">assessPronunciation</a></li><li><a href="global.html#assessPronunciationPayloadSchema">assessPronunciationPayloadSchema</a></li><li><a href="global.html#cancelJob">cancelJob</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#completeUserLesson">completeUserLesson</a></li><li><a href="global.html#contentGenerationJobQueue">contentGenerationJobQueue</a></li><li><a href="global.html#createContent">createContent</a></li><li><a href="global.html#createContentItem">createContentItem</a></li><li><a href="global.html#createContentType">createContentType</a></li><li><a href="global.html#createLogger">createLogger</a></li><li><a href="global.html#createTopic">createTopic</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteContent">deleteContent</a></li><li><a href="global.html#deleteContentItemById">deleteContentItemById</a></li><li><a href="global.html#deleteContentType">deleteContentType</a></li><li><a href="global.html#deleteTopicById">deleteTopicById</a></li><li><a href="global.html#findByUserId">findByUserId</a></li><li><a href="global.html#formatValidationError">formatValidationError</a></li><li><a href="global.html#generateContentAsync">generateContentAsync</a></li><li><a href="global.html#generateContentId">generateContentId</a></li><li><a href="global.html#generateLesson">generateLesson</a></li><li><a href="global.html#generateLessonPayloadSchema">generateLessonPayloadSchema</a></li><li><a href="global.html#getAllContent">getAllContent</a></li><li><a href="global.html#getAllContentItems">getAllContentItems</a></li><li><a href="global.html#getAllContentTypes">getAllContentTypes</a></li><li><a href="global.html#getAllTopics">getAllTopics</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getAnalyticsSummary">getAnalyticsSummary</a></li><li><a href="global.html#getAssignedContent">getAssignedContent</a></li><li><a href="global.html#getContentById">getContentById</a></li><li><a href="global.html#getContentByTopicId">getContentByTopicId</a></li><li><a href="global.html#getContentItemById">getContentItemById</a></li><li><a href="global.html#getCurrentUserProfile">getCurrentUserProfile</a></li><li><a href="global.html#getGenerationStatus">getGenerationStatus</a></li><li><a href="global.html#getInternalUserByEmailWithPassword">getInternalUserByEmailWithPassword</a></li><li><a href="global.html#getLearningPathUserView">getLearningPathUserView</a></li><li><a href="global.html#getPrompts">getPrompts</a></li><li><a href="global.html#getTopicById">getTopicById</a></li><li><a href="global.html#getUserByEmail">getUserByEmail</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#getUserPreferences">getUserPreferences</a></li><li><a href="global.html#getUserProgress">getUserProgress</a></li><li><a href="global.html#gradeResponse">gradeResponse</a></li><li><a href="global.html#gradeResponsePayloadSchema">gradeResponsePayloadSchema</a></li><li><a href="global.html#handleAIRequest">handleAIRequest</a></li><li><a href="global.html#isAdmin">isAdmin</a></li><li><a href="global.html#isLesson">isLesson</a></li><li><a href="global.html#listJobs">listJobs</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#paginationSchema">paginationSchema</a></li><li><a href="global.html#recordContentItemProgress">recordContentItemProgress</a></li><li><a href="global.html#redisConnection">redisConnection</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#startUserLesson">startUserLesson</a></li><li><a href="global.html#taskHandlerMap">taskHandlerMap</a></li><li><a href="global.html#updateContent">updateContent</a></li><li><a href="global.html#updateContentItemById">updateContentItemById</a></li><li><a href="global.html#updateContentType">updateContentType</a></li><li><a href="global.html#updateUser">updateUser</a></li><li><a href="global.html#updateUserPreferences">updateUserPreferences</a></li><li><a href="global.html#updateUserProfile">updateUserProfile</a></li><li><a href="global.html#upsert">upsert</a></li><li><a href="global.html#validateAIPayload">validateAIPayload</a></li><li><a href="global.html#validationSchemaMap">validationSchemaMap</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">services/ai/ContentValidator.ts</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * AI Content Validation Service
+ * 
+ * Implements comprehensive validation for AI-generated content to ensure quality,
+ * accuracy, and educational value before storage in the database.
+ * 
+ * Key Features:
+ * - Multi-layered validation (structure, content, educational value)
+ * - French language-specific validation rules
+ * - Confidence scoring for validation results
+ * - Detailed feedback for content improvement
+ * - Support for all content types in the system
+ */
+
+import { IContentValidator } from '../contentGeneration/interfaces';
+import { 
+  ContentRequest, 
+  ContentValidation, 
+  StructuredContent,
+  GeneratedContent,
+  ContentType,
+  isLesson,
+  isVocabularyDrill,
+  isGrammarExercise,
+  isCulturalContent,
+  isPersonalizedExercise
+} from '../../types/Content';
+
+interface ValidationRule {
+  name: string;
+  weight: number; // Importance weight (0-1)
+  check: (content: any, request: ContentRequest) => ValidationResult;
+}
+
+interface ValidationResult {
+  passed: boolean;
+  score: number; // 0-1
+  issues: string[];
+  suggestions: string[];
+}
+
+export class ContentValidator implements IContentValidator {
+  private readonly validationRules: Map&lt;ContentType, ValidationRule[]>;
+  private readonly commonRules: ValidationRule[];
+
+  constructor() {
+    this.commonRules = this.initializeCommonRules();
+    this.validationRules = this.initializeContentTypeRules();
+  }
+
+  /**
+   * Main validation method that orchestrates all validation checks
+   */
+  async validate(content: any, request: ContentRequest): Promise&lt;ContentValidation> {
+    try {
+      const startTime = Date.now();
+      
+      // Ensure content has proper structure
+      if (!this.hasValidStructure(content)) {
+        return this.createFailedValidation(
+          'Invalid content structure',
+          ['Content must have valid structured format']
+        );
+      }
+
+      const structuredContent = content as StructuredContent;
+      
+      // Get validation rules for content type
+      const typeRules = this.validationRules.get(request.type) || [];
+      const allRules = [...this.commonRules, ...typeRules];
+
+      // Run all validation rules
+      const results = allRules.map(rule => ({
+        rule,
+        result: rule.check(structuredContent, request)
+      }));
+
+      // Calculate weighted score
+      const totalWeight = allRules.reduce((sum, rule) => sum + rule.weight, 0);
+      const weightedScore = results.reduce((sum, { rule, result }) => {
+        return sum + (result.score * rule.weight);
+      }, 0) / totalWeight;
+
+      // Collect all issues and suggestions
+      const allIssues = results.flatMap(({ result }) => result.issues);
+      const allSuggestions = results.flatMap(({ result }) => result.suggestions);
+
+      // Determine if content is valid (threshold: 0.7)
+      const isValid = weightedScore >= 0.7 &amp;&amp; allIssues.length === 0;
+
+      // Calculate confidence based on validation completeness
+      const confidence = this.calculateValidationConfidence(results);
+
+      const validationTime = Date.now() - startTime;
+
+      return {
+        isValid,
+        score: Math.round(weightedScore * 100) / 100, // Round to 2 decimal places
+        issues: allIssues,
+        suggestions: allSuggestions,
+        confidence
+      };
+
+    } catch (error) {
+      console.error('Error during content validation:', error);
+      return this.createFailedValidation(
+        'Validation error occurred',
+        ['Internal validation error - content needs manual review']
+      );
+    }
+  }
+
+  /**
+   * Initialize common validation rules that apply to all content types
+   */
+  private initializeCommonRules(): ValidationRule[] {
+    return [
+      {
+        name: 'has_required_fields',
+        weight: 0.2,
+        check: (content: StructuredContent) => {
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          if (!content.title || content.title.trim().length === 0) {
+            issues.push('Missing or empty title');
+            suggestions.push('Add a descriptive title');
+          }
+
+          if (!content.description || content.description.trim().length === 0) {
+            issues.push('Missing or empty description');
+            suggestions.push('Add a clear description');
+          }
+
+          if (!content.learningObjectives || content.learningObjectives.length === 0) {
+            issues.push('Missing learning objectives');
+            suggestions.push('Define clear learning objectives');
+          }
+
+          if (!content.estimatedTime || content.estimatedTime &lt;= 0) {
+            issues.push('Invalid estimated time');
+            suggestions.push('Set realistic estimated completion time');
+          }
+
+          const score = issues.length === 0 ? 1.0 : Math.max(0, 1 - (issues.length * 0.25));
+
+          return {
+            passed: issues.length === 0,
+            score,
+            issues,
+            suggestions
+          };
+        }
+      },
+      {
+        name: 'french_language_quality',
+        weight: 0.3,
+        check: (content: StructuredContent) => {
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+          let textToCheck = '';
+
+          // Extract text content for French validation
+          textToCheck = this.extractTextContent(content);
+
+          // Basic French validation checks
+          const frenchValidation = this.validateFrenchContent(textToCheck);
+          issues.push(...frenchValidation.issues);
+          suggestions.push(...frenchValidation.suggestions);
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.1)),
+            issues,
+            suggestions
+          };
+        }
+      },
+      {
+        name: 'educational_value',
+        weight: 0.25,
+        check: (content: StructuredContent, request: ContentRequest) => {
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          // Check if content matches requested level
+          if (request.level &amp;&amp; !this.isAppropriateForLevel(content, request.level)) {
+            issues.push(`Content difficulty doesn't match requested level: ${request.level}`);
+            suggestions.push('Adjust vocabulary and grammar complexity to match level');
+          }
+
+          // Check if learning objectives are specific and measurable
+          if (content.learningObjectives.some(obj => this.isVagueLearningObjective(obj))) {
+            issues.push('Some learning objectives are too vague');
+            suggestions.push('Make learning objectives more specific and measurable');
+          }
+
+          // Check estimated time reasonableness
+          if (content.estimatedTime &lt; 5 || content.estimatedTime > 60) {
+            issues.push('Unrealistic estimated completion time');
+            suggestions.push('Set estimated time between 5-60 minutes');
+          }
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.2)),
+            issues,
+            suggestions
+          };
+        }
+      },
+      {
+        name: 'content_completeness',
+        weight: 0.15,
+        check: (content: StructuredContent) => {
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          const completeness = this.assessContentCompleteness(content);
+          if (completeness &lt; 0.8) {
+            issues.push('Content appears incomplete or too brief');
+            suggestions.push('Expand content sections to provide more comprehensive learning material');
+          }
+
+          return {
+            passed: completeness >= 0.8,
+            score: completeness,
+            issues,
+            suggestions
+          };
+        }
+      },
+      {
+        name: 'safety_and_appropriateness',
+        weight: 0.1,
+        check: (content: StructuredContent) => {
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          const textContent = this.extractTextContent(content);
+          const safetyCheck = this.checkContentSafety(textContent);
+          
+          if (!safetyCheck.isSafe) {
+            issues.push('Content may contain inappropriate material');
+            suggestions.push('Review and remove any inappropriate content');
+          }
+
+          return {
+            passed: safetyCheck.isSafe,
+            score: safetyCheck.isSafe ? 1.0 : 0.0,
+            issues,
+            suggestions
+          };
+        }
+      }
+    ];
+  }
+
+  /**
+   * Initialize content-type-specific validation rules
+   */
+  private initializeContentTypeRules(): Map&lt;ContentType, ValidationRule[]> {
+    const rules = new Map&lt;ContentType, ValidationRule[]>();
+
+    // Lesson-specific rules
+    rules.set('lesson', [
+      {
+        name: 'lesson_structure',
+        weight: 0.3,
+        check: (content: StructuredContent) => {
+          if (!isLesson(content)) {
+            return { passed: false, score: 0, issues: ['Invalid lesson structure'], suggestions: [] };
+          }
+
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          if (!content.sections || content.sections.length === 0) {
+            issues.push('Lesson must have sections');
+            suggestions.push('Add lesson sections (introduction, presentation, practice, wrap-up)');
+          } else {
+            // Check for recommended section types
+            const sectionTypes = content.sections.map(s => s.type);
+            const recommendedTypes: ('introduction' | 'presentation' | 'practice')[] = ['introduction', 'presentation', 'practice'];
+            const missingSections = recommendedTypes.filter(type => !sectionTypes.includes(type));
+            
+            if (missingSections.length > 0) {
+              issues.push(`Missing recommended sections: ${missingSections.join(', ')}`);
+              suggestions.push('Consider adding missing lesson sections for better structure');
+            }
+          }
+
+          if (!content.vocabulary || content.vocabulary.length === 0) {
+            issues.push('Lesson should include vocabulary items');
+            suggestions.push('Add relevant vocabulary items for the lesson');
+          }
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.25)),
+            issues,
+            suggestions
+          };
+        }
+      }
+    ]);
+
+    // Grammar exercise rules
+    rules.set('grammar_exercise', [
+      {
+        name: 'grammar_structure',
+        weight: 0.4,
+        check: (content: StructuredContent) => {
+          if (!isGrammarExercise(content)) {
+            return { passed: false, score: 0, issues: ['Invalid grammar exercise structure'], suggestions: [] };
+          }
+
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          if (!content.grammarRule || content.grammarRule.trim().length === 0) {
+            issues.push('Missing grammar rule specification');
+            suggestions.push('Clearly specify the grammar rule being taught');
+          }
+
+          if (!content.explanation || content.explanation.trim().length === 0) {
+            issues.push('Missing grammar rule explanation');
+            suggestions.push('Provide clear explanation of the grammar rule');
+          }
+
+          if (!content.examples || content.examples.length &lt; 2) {
+            issues.push('Insufficient examples for grammar rule');
+            suggestions.push('Include at least 2-3 examples demonstrating the rule');
+          }
+
+          if (!content.exercises || content.exercises.length === 0) {
+            issues.push('No practice exercises provided');
+            suggestions.push('Add practice exercises to reinforce the grammar rule');
+          }
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.2)),
+            issues,
+            suggestions
+          };
+        }
+      }
+    ]);
+
+    // Vocabulary drill rules
+    rules.set('vocabulary_drill', [
+      {
+        name: 'vocabulary_quality',
+        weight: 0.4,
+        check: (content: StructuredContent) => {
+          if (!isVocabularyDrill(content)) {
+            return { passed: false, score: 0, issues: ['Invalid vocabulary drill structure'], suggestions: [] };
+          }
+
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          if (!content.vocabulary || content.vocabulary.length &lt; 5) {
+            issues.push('Insufficient vocabulary items (minimum 5 required)');
+            suggestions.push('Add more vocabulary items for effective practice');
+          }
+
+          // Check vocabulary item completeness
+          const incompleteItems = content.vocabulary.filter(item => 
+            !item.word || !item.definition || !item.examples || item.examples.length === 0
+          );
+
+          if (incompleteItems.length > 0) {
+            issues.push(`${incompleteItems.length} vocabulary items are incomplete`);
+            suggestions.push('Ensure all vocabulary items have word, definition, and examples');
+          }
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.3)),
+            issues,
+            suggestions
+          };
+        }
+      }
+    ]);
+
+    // Cultural content rules
+    rules.set('cultural_content', [
+      {
+        name: 'cultural_authenticity',
+        weight: 0.3,
+        check: (content: StructuredContent) => {
+          if (!isCulturalContent(content)) {
+            return { passed: false, score: 0, issues: ['Invalid cultural content structure'], suggestions: [] };
+          }
+
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          if (!content.topic || content.topic.trim().length === 0) {
+            issues.push('Missing cultural topic specification');
+            suggestions.push('Clearly specify the cultural topic being explored');
+          }
+
+          if (!content.keyPoints || content.keyPoints.length &lt; 3) {
+            issues.push('Insufficient key cultural points (minimum 3 required)');
+            suggestions.push('Include more key cultural insights and points');
+          }
+
+          if (!content.discussionQuestions || content.discussionQuestions.length === 0) {
+            issues.push('Missing discussion questions');
+            suggestions.push('Add thought-provoking discussion questions');
+          }
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.25)),
+            issues,
+            suggestions
+          };
+        }
+      }
+    ]);
+
+    // Personalized exercise rules
+    rules.set('personalized_exercise', [
+      {
+        name: 'personalization_quality',
+        weight: 0.3,
+        check: (content: StructuredContent, request: ContentRequest) => {
+          if (!isPersonalizedExercise(content)) {
+            return { passed: false, score: 0, issues: ['Invalid personalized exercise structure'], suggestions: [] };
+          }
+
+          const issues: string[] = [];
+          const suggestions: string[] = [];
+
+          if (!content.focusAreas || content.focusAreas.length === 0) {
+            issues.push('Missing focus areas for personalization');
+            suggestions.push('Specify focus areas based on user needs');
+          }
+
+          // Check if focus areas match request
+          if (request.focusAreas &amp;&amp; request.focusAreas.length > 0) {
+            const matchingAreas = content.focusAreas.filter(area => 
+              request.focusAreas!.includes(area)
+            );
+            if (matchingAreas.length === 0) {
+              issues.push('Focus areas do not match user requirements');
+              suggestions.push('Align focus areas with user-specified requirements');
+            }
+          }
+
+          if (!content.exercises || content.exercises.length === 0) {
+            issues.push('No personalized exercises provided');
+            suggestions.push('Add exercises tailored to the user\'s focus areas');
+          }
+
+          return {
+            passed: issues.length === 0,
+            score: Math.max(0, 1 - (issues.length * 0.3)),
+            issues,
+            suggestions
+          };
+        }
+      }
+    ]);
+
+    return rules;
+  }
+
+  /**
+   * Helper methods for validation checks
+   */
+  private hasValidStructure(content: any): content is StructuredContent {
+    return content &amp;&amp; 
+           typeof content === 'object' &amp;&amp; 
+           content.type &amp;&amp; 
+           content.title &amp;&amp; 
+           content.description &amp;&amp;
+           Array.isArray(content.learningObjectives);
+  }
+
+  private extractTextContent(content: StructuredContent): string {
+    let text = `${content.title} ${content.description} ${content.learningObjectives.join(' ')}`;
+    
+    // Add type-specific text extraction
+    if (isLesson(content)) {
+      text += content.sections.map(s => `${s.title} ${s.content}`).join(' ');
+      text += content.vocabulary.map(v => `${v.word} ${v.definition} ${v.examples.join(' ')}`).join(' ');
+    }
+    
+    return text;
+  }
+
+  private validateFrenchContent(text: string): { issues: string[], suggestions: string[] } {
+    const issues: string[] = [];
+    const suggestions: string[] = [];
+
+    // Basic French validation (simplified for this implementation)
+    const commonFrenchPatterns = [
+      /\b(le|la|les|un|une|des)\b/i,  // Articles
+      /\b(je|tu|il|elle|nous|vous|ils|elles)\b/i,  // Pronouns
+      /\b(est|sont|avoir|être)\b/i     // Common verbs
+    ];
+
+    const hasFrenchContent = commonFrenchPatterns.some(pattern => pattern.test(text));
+    
+    if (!hasFrenchContent &amp;&amp; text.length > 50) {
+      issues.push('Content may not contain sufficient French language elements');
+      suggestions.push('Ensure content includes appropriate French vocabulary and phrases');
+    }
+
+    return { issues, suggestions };
+  }
+
+  private isAppropriateForLevel(content: StructuredContent, level: string): boolean {
+    // Simplified level appropriateness check
+    const textContent = this.extractTextContent(content);
+    const wordCount = textContent.split(/\s+/).length;
+    
+    // Basic heuristics for level appropriateness
+    switch (level.toUpperCase()) {
+      case 'A1':
+        return wordCount &lt;= 200 &amp;&amp; content.estimatedTime &lt;= 15;
+      case 'A2':
+        return wordCount &lt;= 400 &amp;&amp; content.estimatedTime &lt;= 25;
+      case 'B1':
+        return wordCount &lt;= 600 &amp;&amp; content.estimatedTime &lt;= 35;
+      case 'B2':
+        return wordCount &lt;= 800 &amp;&amp; content.estimatedTime &lt;= 45;
+      default:
+        return true;
+    }
+  }
+
+  private isVagueLearningObjective(objective: string): boolean {
+    const vagueWords = ['understand', 'know', 'learn', 'study', 'familiarize'];
+    return vagueWords.some(word => objective.toLowerCase().includes(word));
+  }
+
+  private assessContentCompleteness(content: StructuredContent): number {
+    let completenessScore = 0;
+    let totalChecks = 0;
+
+    // Check title completeness
+    totalChecks++;
+    if (content.title &amp;&amp; content.title.length >= 5) completenessScore++;
+
+    // Check description completeness
+    totalChecks++;
+    if (content.description &amp;&amp; content.description.length >= 20) completenessScore++;
+
+    // Check learning objectives
+    totalChecks++;
+    if (content.learningObjectives &amp;&amp; content.learningObjectives.length >= 2) completenessScore++;
+
+    // Type-specific completeness checks
+    if (isLesson(content)) {
+      totalChecks++;
+      if (content.sections &amp;&amp; content.sections.length >= 2) completenessScore++;
+      
+      totalChecks++;
+      if (content.vocabulary &amp;&amp; content.vocabulary.length >= 3) completenessScore++;
+    }
+
+    return totalChecks > 0 ? completenessScore / totalChecks : 0;
+  }
+
+  private checkContentSafety(text: string): { isSafe: boolean } {
+    // Basic safety check - in production, this would use more sophisticated filtering
+    const inappropriatePatterns = [
+      /violence|violent/i,
+      /hate|hatred/i,
+      /inappropriate|explicit/i
+    ];
+
+    const isSafe = !inappropriatePatterns.some(pattern => pattern.test(text));
+    return { isSafe };
+  }
+
+  private calculateValidationConfidence(results: Array&lt;{ rule: ValidationRule, result: ValidationResult }>): number {
+    // Calculate confidence based on how many rules passed with high scores
+    const highScoreResults = results.filter(({ result }) => result.score >= 0.8);
+    const confidence = highScoreResults.length / results.length;
+    
+    // Round to 2 decimal places
+    return Math.round(confidence * 100) / 100;
+  }
+
+  private createFailedValidation(message: string, issues: string[]): ContentValidation {
+    return {
+      isValid: false,
+      score: 0,
+      issues: [message, ...issues],
+      suggestions: ['Review content structure and requirements'],
+      confidence: 0
+    };
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Jul 04 2025 19:07:31 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

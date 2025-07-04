@@ -13,7 +13,8 @@
     "db:rollback": "knex migrate:rollback --knexfile src/knexfile.ts",
     "db:seed": "knex seed:run --knexfile src/knexfile.ts",
     "db:status": "knex migrate:list --knexfile src/knexfile.ts",
-    "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts"
+    "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts",
+    "doc:api": "typedoc --entryPointStrategy expand ./src --plugin typedoc-plugin-markdown --out ../docs/auto-generated/api"
   },
   "keywords": [],
   "author": "",
@@ -53,6 +54,8 @@
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.4.0",
+    "typedoc": "^0.25.13",
+    "typedoc-plugin-markdown": "^3.17.1"
   }
 }
