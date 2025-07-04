@@ -66,3 +66,8 @@ Cline/
 
 # Gemini configuration (contains API keys)
 .gemini/
+
+# Ignore auto-generated documentation but keep directory markers
+docs/auto-generated/*
+docs/auto-generated/**/*
+!docs/auto-generated/**/.gitkeep

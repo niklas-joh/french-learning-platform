@@ -13,7 +13,23 @@
     "db:reset": "rimraf database/french_learning.db database/test.sqlite3",
     "db:seed": "npm --prefix server run db:seed",
     "db:setup": "run-s db:rebuild migrate db:seed db:status",
-    "db:rebuild": "run-s db:reset"
+    "db:rebuild": "run-s db:reset",
+    "docs:setup": "mkdir -p docs/auto-generated/schema docs/auto-generated/api docs/auto-generated/complexity docs/auto-generated/architecture docs/auto-generated/guides docs/auto-generated/reports",
+    "docs:schema": "node scripts/documentation/generate-schema-docs.js",
+    "docs:migrations": "node scripts/documentation/document-migrations.js",
+    "docs:code-analysis": "plato -r -d docs/auto-generated/complexity server/src/",
+    "docs:dependencies": "madge --image docs/auto-generated/architecture/dependencies.svg server/src/",
+    "docs:api": "jsdoc server/src/ -r -d docs/auto-generated/api -c scripts/documentation/jsdoc.json",
+    "docs:structure": "tree -I 'node_modules|docs' -o docs/auto-generated/reports/project-structure.txt",
+    "docs:dev-guide": "node scripts/documentation/generate-dev-guide.js",
+    "docs:patterns": "node scripts/documentation/analyze-code-patterns.js",
+    "docs:readme-ai": "readmeai --repository . --output README-GENERATED.md",
+    "docs:dbml": "sqlite-utils schema database.sqlite | dbml2sql > docs/auto-generated/schema/schema.dbml",
+    "docs:validate": "node scripts/automation/setup-validation.js",
+    "docs:all": "npm run docs:setup && npm run docs:schema && npm run docs:migrations && npm run docs:code-analysis && npm run docs:dependencies && npm run docs:api && npm run docs:structure && npm run docs:dev-guide && npm run docs:patterns",
+    "docs:serve": "npx http-server docs/auto-generated -p 8080 -o",
+    "docs:clean": "rm -rf docs/auto-generated && npm run docs:setup",
+    "docs:install-tools": "scripts/automation/install-doc-tools.sh"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +59,17 @@
     "npm-run-all": "^4.1.5",
     "postcss": "^8.5.5",
     "rimraf": "^6.0.1",
-    "tailwindcss": "^4.1.10"
+    "tailwindcss": "^4.1.10",
+    "jsdoc": "^4.0.2",
+    "better-docs": "^2.7.2",
+    "madge": "^6.1.0",
+    "plato": "^1.7.0",
+    "markdown-table": "^3.0.3",
+    "tree-cli": "^0.6.7",
+    "readme-md-generator": "^1.0.0",
+    "documentation": "^14.0.2",
+    "knex-schema-inspector": "^3.0.1",
+    "@dbml/cli": "^2.5.1",
+    "@mermaid-js/mermaid-cli": "^10.6.1"
   }
 }
