@@ -1,0 +1,14 @@
+{
+  "source": {
+    "include": ["./src/", "./README.md"],
+    "includePattern": "\\.(js|ts)$",
+    "exclude": ["node_modules/"]
+  },
+  "opts": {
+    "destination": "./docs/auto-generated/api/",
+    "recurse": true,
+    "readme": "./README.md",
+    "template": "node_modules/better-docs"
+  },
+  "plugins": ["plugins/markdown"]
+}

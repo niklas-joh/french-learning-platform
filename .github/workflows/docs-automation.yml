@@ -1,0 +1,27 @@
+name: Docs Automation
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'src/**'
+      - 'database/migrations/**'
+      - 'scripts/documentation/**'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install deps
+        run: npm install
+      - name: Generate Docs
+        run: npm run docs:all
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: docs/auto-generated
