@@ -9,7 +9,10 @@ graph TB
         end
 
         subgraph "Service Layer"
-            DynamicContentGenerator["DynamicContentGenerator<br/>(Main Orchestrator)"]
+            DynamicContentGenerator["DynamicContentGenerator<br/>(Enqueues Jobs)"]
+            JobQueueService["DatabaseJobQueueService"]
+            ContentGenerationWorker["ContentGenerationWorker"]
+            ContentGenerationJobHandler["ContentGenerationJobHandler<br/>(Processes Jobs)"]
             ServiceFactory["ServiceFactory<br/>(Dependency Manager)"]
         end
 
@@ -53,11 +56,14 @@ graph TB
 
         %% Service Layer connections
         ServiceFactory --> DynamicContentGenerator
-        DynamicContentGenerator --> ValidatorFactory
-        DynamicContentGenerator --> EnhancerFactory
-        DynamicContentGenerator --> TemplateManager
-        DynamicContentGenerator --> AIOrchestrator
-        DynamicContentGenerator --> PromptEngine
+        DynamicContentGenerator --> JobQueueService
+        ContentGenerationWorker --> JobQueueService
+        ContentGenerationWorker --> ContentGenerationJobHandler
+        ContentGenerationJobHandler --> ValidatorFactory
+        ContentGenerationJobHandler --> EnhancerFactory
+        ContentGenerationJobHandler --> TemplateManager
+        ContentGenerationJobHandler --> AIOrchestrator
+        ContentGenerationJobHandler --> PromptEngine
 
         %% Factory connections
         ValidatorFactory --> LessonVal
@@ -74,5 +80,5 @@ graph TB
 
         %% External dependencies
         AIOrchestrator --> OpenAI
-        DynamicContentGenerator --> Database
+        JobQueueService --> Database
 end

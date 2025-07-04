@@ -44,7 +44,7 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.B.6d| Implement API Endpoints for Job Management | 1.25h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6c |
 | 3.1.B.6d.1| Implement "List Jobs" Endpoint | 0.5h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6c |
 | 3.1.B.6d.2| Implement "Cancel Job" Endpoint | 0.5h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6c |
-| 3.1.B.6d.3| Update API & Architecture Documentation | 0.25h | � **Review** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6d.2 |
+| 3.1.B.6d.3| Update API & Architecture Documentation | 0.25h | 🟡 **In Progress** | - | July 3, 2025 | - | 3.1.B.6d.2 |
 | 3.1.B.7 | [Fix Generic Generate Endpoint](./3-1-B-7-fix-generic-generate-endpoint.md) | 1.5h | ⏳ **Not Started** | - | - | - | 3.1.B.6 |
 | 3.1.C | [AI Assessment & Grading Engine](./3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | - | - | - | 3.1.A |
 | 3.1.D | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |
@@ -106,7 +106,7 @@ Transform the language learning platform from a traditional quiz-based system to
 - **Target Date**: End of Week 2
 - **Criteria**: All Phase 3.2 tasks completed
 - **Dependencies**: Phase 3.1 complete
-- **Success Metrics**: Full AI-centric learning experience
+- **Success Metrics**:. Full AI-centric learning experience
 
 ## **Critical Dependencies**
 

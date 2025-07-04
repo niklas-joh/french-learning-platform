@@ -124,6 +124,9 @@ graph TD
             subgraph "Content Generation Engine"
                 direction TB
                 DynamicContentGenerator["DynamicContentGenerator"]
+                JobQueueService["DatabaseJobQueueService"]
+                ContentGenerationJobHandler["ContentGenerationJobHandler"]
+                ContentGenerationWorker["ContentGenerationWorker"]
                 
                 subgraph "Strategy Pattern Services"
                     direction LR
@@ -147,6 +150,16 @@ graph TD
                     GrammarEnhancer["GrammarExerciseEnhancer"]
                     CulturalEnhancer["CulturalContentEnhancer"]
                 end
+
+                DynamicContentGenerator --> JobQueueService
+                JobQueueService --> Database
+                ContentGenerationWorker --> JobQueueService
+                ContentGenerationWorker --> ContentGenerationJobHandler
+                ContentGenerationJobHandler --> AIOrchestrator
+                ContentGenerationJobHandler --> ContentValidatorFactory
+                ContentGenerationJobHandler --> ContentEnhancerFactory
+                ContentGenerationJobHandler --> ContentTemplateManager
+                ContentGenerationJobHandler --> PromptEngine
             end
             
             subgraph "Supporting AI Services"
@@ -511,11 +524,13 @@ graph TB
 
         %% Service Layer connections
         ServiceFactory --> DynamicContentGenerator
-        DynamicContentGenerator --> ValidatorFactory
-        DynamicContentGenerator --> EnhancerFactory
-        DynamicContentGenerator --> TemplateManager
-        DynamicContentGenerator --> AIOrchestrator
-        DynamicContentGenerator --> PromptEngine
+        DynamicContentGenerator --> JobQueueService
+        ContentGenerationWorker --> ContentGenerationJobHandler
+        ContentGenerationJobHandler --> ValidatorFactory
+        ContentGenerationJobHandler --> EnhancerFactory
+        ContentGenerationJobHandler --> TemplateManager
+        ContentGenerationJobHandler --> AIOrchestrator
+        ContentGenerationJobHandler --> PromptEngine
 
         %% Factory connections
         ValidatorFactory --> LessonVal
