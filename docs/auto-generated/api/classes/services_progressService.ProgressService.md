@@ -43,7 +43,7 @@
 
 #### Defined in
 
-[server/src/services/progressService.ts:64](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/progressService.ts#L64)
+[server/src/services/progressService.ts:64](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/progressService.ts#L64)
 
 ___
 
@@ -63,4 +63,4 @@ ___
 
 #### Defined in
 
-[server/src/services/progressService.ts:68](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/progressService.ts#L68)
+[server/src/services/progressService.ts:68](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/progressService.ts#L68)

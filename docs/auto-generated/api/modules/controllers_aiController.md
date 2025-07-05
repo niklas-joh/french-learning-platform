@@ -38,7 +38,7 @@ POST /api/ai/assess-pronunciation
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:319](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L319)
+[server/src/controllers/aiController.ts:319](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L319)
 
 ___
 
@@ -62,7 +62,7 @@ DELETE /api/ai/jobs/:jobId
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:205](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L205)
+[server/src/controllers/aiController.ts:205](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L205)
 
 ___
 
@@ -89,7 +89,7 @@ Use the new AI orchestration endpoints instead
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:338](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L338)
+[server/src/controllers/aiController.ts:338](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L338)
 
 ___
 
@@ -113,7 +113,7 @@ POST /api/ai/generate
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:232](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L232)
+[server/src/controllers/aiController.ts:232](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L232)
 
 ___
 
@@ -140,7 +140,7 @@ POST /api/ai/generate-lesson
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:312](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L312)
+[server/src/controllers/aiController.ts:312](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L312)
 
 ___
 
@@ -164,7 +164,7 @@ GET /api/ai/generate/status/:jobId
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:267](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L267)
+[server/src/controllers/aiController.ts:267](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L267)
 
 ___
 
@@ -191,7 +191,7 @@ Use the new AI orchestration endpoints instead
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:364](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L364)
+[server/src/controllers/aiController.ts:364](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L364)
 
 ___
 
@@ -215,7 +215,7 @@ POST /api/ai/grade-response
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:326](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L326)
+[server/src/controllers/aiController.ts:326](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L326)
 
 ___
 
@@ -239,4 +239,4 @@ GET /api/ai/jobs
 
 #### Defined in
 
-[server/src/controllers/aiController.ts:178](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/aiController.ts#L178)
+[server/src/controllers/aiController.ts:178](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/aiController.ts#L178)

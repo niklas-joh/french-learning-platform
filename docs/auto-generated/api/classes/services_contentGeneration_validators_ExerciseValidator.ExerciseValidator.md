@@ -52,7 +52,7 @@ This validator can be used for various exercise types.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/ExerciseValidator.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/ExerciseValidator.ts#L14)
+[server/src/services/contentGeneration/validators/ExerciseValidator.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/ExerciseValidator.ts#L14)
 
 ## Properties
 
@@ -66,7 +66,7 @@ This validator can be used for various exercise types.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/ExerciseValidator.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/ExerciseValidator.ts#L12)
+[server/src/services/contentGeneration/validators/ExerciseValidator.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/ExerciseValidator.ts#L12)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/BaseValidator.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/BaseValidator.ts#L12)
+[server/src/services/contentGeneration/validators/BaseValidator.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/BaseValidator.ts#L12)
 
 ## Methods
 
@@ -109,7 +109,7 @@ Checks if an array is null, undefined, or empty.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/BaseValidator.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/BaseValidator.ts#L44)
+[server/src/services/contentGeneration/validators/BaseValidator.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/BaseValidator.ts#L44)
 
 ___
 
@@ -138,7 +138,7 @@ Checks if a given string value is null, undefined, or empty.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/BaseValidator.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/BaseValidator.ts#L29)
+[server/src/services/contentGeneration/validators/BaseValidator.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/BaseValidator.ts#L29)
 
 ___
 
@@ -167,4 +167,4 @@ A promise that resolves to a ContentValidation object.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/ExerciseValidator.ts:24](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/ExerciseValidator.ts#L24)
+[server/src/services/contentGeneration/validators/ExerciseValidator.ts:24](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/ExerciseValidator.ts#L24)

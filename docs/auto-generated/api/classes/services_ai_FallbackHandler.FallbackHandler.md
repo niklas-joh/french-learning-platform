@@ -51,7 +51,7 @@ Provides type-safe, structured fallback responses when AI services fail.
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:47](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L47)
+[server/src/services/ai/FallbackHandler.ts:47](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L47)
 
 ## Properties
 
@@ -61,7 +61,7 @@ Provides type-safe, structured fallback responses when AI services fail.
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L39)
+[server/src/services/ai/FallbackHandler.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L39)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:40](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L40)
+[server/src/services/ai/FallbackHandler.ts:40](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L40)
 
 ## Methods
 
@@ -96,7 +96,7 @@ Merged object
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:203](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L203)
+[server/src/services/ai/FallbackHandler.ts:203](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L203)
 
 ___
 
@@ -131,7 +131,7 @@ Fallback data structure appropriate for the task type
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:109](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L109)
+[server/src/services/ai/FallbackHandler.ts:109](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L109)
 
 ___
 
@@ -155,7 +155,7 @@ Object describing configured fallbacks
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:255](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L255)
+[server/src/services/ai/FallbackHandler.ts:255](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L255)
 
 ___
 
@@ -190,7 +190,7 @@ A properly structured AIResponse with fallback content
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:64](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L64)
+[server/src/services/ai/FallbackHandler.ts:64](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L64)
 
 ___
 
@@ -221,7 +221,7 @@ Merged fallback data
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:185](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L185)
+[server/src/services/ai/FallbackHandler.ts:185](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L185)
 
 ___
 
@@ -240,7 +240,7 @@ Array of validation results for each configured task type
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:275](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L275)
+[server/src/services/ai/FallbackHandler.ts:275](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L275)
 
 ___
 
@@ -271,4 +271,4 @@ true if configuration is valid, false otherwise
 
 #### Defined in
 
-[server/src/services/ai/FallbackHandler.ts:233](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/FallbackHandler.ts#L233)
+[server/src/services/ai/FallbackHandler.ts:233](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/FallbackHandler.ts#L233)

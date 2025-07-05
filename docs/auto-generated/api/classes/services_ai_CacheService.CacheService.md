@@ -53,7 +53,7 @@ Provides a robust, type-safe caching layer for AI responses using Redis.
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:53](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L53)
+[server/src/services/ai/CacheService.ts:53](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L53)
 
 ## Properties
 
@@ -63,7 +63,7 @@ Provides a robust, type-safe caching layer for AI responses using Redis.
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L44)
+[server/src/services/ai/CacheService.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L44)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L45)
+[server/src/services/ai/CacheService.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L45)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L43)
+[server/src/services/ai/CacheService.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L43)
 
 ## Methods
 
@@ -105,7 +105,7 @@ Clears all cached AI responses (useful for testing or cache invalidation).
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:181](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L181)
+[server/src/services/ai/CacheService.ts:181](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L181)
 
 ___
 
@@ -141,7 +141,7 @@ A deterministic SHA256-based cache key
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:73](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L73)
+[server/src/services/ai/CacheService.ts:73](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L73)
 
 ___
 
@@ -175,7 +175,7 @@ Cached response or null if not found/error occurred
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:119](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L119)
+[server/src/services/ai/CacheService.ts:119](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L119)
 
 ___
 
@@ -193,7 +193,7 @@ Basic cache statistics
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:199](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L199)
+[server/src/services/ai/CacheService.ts:199](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L199)
 
 ___
 
@@ -226,7 +226,7 @@ throw, allowing the main AI request flow to continue successfully.
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:155](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L155)
+[server/src/services/ai/CacheService.ts:155](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L155)
 
 ___
 
@@ -250,4 +250,4 @@ Object with sorted keys at all levels
 
 #### Defined in
 
-[server/src/services/ai/CacheService.ts:96](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/CacheService.ts#L96)
+[server/src/services/ai/CacheService.ts:96](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/CacheService.ts#L96)

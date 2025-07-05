@@ -63,7 +63,7 @@
 
 #### Defined in
 
-[server/src/types/Content.ts:114](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L114)
+[server/src/types/Content.ts:114](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L114)
 
 ___
 
@@ -76,7 +76,7 @@ Replaces the problematic `any[]` from original design
 
 #### Defined in
 
-[server/src/types/Content.ts:275](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L275)
+[server/src/types/Content.ts:275](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L275)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:261](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L261)
+[server/src/types/Content.ts:261](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L261)
 
 ___
 
@@ -98,7 +98,7 @@ Discriminated union for type-safe content structures
 
 #### Defined in
 
-[server/src/types/Content.ts:141](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L141)
+[server/src/types/Content.ts:141](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L141)
 
 ## Functions
 
@@ -115,7 +115,7 @@ Replaces the insecure Date.now() + Math.random() approach
 
 #### Defined in
 
-[server/src/types/Content.ts:373](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L373)
+[server/src/types/Content.ts:373](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L373)
 
 ___
 
@@ -135,7 +135,7 @@ content is IStructuredCulturalContent
 
 #### Defined in
 
-[server/src/types/Content.ts:392](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L392)
+[server/src/types/Content.ts:392](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L392)
 
 ___
 
@@ -155,7 +155,7 @@ content is IStructuredGrammarExercise
 
 #### Defined in
 
-[server/src/types/Content.ts:388](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L388)
+[server/src/types/Content.ts:388](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L388)
 
 ___
 
@@ -177,7 +177,7 @@ content is IStructuredLesson
 
 #### Defined in
 
-[server/src/types/Content.ts:380](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L380)
+[server/src/types/Content.ts:380](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L380)
 
 ___
 
@@ -197,7 +197,7 @@ content is IStructuredPersonalizedExercise
 
 #### Defined in
 
-[server/src/types/Content.ts:396](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L396)
+[server/src/types/Content.ts:396](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L396)
 
 ___
 
@@ -217,4 +217,4 @@ content is IStructuredVocabularyDrill
 
 #### Defined in
 
-[server/src/types/Content.ts:384](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L384)
+[server/src/types/Content.ts:384](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L384)

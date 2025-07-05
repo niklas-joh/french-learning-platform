@@ -46,7 +46,7 @@ Provides structured templates for different content types
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentTemplateManager.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentTemplateManager.ts#L11)
+[server/src/services/contentGeneration/ContentTemplateManager.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentTemplateManager.ts#L11)
 
 ## Properties
 
@@ -56,7 +56,7 @@ Provides structured templates for different content types
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentTemplateManager.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentTemplateManager.ts#L11)
+[server/src/services/contentGeneration/ContentTemplateManager.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentTemplateManager.ts#L11)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentTemplateManager.ts:8](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentTemplateManager.ts#L8)
+[server/src/services/contentGeneration/ContentTemplateManager.ts:8](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentTemplateManager.ts#L8)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentTemplateManager.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentTemplateManager.ts#L9)
+[server/src/services/contentGeneration/ContentTemplateManager.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentTemplateManager.ts#L9)
 
 ## Methods
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentTemplateManager.ts:36](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentTemplateManager.ts#L36)
+[server/src/services/contentGeneration/ContentTemplateManager.ts:36](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentTemplateManager.ts#L36)
 
 ___
 
@@ -115,4 +115,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentTemplateManager.ts:15](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentTemplateManager.ts#L15)
+[server/src/services/contentGeneration/ContentTemplateManager.ts:15](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentTemplateManager.ts#L15)

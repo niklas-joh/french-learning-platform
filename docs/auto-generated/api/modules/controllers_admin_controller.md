@@ -45,7 +45,7 @@ Simple endpoint used by tests to verify that admin routes are reachable.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L21)
+[server/src/controllers/admin.controller.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L21)
 
 ___
 
@@ -68,7 +68,7 @@ Creates a new content item entry.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:233](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L233)
+[server/src/controllers/admin.controller.ts:233](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L233)
 
 ___
 
@@ -91,7 +91,7 @@ Creates a new content type.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:178](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L178)
+[server/src/controllers/admin.controller.ts:178](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L178)
 
 ___
 
@@ -114,7 +114,7 @@ Creates a new topic entry.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:94](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L94)
+[server/src/controllers/admin.controller.ts:94](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L94)
 
 ___
 
@@ -137,7 +137,7 @@ Deletes a content item.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:295](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L295)
+[server/src/controllers/admin.controller.ts:295](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L295)
 
 ___
 
@@ -160,7 +160,7 @@ Removes a content type from the system.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:215](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L215)
+[server/src/controllers/admin.controller.ts:215](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L215)
 
 ___
 
@@ -183,7 +183,7 @@ Deletes a topic from the database.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:147](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L147)
+[server/src/controllers/admin.controller.ts:147](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L147)
 
 ___
 
@@ -206,7 +206,7 @@ Fetches all content items.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:246](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L246)
+[server/src/controllers/admin.controller.ts:246](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L246)
 
 ___
 
@@ -229,7 +229,7 @@ Returns the list of configured content types.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:165](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L165)
+[server/src/controllers/admin.controller.ts:165](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L165)
 
 ___
 
@@ -252,7 +252,7 @@ Fetches all topics available in the system.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:81](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L81)
+[server/src/controllers/admin.controller.ts:81](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L81)
 
 ___
 
@@ -275,7 +275,7 @@ Retrieves a list of all users in the system.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:313](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L313)
+[server/src/controllers/admin.controller.ts:313](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L313)
 
 ___
 
@@ -301,7 +301,7 @@ to approximate the total amount of content available.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:31](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L31)
+[server/src/controllers/admin.controller.ts:31](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L31)
 
 ___
 
@@ -324,7 +324,7 @@ Returns a single content item by id.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:259](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L259)
+[server/src/controllers/admin.controller.ts:259](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L259)
 
 ___
 
@@ -347,7 +347,7 @@ Retrieves a single topic by its id.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:114](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L114)
+[server/src/controllers/admin.controller.ts:114](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L114)
 
 ___
 
@@ -370,7 +370,7 @@ Updates a content item identified by id.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:277](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L277)
+[server/src/controllers/admin.controller.ts:277](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L277)
 
 ___
 
@@ -393,7 +393,7 @@ Updates an existing content type record.
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:196](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L196)
+[server/src/controllers/admin.controller.ts:196](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L196)
 
 ___
 
@@ -414,4 +414,4 @@ ___
 
 #### Defined in
 
-[server/src/controllers/admin.controller.ts:129](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/admin.controller.ts#L129)
+[server/src/controllers/admin.controller.ts:129](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/admin.controller.ts#L129)

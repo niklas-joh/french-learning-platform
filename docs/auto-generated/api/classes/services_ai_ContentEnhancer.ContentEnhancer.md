@@ -43,7 +43,7 @@ Adds personalization and optimization to generated content
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L39)
+[server/src/services/ai/ContentEnhancer.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L39)
 
 ## Properties
 
@@ -53,7 +53,7 @@ Adds personalization and optimization to generated content
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L37)
+[server/src/services/ai/ContentEnhancer.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L37)
 
 ## Methods
 
@@ -74,7 +74,7 @@ Adds personalization and optimization to generated content
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:144](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L144)
+[server/src/services/ai/ContentEnhancer.ts:144](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L144)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:155](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L155)
+[server/src/services/ai/ContentEnhancer.ts:155](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L155)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:182](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L182)
+[server/src/services/ai/ContentEnhancer.ts:182](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L182)
 
 ___
 
@@ -142,7 +142,7 @@ Main enhancement method that applies all enhancement rules in order of priority
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L46)
+[server/src/services/ai/ContentEnhancer.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L46)
 
 ___
 
@@ -158,7 +158,7 @@ Initialize all enhancement rules
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:68](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L68)
+[server/src/services/ai/ContentEnhancer.ts:68](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L68)
 
 ___
 
@@ -178,7 +178,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:169](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L169)
+[server/src/services/ai/ContentEnhancer.ts:169](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L169)
 
 ___
 
@@ -201,4 +201,4 @@ Helper methods for enhancement rules
 
 #### Defined in
 
-[server/src/services/ai/ContentEnhancer.ts:127](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentEnhancer.ts#L127)
+[server/src/services/ai/ContentEnhancer.ts:127](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentEnhancer.ts#L127)

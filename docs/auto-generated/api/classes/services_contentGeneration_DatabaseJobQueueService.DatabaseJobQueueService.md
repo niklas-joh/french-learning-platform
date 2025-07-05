@@ -56,7 +56,7 @@ Creates an instance of DatabaseJobQueueService.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L18)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L18)
 
 ## Properties
 
@@ -68,7 +68,7 @@ The Knex instance for database connectivity.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L18)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L18)
 
 ___
 
@@ -80,7 +80,7 @@ The logger instance for logging messages.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L18)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L18)
 
 ## Methods
 
@@ -104,7 +104,7 @@ The progress percentage (0-100).
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:133](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L133)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:133](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L133)
 
 ___
 
@@ -130,7 +130,7 @@ A promise that resolves to true if a job was cancelled.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:111](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L111)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:111](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L111)
 
 ___
 
@@ -158,7 +158,7 @@ A promise that resolves with the ID of the newly created job.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L27)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L27)
 
 ___
 
@@ -182,7 +182,7 @@ A promise that resolves with the generated content, or null if the job is not co
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:67](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L67)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:67](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L67)
 
 ___
 
@@ -206,7 +206,7 @@ A promise that resolves with the job's status.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L46)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L46)
 
 ___
 
@@ -225,7 +225,7 @@ The job to be processed, or null if no jobs are available.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:157](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L157)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:157](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L157)
 
 ___
 
@@ -251,7 +251,7 @@ A promise that resolves with the paginated result, including total count.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:83](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L83)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:83](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L83)
 
 ___
 
@@ -274,7 +274,7 @@ Sets the result for a completed job.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:204](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L204)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:204](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L204)
 
 ___
 
@@ -298,4 +298,4 @@ Updates the status of a job.
 
 #### Defined in
 
-[server/src/services/contentGeneration/DatabaseJobQueueService.ts:191](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L191)
+[server/src/services/contentGeneration/DatabaseJobQueueService.ts:191](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/DatabaseJobQueueService.ts#L191)

@@ -68,7 +68,7 @@ Central service for coordinating all AI operations.
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:25](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L25)
+[server/src/services/ai/AIOrchestrator.ts:25](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L25)
 
 ## Properties
 
@@ -78,7 +78,7 @@ Central service for coordinating all AI operations.
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L27)
+[server/src/services/ai/AIOrchestrator.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L27)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L26)
+[server/src/services/ai/AIOrchestrator.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L26)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:34](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L34)
+[server/src/services/ai/AIOrchestrator.ts:34](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L34)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:33](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L33)
+[server/src/services/ai/AIOrchestrator.ts:33](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L33)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:30](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L30)
+[server/src/services/ai/AIOrchestrator.ts:30](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L30)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L29)
+[server/src/services/ai/AIOrchestrator.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L29)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L23)
+[server/src/services/ai/AIOrchestrator.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L23)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:31](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L31)
+[server/src/services/ai/AIOrchestrator.ts:31](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L31)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:32](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L32)
+[server/src/services/ai/AIOrchestrator.ts:32](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L32)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:28](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L28)
+[server/src/services/ai/AIOrchestrator.ts:28](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L28)
 
 ## Methods
 
@@ -197,7 +197,7 @@ Assess pronunciation quality from audio recording
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:166](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L166)
+[server/src/services/ai/AIOrchestrator.ts:166](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L166)
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:105](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L105)
+[server/src/services/ai/AIOrchestrator.ts:105](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L105)
 
 ___
 
@@ -251,7 +251,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:347](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L347)
+[server/src/services/ai/AIOrchestrator.ts:347](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L347)
 
 ___
 
@@ -282,7 +282,7 @@ Added for Task 3.1.B.3.a - Raw Content Generation
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:200](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L200)
+[server/src/services/ai/AIOrchestrator.ts:200](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L200)
 
 ___
 
@@ -306,7 +306,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:148](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L148)
+[server/src/services/ai/AIOrchestrator.ts:148](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L148)
 
 ___
 
@@ -330,7 +330,7 @@ TODO: Replace with actual AI provider integration
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:288](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L288)
+[server/src/services/ai/AIOrchestrator.ts:288](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L288)
 
 ___
 
@@ -360,7 +360,7 @@ Grade user response against correct answer
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:184](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L184)
+[server/src/services/ai/AIOrchestrator.ts:184](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L184)
 
 ___
 
@@ -382,7 +382,7 @@ Simple hash function for cache keys
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:337](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L337)
+[server/src/services/ai/AIOrchestrator.ts:337](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L337)
 
 ___
 
@@ -408,4 +408,4 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/AIOrchestrator.ts:41](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/AIOrchestrator.ts#L41)
+[server/src/services/ai/AIOrchestrator.ts:41](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/AIOrchestrator.ts#L41)

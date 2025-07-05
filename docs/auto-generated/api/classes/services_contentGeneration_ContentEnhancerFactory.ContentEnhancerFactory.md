@@ -44,7 +44,7 @@ Enables different enhancement strategies per content type
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentEnhancerFactory.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L9)
+[server/src/services/contentGeneration/ContentEnhancerFactory.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L9)
 
 ## Properties
 
@@ -54,7 +54,7 @@ Enables different enhancement strategies per content type
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentEnhancerFactory.ts:7](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L7)
+[server/src/services/contentGeneration/ContentEnhancerFactory.ts:7](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L7)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentEnhancerFactory.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L9)
+[server/src/services/contentGeneration/ContentEnhancerFactory.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L9)
 
 ## Methods
 
@@ -88,4 +88,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentEnhancerFactory.ts:17](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L17)
+[server/src/services/contentGeneration/ContentEnhancerFactory.ts:17](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentEnhancerFactory.ts#L17)

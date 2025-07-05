@@ -173,7 +173,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:17](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L17)
+[server/src/models/AiGenerationJob.ts:17](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L17)
 
 ___
 
@@ -183,7 +183,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:16](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L16)
+[server/src/models/AiGenerationJob.ts:16](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L16)
 
 ___
 
@@ -193,7 +193,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:10](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L10)
+[server/src/models/AiGenerationJob.ts:10](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L10)
 
 ___
 
@@ -203,7 +203,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:13](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L13)
+[server/src/models/AiGenerationJob.ts:13](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L13)
 
 ___
 
@@ -213,7 +213,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L14)
+[server/src/models/AiGenerationJob.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L14)
 
 ___
 
@@ -223,7 +223,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:15](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L15)
+[server/src/models/AiGenerationJob.ts:15](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L15)
 
 ___
 
@@ -233,7 +233,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L12)
+[server/src/models/AiGenerationJob.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L12)
 
 ___
 
@@ -243,7 +243,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L18)
+[server/src/models/AiGenerationJob.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L18)
 
 ___
 
@@ -253,7 +253,7 @@ ___
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L11)
+[server/src/models/AiGenerationJob.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L11)
 
 ___
 
@@ -407,7 +407,7 @@ Model.idColumn
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:8](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L8)
+[server/src/models/AiGenerationJob.ts:8](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L8)
 
 ___
 
@@ -575,7 +575,7 @@ Model.tableName
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:7](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L7)
+[server/src/models/AiGenerationJob.ts:7](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L7)
 
 ___
 
@@ -826,7 +826,7 @@ Model.$beforeInsert
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:20](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L20)
+[server/src/models/AiGenerationJob.ts:20](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L20)
 
 ___
 
@@ -844,7 +844,7 @@ Model.$beforeUpdate
 
 #### Defined in
 
-[server/src/models/AiGenerationJob.ts:25](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/AiGenerationJob.ts#L25)
+[server/src/models/AiGenerationJob.ts:25](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/AiGenerationJob.ts#L25)
 
 ___
 

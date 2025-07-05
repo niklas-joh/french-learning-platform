@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[server/src/models/User.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L29)
+[server/src/models/User.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L29)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:24](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L24)
+[server/src/models/User.ts:24](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L24)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L26)
+[server/src/models/User.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L26)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L23)
+[server/src/models/User.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L23)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L27)
+[server/src/models/User.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L27)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:25](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L25)
+[server/src/models/User.ts:25](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L25)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:31](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L31)
+[server/src/models/User.ts:31](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L31)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:28](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L28)
+[server/src/models/User.ts:28](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L28)
 
 ___
 
@@ -106,4 +106,4 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:30](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L30)
+[server/src/models/User.ts:30](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L30)

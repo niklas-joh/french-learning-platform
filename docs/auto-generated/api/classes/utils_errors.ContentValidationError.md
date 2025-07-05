@@ -52,7 +52,7 @@ Error.constructor
 
 #### Defined in
 
-[server/src/utils/errors.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/utils/errors.ts#L23)
+[server/src/utils/errors.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/utils/errors.ts#L23)
 
 ## Properties
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[server/src/utils/errors.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/utils/errors.ts#L21)
+[server/src/utils/errors.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/utils/errors.ts#L21)
 
 ___
 

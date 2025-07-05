@@ -55,7 +55,7 @@ async generateLesson(request: AIServiceMethod<'GENERATE_LESSON'>['request']): Pr
 
 #### Defined in
 
-[server/src/types/AI.ts:289](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L289)
+[server/src/types/AI.ts:289](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L289)
 
 ___
 
@@ -81,7 +81,7 @@ AITaskRequestPayload<'GENERATE_LESSON'> // { topic: string; difficulty: 'beginne
 
 #### Defined in
 
-[server/src/types/AI.ts:216](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L216)
+[server/src/types/AI.ts:216](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L216)
 
 ___
 
@@ -107,7 +107,7 @@ AITaskResponsePayload<'GENERATE_LESSON'> // Lesson
 
 #### Defined in
 
-[server/src/types/AI.ts:223](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L223)
+[server/src/types/AI.ts:223](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L223)
 
 ___
 
@@ -122,7 +122,7 @@ Defines the types of tasks the AI Orchestrator can handle.
 
 #### Defined in
 
-[server/src/types/AI.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L27)
+[server/src/types/AI.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L27)
 
 ___
 
@@ -138,7 +138,7 @@ A lean, performance-optimized representation of user context for AI personalizat
 
 #### Defined in
 
-[server/src/types/AI.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L43)
+[server/src/types/AI.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L43)
 
 ___
 
@@ -152,7 +152,7 @@ Union type of all possible AI request types for generic handling.
 
 #### Defined in
 
-[server/src/types/AI.ts:297](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L297)
+[server/src/types/AI.ts:297](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L297)
 
 ___
 
@@ -166,4 +166,4 @@ Union type of all possible AI response types for generic handling.
 
 #### Defined in
 
-[server/src/types/AI.ts:304](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L304)
+[server/src/types/AI.ts:304](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L304)

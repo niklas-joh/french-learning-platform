@@ -51,7 +51,7 @@ Concrete validator for VocabularyDrill content.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/VocabularyValidator.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/VocabularyValidator.ts#L11)
+[server/src/services/contentGeneration/validators/VocabularyValidator.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/VocabularyValidator.ts#L11)
 
 ## Properties
 
@@ -65,7 +65,7 @@ Concrete validator for VocabularyDrill content.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/VocabularyValidator.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/VocabularyValidator.ts#L9)
+[server/src/services/contentGeneration/validators/VocabularyValidator.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/VocabularyValidator.ts#L9)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/BaseValidator.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/BaseValidator.ts#L12)
+[server/src/services/contentGeneration/validators/BaseValidator.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/BaseValidator.ts#L12)
 
 ## Methods
 
@@ -108,7 +108,7 @@ Checks if an array is null, undefined, or empty.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/BaseValidator.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/BaseValidator.ts#L44)
+[server/src/services/contentGeneration/validators/BaseValidator.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/BaseValidator.ts#L44)
 
 ___
 
@@ -137,7 +137,7 @@ Checks if a given string value is null, undefined, or empty.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/BaseValidator.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/BaseValidator.ts#L29)
+[server/src/services/contentGeneration/validators/BaseValidator.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/BaseValidator.ts#L29)
 
 ___
 
@@ -166,4 +166,4 @@ A promise that resolves to a ContentValidation object.
 
 #### Defined in
 
-[server/src/services/contentGeneration/validators/VocabularyValidator.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/validators/VocabularyValidator.ts#L21)
+[server/src/services/contentGeneration/validators/VocabularyValidator.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/validators/VocabularyValidator.ts#L21)

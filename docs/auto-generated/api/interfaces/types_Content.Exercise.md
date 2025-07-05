@@ -26,7 +26,7 @@ Addresses Future Implementation #29 - Enhanced Exercise Type System
 
 #### Defined in
 
-[server/src/types/Content.ts:257](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L257)
+[server/src/types/Content.ts:257](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L257)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:258](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L258)
+[server/src/types/Content.ts:258](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L258)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:256](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L256)
+[server/src/types/Content.ts:256](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L256)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:254](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L254)
+[server/src/types/Content.ts:254](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L254)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:255](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L255)
+[server/src/types/Content.ts:255](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L255)
 
 ___
 
@@ -76,4 +76,4 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:253](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L253)
+[server/src/types/Content.ts:253](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L253)

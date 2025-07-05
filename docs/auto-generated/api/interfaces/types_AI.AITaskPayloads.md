@@ -40,7 +40,7 @@ Central registry of all AI tasks and their associated request/response payload t
 
 #### Defined in
 
-[server/src/types/AI.ts:142](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L142)
+[server/src/types/AI.ts:142](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L142)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[server/src/types/AI.ts:195](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L195)
+[server/src/types/AI.ts:195](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L195)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[server/src/types/AI.ts:181](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L181)
+[server/src/types/AI.ts:181](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L181)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[server/src/types/AI.ts:130](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L130)
+[server/src/types/AI.ts:130](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L130)
 
 ___
 
@@ -125,4 +125,4 @@ ___
 
 #### Defined in
 
-[server/src/types/AI.ts:159](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L159)
+[server/src/types/AI.ts:159](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L159)

@@ -24,7 +24,7 @@ A score from 0 to 1 indicating the AI's confidence in its own validation
 
 #### Defined in
 
-[server/src/types/Content.ts:82](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L82)
+[server/src/types/Content.ts:82](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L82)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:76](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L76)
+[server/src/types/Content.ts:76](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L76)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:79](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L79)
+[server/src/types/Content.ts:79](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L79)
 
 ___
 
@@ -56,7 +56,7 @@ A score from 0 to 1 indicating the quality and relevance of the content
 
 #### Defined in
 
-[server/src/types/Content.ts:78](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L78)
+[server/src/types/Content.ts:78](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L78)
 
 ___
 
@@ -66,4 +66,4 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:80](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L80)
+[server/src/types/Content.ts:80](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L80)

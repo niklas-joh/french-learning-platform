@@ -29,7 +29,7 @@
 
 #### Defined in
 
-[server/src/controllers/gamificationController.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/gamificationController.ts#L46)
+[server/src/controllers/gamificationController.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/gamificationController.ts#L46)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[server/src/controllers/gamificationController.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/gamificationController.ts#L37)
+[server/src/controllers/gamificationController.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/gamificationController.ts#L37)
 
 ___
 
@@ -71,4 +71,4 @@ ___
 
 #### Defined in
 
-[server/src/controllers/gamificationController.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/gamificationController.ts#L23)
+[server/src/controllers/gamificationController.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/gamificationController.ts#L23)

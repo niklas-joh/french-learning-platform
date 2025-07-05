@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:126](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L126)
+[server/src/services/contentGeneration/interfaces.ts:126](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L126)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:125](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L125)
+[server/src/services/contentGeneration/interfaces.ts:125](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L125)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:122](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L122)
+[server/src/services/contentGeneration/interfaces.ts:122](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L122)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:124](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L124)
+[server/src/services/contentGeneration/interfaces.ts:124](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L124)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:123](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L123)
+[server/src/services/contentGeneration/interfaces.ts:123](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L123)

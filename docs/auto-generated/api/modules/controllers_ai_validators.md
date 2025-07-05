@@ -31,7 +31,7 @@ Type for extracting schema keys (for type safety)
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:106](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L106)
+[server/src/controllers/ai.validators.ts:106](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L106)
 
 ## Variables
 
@@ -44,7 +44,7 @@ Corresponds to AITaskPayloads['ASSESS_PRONUNCIATION']['request']
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:42](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L42)
+[server/src/controllers/ai.validators.ts:42](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L42)
 
 ___
 
@@ -57,7 +57,7 @@ Corresponds to AITaskPayloads['GENERATE_LESSON']['request']
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L23)
+[server/src/controllers/ai.validators.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L23)
 
 ___
 
@@ -70,7 +70,7 @@ Corresponds to AITaskPayloads['GRADE_RESPONSE']['request']
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:55](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L55)
+[server/src/controllers/ai.validators.ts:55](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L55)
 
 ___
 
@@ -82,7 +82,7 @@ Validation schema for pagination query parameters
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:70](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L70)
+[server/src/controllers/ai.validators.ts:70](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L70)
 
 ___
 
@@ -103,7 +103,7 @@ This provides a type-safe way to access validators based on task type
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:96](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L96)
+[server/src/controllers/ai.validators.ts:96](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L96)
 
 ## Functions
 
@@ -132,7 +132,7 @@ User-friendly error message and details
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:141](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L141)
+[server/src/controllers/ai.validators.ts:141](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L141)
 
 ___
 
@@ -163,4 +163,4 @@ Validation result with parsed data or error details
 
 #### Defined in
 
-[server/src/controllers/ai.validators.ts:115](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/ai.validators.ts#L115)
+[server/src/controllers/ai.validators.ts:115](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/ai.validators.ts#L115)

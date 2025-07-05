@@ -36,7 +36,7 @@ TODO: Reference Future Implementation #18 - AI Context Service Optimization Stra
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:100](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L100)
+[server/src/services/contentGeneration/interfaces.ts:100](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L100)
 
 ___
 
@@ -57,4 +57,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:101](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L101)
+[server/src/services/contentGeneration/interfaces.ts:101](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L101)

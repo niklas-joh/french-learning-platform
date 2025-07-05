@@ -40,7 +40,7 @@ TODO: Reference Future Implementation #24 - Implement Structured Logging
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:150](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L150)
+[server/src/services/contentGeneration/interfaces.ts:150](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L150)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:146](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L146)
+[server/src/services/contentGeneration/interfaces.ts:146](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L146)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:148](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L148)
+[server/src/services/contentGeneration/interfaces.ts:148](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L148)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:147](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L147)
+[server/src/services/contentGeneration/interfaces.ts:147](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L147)
 
 ___
 
@@ -125,4 +125,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:149](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L149)
+[server/src/services/contentGeneration/interfaces.ts:149](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L149)

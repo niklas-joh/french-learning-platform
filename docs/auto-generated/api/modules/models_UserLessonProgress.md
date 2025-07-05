@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[server/src/models/UserLessonProgress.ts:5](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/UserLessonProgress.ts#L5)
+[server/src/models/UserLessonProgress.ts:5](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/UserLessonProgress.ts#L5)
 
 ## Functions
 
@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[server/src/models/UserLessonProgress.ts:58](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/UserLessonProgress.ts#L58)
+[server/src/models/UserLessonProgress.ts:58](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/UserLessonProgress.ts#L58)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[server/src/models/UserLessonProgress.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/UserLessonProgress.ts#L21)
+[server/src/models/UserLessonProgress.ts:21](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/UserLessonProgress.ts#L21)
 
 ___
 
@@ -90,4 +90,4 @@ ___
 
 #### Defined in
 
-[server/src/models/UserLessonProgress.ts:30](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/UserLessonProgress.ts#L30)
+[server/src/models/UserLessonProgress.ts:30](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/UserLessonProgress.ts#L30)

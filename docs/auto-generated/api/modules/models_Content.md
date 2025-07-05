@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[server/src/models/Content.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L27)
+[server/src/models/Content.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L27)
 
 ## Functions
 
@@ -52,7 +52,7 @@ Inserts a new content record and returns the mapped result.
 
 #### Defined in
 
-[server/src/models/Content.ts:136](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L136)
+[server/src/models/Content.ts:136](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L136)
 
 ___
 
@@ -74,7 +74,7 @@ Removes a content record.
 
 #### Defined in
 
-[server/src/models/Content.ts:208](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L208)
+[server/src/models/Content.ts:208](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L208)
 
 ___
 
@@ -90,7 +90,7 @@ Retrieves all content records.
 
 #### Defined in
 
-[server/src/models/Content.ts:166](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L166)
+[server/src/models/Content.ts:166](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L166)
 
 ___
 
@@ -112,7 +112,7 @@ Retrieves a single content item by id.
 
 #### Defined in
 
-[server/src/models/Content.ts:115](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L115)
+[server/src/models/Content.ts:115](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L115)
 
 ___
 
@@ -134,7 +134,7 @@ Returns all content belonging to the provided topic id.
 
 #### Defined in
 
-[server/src/models/Content.ts:127](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L127)
+[server/src/models/Content.ts:127](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L127)
 
 ___
 
@@ -157,4 +157,4 @@ Updates a content record and returns the updated version.
 
 #### Defined in
 
-[server/src/models/Content.ts:175](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/Content.ts#L175)
+[server/src/models/Content.ts:175](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/Content.ts#L175)

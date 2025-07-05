@@ -34,7 +34,7 @@ User context for personalization, optimized for performance
 
 #### Defined in
 
-[server/src/types/AI.ts:239](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L239)
+[server/src/types/AI.ts:239](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L239)
 
 ___
 
@@ -46,7 +46,7 @@ Task-specific payload data, type-safe based on the task
 
 #### Defined in
 
-[server/src/types/AI.ts:241](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L241)
+[server/src/types/AI.ts:241](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L241)
 
 ___
 
@@ -58,4 +58,4 @@ The specific AI task to be performed
 
 #### Defined in
 
-[server/src/types/AI.ts:237](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L237)
+[server/src/types/AI.ts:237](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L237)

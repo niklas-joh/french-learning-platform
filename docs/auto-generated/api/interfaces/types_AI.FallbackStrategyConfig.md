@@ -25,7 +25,7 @@ Whether fallback is enabled
 
 #### Defined in
 
-[server/src/types/AI.ts:84](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L84)
+[server/src/types/AI.ts:84](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L84)
 
 ___
 
@@ -47,4 +47,4 @@ Type-safe static content fallbacks for each AI task type
 
 #### Defined in
 
-[server/src/types/AI.ts:86](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L86)
+[server/src/types/AI.ts:86](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L86)

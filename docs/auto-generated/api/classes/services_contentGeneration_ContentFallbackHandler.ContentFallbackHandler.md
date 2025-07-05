@@ -46,7 +46,7 @@ Interface for handling generation failures and fallbacks
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L12)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L12)
 
 ## Properties
 
@@ -56,7 +56,7 @@ Interface for handling generation failures and fallbacks
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L9)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L9)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:10](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L10)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:10](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L10)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L12)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L12)
 
 ## Methods
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:38](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L38)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:38](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L38)
 
 ___
 
@@ -115,7 +115,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:16](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L16)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:16](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L16)
 
 ___
 
@@ -140,4 +140,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentFallbackHandler.ts:78](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentFallbackHandler.ts#L78)
+[server/src/services/contentGeneration/ContentFallbackHandler.ts:78](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentFallbackHandler.ts#L78)

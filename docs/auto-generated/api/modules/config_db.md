@@ -33,7 +33,7 @@
 
 #### Defined in
 
-[server/src/config/db.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/config/db.ts#L11)
+[server/src/config/db.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/config/db.ts#L11)
 
 ▸ **default**\<`TRecord2`, `TResult2`\>(`tableName?`, `options?`): `QueryBuilder`\<`TRecord2`, `TResult2`\>
 
@@ -57,4 +57,4 @@
 
 #### Defined in
 
-[server/src/config/db.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/config/db.ts#L11)
+[server/src/config/db.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/config/db.ts#L11)

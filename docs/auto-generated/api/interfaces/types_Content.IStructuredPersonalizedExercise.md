@@ -33,7 +33,7 @@ Base interface for all structured content types (DRY principle)
 
 #### Defined in
 
-[server/src/types/Content.ts:188](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L188)
+[server/src/types/Content.ts:188](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L188)
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:133](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L133)
+[server/src/types/Content.ts:133](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L133)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:135](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L135)
+[server/src/types/Content.ts:135](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L135)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:187](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L187)
+[server/src/types/Content.ts:187](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L187)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:186](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L186)
+[server/src/types/Content.ts:186](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L186)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:134](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L134)
+[server/src/types/Content.ts:134](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L134)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:132](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L132)
+[server/src/types/Content.ts:132](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L132)
 
 ___
 
@@ -123,4 +123,4 @@ ___
 
 #### Defined in
 
-[server/src/types/Content.ts:185](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/Content.ts#L185)
+[server/src/types/Content.ts:185](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/Content.ts#L185)

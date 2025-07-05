@@ -28,7 +28,7 @@ TODO: Reference Future Implementation #10 - AI Response Caching Strategy
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:92](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L92)
+[server/src/services/contentGeneration/interfaces.ts:92](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L92)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:91](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L91)
+[server/src/services/contentGeneration/interfaces.ts:91](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L91)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:89](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L89)
+[server/src/services/contentGeneration/interfaces.ts:89](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L89)
 
 ___
 
@@ -90,4 +90,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/interfaces.ts:90](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/interfaces.ts#L90)
+[server/src/services/contentGeneration/interfaces.ts:90](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/interfaces.ts#L90)

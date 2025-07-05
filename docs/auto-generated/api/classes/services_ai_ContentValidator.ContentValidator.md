@@ -49,7 +49,7 @@ Uses Strategy Pattern for different content types
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L46)
+[server/src/services/ai/ContentValidator.ts:46](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L46)
 
 ## Properties
 
@@ -59,7 +59,7 @@ Uses Strategy Pattern for different content types
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L44)
+[server/src/services/ai/ContentValidator.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L44)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L43)
+[server/src/services/ai/ContentValidator.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L43)
 
 ## Methods
 
@@ -89,7 +89,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:544](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L544)
+[server/src/services/ai/ContentValidator.ts:544](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L544)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:584](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L584)
+[server/src/services/ai/ContentValidator.ts:584](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L584)
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:572](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L572)
+[server/src/services/ai/ContentValidator.ts:572](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L572)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:593](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L593)
+[server/src/services/ai/ContentValidator.ts:593](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L593)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:486](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L486)
+[server/src/services/ai/ContentValidator.ts:486](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L486)
 
 ___
 
@@ -196,7 +196,7 @@ content is StructuredContent
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:477](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L477)
+[server/src/services/ai/ContentValidator.ts:477](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L477)
 
 ___
 
@@ -212,7 +212,7 @@ Initialize common validation rules that apply to all content types
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:116](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L116)
+[server/src/services/ai/ContentValidator.ts:116](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L116)
 
 ___
 
@@ -228,7 +228,7 @@ Initialize content-type-specific validation rules
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:262](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L262)
+[server/src/services/ai/ContentValidator.ts:262](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L262)
 
 ___
 
@@ -249,7 +249,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:519](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L519)
+[server/src/services/ai/ContentValidator.ts:519](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L519)
 
 ___
 
@@ -269,7 +269,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:539](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L539)
+[server/src/services/ai/ContentValidator.ts:539](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L539)
 
 ___
 
@@ -296,7 +296,7 @@ Main validation method that orchestrates all validation checks
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L54)
+[server/src/services/ai/ContentValidator.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L54)
 
 ___
 
@@ -321,4 +321,4 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContentValidator.ts:498](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContentValidator.ts#L498)
+[server/src/services/ai/ContentValidator.ts:498](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContentValidator.ts#L498)

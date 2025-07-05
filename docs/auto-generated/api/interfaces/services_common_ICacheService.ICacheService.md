@@ -50,7 +50,7 @@ A promise that resolves when the cache has been cleared.
 
 #### Defined in
 
-[server/src/services/common/ICacheService.ts:41](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/ICacheService.ts#L41)
+[server/src/services/common/ICacheService.ts:41](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/ICacheService.ts#L41)
 
 ___
 
@@ -74,7 +74,7 @@ A promise that resolves when the item has been deleted.
 
 #### Defined in
 
-[server/src/services/common/ICacheService.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/ICacheService.ts#L35)
+[server/src/services/common/ICacheService.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/ICacheService.ts#L35)
 
 ___
 
@@ -104,7 +104,7 @@ A promise that resolves to the cached item, or null if the item is not found.
 
 #### Defined in
 
-[server/src/services/common/ICacheService.ts:19](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/ICacheService.ts#L19)
+[server/src/services/common/ICacheService.ts:19](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/ICacheService.ts#L19)
 
 ___
 
@@ -136,4 +136,4 @@ A promise that resolves when the item has been stored.
 
 #### Defined in
 
-[server/src/services/common/ICacheService.ts:28](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/ICacheService.ts#L28)
+[server/src/services/common/ICacheService.ts:28](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/ICacheService.ts#L28)

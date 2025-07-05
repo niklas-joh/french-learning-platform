@@ -26,7 +26,7 @@ Centralized queue names to prevent typos and ensure consistency.
 
 #### Defined in
 
-[server/src/config/redis.ts:24](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/config/redis.ts#L24)
+[server/src/config/redis.ts:24](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/config/redis.ts#L24)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[server/src/config/redis.ts:4](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/config/redis.ts#L4)
+[server/src/config/redis.ts:4](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/config/redis.ts#L4)
 
 ___
 
@@ -49,4 +49,4 @@ This connection is only created if Redis is enabled.
 
 #### Defined in
 
-[server/src/config/redis.ts:19](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/config/redis.ts#L19)
+[server/src/config/redis.ts:19](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/config/redis.ts#L19)

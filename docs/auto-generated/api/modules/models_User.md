@@ -36,7 +36,7 @@
 
 #### Defined in
 
-[server/src/models/User.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L35)
+[server/src/models/User.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L35)
 
 ## Functions
 
@@ -58,7 +58,7 @@ Inserts a new user record and returns it in application data format.
 
 #### Defined in
 
-[server/src/models/User.ts:110](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L110)
+[server/src/models/User.ts:110](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L110)
 
 ___
 
@@ -74,7 +74,7 @@ Fetches all users.
 
 #### Defined in
 
-[server/src/models/User.ts:156](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L156)
+[server/src/models/User.ts:156](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L156)
 
 ___
 
@@ -98,7 +98,7 @@ The knex-stringcase mapper will automatically convert the column names.
 
 #### Defined in
 
-[server/src/models/User.ts:87](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L87)
+[server/src/models/User.ts:87](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L87)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:161](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L161)
+[server/src/models/User.ts:161](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L161)
 
 ___
 
@@ -134,7 +134,7 @@ Looks up a user by email and maps the result to application data shape.
 
 #### Defined in
 
-[server/src/models/User.ts:73](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L73)
+[server/src/models/User.ts:73](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L73)
 
 ___
 
@@ -156,7 +156,7 @@ Fetches a user by primary key.
 
 #### Defined in
 
-[server/src/models/User.ts:99](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L99)
+[server/src/models/User.ts:99](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L99)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[server/src/models/User.ts:166](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L166)
+[server/src/models/User.ts:166](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L166)
 
 ___
 
@@ -193,4 +193,4 @@ Updates an existing user record and returns it in application data format.
 
 #### Defined in
 
-[server/src/models/User.ts:130](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/models/User.ts#L130)
+[server/src/models/User.ts:130](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/models/User.ts#L130)

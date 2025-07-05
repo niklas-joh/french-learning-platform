@@ -54,7 +54,7 @@ It adheres to the Dependency Inversion Principle.
 
 #### Defined in
 
-[server/src/services/common/RedisCacheService.ts:16](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/RedisCacheService.ts#L16)
+[server/src/services/common/RedisCacheService.ts:16](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/RedisCacheService.ts#L16)
 
 ## Properties
 
@@ -64,7 +64,7 @@ It adheres to the Dependency Inversion Principle.
 
 #### Defined in
 
-[server/src/services/common/RedisCacheService.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/RedisCacheService.ts#L14)
+[server/src/services/common/RedisCacheService.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/RedisCacheService.ts#L14)
 
 ## Methods
 
@@ -86,7 +86,7 @@ A promise that resolves when the cache has been cleared.
 
 #### Defined in
 
-[server/src/services/common/RedisCacheService.ts:58](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/RedisCacheService.ts#L58)
+[server/src/services/common/RedisCacheService.ts:58](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/RedisCacheService.ts#L58)
 
 ___
 
@@ -114,7 +114,7 @@ A promise that resolves when the item has been deleted.
 
 #### Defined in
 
-[server/src/services/common/RedisCacheService.ts:51](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/RedisCacheService.ts#L51)
+[server/src/services/common/RedisCacheService.ts:51](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/RedisCacheService.ts#L51)
 
 ___
 
@@ -148,7 +148,7 @@ A promise that resolves to the cached item, or null if the item is not found.
 
 #### Defined in
 
-[server/src/services/common/RedisCacheService.ts:20](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/RedisCacheService.ts#L20)
+[server/src/services/common/RedisCacheService.ts:20](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/RedisCacheService.ts#L20)
 
 ___
 
@@ -184,4 +184,4 @@ A promise that resolves when the item has been stored.
 
 #### Defined in
 
-[server/src/services/common/RedisCacheService.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/common/RedisCacheService.ts#L39)
+[server/src/services/common/RedisCacheService.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/common/RedisCacheService.ts#L39)

@@ -36,7 +36,7 @@ Lists all users. Admin only endpoint.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:109](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L109)
+[server/src/controllers/user.controller.ts:109](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L109)
 
 ___
 
@@ -59,7 +59,7 @@ Returns all content assignments for the authenticated user.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:122](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L122)
+[server/src/controllers/user.controller.ts:122](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L122)
 
 ___
 
@@ -82,7 +82,7 @@ Returns the authenticated user's profile without the password hash.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L27)
+[server/src/controllers/user.controller.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L27)
 
 ___
 
@@ -105,7 +105,7 @@ Retrieves the persisted preferences for the authenticated user.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:172](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L172)
+[server/src/controllers/user.controller.ts:172](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L172)
 
 ___
 
@@ -128,7 +128,7 @@ Aggregates progress for the authenticated user across all topics and assigned co
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:144](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L144)
+[server/src/controllers/user.controller.ts:144](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L144)
 
 ___
 
@@ -152,7 +152,7 @@ Sets the status of the corresponding user_content_assignment to 'completed'.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:222](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L222)
+[server/src/controllers/user.controller.ts:222](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L222)
 
 ___
 
@@ -175,7 +175,7 @@ Stores new preference values for the authenticated user.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:195](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L195)
+[server/src/controllers/user.controller.ts:195](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L195)
 
 ___
 
@@ -198,4 +198,4 @@ Updates the authenticated user's profile fields.
 
 #### Defined in
 
-[server/src/controllers/user.controller.ts:53](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/user.controller.ts#L53)
+[server/src/controllers/user.controller.ts:53](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/user.controller.ts#L53)

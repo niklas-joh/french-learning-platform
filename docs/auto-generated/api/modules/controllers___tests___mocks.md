@@ -31,7 +31,7 @@ Provides mock implementations for AI services to isolate API layer testing
 
 #### Defined in
 
-[server/src/controllers/__tests__/mocks.ts:181](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/__tests__/mocks.ts#L181)
+[server/src/controllers/__tests__/mocks.ts:181](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/__tests__/mocks.ts#L181)
 
 ___
 
@@ -50,7 +50,7 @@ Mock Express Request/Response utilities
 
 #### Defined in
 
-[server/src/controllers/__tests__/mocks.ts:141](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/__tests__/mocks.ts#L141)
+[server/src/controllers/__tests__/mocks.ts:141](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/__tests__/mocks.ts#L141)
 
 ___
 
@@ -69,7 +69,7 @@ Performance testing utilities
 
 #### Defined in
 
-[server/src/controllers/__tests__/mocks.ts:294](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/__tests__/mocks.ts#L294)
+[server/src/controllers/__tests__/mocks.ts:294](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/__tests__/mocks.ts#L294)
 
 ___
 
@@ -93,7 +93,7 @@ for testing different scenarios (valid/invalid data, edge cases, etc.)
 
 #### Defined in
 
-[server/src/controllers/__tests__/mocks.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/__tests__/mocks.ts#L29)
+[server/src/controllers/__tests__/mocks.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/__tests__/mocks.ts#L29)
 
 ___
 
@@ -119,4 +119,4 @@ Test helper functions
 
 #### Defined in
 
-[server/src/controllers/__tests__/mocks.ts:227](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/__tests__/mocks.ts#L227)
+[server/src/controllers/__tests__/mocks.ts:227](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/__tests__/mocks.ts#L227)

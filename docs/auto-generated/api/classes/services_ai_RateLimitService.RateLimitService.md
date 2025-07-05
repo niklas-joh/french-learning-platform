@@ -51,7 +51,7 @@ Manages AI request rate limits using an efficient fixed-window counter algorithm
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L45)
+[server/src/services/ai/RateLimitService.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L45)
 
 ## Properties
 
@@ -61,7 +61,7 @@ Manages AI request rate limits using an efficient fixed-window counter algorithm
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:36](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L36)
+[server/src/services/ai/RateLimitService.ts:36](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L36)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L37)
+[server/src/services/ai/RateLimitService.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L37)
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L35)
+[server/src/services/ai/RateLimitService.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L35)
 
 ## Methods
 
@@ -99,7 +99,7 @@ a manual cleanup option if needed.
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:208](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L208)
+[server/src/services/ai/RateLimitService.ts:208](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L208)
 
 ___
 
@@ -117,7 +117,7 @@ Promise with aggregated rate limiting statistics
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:173](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L173)
+[server/src/services/ai/RateLimitService.ts:173](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L173)
 
 ___
 
@@ -142,7 +142,7 @@ Promise with current usage and remaining requests
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:109](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L109)
+[server/src/services/ai/RateLimitService.ts:109](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L109)
 
 ___
 
@@ -177,7 +177,7 @@ Promise<boolean> - true if request is allowed, false if rate limited
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:69](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L69)
+[server/src/services/ai/RateLimitService.ts:69](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L69)
 
 ___
 
@@ -200,4 +200,4 @@ Useful for customer support or testing scenarios.
 
 #### Defined in
 
-[server/src/services/ai/RateLimitService.ts:156](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/RateLimitService.ts#L156)
+[server/src/services/ai/RateLimitService.ts:156](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/RateLimitService.ts#L156)

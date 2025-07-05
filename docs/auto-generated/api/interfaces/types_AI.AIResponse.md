@@ -35,7 +35,7 @@ Task-specific response data, type-safe based on the task
 
 #### Defined in
 
-[server/src/types/AI.ts:254](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L254)
+[server/src/types/AI.ts:254](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L254)
 
 ___
 
@@ -54,7 +54,7 @@ Error details if status is 'error'
 
 #### Defined in
 
-[server/src/types/AI.ts:271](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L271)
+[server/src/types/AI.ts:271](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L271)
 
 ___
 
@@ -77,7 +77,7 @@ Metadata for monitoring, analytics, and cost tracking
 
 #### Defined in
 
-[server/src/types/AI.ts:256](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L256)
+[server/src/types/AI.ts:256](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L256)
 
 ___
 
@@ -89,4 +89,4 @@ Outcome of the AI request
 
 #### Defined in
 
-[server/src/types/AI.ts:252](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L252)
+[server/src/types/AI.ts:252](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L252)

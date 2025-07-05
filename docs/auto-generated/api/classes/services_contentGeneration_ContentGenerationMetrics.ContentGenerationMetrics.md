@@ -48,7 +48,7 @@ TODO: Reference Future Implementation #24 - Implement Structured Logging
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:6](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L6)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:6](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L6)
 
 ## Properties
 
@@ -58,7 +58,7 @@ TODO: Reference Future Implementation #24 - Implement Structured Logging
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:6](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L6)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:6](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L6)
 
 ## Methods
 
@@ -80,7 +80,7 @@ TODO: Reference Future Implementation #24 - Implement Structured Logging
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:8](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L8)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:8](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L8)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L54)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L54)
 
 ___
 
@@ -129,7 +129,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:17](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L17)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:17](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L17)
 
 ___
 
@@ -155,7 +155,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L35)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L35)
 
 ___
 
@@ -181,7 +181,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L26)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L26)
 
 ___
 
@@ -206,4 +206,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationMetrics.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L45)
+[server/src/services/contentGeneration/ContentGenerationMetrics.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationMetrics.ts#L45)

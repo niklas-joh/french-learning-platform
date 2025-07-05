@@ -49,7 +49,7 @@ Concrete enhancer for Lesson content.
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/LessonEnhancer.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/LessonEnhancer.ts#L11)
+[server/src/services/contentGeneration/enhancers/LessonEnhancer.ts:11](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/LessonEnhancer.ts#L11)
 
 ## Properties
 
@@ -63,7 +63,7 @@ Concrete enhancer for Lesson content.
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/LessonEnhancer.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/LessonEnhancer.ts#L9)
+[server/src/services/contentGeneration/enhancers/LessonEnhancer.ts:9](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/LessonEnhancer.ts#L9)
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L12)
+[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L12)
 
 ## Methods
 
@@ -107,4 +107,4 @@ A promise that resolves to the enhanced lesson content.
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/LessonEnhancer.ts:22](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/LessonEnhancer.ts#L22)
+[server/src/services/contentGeneration/enhancers/LessonEnhancer.ts:22](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/LessonEnhancer.ts#L22)

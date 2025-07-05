@@ -28,7 +28,7 @@ Default AI provider to use
 
 #### Defined in
 
-[server/src/types/AI.ts:99](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L99)
+[server/src/types/AI.ts:99](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L99)
 
 ___
 
@@ -48,7 +48,7 @@ Provider-specific configuration
 
 #### Defined in
 
-[server/src/types/AI.ts:103](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L103)
+[server/src/types/AI.ts:103](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L103)
 
 ___
 
@@ -60,7 +60,7 @@ Redis connection URL for caching and session management
 
 #### Defined in
 
-[server/src/types/AI.ts:101](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L101)
+[server/src/types/AI.ts:101](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L101)
 
 ___
 
@@ -80,4 +80,4 @@ Strategy configurations with type safety
 
 #### Defined in
 
-[server/src/types/AI.ts:113](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L113)
+[server/src/types/AI.ts:113](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L113)

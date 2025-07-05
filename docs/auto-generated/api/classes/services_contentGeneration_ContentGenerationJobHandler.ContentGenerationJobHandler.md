@@ -67,7 +67,7 @@ job-based asynchronous workflow.
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L35)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:35](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L35)
 
 ## Properties
 
@@ -77,7 +77,7 @@ job-based asynchronous workflow.
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:36](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L36)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:36](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L36)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:41](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L41)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:41](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L41)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L39)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:39](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L39)
 
 ___
 
@@ -107,7 +107,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:42](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L42)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:42](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L42)
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L45)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:45](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L45)
 
 ___
 
@@ -127,7 +127,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L43)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:43](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L43)
 
 ___
 
@@ -137,7 +137,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L37)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:37](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L37)
 
 ___
 
@@ -147,7 +147,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L44)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:44](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L44)
 
 ___
 
@@ -157,7 +157,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:40](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L40)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:40](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L40)
 
 ___
 
@@ -167,7 +167,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:38](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L38)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:38](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L38)
 
 ___
 
@@ -177,7 +177,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:33](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L33)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:33](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L33)
 
 ## Methods
 
@@ -201,7 +201,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:178](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L178)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:178](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L178)
 
 ___
 
@@ -222,7 +222,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:205](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L205)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:205](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L205)
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:139](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L139)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:139](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L139)
 
 ___
 
@@ -264,7 +264,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:222](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L222)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:222](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L222)
 
 ___
 
@@ -286,7 +286,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:108](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L108)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:108](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L108)
 
 ___
 
@@ -306,7 +306,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:161](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L161)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:161](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L161)
 
 ___
 
@@ -334,7 +334,7 @@ If a non-recoverable error occurs during generation.
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L54)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L54)
 
 ___
 
@@ -355,4 +355,4 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:165](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L165)
+[server/src/services/contentGeneration/ContentGenerationJobHandler.ts:165](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/ContentGenerationJobHandler.ts#L165)

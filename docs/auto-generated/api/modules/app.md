@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[server/src/app.ts:55](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/app.ts#L55)
+[server/src/app.ts:55](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/app.ts#L55)
 
 ## Functions
 
@@ -44,7 +44,7 @@ third argument.
 
 #### Defined in
 
-[server/src/app.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/app.ts#L23)
+[server/src/app.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/app.ts#L23)
 
 ▸ **app**(`req`, `res`, `next`): `void` \| `Promise`\<`void`\>
 
@@ -62,4 +62,4 @@ third argument.
 
 #### Defined in
 
-[server/src/app.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/app.ts#L23)
+[server/src/app.ts:23](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/app.ts#L23)

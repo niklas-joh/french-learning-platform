@@ -55,7 +55,7 @@ Manages user context data for AI personalization.
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L29)
+[server/src/services/ai/ContextService.ts:29](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L29)
 
 ## Properties
 
@@ -65,7 +65,7 @@ Manages user context data for AI personalization.
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L26)
+[server/src/services/ai/ContextService.ts:26](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L26)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L27)
+[server/src/services/ai/ContextService.ts:27](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L27)
 
 ## Methods
 
@@ -99,7 +99,7 @@ The fully constructed learning context.
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:95](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L95)
+[server/src/services/ai/ContextService.ts:95](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L95)
 
 ___
 
@@ -124,7 +124,7 @@ The user's lean AI context.
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:74](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L74)
+[server/src/services/ai/ContextService.ts:74](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L74)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:129](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L129)
+[server/src/services/ai/ContextService.ts:129](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L129)
 
 ___
 
@@ -172,7 +172,7 @@ The user's learning context.
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:40](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L40)
+[server/src/services/ai/ContextService.ts:40](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L40)
 
 ___
 
@@ -192,7 +192,7 @@ ___
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:135](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L135)
+[server/src/services/ai/ContextService.ts:135](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L135)
 
 ___
 
@@ -219,4 +219,4 @@ Updates parts of a user's context and invalidates the cache.
 
 #### Defined in
 
-[server/src/services/ai/ContextService.ts:61](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/ai/ContextService.ts#L61)
+[server/src/services/ai/ContextService.ts:61](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/ai/ContextService.ts#L61)

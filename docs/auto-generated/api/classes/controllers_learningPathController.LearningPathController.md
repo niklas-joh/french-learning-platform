@@ -56,7 +56,7 @@ Marks a lesson as 'completed' for the user within a transaction.
 
 #### Defined in
 
-[server/src/controllers/learningPathController.ts:85](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/learningPathController.ts#L85)
+[server/src/controllers/learningPathController.ts:85](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/learningPathController.ts#L85)
 
 ___
 
@@ -83,7 +83,7 @@ Retrieves a specific learning path with user progress for the authenticated user
 
 #### Defined in
 
-[server/src/controllers/learningPathController.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/learningPathController.ts#L18)
+[server/src/controllers/learningPathController.ts:18](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/learningPathController.ts#L18)
 
 ___
 
@@ -110,4 +110,4 @@ Marks a lesson as 'in_progress' for the user.
 
 #### Defined in
 
-[server/src/controllers/learningPathController.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/controllers/learningPathController.ts#L54)
+[server/src/controllers/learningPathController.ts:54](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/controllers/learningPathController.ts#L54)

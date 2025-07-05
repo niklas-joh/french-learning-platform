@@ -50,7 +50,7 @@ Provides a consistent structure for all enhancer implementations.
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L12)
+[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L12)
 
 ## Properties
 
@@ -60,7 +60,7 @@ Provides a consistent structure for all enhancer implementations.
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:10](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L10)
+[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:10](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L10)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L12)
+[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:12](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L12)
 
 ## Methods
 
@@ -99,4 +99,4 @@ A promise that resolves to the enhanced content.
 
 #### Defined in
 
-[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:20](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L20)
+[server/src/services/contentGeneration/enhancers/BaseEnhancer.ts:20](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/contentGeneration/enhancers/BaseEnhancer.ts#L20)

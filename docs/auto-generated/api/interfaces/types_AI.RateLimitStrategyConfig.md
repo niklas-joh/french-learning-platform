@@ -26,7 +26,7 @@ Whether rate limiting is enabled
 
 #### Defined in
 
-[server/src/types/AI.ts:72](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L72)
+[server/src/types/AI.ts:72](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L72)
 
 ___
 
@@ -38,7 +38,7 @@ Maximum requests allowed per window
 
 #### Defined in
 
-[server/src/types/AI.ts:76](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L76)
+[server/src/types/AI.ts:76](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L76)
 
 ___
 
@@ -50,4 +50,4 @@ Time window for rate limiting in minutes
 
 #### Defined in
 
-[server/src/types/AI.ts:74](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/types/AI.ts#L74)
+[server/src/types/AI.ts:74](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/types/AI.ts#L74)

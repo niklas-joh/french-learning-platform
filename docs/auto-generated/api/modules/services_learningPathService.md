@@ -38,7 +38,7 @@ An error if the lesson progress does not exist or is not 'in_progress'.
 
 #### Defined in
 
-[server/src/services/learningPathService.ts:155](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/learningPathService.ts#L155)
+[server/src/services/learningPathService.ts:155](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/learningPathService.ts#L155)
 
 ___
 
@@ -64,7 +64,7 @@ A Promise resolving to LearningPathWithUserProgress object or null if not found.
 
 #### Defined in
 
-[server/src/services/learningPathService.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/learningPathService.ts#L14)
+[server/src/services/learningPathService.ts:14](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/learningPathService.ts#L14)
 
 ___
 
@@ -89,4 +89,4 @@ The created or updated user lesson progress record.
 
 #### Defined in
 
-[server/src/services/learningPathService.ts:135](https://github.com/niklas-joh/french-learning-platform/blob/df287cd90d2fc20ebbe1da4bb7d2c97b195a5de7/server/src/services/learningPathService.ts#L135)
+[server/src/services/learningPathService.ts:135](https://github.com/niklas-joh/french-learning-platform/blob/f88c80a984d39a715bd427891d156cc94cff3831/server/src/services/learningPathService.ts#L135)
