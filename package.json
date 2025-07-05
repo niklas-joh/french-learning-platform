@@ -13,13 +13,7 @@
     "db:reset": "rimraf database/french_learning.db database/test.sqlite3",
     "db:seed": "npm --prefix server run db:seed",
     "db:setup": "run-s db:rebuild migrate db:seed db:status",
-    "db:rebuild": "run-s db:reset",
-    "doc": "npm-run-all doc:schema doc:api doc:patterns doc:complexity",
-    "doc:schema": "node ./node_modules/knexer/src/knexer.js --client sqlite3 --connection database/french_learning.db --output docs/auto-generated/schema.png",
-    "doc:api": "npm run --prefix server doc:api",
-    "doc:patterns": "semgrep --config .semgrep.yml --json > docs/auto-generated/patterns.json",
-    "doc:complexity": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx --format json --output-file docs/auto-generated/complexity/report.json",
-    "prepare": "husky"
+    "db:rebuild": "run-s db:reset"
   },
   "keywords": [],
   "author": "",
@@ -43,18 +37,11 @@
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.35.1",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
-    "eslint": "^9.30.1",
-    "eslint-plugin-complexity": "^1.0.2",
-    "husky": "^9.1.7",
     "knex": "^3.1.0",
-    "knexer": "^0.2.1",
-    "npm-run-all": "^4.1.5",
     "postcss": "^8.5.5",
     "rimraf": "^6.0.1",
-    "semgrep": "^0.0.1",
     "tailwindcss": "^4.1.10"
   }
 }

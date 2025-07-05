@@ -14,7 +14,8 @@
     "db:seed": "knex seed:run --knexfile src/knexfile.ts",
     "db:status": "knex migrate:list --knexfile src/knexfile.ts",
     "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts",
-    "doc:api": "typedoc --entryPointStrategy expand ./src --plugin typedoc-plugin-markdown --out ../docs/auto-generated/api"
+    "doc:api": "typedoc",
+    "semgrep": "semgrep --config ../.semgrep.yml --json > ../docs/auto-generated/patterns.json"
   },
   "keywords": [],
   "author": "",

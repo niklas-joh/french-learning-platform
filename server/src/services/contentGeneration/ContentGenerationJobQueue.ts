@@ -10,7 +10,7 @@ type JobPayload = AITaskPayloads['GENERATE_LESSON']['request'] & {
  * A service class to abstract interactions with the BullMQ content generation queue.
  * This keeps queue-specific logic isolated from the main application logic.
  */
-class ContentGenerationJobQueue {
+export class ContentGenerationJobQueue {
   private queue: Queue;
 
   constructor() {

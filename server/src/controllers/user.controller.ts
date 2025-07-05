@@ -9,22 +9,10 @@ import UserContentCompletionModel from '../models/UserContentCompletion.js';
 import UserPreferenceModel from '../models/UserPreference.js';
 import { getTopicProgress, getAssignedContentProgress } from '../models/UserProgress.js';
 
-// Extend Express Request type to include the user object populated by the
-// authentication middleware.
-interface AuthenticatedRequest extends Request {
-  user?: {
-    
-    userId?: number;
-    id?: number;
-    email?: string;
-    role?: string;
-  };
-}
-
 /**
  * Returns the authenticated user's profile without the password hash.
  */
-export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getCurrentUserProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     const uid = req.user?.userId ?? req.user?.id;
     if (!uid || typeof uid !== 'number' || uid <= 0) {
@@ -50,7 +38,7 @@ export const getCurrentUserProfile = async (req: AuthenticatedRequest, res: Resp
 /**
  * Updates the authenticated user's profile fields.
  */
-export const updateUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const updateUserProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     const uid = req.user?.userId ?? req.user?.id;
     if (!uid || typeof uid !== 'number' || uid <= 0) {
@@ -119,7 +107,7 @@ export const getAllUsers = async (_req: Request, res: Response): Promise<void> =
 /**
  * Returns all content assignments for the authenticated user.
  */
-export const getAssignedContent = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getAssignedContent = async (req: Request, res: Response): Promise<void> => {
   try {
     const uid = req.user?.userId ?? req.user?.id;
     if (!uid || typeof uid !== 'number' || uid <= 0) {
@@ -141,7 +129,7 @@ export const getAssignedContent = async (req: AuthenticatedRequest, res: Respons
 /**
  * Aggregates progress for the authenticated user across all topics and assigned content.
  */
-export const getUserProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getUserProgress = async (req: Request, res: Response): Promise<void> => {
   try {
     const uid = req.user?.userId ?? req.user?.id;
     if (!uid || typeof uid !== 'number' || uid <= 0) {
@@ -169,7 +157,7 @@ export const getUserProgress = async (req: AuthenticatedRequest, res: Response):
 /**
  * Retrieves the persisted preferences for the authenticated user.
  */
-export const getUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getUserPreferences = async (req: Request, res: Response): Promise<void> => {
     try {
         const uid = req.user?.userId ?? req.user?.id;
         if (!uid || typeof uid !== 'number' || uid <= 0) {
@@ -192,7 +180,7 @@ export const getUserPreferences = async (req: AuthenticatedRequest, res: Respons
 /**
  * Stores new preference values for the authenticated user.
  */
-export const updateUserPreferences = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const updateUserPreferences = async (req: Request, res: Response): Promise<void> => {
     try {
         const uid2 = req.user?.userId ?? req.user?.id;
         if (!uid2 || typeof uid2 !== 'number' || uid2 <= 0) {
@@ -219,7 +207,7 @@ export const updateUserPreferences = async (req: AuthenticatedRequest, res: Resp
  * Records progress for a specific content item for the authenticated user.
  * Sets the status of the corresponding user_content_assignment to 'completed'.
  */
-export const recordContentItemProgress = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const recordContentItemProgress = async (req: Request, res: Response): Promise<void> => {
   try {
     const uid = req.user?.userId ?? req.user?.id;
     if (!uid || typeof uid !== 'number' || uid <= 0) {

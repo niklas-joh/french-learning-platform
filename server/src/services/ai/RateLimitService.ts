@@ -14,17 +14,7 @@
 
 import { Redis } from 'ioredis';
 import { RateLimitStrategyConfig } from '../../types/AI';
-
-/**
- * @interface ILogger
- * @description Temporary logger interface to support future structured logging implementation.
- *              TODO: Replace with proper structured logger (Future Consideration #16)
- */
-interface ILogger {
-  info(message: string, ...args: any[]): void;
-  warn(message: string, ...args: any[]): void;
-  error(message: string, error?: any): void;
-}
+import { ILogger } from '../../types/logger';
 
 /**
  * @class RateLimitService
