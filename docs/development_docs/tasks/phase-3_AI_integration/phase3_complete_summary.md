@@ -22,6 +22,8 @@ The Phase 3 implementation plan successfully transforms your language learning p
 | | <i>3.1.B.6b: ContentGenerationJobHandler</i> | <i>0.75h</i> | <i>✅ Completed</i> | <i>Core logic for processing generation jobs</i> |
 | | <i>3.1.B.6c: Refactor DynamicContentGenerator</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>Refactored to use the job queue</i> |
 | | <i>3.1.B.6d: Implement API Endpoints for Job Management</i> | <i>1.25h</i> | <i>✅ Completed</i> | <i>API for listing and cancelling jobs</i> |
+| **3.1.B.7** | [Fix Generic Generate Endpoint](./3-1-B-7-fix-generic-generate-endpoint.md) | 1.5h | ✅ **Completed** | Generic `GENERATE_CONTENT` task, discriminated union validation |
+| **3.1.B.8** | [Consolidate API Endpoints](./3-1-B-8-consolidate-api-endpoints.md) | 1h | ✅ **Completed** | Single `POST /api/ai/generate` endpoint, removed deprecated handlers |
 | **3.1.C** | [AI Assessment & Grading](./tasks/3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | Intelligent grading, personalized feedback |
 | **3.1.D** | [AI-First Dashboard](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | Complete UI transformation, AI-driven UX |
 

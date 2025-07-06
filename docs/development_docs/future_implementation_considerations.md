@@ -566,3 +566,23 @@ This document tracks architectural improvements, refactoring opportunities, and 
     -   **Resilience**: The system can automatically recover from temporary external service failures.
     -   **User Experience**: Users don't have to manually resubmit failed requests.
     -   **Reliability**: Increases the overall success rate of content generation.
+
+## 44. API Endpoint Consolidation Strategy
+- **Identified**: During critique of Task 3.1.B.7 implementation.
+- **Current State**: The codebase has multiple approaches for handling AI tasks, including a generic `handleAIRequest` function and a more specific `generateContentAsync` function. This leads to architectural inconsistencies.
+- **Problem**: Having multiple, competing patterns for API endpoint implementation makes the system harder to understand, maintain, and scale. It creates confusion for developers and can lead to inconsistent error handling, validation, and logging.
+- **Proposed Solution**: Standardize on a single, clear strategy for API endpoints. The chosen strategy is to use specific, asynchronous endpoints (like `/api/ai/generate`, `/api/ai/assess`) for distinct user-facing actions. The logic *within* these endpoints can then handle various subtypes (e.g., different content generation types) through a unified validation and service layer, but the API surface itself remains clean and action-oriented. Deprecate and remove redundant handlers like the generic `handleAIRequest`.
+- **Benefits**:
+  - **Consistency**: A single, predictable pattern for all API endpoints.
+  - **Maintainability**: Easier to debug and extend the API layer.
+  - **Clarity**: The API structure clearly communicates its capabilities.
+
+## 45. Enhanced Content Type Factory System
+- **Identified**: During critique of Task 3.1.B.7 implementation.
+- **Current State**: The system has factories for validators, enhancers, and structurers, but they are not yet fully leveraged by a unified content generation task type.
+- **Problem**: Without a unified `GENERATE_CONTENT` task that uses a discriminated union, adding new content types requires significant changes to the `AITaskPayloads` and `aiController`, increasing the risk of breaking changes.
+- **Proposed Solution**: Refactor the `AITaskPayloads` to include a generic `GENERATE_CONTENT` task. This task's payload would be a discriminated union based on a `contentType` field. This allows the existing factory patterns to be used more effectively, as the controller can simply pass the `contentType` to the factories to get the correct validator, structurer, etc.
+- **Benefits**:
+  - **Extensibility**: Adding a new content type becomes as simple as adding a new schema to the union and implementing its corresponding services.
+  - **Type Safety**: Provides compile-time and runtime safety for different content type payloads.
+  - **Maintainability**: Centralizes content generation logic and reduces boilerplate.

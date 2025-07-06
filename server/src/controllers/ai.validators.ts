@@ -17,23 +17,32 @@
 import { z } from 'zod';
 
 /**
- * Validation schema for lesson generation requests
- * Corresponds to AITaskPayloads['GENERATE_LESSON']['request']
+ * Schemas for each specific content type, extending the base.
+ * Using discriminated union for type-safe validation based on the 'contentType' field.
  */
-export const generateLessonPayloadSchema = z.object({
-  type: z.literal('lesson'),
-  topic: z.string()
-    .min(1, 'Topic is required')
-    .max(100, 'Topic must be less than 100 characters'),
-  difficulty: z.enum(['beginner', 'intermediate', 'advanced', 'adaptive'], {
-    errorMap: () => ({ message: 'Difficulty must be beginner, intermediate, advanced, or adaptive' })
+export const generateContentPayloadSchema = z.discriminatedUnion('contentType', [
+  z.object({
+    contentType: z.literal('lesson'),
+    level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']),
+    topics: z.array(z.string()).min(1),
+    duration: z.number().int().min(1).max(60).optional(),
+    focusAreas: z.array(z.string()).optional(),
+    learningStyle: z.enum(['visual', 'auditory', 'kinesthetic', 'mixed']).optional(),
   }),
-  estimatedTime: z.number()
-    .int('Estimated time must be an integer')
-    .min(5, 'Estimated time must be at least 5 minutes')
-    .max(120, 'Estimated time must be less than 120 minutes')
-    .optional(),
-});
+  z.object({
+    contentType: z.literal('vocabulary_drill'),
+    level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']),
+    topics: z.array(z.string()).min(1),
+    duration: z.number().int().min(1).max(60).optional(),
+  }),
+  z.object({
+    contentType: z.literal('grammar_exercise'),
+    level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']),
+    topics: z.array(z.string()).min(1),
+    grammarFocus: z.string(),
+    duration: z.number().int().min(1).max(60).optional(),
+  }),
+]);
 
 /**
  * Validation schema for pronunciation assessment requests
@@ -94,7 +103,7 @@ export const paginationSchema = z.object({
  * This provides a type-safe way to access validators based on task type
  */
 export const validationSchemaMap = {
-  GENERATE_LESSON: generateLessonPayloadSchema,
+  GENERATE_CONTENT: generateContentPayloadSchema,
   ASSESS_PRONUNCIATION: assessPronunciationPayloadSchema,
   GRADE_RESPONSE: gradeResponsePayloadSchema,
   // TODO: Add future schemas as they are implemented

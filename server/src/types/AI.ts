@@ -25,7 +25,7 @@ import { Lesson } from '../models/Lesson.js';
  *              Using string literal union for type safety and autocompletion.
  */
 export type AITaskType =
-  | 'GENERATE_LESSON'
+  | 'GENERATE_CONTENT'
   | 'ASSESS_PRONUNCIATION' 
   | 'GRADE_RESPONSE'
   | 'GENERATE_CURRICULUM_PATH'
@@ -127,16 +127,30 @@ export interface OrchestrationConfig {
  *              preventing payload mismatches and reducing developer errors.
  */
 export interface AITaskPayloads {
-  GENERATE_LESSON: {
-    request: {
-      /** The topic for lesson generation */
-      topic: string;
-      /** Difficulty level for the lesson */
-      difficulty: 'beginner' | 'intermediate' | 'advanced';
-      /** Estimated duration in minutes */
-      estimatedTime?: number;
-    };
-    response: Lesson; // Reusing established Lesson model for consistency
+  GENERATE_CONTENT: {
+    request: 
+      | {
+          contentType: 'lesson';
+          level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+          topics: string[];
+          duration?: number;
+          focusAreas?: string[];
+          learningStyle?: 'visual' | 'auditory' | 'kinesthetic' | 'mixed';
+        }
+      | {
+          contentType: 'vocabulary_drill';
+          level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+          topics: string[];
+          duration?: number;
+        }
+      | {
+          contentType: 'grammar_exercise';
+          level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+          topics: string[];
+          grammarFocus: string;
+          duration?: number;
+        };
+    response: any; // The response will be structured content, can be defined later
   };
   
   ASSESS_PRONUNCIATION: {

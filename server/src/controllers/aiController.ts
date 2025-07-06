@@ -30,146 +30,6 @@ import {
 import { AiGenerationJobsModel } from '../models/AiGenerationJob.js';
 import { paginationSchema } from './ai.validators.js'; // Import the new schema
 
-/**
- * Task handler map - Declarative mapping of AI tasks to their handlers
- * 
- * This approach is more scalable and maintainable than switch statements.
- * Each task type is mapped to its handler method and validation schema.
- */
-const taskHandlerMap = {
-  GENERATE_LESSON: {
-    handler: 'generateLesson' as const,
-    validator: validationSchemaMap.GENERATE_LESSON,
-  },
-  ASSESS_PRONUNCIATION: {
-    handler: 'assessPronunciation' as const,
-    validator: validationSchemaMap.ASSESS_PRONUNCIATION,
-  },
-  GRADE_RESPONSE: {
-    handler: 'gradeResponse' as const,
-    validator: validationSchemaMap.GRADE_RESPONSE,
-  },
-  // TODO: Add future task mappings as new AI features are implemented
-} as const;
-
-/**
- * Generic AI request handler - Centralized logic for all AI requests
- * 
- * This function provides a consistent, reusable pattern for handling AI requests
- * with validation, error handling, and proper response formatting.
- * 
- * @param req - Authenticated Express request
- * @param res - Express response
- * @param taskType - The specific AI task to execute
- */
-async function handleAIRequest<T extends ValidatedAITask>(
-  req: AuthenticatedRequest,
-  res: Response,
-  taskType: T
-): Promise<void> {
-  // TODO: Implement structured logging (Pino) as per #24 in future_implementation_considerations.md
-  console.log(`[aiController] Processing ${taskType} request for user ${req.user?.userId}`);
-
-  try {
-    // 1. Authentication check
-    if (!req.user?.userId) {
-      res.status(401).json({ 
-        message: 'Authentication required.',
-        code: 'AUTH_REQUIRED' 
-      });
-      return;
-    }
-
-    // 2. Runtime payload validation using Zod
-    const validationResult = validateAIPayload(taskType, req.body);
-    if (!validationResult.success) {
-      const errorResponse = formatValidationError(validationResult.error);
-      res.status(400).json({
-        message: errorResponse.message,
-        details: errorResponse.details,
-        code: 'VALIDATION_ERROR'
-      });
-      return;
-    }
-
-    // 3. Build user context from authenticated request
-    const userContext: AIUserContext = {
-      id: req.user.userId,
-      firstName: null, // TODO: Add firstName to AuthenticatedRequest when user model is extended
-      role: req.user.role || 'user',
-      preferences: {}, // TODO: Load actual user preferences when ContextService is fully implemented
-    };
-
-    // 4. Get AI orchestrator instance
-    const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
-
-    // 5. Execute the specific AI task using proper type casting
-    let result;
-    switch (taskType) {
-      case 'GENERATE_LESSON':
-        result = await aiOrchestrator.generateLesson(
-          userContext,
-          validationResult.data as any // Bypassing type conflict for now
-        );
-        break;
-      case 'ASSESS_PRONUNCIATION':
-        result = await aiOrchestrator.assessPronunciation(
-          userContext, 
-          validationResult.data as AITaskPayloads['ASSESS_PRONUNCIATION']['request']
-        );
-        break;
-      case 'GRADE_RESPONSE':
-        result = await aiOrchestrator.gradeResponse(
-          userContext, 
-          validationResult.data as AITaskPayloads['GRADE_RESPONSE']['request']
-        );
-        break;
-      default:
-        res.status(500).json({ 
-          message: 'Handler not implemented for this task type.',
-          code: 'HANDLER_NOT_FOUND' 
-        });
-        return;
-    }
-
-    // 6. Send successful response
-    res.status(200).json(result);
-
-    // TODO: Add metrics logging for monitoring (response time, task type, success rate)
-    console.log(`[aiController] Successfully processed ${taskType} in ${result.metadata.processingTimeMs}ms`);
-
-  } catch (error) {
-    // TODO: Implement structured logging (Pino) as per #24 in future_implementation_considerations.md
-    // TODO: Implement global error handling middleware to handle custom AIError types
-    console.error(`[aiController] Error processing ${taskType}:`, error);
-
-    // Handle different error types appropriately
-    if (error instanceof Error) {
-      // Check for specific error types and map to appropriate HTTP status codes
-      if (error.message.includes('Rate limit')) {
-        res.status(429).json({ 
-          message: 'Rate limit exceeded. Please try again later.',
-          code: 'RATE_LIMIT_EXCEEDED' 
-        });
-        return;
-      }
-      
-      if (error.message.includes('Invalid')) {
-        res.status(400).json({ 
-          message: error.message,
-          code: 'INVALID_REQUEST' 
-        });
-        return;
-      }
-    }
-
-    // Default to 500 for unexpected errors
-    res.status(500).json({ 
-      message: 'An unexpected error occurred while processing your request.',
-      code: 'INTERNAL_ERROR' 
-    });
-  }
-};
 
 /**
  * [ASYNC] Controller for listing a user's content generation jobs.
@@ -233,8 +93,7 @@ export const generateContentAsync = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
-  // The validation schema for content generation can be more generic
-  const validationResult = validateAIPayload('GENERATE_LESSON', req.body);
+  const validationResult = validateAIPayload('GENERATE_CONTENT', req.body);
   if (!validationResult.success) {
     const errorResponse = formatValidationError(validationResult.error);
     res.status(400).json({
@@ -245,8 +104,10 @@ export const generateContentAsync = async (
     return;
   }
 
+  const { contentType, ...restOfData } = validationResult.data;
   const contentRequest = {
-    ...validationResult.data,
+    ...restOfData,
+    type: contentType,
     userId: req.user!.userId,
   };
 
@@ -304,27 +165,6 @@ export const getGenerationStatus = async (req: AuthenticatedRequest, res: Respon
 };
 
 
-/**
- * @deprecated Use generateContentAsync instead.
- * Controller function for lesson generation
- * POST /api/ai/generate-lesson
- */
-export const generateLesson = (req: AuthenticatedRequest, res: Response): Promise<void> =>
-  handleAIRequest(req, res, 'GENERATE_LESSON');
-
-/**
- * Controller function for pronunciation assessment
- * POST /api/ai/assess-pronunciation
- */
-export const assessPronunciation = (req: AuthenticatedRequest, res: Response): Promise<void> =>
-  handleAIRequest(req, res, 'ASSESS_PRONUNCIATION');
-
-/**
- * Controller function for response grading
- * POST /api/ai/grade-response
- */
-export const gradeResponse = (req: AuthenticatedRequest, res: Response): Promise<void> =>
-  handleAIRequest(req, res, 'GRADE_RESPONSE');
 
 // =================================================================
 // LEGACY ENDPOINTS - Maintained for backward compatibility
