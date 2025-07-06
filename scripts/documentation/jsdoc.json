@@ -1,0 +1,22 @@
+{
+  "source": {
+    "include": ["server/src/"],
+    "includePattern": ".+\\.(ts|tsx|js|jsx)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "destination": "docs/auto-generated/api",
+    "recurse": true,
+    "readme": "README.md",
+    "template": "node_modules/docdash"
+  },
+  "plugins": ["plugins/markdown", "node_modules/jsdoc-babel"],
+  "babel": {
+    "extensions": ["ts", "tsx"],
+    "presets": ["@babel/preset-typescript"]
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true
+  }
+}
