@@ -7,9 +7,13 @@
  */
 import { Knex } from 'knex';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 // Robustly determine the project root by resolving from the current file's location
+// In ES modules, we need to use import.meta.url instead of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..', '..');
 
 dotenv.config({ path: path.join(projectRoot, '.env') });

@@ -1,19 +1,20 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/app.ts",
-    "start": "ts-node src/app.ts",
+    "dev": "nodemon --exec tsx src/app.ts",
+    "start": "tsx src/app.ts",
     "clean": "rimraf dist",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "db:migrate": "knex migrate:latest --knexfile src/knexfile.ts",
-    "db:rollback": "knex migrate:rollback --knexfile src/knexfile.ts",
-    "db:seed": "knex seed:run --knexfile src/knexfile.ts",
-    "db:status": "knex migrate:list --knexfile src/knexfile.ts",
-    "populate:content": "ts-node -P ./tsconfig.json ../scripts/populate_content.ts",
+    "db:migrate": "tsx ../node_modules/.bin/knex migrate:latest --knexfile src/knexfile.ts",
+    "db:rollback": "tsx ../node_modules/.bin/knex migrate:rollback --knexfile src/knexfile.ts",
+    "db:seed": "tsx ../node_modules/.bin/knex seed:run --knexfile src/knexfile.ts",
+    "db:status": "tsx ../node_modules/.bin/knex migrate:list --knexfile src/knexfile.ts",
+    "populate:content": "tsx ../scripts/populate_content.ts",
     "doc:api": "typedoc",
     "semgrep": "semgrep --config ../.semgrep.yml --json > ../docs/auto-generated/patterns.json"
   },
@@ -55,8 +56,9 @@
     "supertest": "^7.1.1",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.0",
+    "tsx": "^4.20.3",
     "typedoc": "^0.25.13",
-    "typedoc-plugin-markdown": "^3.17.1"
+    "typedoc-plugin-markdown": "^3.17.1",
+    "typescript": "^5.4.0"
   }
 }
