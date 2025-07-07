@@ -27,7 +27,7 @@ The Phase 3 implementation plan successfully transforms your language learning p
 | | <i>3.1.C.2: Scaffolding</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>File structure for service, controller, repo</i> |
 | | <i>3.1.C.3: Core Engine & Strategies</i> | <i>1.5h</i> | <i>✅ **Completed**</i> | <i>DI setup and Strategy pattern implementation</i> |
 | | <i>3.1.C.4: Transactional Grading Logic</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Atomic grading for full exercises</i> |
-| | <i>3.1.C.5: Assessment Repository</i> | <i>0.5h</i> | <i>⏳ Not Started</i> | <i>Data access layer for assessments</i> |
+| | <i>3.1.C.5: Assessment Repository</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>Data access layer for assessments</i> |
 | | <i>3.1.C.6: Unit & Integration Testing</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Jest/Supertest for all new components</i> |
 | | <i>3.1.C.7: Async Analysis Worker</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Background job for performance-intensive analysis</i> |
 | **3.1.D** | [AI-First Dashboard](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | Complete UI transformation, AI-driven UX |

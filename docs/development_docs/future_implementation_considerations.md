@@ -595,3 +595,23 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Higher Accuracy**: Can correctly identify answers that are semantically correct but formatted differently.
   - **Smarter Feedback**: The system could even use the AI's output to say, "I see you wrote 'bonjou!r'. I think you meant 'bonjour'. That's correct!"
 - **Reason for Deferral**: This introduces an additional AI call for every "simple" assessment, which has cost and latency implications that need to be carefully managed. It should be implemented after the core engine is stable.
+
+## 46. Controlled Concurrency for Batch AI Assessments
+- **Identified**: During critique of Task 3.1.C.4 (Transactional Grading Logic).
+- **Current State**: The `gradeExercise` method uses `Promise.all` to execute all individual assessments in parallel.
+- **Problem**: While efficient for small numbers, this can create a "thundering herd" problem for exercises with many questions (e.g., 20+), potentially overwhelming the `AIOrchestrator`'s rate-limiting queue, leading to API errors, timeouts, and unpredictable performance.
+- **Proposed Solution**: Implement a controlled concurrency or pooling mechanism within the `gradeExercise` method to limit the number of simultaneous in-flight `assessUserResponse` calls to a configurable maximum (e.g., 5). This provides more predictable performance and reduces the peak load on downstream services.
+- **Benefits**:
+  - **Performance Stability**: Prevents API call bursts and ensures predictable load.
+  - **Resilience**: Reduces the risk of hitting API rate limits or causing cascading failures.
+  - **Resource Management**: More efficient use of server resources by avoiding excessive concurrent operations.
+
+## 47. Dedicated AI Feedback Service
+- **Identified**: During critique of Task 3.1.C.4 (Transactional Grading Logic).
+- **Current State**: The `AIAssessmentEngine` is responsible for both grading/scoring and generating qualitative feedback and recommendations.
+- **Problem**: As feedback generation logic becomes more sophisticated (e.g., involving multi-step AI prompt chains, analyzing user history for tone), keeping it within the `AIAssessmentEngine` could violate the Single Responsibility Principle (SRP), making the class larger and less focused.
+- **Proposed Solution**: Extract all feedback and recommendation generation logic into a new, dedicated `AIFeedbackService`. The `AIAssessmentEngine` would then call this service, passing the grading results as context.
+- **Benefits**:
+  - **Adherence to SRP**: The `AIAssessmentEngine` focuses solely on assessment, while the `AIFeedbackService` focuses solely on generating qualitative feedback.
+  - **Maintainability**: Logic for feedback is isolated, making it easier to modify and test independently.
+  - **Reusability**: The `AIFeedbackService` could potentially be reused by other parts of the application (e.g., the AI Tutor) that need to generate user feedback.
