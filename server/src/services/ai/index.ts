@@ -12,16 +12,20 @@
  * TODO: Replace stub implementations with Redis-based services in production.
  */
 
-import { AIOrchestrator } from './AIOrchestrator';
-import { ContextService } from './ContextService';
-import { AIMetricsService } from './AIMetricsService';
-import { PromptTemplateEngine } from './PromptTemplateEngine';
-import { RedisCacheService } from '../common/RedisCacheService';
-import { ContentValidator } from './ContentValidator';
-import { ContentEnhancer } from './ContentEnhancer';
-import { redisConnection } from '../../config/redis';
-import { ILogger } from '../../types/ILogger';
-import { OrchestrationConfig } from '../../types/AI';
+import { AIOrchestrator } from './AIOrchestrator.js';
+import { ContextService } from './ContextService.js';
+import { AIMetricsService } from './AIMetricsService.js';
+import { PromptTemplateEngine } from './PromptTemplateEngine.js';
+import { RedisCacheService } from '../common/RedisCacheService.js';
+import { ContentValidator } from './ContentValidator.js';
+import { ContentEnhancer } from './ContentEnhancer.js';
+import { redisConnection } from '../../config/redis.js';
+import { ILogger } from '../../types/ILogger.js';
+import { OrchestrationConfig } from '../../types/AI.js';
+import { AssessmentController } from '../../controllers/assessmentController.js';
+import db from '../../config/db.js';
+import { aiConfig } from '../../config/aiConfig.js';
+import OpenAI from 'openai';
 
 const defaultOrchestrationConfig: OrchestrationConfig = {
   defaultProvider: 'OpenAI',
@@ -148,9 +152,12 @@ export const aiServiceFactory = {
         const promptEngine = new PromptTemplateEngine();
         const contentValidator = aiServiceFactory.getContentValidator();
         const contentEnhancer = aiServiceFactory.getContentEnhancer();
+        const openai = new OpenAI(aiConfig.openai);
 
         instance = new AIOrchestrator(
           defaultOrchestrationConfig,
+          db,
+          openai,
           cacheService,
           rateLimitService,
           fallbackHandler,
@@ -160,6 +167,17 @@ export const aiServiceFactory = {
           contentValidator,
           contentEnhancer
         );
+      }
+      return instance;
+    };
+  })(),
+
+  getAssessmentController: (() => {
+    let instance: AssessmentController;
+    return () => {
+      if (!instance) {
+        const orchestrator = aiServiceFactory.getAIOrchestrator();
+        instance = new AssessmentController(orchestrator);
       }
       return instance;
     };

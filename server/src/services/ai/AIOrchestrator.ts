@@ -14,6 +14,10 @@ import { PromptTemplateEngine } from './PromptTemplateEngine';
 import { ContentValidator } from './ContentValidator';
 import { ContentEnhancer } from './ContentEnhancer';
 import { ILogger, createLogger } from '../../utils/logger';
+import { AIAssessmentEngine } from './assessment/aiAssessmentEngine';
+import { AssessmentRepository } from '../../repositories/assessmentRepository';
+import { Knex } from 'knex';
+import { OpenAI } from 'openai';
 
 /**
  * @class AIOrchestrator
@@ -21,9 +25,13 @@ import { ILogger, createLogger } from '../../utils/logger';
  */
 export class AIOrchestrator {
   private readonly logger: ILogger;
+  private assessmentEngine: AIAssessmentEngine;
+  private assessmentRepository: AssessmentRepository;
 
   constructor(
     private readonly config: OrchestrationConfig,
+    private readonly db: Knex, // Added for AssessmentRepository
+    private readonly openai: OpenAI, // Added for AIAssessmentEngine
     private readonly cacheService: ICacheService,
     private readonly rateLimitService: RateLimitService,
     private readonly fallbackHandler: FallbackHandler,
@@ -35,6 +43,17 @@ export class AIOrchestrator {
     logger?: ILogger
   ) {
     this.logger = logger || createLogger('AIOrchestrator');
+    
+    // Instantiate assessment components
+    this.assessmentRepository = new AssessmentRepository(this.db);
+    this.assessmentEngine = new AIAssessmentEngine(
+      this.openai,
+      this.db,
+      this.assessmentRepository,
+      this.cacheService as any, // TODO: Fix this type mismatch later
+      this.promptEngine
+    );
+
     this.logger.info('AIOrchestrator initialized');
   }
 
@@ -347,5 +366,9 @@ export class AIOrchestrator {
   private generateCacheKey<T extends AITaskType>(task: T, payload: any): string {
     const payloadString = JSON.stringify(payload, Object.keys(payload).sort());
     return `${task}:${this.hashString(payloadString)}`;
+  }
+
+  public getAssessmentEngine(): AIAssessmentEngine {
+    return this.assessmentEngine;
   }
 }

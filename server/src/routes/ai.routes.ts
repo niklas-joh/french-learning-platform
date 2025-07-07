@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction, RequestHandler } from 'express'; // Import RequestHandler
 import * as aiController from '../controllers/aiController.js';
-import { protect, AuthenticatedRequest } from '../middleware/auth.middleware.js'; // Import AuthenticatedRequest
+import { protect } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
@@ -27,13 +27,13 @@ router.get('/generate/status/:jobId', aiController.getGenerationStatus);
  * GET /api/ai/jobs
  * Lists all content generation jobs for the authenticated user.
  */
-router.get('/jobs', aiController.listJobs as unknown as RequestHandler<AuthenticatedRequest>); // Explicit cast
+router.get('/jobs', aiController.listJobs as RequestHandler);
 
 /**
  * DELETE /api/ai/jobs/:jobId
  * Cancels a specific content generation job.
  */
-router.delete('/jobs/:jobId', aiController.cancelJob as unknown as RequestHandler<AuthenticatedRequest>); // Explicit cast
+router.delete('/jobs/:jobId', aiController.cancelJob as RequestHandler);
 
 
 /**

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/auth.middleware.js';
 
 // Placeholder for AchievementService
 const achievementService = {
@@ -20,7 +19,7 @@ const achievementService = {
   }
 };
 
-export const getUserAchievements = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getUserAchievements = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -43,7 +42,7 @@ export const getAllAchievements = async (req: Request, res: Response): Promise<v
   }
 };
 
-export const checkNewAchievements = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const checkNewAchievements = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.user?.userId;
     if (!userId) {

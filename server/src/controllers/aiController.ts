@@ -16,8 +16,7 @@
  * TODO: Add request/response logging middleware for monitoring
  */
 
-import { Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/auth.middleware.js';
+import { Request, Response } from 'express';
 import { aiServiceFactory } from '../services/ai/index.js';
 import { contentGenerationServiceFactory } from '../services/contentGeneration/index.js';
 import { AIUserContext, AITaskPayloads } from '../types/AI.js';
@@ -63,7 +62,7 @@ const taskHandlerMap = {
  * @param taskType - The specific AI task to execute
  */
 async function handleAIRequest<T extends ValidatedAITask>(
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   taskType: T
 ): Promise<void> {
@@ -175,7 +174,7 @@ async function handleAIRequest<T extends ValidatedAITask>(
  * [ASYNC] Controller for listing a user's content generation jobs.
  * GET /api/ai/jobs
  */
-export const listJobs = async (req: AuthenticatedRequest, res: Response) => {
+export const listJobs = async (req: Request, res: Response) => {
   const userId = req.user!.userId;
   
   // Validate pagination query parameters
@@ -202,7 +201,7 @@ export const listJobs = async (req: AuthenticatedRequest, res: Response) => {
    * [ASYNC] Controller for cancelling a content generation job.
    * DELETE /api/ai/jobs/:jobId
    */
-  export const cancelJob = async (req: AuthenticatedRequest, res: Response) => {
+  export const cancelJob = async (req: Request, res: Response) => {
     const userId = req.user!.userId;
     const { jobId } = req.params;
 
@@ -230,7 +229,7 @@ export const listJobs = async (req: AuthenticatedRequest, res: Response) => {
  * POST /api/ai/generate
  */
 export const generateContentAsync = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   // The validation schema for content generation can be more generic
@@ -264,7 +263,7 @@ export const generateContentAsync = async (
  * [ASYNC] Controller for checking the status of a content generation job.
  * GET /api/ai/generate/status/:jobId
  */
-export const getGenerationStatus = async (req: AuthenticatedRequest, res: Response) => {
+export const getGenerationStatus = async (req: Request, res: Response) => {
   const { jobId } = req.params;
 
   try {
@@ -309,21 +308,21 @@ export const getGenerationStatus = async (req: AuthenticatedRequest, res: Respon
  * Controller function for lesson generation
  * POST /api/ai/generate-lesson
  */
-export const generateLesson = (req: AuthenticatedRequest, res: Response): Promise<void> =>
+export const generateLesson = (req: Request, res: Response): Promise<void> =>
   handleAIRequest(req, res, 'GENERATE_LESSON');
 
 /**
  * Controller function for pronunciation assessment
  * POST /api/ai/assess-pronunciation
  */
-export const assessPronunciation = (req: AuthenticatedRequest, res: Response): Promise<void> =>
+export const assessPronunciation = (req: Request, res: Response): Promise<void> =>
   handleAIRequest(req, res, 'ASSESS_PRONUNCIATION');
 
 /**
  * Controller function for response grading
  * POST /api/ai/grade-response
  */
-export const gradeResponse = (req: AuthenticatedRequest, res: Response): Promise<void> =>
+export const gradeResponse = (req: Request, res: Response): Promise<void> =>
   handleAIRequest(req, res, 'GRADE_RESPONSE');
 
 // =================================================================
@@ -335,7 +334,7 @@ export const gradeResponse = (req: AuthenticatedRequest, res: Response): Promise
  * Legacy chat endpoint - maintained for backward compatibility
  * @deprecated Use the new AI orchestration endpoints instead
  */
-export const chatWithAI = async (req: AuthenticatedRequest, res: Response) => {
+export const chatWithAI = async (req: Request, res: Response) => {
   try {
     const { prompt, context } = req.body;
     
@@ -361,7 +360,7 @@ export const chatWithAI = async (req: AuthenticatedRequest, res: Response) => {
  * Legacy prompts endpoint - maintained for backward compatibility
  * @deprecated Use the new AI orchestration endpoints instead
  */
-export const getPrompts = async (req: AuthenticatedRequest, res: Response) => {
+export const getPrompts = async (req: Request, res: Response) => {
   try {
     const { topic } = req.query;
     

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import * as learningPathService from '../services/learningPathService.js';
-import { AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import knex from '../config/db.js';
 
 /**
@@ -15,7 +14,7 @@ export class LearningPathController {
    * @param res Express response object.
    * @param next Express next middleware function.
    */
-  public async getLearningPathForUser(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+  public async getLearningPathForUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const pathIdString = req.params.pathId;
       if (!pathIdString || isNaN(parseInt(pathIdString, 10))) {
@@ -51,7 +50,7 @@ export class LearningPathController {
    * @handler POST /api/user/lessons/:lessonId/start
    * Marks a lesson as 'in_progress' for the user.
    */
-  public async startLesson(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+  public async startLesson(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { lessonId } = req.params;
       const userId = req.user?.userId;
@@ -82,7 +81,7 @@ export class LearningPathController {
    * @handler POST /api/user/lessons/:lessonId/complete
    * Marks a lesson as 'completed' for the user within a transaction.
    */
-  public async completeLesson(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+  public async completeLesson(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { lessonId } = req.params;
     const userId = req.user?.userId;
 

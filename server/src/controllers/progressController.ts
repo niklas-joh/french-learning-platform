@@ -3,7 +3,7 @@ import * as progressService from '../services/progressService.js';
 
 export const getUserProgress = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id;
+    const userId = req.user!.userId;
     // This assumes progressService.getUserProgress exists and fetches all relevant progress data
     const userProgress = await progressService.getUserProgress(userId); 
     res.status(200).json(userProgress);
@@ -14,7 +14,7 @@ export const getUserProgress = async (req: Request, res: Response) => {
 
 export const getUserStreak = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id;
+    const userId = req.user!.userId;
     // This assumes progressService.getUserStreak exists
     const streak = await progressService.getUserStreak(userId); 
     res.status(200).json({ streak });
@@ -30,7 +30,7 @@ export const recordActivityCompleted = async (req: Request, res: Response) => {
   // in a single transaction.
   // See: docs/development_docs/future_implementation_considerations.md (Item #7)
   try {
-    const userId = (req as any).user.id;
+    const userId = req.user!.userId;
     const activityData = req.body; // e.g., { type, performance, timeSpent }
 
     // This is the main transactional function we planned
