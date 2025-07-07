@@ -24,8 +24,8 @@ The Phase 3 implementation plan successfully transforms your language learning p
 | | <i>3.1.B.6d: Implement API Endpoints for Job Management</i> | <i>1.25h</i> | <i>✅ Completed</i> | <i>API for listing and cancelling jobs</i> |
 | **3.1.C** | **AI Assessment & Grading** | **6h** | ⏳ **Not Started** | **Intelligent grading, personalized feedback** |
 | | <i>3.1.C.1: DB Schema & Migrations</i> | <i>0.75h</i> | <i>✅ Completed</i> | <i>Normalized tables for assessments & analysis</i> |
-| | <i>3.1.C.2: Scaffolding</i> | <i>0.5h</i> | <i>⏳ Not Started</i> | <i>File structure for service, controller, repo</i> |
-| | <i>3.1.C.3: Core Engine & Strategies</i> | <i>1.5h</i> | <i>⏳ Not Started</i> | <i>DI setup and Strategy pattern implementation</i> |
+| | <i>3.1.C.2: Scaffolding</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>File structure for service, controller, repo</i> |
+| | <i>3.1.C.3: Core Engine & Strategies</i> | <i>1.5h</i> | <i>✅ **Completed**</i> | <i>DI setup and Strategy pattern implementation</i> |
 | | <i>3.1.C.4: Transactional Grading Logic</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Atomic grading for full exercises</i> |
 | | <i>3.1.C.5: Assessment Repository</i> | <i>0.5h</i> | <i>⏳ Not Started</i> | <i>Data access layer for assessments</i> |
 | | <i>3.1.C.6: Unit & Integration Testing</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Jest/Supertest for all new components</i> |

@@ -15,6 +15,7 @@ import { ContentValidator } from './ContentValidator';
 import { ContentEnhancer } from './ContentEnhancer';
 import { ILogger, createLogger } from '../../utils/logger';
 import { AIAssessmentEngine } from './assessment/aiAssessmentEngine';
+import { AssessmentStrategyFactory } from './assessment/assessmentStrategyFactory';
 import { AssessmentRepository } from '../../repositories/assessmentRepository';
 import { Knex } from 'knex';
 import { OpenAI } from 'openai';
@@ -46,12 +47,14 @@ export class AIOrchestrator {
     
     // Instantiate assessment components
     this.assessmentRepository = new AssessmentRepository(this.db);
+    const assessmentStrategyFactory = new AssessmentStrategyFactory(this.openai, this.promptEngine, this.logger);
+
     this.assessmentEngine = new AIAssessmentEngine(
-      this.openai,
       this.db,
       this.assessmentRepository,
-      this.cacheService as any, // TODO: Fix this type mismatch later
-      this.promptEngine
+      this.cacheService,
+      assessmentStrategyFactory,
+      this.logger
     );
 
     this.logger.info('AIOrchestrator initialized');
@@ -78,6 +81,7 @@ export class AIOrchestrator {
         const cacheKey = this.generateCacheKey(request.task, request.payload);
         const cachedResponse = await this.cacheService.get<AIResponse<T>>(cacheKey);
         if (cachedResponse) {
+          this.logger.info(`[AIOrchestrator] Cache HIT for task: ${request.task}`);
           return {
             ...cachedResponse,
             metadata: {
@@ -87,6 +91,7 @@ export class AIOrchestrator {
             },
           };
         }
+        this.logger.info(`[AIOrchestrator] Cache MISS for task: ${request.task}`);
       }
 
       // 3. AI Provider Execution (Stubbed)

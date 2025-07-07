@@ -51,6 +51,21 @@ export const AssessmentResultSchema = z.object({
   confidence: z.enum(['low', 'medium', 'high']).describe("The AI's confidence in its assessment."),
   assessmentType: z.string().describe("e.g., 'multiple-choice', 'fill-in-the-blank', 'pronunciation'"),
   isFallback: z.boolean().optional().describe("True if a fallback mechanism was used for grading."),
+  metadata: z.object({
+    cached: z.boolean().optional(),
+  }).optional().describe("Optional metadata about the assessment process."),
+});
+
+/**
+ * @description Defines the expected JSON structure from the AI for an open-ended assessment.
+ * This is used for runtime validation of the AI's response.
+ */
+export const OpenEndedAssessmentResponseSchema = z.object({
+  score: z.number().min(0).max(100),
+  feedback: PersonalizedFeedbackSchema,
+  confidence: z.enum(['low', 'medium', 'high']),
+  // You can add other fields here that the AI might return,
+  // e.g., identified_grammar_errors: z.array(z.string())
 });
 
 /**
@@ -75,5 +90,6 @@ export const GradeAssessmentRequestSchema = z.object({
 export type AssessmentRequest = z.infer<typeof AssessmentRequestSchema>;
 export type PersonalizedFeedback = z.infer<typeof PersonalizedFeedbackSchema>;
 export type AssessmentResult = z.infer<typeof AssessmentResultSchema>;
+export type OpenEndedAssessmentResponse = z.infer<typeof OpenEndedAssessmentResponseSchema>;
 export type GradingResult = z.infer<typeof GradingResultSchema>;
 export type GradeAssessmentRequest = z.infer<typeof GradeAssessmentRequestSchema>;

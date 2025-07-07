@@ -1,49 +1,50 @@
 import { Request, Response } from 'express';
 import { AIOrchestrator } from '../services/ai/AIOrchestrator.js';
-import { GradeAssessmentRequestSchema } from '../types/Assessment.js';
+import { AssessmentRequestSchema } from '../types/Assessment.js';
+import { ZodError } from 'zod';
 
 /**
- * Handles API requests related to assessments.
- * It validates incoming data and delegates business logic to the AIOrchestrator.
+ * @class AssessmentController
+ * @description Handles API requests related to assessments, validating incoming data
+ * and delegating business logic to the AIOrchestrator.
  */
 export class AssessmentController {
   constructor(private orchestrator: AIOrchestrator) {}
 
   /**
-   * Handles the API request to grade a user's exercise.
-   * It validates the request body and delegates to the AI orchestrator.
+   * @description Handles the API request to assess a single user response.
+   * It validates the request body and delegates to the AI assessment engine.
    */
-  gradeExercise = async (req: Request, res: Response): Promise<void> => {
+  assessResponse = async (req: Request, res: Response): Promise<void> => {
     try {
-      // 1. Validate request body using the Zod schema for runtime type safety.
-      const validatedBody = GradeAssessmentRequestSchema.parse(req.body);
+      // 1. Validate request body for a single assessment request.
+      const validatedRequest = AssessmentRequestSchema.parse(req.body);
       
-      // 2. Get userId from the authenticated request object. The 'protect' middleware ensures req.user exists.
+      // 2. Get userId from the authenticated request object.
       if (!req.user) {
-        // This case should technically not be reached if 'protect' middleware is used.
         res.status(401).json({ message: 'Not authorized, user not found on request.' });
         return;
       }
-      const userId = req.user.userId;
 
-      // 3. Delegate the grading logic to the assessment engine via the orchestrator.
-      // const result = await this.orchestrator.getAssessmentEngine().grade(userId, validatedBody);
+      // 3. Delegate the assessment logic to the engine via the orchestrator.
+      const result = await this.orchestrator
+        .getAssessmentEngine()
+        .assessUserResponse(validatedRequest);
       
-      // res.status(200).json(result);
-
-      // Placeholder response for scaffolding. Full implementation in Task 3.1.C.4.
-      res.status(501).json({ 
-        message: 'Not Implemented', 
-        userId, 
-        body: validatedBody 
-      });
+      res.status(200).json(result);
 
     } catch (error) {
-      // Handle Zod validation errors or other exceptions gracefully.
-      res.status(400).json({ 
-        message: 'Invalid request body', 
-        details: error 
-      });
+      if (error instanceof ZodError) {
+        res.status(400).json({ 
+          message: 'Invalid request body for assessment.', 
+          details: error.errors 
+        });
+      } else {
+        res.status(500).json({ 
+          message: 'An unexpected error occurred during assessment.',
+          details: (error as Error).message
+        });
+      }
     }
   };
 }

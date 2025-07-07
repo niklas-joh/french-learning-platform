@@ -49,11 +49,12 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.C | **AI Assessment & Grading Engine** | **6h** | ⏳ **Not Started** | - | - | - | **3.1.A** |
 | 3.1.C.1 | [DB Schema & Migrations](./3.1.C.1-db-schema-migrations.md) | 0.75h | ✅ **Completed** | - | July 7, 2025 | July 7, 2025 | 3.1.A |
 | 3.1.C.2 | [Scaffolding](./3.1.C.2-scaffolding.md) | 0.5h | ✅ **Completed** | - | July 7, 2025 | July 7, 2025 | 3.1.C.1 |
-| 3.1.C.3 | [Implement Core Engine](./3.1.C.3-core-engine-di-strategies.md) | 1.5h | ⏳ Not Started | - | - | - | 3.1.C.2 |
+| 3.1.C.3 | [Implement Core Engine](./3.1.C.3-core-engine-di-strategies.md) | 1.5h | ✅ **Completed** | - | July 7, 2025 | July 7, 2025 | 3.1.C.2 |
 | 3.1.C.4 | [Implement Grading Logic](./3.1.C.4-transactional-grading-logic.md) | 1.0h | ⏳ Not Started | - | - | - | 3.1.C.3, 3.1.C.5 |
 | 3.1.C.5 | [Implement Repository](./3.1.C.5-assessment-repository.md) | 0.5h | ⏳ Not Started | - | - | - | 3.1.C.1 |
 | 3.1.C.6 | [Unit & Integration Testing](./3.1.C.6-unit-integration-testing.md) | 1.0h | ⏳ Not Started | - | - | - | 3.1.C.4 |
 | 3.1.C.7 | [Async Analysis Worker](./3.1.C.7-async-weakness-analysis-worker.md) | 1.0h | ⏳ Not Started | - | - | - | 3.1.C.1, 3.1.C.5 |
+| 3.1.C.8 | [Refactor to DI Container](./3.1.C.8-refactor-di-container.md) | 2.0h | 🔵 **Deferred** | - | - | - | 3.1.C.3 |
 | 3.1.D | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |
 
 ### **Phase 3.2: Advanced AI Features (Week 2) - Total: 22 hours**

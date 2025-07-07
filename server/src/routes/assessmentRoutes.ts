@@ -13,14 +13,14 @@ export const createAssessmentRoutes = (controller: AssessmentController): expres
   const router = express.Router();
 
   /**
-   * @route POST /api/v1/assessment/grade
-   * @description Submits a user's response for grading by the AI engine.
+   * @route POST /api/v1/assessment/assess
+   * @description Submits a single user response for assessment by the AI engine.
    * @access Private (requires authentication)
    */
   router.post(
-    '/grade',
+    '/assess',
     protect,
-    controller.gradeExercise // .bind() is not needed due to the arrow function in the controller
+    controller.assessResponse
   );
 
   // Add other assessment-related routes here in the future as the feature expands.

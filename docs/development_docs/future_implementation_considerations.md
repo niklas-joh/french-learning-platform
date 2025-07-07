@@ -578,3 +578,20 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Higher Quality**: Significantly increases the quality and reliability of the generated content and assessments.
   - **More Robust**: Can identify subtle issues that rules or single-pass AI calls might miss.
 - **Reason for Deferral**: This adds complexity and cost (more AI calls). It's better to first build the foundational pipeline and introduce AI-powered enhancements later as an optimization.
+
+## 45. AI-Powered Input Normalization and Correction
+- **Identified**: During validation of the `MultipleChoiceStrategy` (Task 3.1.C.3).
+- **Current State**: Input normalization is handled by a simple `toLowerCase().trim().replace(/[.!?]$/, '')` function.
+- **Problem**: This approach is brittle and cannot handle common typos (e.g., "bonjou!r" instead of "bonjour"), alternative correct answers, or answers with extra words. It provides a frustrating user experience for minor mistakes.
+- **Proposed Solution**: Create a "pre-assessment" AI step for seemingly simple strategies.
+  1.  Before a deterministic check (like in `MultipleChoiceStrategy`), make a very fast, low-cost AI call.
+  2.  The prompt would ask the AI to perform two tasks:
+      a. Correct any typos in the user's response.
+      b. Determine if the corrected response is semantically equivalent to the expected answer.
+  3.  The AI would return the corrected text and a boolean for equivalence.
+  4.  If equivalent, the answer is marked correct. If not, the system proceeds with the standard "incorrect" feedback.
+- **Benefits**:
+  - **Improved User Experience**: The system becomes much more forgiving of common human errors.
+  - **Higher Accuracy**: Can correctly identify answers that are semantically correct but formatted differently.
+  - **Smarter Feedback**: The system could even use the AI's output to say, "I see you wrote 'bonjou!r'. I think you meant 'bonjour'. That's correct!"
+- **Reason for Deferral**: This introduces an additional AI call for every "simple" assessment, which has cost and latency implications that need to be carefully managed. It should be implemented after the core engine is stable.
