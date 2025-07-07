@@ -210,32 +210,41 @@ erDiagram
 
     users ||--o{ ai_generated_content : "requests"
 
-    user_assessments {
+    assessmentTypes {
+        int id PK
+        string name
+        string description
+        datetime createdAt
+    }
+
+    userAssessments {
         int id PK
         int userId FK
         int userContentCompletionId FK
-        string assessmentType
+        int assessmentTypeId FK
         text userResponse
         boolean isCorrect
         float score
         json feedback
-        string confidence
+        enum confidence
         json metadata
         datetime createdAt
     }
 
-    user_weakness_analyses {
+    userWeaknessAnalyses {
         int id PK
         int userId FK
         datetime analyzedAt
         int timeframeDays
-        string confidenceLevel
+        enum confidenceLevel
         json primaryWeaknesses
         json improvementAreas
         json strengthAreas
         json recommendations
+        datetime createdAt
     }
 
-    user_content_completions ||--o{ user_assessments : "consists_of"
-    users ||--o{ user_assessments : "receives"
-    users ||--o{ user_weakness_analyses : "has_analysis_for"
+    assessmentTypes ||--|{ userAssessments : "classifies"
+    user_content_completions ||--o{ userAssessments : "consists_of"
+    users ||--o{ userAssessments : "receives"
+    users ||--o{ userWeaknessAnalyses : "has_analysis_for"
