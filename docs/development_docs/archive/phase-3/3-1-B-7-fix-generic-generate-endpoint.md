@@ -6,10 +6,17 @@
 - **Estimated Time**: 1.5 hours
 - **Priority**: 🔥 Critical
 - **Dependencies**: Task 3.1.B.6 (Async Job Queue Workflow)
-- **Status**: ⏳ Not Started
+- **Status**: ✅ **Completed**
+- **Completion Date**: July 3, 2025
 
 ## **Objective**
 Refactor the AI content generation API to make the `POST /api/ai/generate` endpoint truly generic. This involves updating the validation and controller logic to support all specified content types (`lesson`, `vocabulary_drill`, `grammar_exercise`, etc.), resolving the current limitation where only `type: 'lesson'` is accepted.
+
+## **Completion Summary**
+The generic AI content generation endpoint (`/api/ai/generate`) has been successfully refactored.
+- **Validation**: The validation layer in `ai.validators.ts` was updated to use a Zod `discriminatedUnion`, allowing it to correctly validate payloads for all supported content types based on the `type` field.
+- **Controller**: The `generateContentAsync` function in `aiController.ts` was updated to use this new generic validator.
+The endpoint is now fully generic and can create generation jobs for any valid content type, fulfilling all success criteria.
 
 ## **Success Criteria**
 - [ ] The `POST /api/ai/generate` endpoint successfully accepts requests for all content types defined in the `contentGenerationRequestSchema`.
