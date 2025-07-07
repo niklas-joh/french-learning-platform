@@ -566,3 +566,15 @@ This document tracks architectural improvements, refactoring opportunities, and 
     -   **Resilience**: The system can automatically recover from temporary external service failures.
     -   **User Experience**: Users don't have to manually resubmit failed requests.
     -   **Reliability**: Increases the overall success rate of content generation.
+
+## 44. AI-Powered Content Enhancement & Validation
+- **Identified**: During critique of Task 3.1.C.
+- **Current State**: The current implementation for `ContentValidator` and `ContentEnhancer` uses simple, rule-based logic. The `AIAssessmentEngine` also uses primarily rule-based logic for simple cases and single AI calls for complex ones.
+- **Problem**: Rule-based logic can be brittle and may not catch all nuances of high-quality educational content. A single AI call might misinterpret context.
+- **Proposed Solution**: Evolve these services to use a multi-step, AI-powered "chain-of-thought" validation process.
+  1.  An `AIContentValidator` could make a separate, low-cost AI call to score the generated content for coherence, accuracy, and pedagogical value.
+  2.  An `AIAssessmentEnhancer` could use an AI call to perform more sophisticated tasks, like adding analogies, generating better examples, or rewriting sections for clarity.
+- **Benefits**:
+  - **Higher Quality**: Significantly increases the quality and reliability of the generated content and assessments.
+  - **More Robust**: Can identify subtle issues that rules or single-pass AI calls might miss.
+- **Reason for Deferral**: This adds complexity and cost (more AI calls). It's better to first build the foundational pipeline and introduce AI-powered enhancements later as an optimization.

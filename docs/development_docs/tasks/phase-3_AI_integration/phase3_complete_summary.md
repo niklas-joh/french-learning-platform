@@ -22,7 +22,14 @@ The Phase 3 implementation plan successfully transforms your language learning p
 | | <i>3.1.B.6b: ContentGenerationJobHandler</i> | <i>0.75h</i> | <i>✅ Completed</i> | <i>Core logic for processing generation jobs</i> |
 | | <i>3.1.B.6c: Refactor DynamicContentGenerator</i> | <i>0.5h</i> | <i>✅ Completed</i> | <i>Refactored to use the job queue</i> |
 | | <i>3.1.B.6d: Implement API Endpoints for Job Management</i> | <i>1.25h</i> | <i>✅ Completed</i> | <i>API for listing and cancelling jobs</i> |
-| **3.1.C** | [AI Assessment & Grading](./tasks/3-1-C-ai-assessment-grading.md) | 6h | ⏳ Not Started | Intelligent grading, personalized feedback |
+| **3.1.C** | **AI Assessment & Grading** | **6h** | ⏳ **Not Started** | **Intelligent grading, personalized feedback** |
+| | <i>3.1.C.1: DB Schema & Migrations</i> | <i>0.5h</i> | <i>⏳ Not Started</i> | <i>Tables for storing assessment results & analysis</i> |
+| | <i>3.1.C.2: Scaffolding</i> | <i>0.5h</i> | <i>⏳ Not Started</i> | <i>File structure for service, controller, repo</i> |
+| | <i>3.1.C.3: Core Engine & Strategies</i> | <i>1.5h</i> | <i>⏳ Not Started</i> | <i>DI setup and Strategy pattern implementation</i> |
+| | <i>3.1.C.4: Transactional Grading Logic</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Atomic grading for full exercises</i> |
+| | <i>3.1.C.5: Assessment Repository</i> | <i>0.5h</i> | <i>⏳ Not Started</i> | <i>Data access layer for assessments</i> |
+| | <i>3.1.C.6: Unit & Integration Testing</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Jest/Supertest for all new components</i> |
+| | <i>3.1.C.7: Async Analysis Worker</i> | <i>1.0h</i> | <i>⏳ Not Started</i> | <i>Background job for performance-intensive analysis</i> |
 | **3.1.D** | [AI-First Dashboard](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | Complete UI transformation, AI-driven UX |
 
 ### **Phase 3.2: Advanced AI Features (Week 2) - 22 hours**

@@ -71,6 +71,7 @@ graph TD
             AuthRoutes["auth.routes.ts"]
             AdminRoutes["admin.routes.ts"]
             AIRoutes["ai.routes.ts"]
+            AssessmentRoutes["assessment.routes.ts"]
         end
 
         subgraph "Controllers"
@@ -80,6 +81,7 @@ graph TD
             LearningPathController["learningPath.controller.ts"]
             AIController["ai.controller.ts"]
             SpeechController["speech.controller.ts"]
+            AssessmentController["assessment.controller.ts"]
         end
 
         subgraph "Services"
@@ -92,6 +94,7 @@ graph TD
         subgraph "AI Services Layer"
             direction TB
             AIOrchestrator["AIOrchestrator"]
+            AIAssessmentEngine["AIAssessmentEngine"]
 
             subgraph "Content Generation Engine"
                 direction TB
@@ -132,6 +135,13 @@ graph TD
             end
             
             AIController --> AIOrchestrator
+            AssessmentController --> AIOrchestrator
+            AIOrchestrator --> AIAssessmentEngine
+            AIAssessmentEngine --> PromptTemplateEngine
+            AIAssessmentEngine --> CacheService
+            AIAssessmentEngine --> FallbackHandler
+            AIAssessmentEngine --> Database
+
             AIController --> DynamicContentGenerator
             AIOrchestrator --> CacheService
             AIOrchestrator --> RateLimitService
@@ -161,6 +171,7 @@ graph TD
         ApiGateway --> MetaRoutes
         ApiGateway --> AdminRoutes
         ApiGateway --> AIRoutes
+        ApiGateway --> AssessmentRoutes
 
         UserRoutes --> UserController
         UserRoutes --> ProgressController
@@ -169,6 +180,8 @@ graph TD
         LearningRoutes --> LearningPathController
         LearningRoutes --> AIController
         LearningRoutes --> SpeechController
+        
+        AssessmentRoutes --> AssessmentController
 
         AIRoutes --> AIController
 
@@ -190,6 +203,7 @@ graph TD
         RateLimitService --> Redis
         ContextService --> Database
         AIOrchestrator --> OpenAI
+        AIAssessmentEngine --> OpenAI
         DynamicContentGenerator --> Database
     end
 
