@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import Knex from 'knex';
 import { GradingResult, AssessmentResult } from '../types/Assessment.js';
 
 /**

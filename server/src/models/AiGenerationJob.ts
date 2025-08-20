@@ -1,7 +1,7 @@
 import { Model } from 'objection';
 import knex from '../config/db.js';
 
-Model.knex(knex);
+Model.knex(knex as any);
 
 export class AiGenerationJobsModel extends Model {
   static tableName = 'aiGenerationJobs';

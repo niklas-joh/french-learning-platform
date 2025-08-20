@@ -11,7 +11,7 @@ import { AITaskType, AITaskRequestPayload, AITaskResponsePayload } from '../../t
 // Extend Express Request to include user property
 interface AuthenticatedRequest extends Request {
   user?: {
-    id: number;
+    userId: number;
     email: string;
     role: string;
   };
@@ -33,8 +33,10 @@ export const TestDataFactory = {
    */
   createGenerateLessonPayload: (overrides: Partial<AITaskRequestPayload<'GENERATE_LESSON'>> = {}) => ({
     topic: 'Subjunctive Mood',
-    difficulty: 'beginner' as const,
-    estimatedTime: 15,
+    level: 'A1' as const,
+    duration: 15,
+    focusAreas: [],
+    includeExercises: true,
     ...overrides
   }),
 
@@ -145,7 +147,7 @@ export const ExpressMocks = {
    */
   createMockAuthenticatedRequest: (overrides: Partial<AuthenticatedRequest> = {}): Partial<AuthenticatedRequest> => ({
     user: {
-      id: 1,
+      userId: 1,
       email: 'test@example.com',
       role: 'user'
     },

@@ -1,7 +1,31 @@
 import { Request, Response } from 'express';
 import { AIOrchestrator } from '../services/ai/AIOrchestrator.js';
-import { AssessmentRequestSchema } from '../types/Assessment.js';
-import { ZodError } from 'zod';
+import { AssessmentRequest } from '../types/Assessment.js';
+import { ZodError, z } from 'zod';
+
+// Basic validation schema for AssessmentRequest
+const AssessmentRequestSchema = z.object({
+  userId: z.number(),
+  userResponse: z.string().min(1),
+  expectedAnswer: z.union([z.string(), z.any()]), // Required field
+  responseType: z.enum(['multiple-choice', 'fill-in-blank', 'open-ended', 'pronunciation', 'conversation', 'listening-comprehension']),
+  context: z.object({
+    userId: z.number(),
+    lessonId: z.string().optional(),
+    exerciseId: z.string().optional(),
+    skillArea: z.string(),
+    userLevel: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']),
+    questionContext: z.string().optional(),
+    culturalContext: z.boolean().optional(),
+    previousAttempts: z.number().optional(),
+  }),
+  metadata: z.object({
+    timeSpent: z.number().optional(),
+    attempts: z.number().optional(),
+    category: z.string().optional(),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+  }).optional(),
+});
 
 /**
  * @class AssessmentController
@@ -29,7 +53,7 @@ export class AssessmentController {
       // 3. Delegate the assessment logic to the engine via the orchestrator.
       const result = await this.orchestrator
         .getAssessmentEngine()
-        .assessUserResponse(validatedRequest);
+        .assessUserResponse(validatedRequest as AssessmentRequest);
       
       res.status(200).json(result);
 

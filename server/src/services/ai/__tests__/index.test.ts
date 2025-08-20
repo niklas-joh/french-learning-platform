@@ -200,29 +200,29 @@ describe('AI Service Factory', () => {
     it('should provide stub implementations for cache service', () => {
       aiServiceFactory.getAIOrchestrator();
       
-      const cacheService = MockedAIOrchestrator.mock.calls[0][1];
+      const cacheService = MockedAIOrchestrator.mock.calls[0][2]; // Corrected index
       
       // Verify it has the expected cache service interface
-      expect(typeof cacheService.get).toBe('function');
-      expect(typeof cacheService.set).toBe('function');
+      expect(typeof (cacheService as any).get).toBe('function');
+      expect(typeof (cacheService as any).set).toBe('function');
     });
 
     it('should provide stub implementations for rate limit service', () => {
       aiServiceFactory.getAIOrchestrator();
       
-      const rateLimitService = MockedAIOrchestrator.mock.calls[0][2];
+      const rateLimitService = MockedAIOrchestrator.mock.calls[0][3]; // Corrected index
       
       // Verify it has the expected rate limit service interface
-      expect(typeof rateLimitService.isAllowed).toBe('function');
+      expect(typeof (rateLimitService as any).isAllowed).toBe('function');
     });
 
     it('should provide stub implementations for fallback handler', () => {
       aiServiceFactory.getAIOrchestrator();
       
-      const fallbackHandler = MockedAIOrchestrator.mock.calls[0][3];
+      const fallbackHandler = MockedAIOrchestrator.mock.calls[0][4]; // Corrected index
       
       // Verify it has the expected fallback handler interface
-      expect(typeof fallbackHandler.getFallback).toBe('function');
+      expect(typeof (fallbackHandler as any).getFallback).toBe('function');
     });
   });
 

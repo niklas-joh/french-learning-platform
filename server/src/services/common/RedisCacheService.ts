@@ -31,7 +31,7 @@ export class RedisCacheService implements ICacheService {
     } catch (error) {
       console.error(`Error parsing cached data for key ${key}:`, error);
       // Invalidate corrupted cache data
-      await this.delete(key);
+      await this.del(key);
       return null;
     }
   }
@@ -48,7 +48,7 @@ export class RedisCacheService implements ICacheService {
     }
   }
 
-  async delete(key: string): Promise<void> {
+  async del(key: string): Promise<void> {
     if (!this.client) {
       return;
     }

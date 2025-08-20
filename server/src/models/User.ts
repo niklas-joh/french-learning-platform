@@ -71,7 +71,7 @@ function mapUserToApplicationData(user: UserSchema): UserApplicationData {
  * Looks up a user by email and maps the result to application data shape.
  */
 export const getUserByEmail = async (email: string): Promise<UserApplicationData | null> => {
-  const user: UserSchema | undefined = await db<UserSchema>('users').where({ email }).first();
+  const user: UserSchema | undefined = await db('users').where({ email }).first();
   if (!user) {
     return null;
   }
@@ -85,7 +85,7 @@ export const getUserByEmail = async (email: string): Promise<UserApplicationData
  * The knex-stringcase mapper will automatically convert the column names.
  */
 export const getInternalUserByEmailWithPassword = async (email: string): Promise<UserSchema | null> => {
-  const user = await db<UserSchema>('users')
+  const user = await db('users')
     .select('*')
     .whereRaw('LOWER(email) = LOWER(?)', [email.trim()])
     .first();
@@ -97,7 +97,7 @@ export const getInternalUserByEmailWithPassword = async (email: string): Promise
  * Fetches a user by primary key.
  */
 export const getUserById = async (id: number): Promise<UserApplicationData | null> => {
-  const user: UserSchema | undefined = await db<UserSchema>('users').where({ id }).first();
+  const user: UserSchema | undefined = await db('users').where({ id }).first();
   if (!user) {
     return null;
   }
@@ -119,7 +119,7 @@ export const createUser = async (userData: NewUser): Promise<UserApplicationData
     preferences: userData.preferences ? JSON.stringify(userData.preferences) : null,
   };
 
-  const [insertedUser] = await db<UserSchema>('users').insert(userToInsert).returning('*');
+  const [insertedUser] = await db('users').insert(userToInsert).returning('*');
   
   return mapUserToApplicationData(insertedUser);
 };
@@ -138,7 +138,7 @@ export const updateUser = async (id: number, userData: Partial<NewUser>): Promis
     return getUserById(id);
   }
 
-  const [updatedUser] = await db<UserSchema>('users')
+  const [updatedUser] = await db('users')
     .where({ id })
     .update({ ...userToUpdate, updatedAt: new Date().toISOString() })
     .returning('*');
@@ -154,7 +154,7 @@ export const updateUser = async (id: number, userData: Partial<NewUser>): Promis
  * Fetches all users.
  */
 export const getAllUsers = async (): Promise<UserApplicationData[]> => {
-  const users = await db<UserSchema>('users').select('id', 'email', 'passwordHash', 'firstName', 'lastName', 'role', 'createdAt', 'updatedAt', 'preferences');
+  const users = await db('users').select('id', 'email', 'passwordHash', 'firstName', 'lastName', 'role', 'createdAt', 'updatedAt', 'preferences');
   return users.map(mapUserToApplicationData);
 };
 

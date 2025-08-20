@@ -110,7 +110,7 @@ describe('AI Controller Integration Tests', () => {
         const difficulties = ['beginner', 'intermediate', 'advanced'] as const;
         
         for (const difficulty of difficulties) {
-          const payload = TestDataFactory.createGenerateLessonPayload({ difficulty });
+          const payload = TestDataFactory.createGenerateLessonPayload({ level: 'A1' });
           
           const response = await request(app)
             .post(endpoint)

@@ -17,7 +17,7 @@ import { ILogger, createLogger } from '../../utils/logger';
 import { AIAssessmentEngine } from './assessment/aiAssessmentEngine';
 import { AssessmentStrategyFactory } from './assessment/assessmentStrategyFactory';
 import { AssessmentRepository } from '../../repositories/assessmentRepository';
-import { Knex } from 'knex';
+import Knex from 'knex';
 import { OpenAI } from 'openai';
 
 /**

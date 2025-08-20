@@ -26,35 +26,35 @@ describe('AI Controller Validation Schemas', () => {
         
         expect(result.success).toBe(true);
         if (result.success) {
-          expect(result.data.topic).toBe(validPayload.topic);
-          expect(result.data.difficulty).toBe(validPayload.difficulty);
-          expect(result.data.estimatedTime).toBe(validPayload.estimatedTime);
+        expect(result.data.topic).toBe(validPayload.topic);
+        expect(result.data.level).toBe(validPayload.level);
+        expect(result.data.duration).toBe(validPayload.duration);
         }
       });
 
       it('should validate payload with minimal required fields', () => {
         const minimalPayload = TestDataFactory.createGenerateLessonPayload({
-          estimatedTime: undefined // Optional field
+          duration: undefined // Optional field
         });
         const result = generateLessonPayloadSchema.safeParse(minimalPayload);
         
         expect(result.success).toBe(true);
         if (result.success) {
           expect(result.data.topic).toBe(minimalPayload.topic);
-          expect(result.data.difficulty).toBe(minimalPayload.difficulty);
+          expect(result.data.level).toBe(minimalPayload.level);
         }
       });
 
-      it('should validate all difficulty levels', () => {
-        const difficulties = ['beginner', 'intermediate', 'advanced'] as const;
+      it('should validate all CEFR levels', () => {
+        const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as const;
         
-        difficulties.forEach(difficulty => {
-          const payload = TestDataFactory.createGenerateLessonPayload({ difficulty });
+        levels.forEach(level => {
+          const payload = TestDataFactory.createGenerateLessonPayload({ level });
           const result = generateLessonPayloadSchema.safeParse(payload);
           
           expect(result.success).toBe(true);
           if (result.success) {
-            expect(result.data.difficulty).toBe(difficulty);
+            expect(result.data.level).toBe(level);
           }
         });
       });
@@ -78,8 +78,8 @@ describe('AI Controller Validation Schemas', () => {
         }
       });
 
-      it('should reject payload with missing difficulty', () => {
-        const invalidPayload = TestHelpers.createInvalidPayloads.missingRequiredField('difficulty');
+      it('should reject payload with missing level', () => {
+        const invalidPayload = TestHelpers.createInvalidPayloads.missingRequiredField('level');
         const result = generateLessonPayloadSchema.safeParse(invalidPayload);
         
         expect(result.success).toBe(false);
@@ -87,7 +87,7 @@ describe('AI Controller Validation Schemas', () => {
           expect(result.error.issues).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                path: expect.arrayContaining(['difficulty']),
+                path: expect.arrayContaining(['level']),
                 code: 'invalid_type'
               })
             ])
@@ -112,8 +112,8 @@ describe('AI Controller Validation Schemas', () => {
         }
       });
 
-      it('should reject payload with invalid difficulty value', () => {
-        const invalidPayload = TestHelpers.createInvalidPayloads.invalidFieldType('difficulty', 'expert');
+      it('should reject payload with invalid level value', () => {
+        const invalidPayload = TestHelpers.createInvalidPayloads.invalidFieldType('level', 'expert');
         const result = generateLessonPayloadSchema.safeParse(invalidPayload);
         
         expect(result.success).toBe(false);
@@ -121,7 +121,7 @@ describe('AI Controller Validation Schemas', () => {
           expect(result.error.issues).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                path: expect.arrayContaining(['difficulty']),
+                path: expect.arrayContaining(['level']),
                 code: 'invalid_enum_value'
               })
             ])
@@ -130,7 +130,7 @@ describe('AI Controller Validation Schemas', () => {
       });
 
       it('should reject payload with topic that is too long', () => {
-        const invalidPayload = TestHelpers.createInvalidPayloads.tooLongString('topic', 100);
+        const invalidPayload = TestHelpers.createInvalidPayloads.tooLongString('topic', 200);
         const result = generateLessonPayloadSchema.safeParse(invalidPayload);
         
         expect(result.success).toBe(false);
@@ -146,8 +146,8 @@ describe('AI Controller Validation Schemas', () => {
         }
       });
 
-      it('should reject payload with invalid estimatedTime (below minimum)', () => {
-        const invalidPayload = TestHelpers.createInvalidPayloads.invalidFieldType('estimatedTime', 3);
+      it('should reject payload with invalid duration (below minimum)', () => {
+        const invalidPayload = TestHelpers.createInvalidPayloads.invalidFieldType('duration', 3);
         const result = generateLessonPayloadSchema.safeParse(invalidPayload);
         
         expect(result.success).toBe(false);
@@ -155,7 +155,7 @@ describe('AI Controller Validation Schemas', () => {
           expect(result.error.issues).toEqual(
             expect.arrayContaining([
               expect.objectContaining({
-                path: expect.arrayContaining(['estimatedTime']),
+                path: expect.arrayContaining(['duration']),
                 code: 'too_small'
               })
             ])
@@ -362,15 +362,15 @@ describe('AI Controller Validation Schemas', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should handle boundary values for estimatedTime', () => {
+    it('should handle boundary values for duration', () => {
       const boundaryPayload = TestDataFactory.createGenerateLessonPayload({
-        estimatedTime: 5 // Minimum valid value based on validator
+        duration: 5 // Minimum valid value based on validator
       });
       const result = generateLessonPayloadSchema.safeParse(boundaryPayload);
       
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.estimatedTime).toBe(5);
+        expect(result.data.duration).toBe(5);
       }
     });
   });

@@ -55,6 +55,7 @@ export const getUnitsAndLessonsByPathId = async (pathId: number): Promise<UnitAn
         'l.isActive as lessonIsActive', 'l.createdAt as lessonCreatedAt',
         'l.updatedAt as lessonUpdatedAt'
         )
-        .orderBy(['lu.orderIndex', 'l.orderIndex']) as UnitAndLessonRow[];
+        .orderBy('lu.orderIndex')
+        .orderBy('l.orderIndex') as UnitAndLessonRow[];
     return unitsAndLessonsRaw;
 };

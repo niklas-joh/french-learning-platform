@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import Knex from 'knex';
 import { createHash } from 'crypto';
 import { AssessmentRepository } from '../../../repositories/assessmentRepository';
 import { ICacheService } from '../../common/ICacheService';
@@ -61,6 +61,7 @@ export class AIAssessmentEngine {
     } catch (error) {
       this.logger.error('Critical error in assessUserResponse', { error, request });
       return {
+        userResponse: request.userResponse,
         score: 0,
         isCorrect: false,
         feedback: { message: "An error occurred while assessing the response.", tone: 'neutral', suggestions: [] },

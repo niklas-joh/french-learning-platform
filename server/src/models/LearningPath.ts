@@ -19,7 +19,7 @@ export interface LearningPathWithUserProgress extends LearningPath {
 }
 
 export const getLearningPathById = async (id: number): Promise<LearningPath | null> => {
-    const learningPath = await db<LearningPath>('learning_paths')
+    const learningPath = await db('learning_paths')
         .where({ id })
         .first();
     return learningPath || null;

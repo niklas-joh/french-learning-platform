@@ -61,7 +61,7 @@ export class ContextService implements ILearningContextService {
   public async updateContext(userId: number, updates: Partial<LearningContext>): Promise<void> {
     const cacheKey = `user-context:${userId}`;
     this.logger.info(`[ContextService] Invalidating cache for user: ${userId}`);
-    await this.cache.delete(cacheKey);
+    await this.cache.del(cacheKey);
     // In a full implementation, this would also write `updates` to the database.
   }
 

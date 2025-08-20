@@ -51,7 +51,7 @@ export const getTopicProgress = async (userId: number): Promise<TopicProgress[]>
     if (topics.length === 0) {
         return [];
     }
-    const topicProgress = await Promise.all(topics.map(async topic => {
+    const topicProgress = await Promise.all(topics.map(async (topic: any) => {
       const totalCountResult = await db('content').where('topicId', topic.id).count('* as count').first();
       const completedCountResult = await db('user_content_completions')
         .join('content', 'user_content_completions.contentId', 'content.id')

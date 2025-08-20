@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import Knex from 'knex';
 import { LearningPath, LearningPathWithUserProgress, getLearningPathById } from '../models/LearningPath';
 import { LearningUnit, LearningUnitWithUserProgress, getUnitsAndLessonsByPathId, UnitAndLessonRow } from '../models/LearningUnit';
 import { Lesson, LessonWithUserProgress } from '../models/Lesson';

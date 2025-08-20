@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import Knex from 'knex';
 import { IJobQueueService, JobStatus } from './interfaces';
 import { ContentRequest, GeneratedContent } from '../../types/Content';
 import { ILogger } from '../../types/ILogger';
@@ -155,8 +155,8 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @returns The job to be processed, or null if no jobs are available.
    */
   async getNextJob(): Promise<{ id: string; payload: ContentRequest } | null> {
-    const job = await this.knex.transaction(async (trx) => {
-      const nextJob = await AiGenerationJobsModel.query(trx)
+    const job = await this.knex.transaction(async (trx: Knex.Transaction) => {
+      const nextJob = await AiGenerationJobsModel.query(trx as any)
         .where({ status: 'queued' })
         .orderBy('createdAt', 'asc')
         .first()
@@ -164,7 +164,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
         .skipLocked();
 
       if (nextJob) {
-        await AiGenerationJobsModel.query(trx).patchAndFetchById(nextJob.id, {
+        await AiGenerationJobsModel.query(trx as any).patchAndFetchById(nextJob.id, {
           status: 'processing',
         });
       }

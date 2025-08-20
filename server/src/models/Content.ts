@@ -2,7 +2,7 @@
  * Data access helpers for the `content` table and related lookups.
  */
 import db from '../config/db.js'; // Knex instance
-import { Knex } from 'knex';
+import Knex from 'knex';
 
 
 // Interface representing the Content table structure
@@ -151,7 +151,7 @@ export const createContent = async (contentData: NewContent): Promise<ContentApp
     active: contentData.active !== undefined ? contentData.active : true,
   };
 
-  const [insertedContent] = await db<ContentSchema>('content').insert(contentToInsert).returning('*');
+  const [insertedContent] = await db('content').insert(contentToInsert).returning('*');
   
   if (insertedContent && insertedContent.id) {
     // We need to re-fetch to get the joined 'typeName' if it exists.
@@ -197,7 +197,7 @@ export const updateContent = async (id: number, updateData: Partial<NewContent>)
     }
   }
   
-  await db<ContentSchema>('content').where({ id }).update(dataToUpdate);
+  await db('content').where({ id }).update(dataToUpdate);
   
   return getContentById(id);
 };
@@ -206,6 +206,6 @@ export const updateContent = async (id: number, updateData: Partial<NewContent>)
  * Removes a content record.
  */
 export const deleteContent = async (id: number): Promise<boolean> => {
-  const count = await db<ContentSchema>('content').where({ id }).del();
+  const count = await db('content').where({ id }).del();
   return count > 0;
 };

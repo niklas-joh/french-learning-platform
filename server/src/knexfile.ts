@@ -5,7 +5,7 @@
  * environments. Tests run against an in-memory SQLite database to avoid
  * touching the developer's local data.
  */
-import { Knex } from 'knex';
+import Knex from 'knex';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';

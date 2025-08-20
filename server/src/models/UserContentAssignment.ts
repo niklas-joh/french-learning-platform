@@ -81,7 +81,7 @@ const UserContentAssignmentModel = {
       4: 'true-false',
     };
 
-    return assignments.map(assignment => {
+    return assignments.map((assignment: any) => {
       const { contentName, contentQuestionData, contentIdAlias, contentTypeId, contentTypeName, ...assignmentData } = assignment;
       const type = contentTypeName || (contentTypeId ? typeIdMap[contentTypeId] : undefined) || 'default';
       return {

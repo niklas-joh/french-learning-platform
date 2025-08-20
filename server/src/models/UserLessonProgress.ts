@@ -1,5 +1,5 @@
 import db from '../config/db.js';
-import { Knex } from 'knex';
+import Knex from 'knex';
 
 // Shared type for lesson statuses
 export type LessonStatus = 'locked' | 'available' | 'in-progress' | 'completed';
@@ -22,13 +22,13 @@ export const getLessonProgressForUser = async (userId: number, lessonIds: number
     if (lessonIds.length === 0) {
         return [];
     }
-    return db<UserLessonProgress>('userLessonProgress')
+    return db('userLessonProgress')
         .where('userId', userId)
         .whereIn('lessonId', lessonIds);
 };
 
 export const startLesson = async (userId: number, lessonId: number): Promise<UserLessonProgress> => {
-    const existingProgress = await db<UserLessonProgress>('userLessonProgress')
+    const existingProgress = await db('userLessonProgress')
         .where({ userId, lessonId })
         .first();
 
@@ -44,7 +44,7 @@ export const startLesson = async (userId: number, lessonId: number): Promise<Use
         return updated;
     }
 
-    const [newProgress] = await db<UserLessonProgress>('userLessonProgress')
+    const [newProgress] = await db('userLessonProgress')
         .insert({
             userId,
             lessonId,
@@ -56,7 +56,7 @@ export const startLesson = async (userId: number, lessonId: number): Promise<Use
 };
 
 export const completeLesson = async (userId: number, lessonId: number, trx: Knex.Transaction): Promise<UserLessonProgress> => {
-    const progressToUpdate = await trx<UserLessonProgress>('userLessonProgress')
+    const progressToUpdate = await trx('userLessonProgress')
         .where({ userId, lessonId })
         .first();
 
@@ -68,7 +68,7 @@ export const completeLesson = async (userId: number, lessonId: number, trx: Knex
         throw new Error(`Cannot complete lesson with status: ${progressToUpdate.status}`);
     }
 
-    const [updatedProgress] = await trx<UserLessonProgress>('userLessonProgress')
+    const [updatedProgress] = await trx('userLessonProgress')
         .where('id', progressToUpdate.id)
         .update({
             status: 'completed',

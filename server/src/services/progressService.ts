@@ -1,5 +1,5 @@
 import db from '../config/db';
-import { Knex } from 'knex';
+import Knex from 'knex';
 import { UserProgress } from '../models/UserProgress';
 
 // Placeholder services to be replaced with actual implementations
