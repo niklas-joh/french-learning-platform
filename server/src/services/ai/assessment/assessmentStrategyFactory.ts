@@ -17,6 +17,7 @@ import { ILogger } from '../../../utils/logger.js';
  */
 export class AssessmentStrategyFactory {
   private readonly strategies: Map<ResponseType, IAssessmentStrategy>;
+  private aiOrchestrator: any; // Using any to avoid circular dependency in types
 
   /**
    * Creates an instance of AssessmentStrategyFactory.
@@ -31,6 +32,15 @@ export class AssessmentStrategyFactory {
   ) {
     this.strategies = new Map<ResponseType, IAssessmentStrategy>();
     this.logger.info('AssessmentStrategyFactory initialized with lazy-loading strategy pattern.');
+  }
+
+  /**
+   * Sets the AIOrchestrator instance after factory creation to avoid circular dependencies
+   * @param aiOrchestrator The AIOrchestrator instance
+   */
+  public setAIOrchestrator(aiOrchestrator: any): void {
+    this.aiOrchestrator = aiOrchestrator;
+    this.logger.debug('AIOrchestrator instance set in AssessmentStrategyFactory');
   }
 
   /**
@@ -70,11 +80,15 @@ export class AssessmentStrategyFactory {
       case 'fill-in-blank':
         return new FillInBlankStrategy();
       case 'pronunciation':
-        // TODO: Need AIOrchestrator instance - temporarily throw error until dependency resolved
-        throw new Error(`PronunciationStrategy requires AIOrchestrator dependency - not yet available in factory`);
+        if (!this.aiOrchestrator) {
+          throw new Error(`PronunciationStrategy requires AIOrchestrator dependency - call setAIOrchestrator first`);
+        }
+        return new PronunciationStrategy(this.aiOrchestrator);
       case 'conversation':
-        // TODO: Need AIOrchestrator instance - temporarily throw error until dependency resolved  
-        throw new Error(`ConversationStrategy requires AIOrchestrator dependency - not yet available in factory`);
+        if (!this.aiOrchestrator) {
+          throw new Error(`ConversationStrategy requires AIOrchestrator dependency - call setAIOrchestrator first`);
+        }
+        return new ConversationStrategy(this.aiOrchestrator);
       case 'listening-comprehension':
         throw new Error(`Strategy for type "${type}" not yet implemented`);
       default:

@@ -48,6 +48,9 @@ export class AIOrchestrator {
     // Instantiate assessment components
     this.assessmentRepository = new AssessmentRepository(this.db);
     const assessmentStrategyFactory = new AssessmentStrategyFactory(this.openai, this.promptEngine, this.logger);
+    
+    // Set AIOrchestrator reference in factory to resolve circular dependency
+    assessmentStrategyFactory.setAIOrchestrator(this);
 
     this.assessmentEngine = new AIAssessmentEngine(
       this.db,
