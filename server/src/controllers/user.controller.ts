@@ -14,13 +14,12 @@ import { getTopicProgress, getAssignedContentProgress } from '../models/UserProg
  */
 export const getCurrentUserProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const uid = req.user?.userId ?? req.user?.id;
-    if (!uid || typeof uid !== 'number' || uid <= 0) {
+    const userId = req.user?.userId;
+    if (!userId) {
       res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
-    const userId = uid;
     const user = await getUserById(userId);
 
     if (!user) {
@@ -40,13 +39,12 @@ export const getCurrentUserProfile = async (req: Request, res: Response): Promis
  */
 export const updateUserProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const uid = req.user?.userId ?? req.user?.id;
-    if (!uid || typeof uid !== 'number' || uid <= 0) {
+    const userId = req.user?.userId;
+    if (!userId) {
       res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
-    const userId = uid;
     const { email, firstName, lastName, preferences, password } = req.body;
 
     if (password) {
@@ -109,13 +107,12 @@ export const getAllUsers = async (_req: Request, res: Response): Promise<void> =
  */
 export const getAssignedContent = async (req: Request, res: Response): Promise<void> => {
   try {
-    const uid = req.user?.userId ?? req.user?.id;
-    if (!uid || typeof uid !== 'number' || uid <= 0) {
+    const userId = req.user?.userId;
+    if (!userId) {
       res.status(401).json({ message: 'User not authenticated' });
       return;
     }
 
-    const userId = uid;
     // console.log(`[User Controller] getAssignedContent - User ID: ${userId}`); // Log removed
     const assignments = await UserContentAssignmentModel.findByUserId(userId);
     // console.log(`[User Controller] getAssignedContent - Assignments from Model: ${JSON.stringify(assignments, null, 2)}`); // Log removed
@@ -131,12 +128,11 @@ export const getAssignedContent = async (req: Request, res: Response): Promise<v
  */
 export const getUserProgress = async (req: Request, res: Response): Promise<void> => {
   try {
-    const uid = req.user?.userId ?? req.user?.id;
-    if (!uid || typeof uid !== 'number' || uid <= 0) {
+    const userId = req.user?.userId;
+    if (!userId) {
       res.status(401).json({ message: 'User not authenticated' });
       return;
     }
-    const userId = uid;
 
     const topicProgress = await getTopicProgress(userId);
     const assignedContentProgress = await getAssignedContentProgress(userId);
@@ -159,12 +155,11 @@ export const getUserProgress = async (req: Request, res: Response): Promise<void
  */
 export const getUserPreferences = async (req: Request, res: Response): Promise<void> => {
     try {
-        const uid = req.user?.userId ?? req.user?.id;
-        if (!uid || typeof uid !== 'number' || uid <= 0) {
+        const userId = req.user?.userId;
+        if (!userId) {
             res.status(401).json({ message: 'User not authenticated' });
             return;
         }
-        const userId = uid;
         const preferences = await UserPreferenceModel.findByUserId(userId);
         if (preferences) {
             res.json(JSON.parse(preferences.preferences));
@@ -182,12 +177,11 @@ export const getUserPreferences = async (req: Request, res: Response): Promise<v
  */
 export const updateUserPreferences = async (req: Request, res: Response): Promise<void> => {
     try {
-        const uid2 = req.user?.userId ?? req.user?.id;
-        if (!uid2 || typeof uid2 !== 'number' || uid2 <= 0) {
+        const userId = req.user?.userId;
+        if (!userId) {
             res.status(401).json({ message: 'User not authenticated' });
             return;
         }
-        const userId = uid2;
         const { preferences } = req.body;
 
         if (!preferences || typeof preferences !== 'object') {
@@ -209,12 +203,11 @@ export const updateUserPreferences = async (req: Request, res: Response): Promis
  */
 export const recordContentItemProgress = async (req: Request, res: Response): Promise<void> => {
   try {
-    const uid = req.user?.userId ?? req.user?.id;
-    if (!uid || typeof uid !== 'number' || uid <= 0) {
+    const userId = req.user?.userId;
+    if (!userId) {
       res.status(401).json({ message: 'User not authenticated' });
       return;
     }
-    const userId = uid;
     const { contentId } = req.params;
 
     if (!contentId || isNaN(Number(contentId))) {

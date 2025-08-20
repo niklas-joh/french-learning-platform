@@ -17,6 +17,8 @@ import adminRoutes from './routes/admin.routes.js';
 import learningRoutes from './routes/learning.routes.js';
 import metaRoutes from './routes/meta.routes.js';
 import aiRoutes from './routes/ai.routes.js';
+import { createAssessmentRoutes } from './routes/assessmentRoutes.js';
+import { aiServiceFactory } from './services/ai/index.js';
 
 dotenv.config();
 
@@ -44,6 +46,11 @@ app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/learning', learningRoutes);
 app.use('/api/v1/meta', metaRoutes);
 app.use('/api/ai', aiRoutes); // AI routes (no versioning yet)
+
+// AI Assessment Routes
+const assessmentController = aiServiceFactory.getAssessmentController();
+const assessmentRouter = createAssessmentRoutes(assessmentController);
+app.use('/api/v1/assessment', assessmentRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {

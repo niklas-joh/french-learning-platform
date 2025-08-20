@@ -74,7 +74,116 @@ To maintain a consistent and predictable codebase, we will adhere to the followi
     docs(readme): update setup instructions
     ```
 
-## 4. Architectural Patterns
+## 4. Module System Configuration
+
+This project uses **ES Modules (ESM)** as the standard module system across all TypeScript/JavaScript code. This ensures modern, standardized module handling and better tree-shaking capabilities.
+
+### a. TypeScript Configuration
+
+-   **`tsconfig.json`**: Must be configured for ESM output:
+    ```json
+    {
+      "compilerOptions": {
+        "module": "ESNext",
+        "target": "ES2020",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true
+      },
+      "ts-node": {
+        "esm": true
+      }
+    }
+    ```
+
+### b. Package Configuration
+
+-   **`package.json`**: Must include `"type": "module"` to enable ESM:
+    ```json
+    {
+      "type": "module"
+    }
+    ```
+
+### c. Import/Export Patterns
+
+-   **File Extensions**: Always use `.js` extensions in import statements (TypeScript compiles `.ts` to `.js`):
+    ```typescript
+    // Correct
+    import { userService } from './services/userService.js';
+    import express from 'express';
+    
+    // Incorrect
+    import { userService } from './services/userService';
+    import { userService } from './services/userService.ts';
+    ```
+
+-   **Named Exports**: Prefer named exports over default exports for better tree-shaking and IDE support:
+    ```typescript
+    // Correct
+    export const userController = {
+      // implementation
+    };
+    
+    // Acceptable for single-purpose modules
+    export default class UserService {
+      // implementation
+    }
+    ```
+
+### d. Runtime Configuration
+
+-   **tsx (Recommended)**: Use `tsx` for better ESM support and performance:
+    ```json
+    {
+      "scripts": {
+        "dev": "nodemon --exec tsx src/app.ts",
+        "start": "tsx src/app.ts",
+        "db:migrate": "tsx ../node_modules/.bin/knex migrate:latest --knexfile src/knexfile.ts"
+      }
+    }
+    ```
+
+-   **Alternative - ts-node with loader**: If using ts-node, use the newer loader syntax:
+    ```json
+    {
+      "scripts": {
+        "dev": "nodemon --exec \"node --loader ts-node/esm\" src/app.ts",
+        "start": "node --loader ts-node/esm src/app.ts"
+      }
+    }
+    ```
+
+### e. ESM-Specific Code Patterns
+
+-   **Replacing `__dirname` and `__filename`**: In ES modules, these CommonJS globals are not available. Use the following pattern:
+    ```typescript
+    // CommonJS (incorrect in ESM)
+    const projectRoot = path.resolve(__dirname, '..', '..');
+    
+    // ESM (correct)
+    import { fileURLToPath } from 'url';
+    import path from 'path';
+    
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const projectRoot = path.resolve(__dirname, '..', '..');
+    ```
+
+### f. Common ESM Migration Issues
+
+-   **`ERR_UNKNOWN_FILE_EXTENSION` for `.ts` files**: Ensure `"type": "module"` is set in package.json and use `tsx` or proper ts-node loader configuration.
+    
+-   **Import statement extensions**: Always use `.js` extensions even when importing `.ts` files (TypeScript compilation target).
+    
+-   **Dynamic imports**: Use `await import()` syntax for conditional module loading.
+    
+-   **JSON imports**: Use `import` with assertion syntax:
+    ```typescript
+    import config from './config.json' assert { type: 'json' };
+    ```
+
+## 5. Architectural Patterns
 
 -   **Service Layer**: Business logic should be encapsulated within service classes to separate concerns from the controller and data access layers.
 -   **Dependency Injection**: Services and other dependencies should be provided through factory functions (e.g., `aiServiceFactory`) to promote loose coupling and testability.

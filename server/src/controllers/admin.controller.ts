@@ -4,6 +4,7 @@
  * These handlers manage topics, content items and perform simple analytics.
  */
 import { Request, Response } from 'express';
+import { fileURLToPath } from 'url';
 
 import { createContent, getContentById, getAllContent, updateContent, deleteContent } from '../models/Content.js';
 import { getTotalUsers, getUsersByRole, getAllUsers as getAllUsersModel } from '../models/User.js';
@@ -41,6 +42,9 @@ export const getAnalyticsSummary = async (req: Request, res: Response): Promise<
     // management moves away from static JSON files.
     const fs = require('fs').promises;
     const path = require('path');
+    // In ES modules, we need to use import.meta.url instead of __dirname
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     // Corrected path: from server/src/controllers, go up 3 levels to french-learning-platform, then content/topics
     const topicsDir = path.join(__dirname, '../../../content/topics');
     let totalContentItems = 0;

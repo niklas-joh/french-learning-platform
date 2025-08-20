@@ -209,3 +209,43 @@ erDiagram
     lessons ||--o{ user_lesson_progress : "has_progress_by"
 
     users ||--o{ ai_generated_content : "requests"
+
+    assessmentTypes {
+        int id PK
+        string name
+        string description
+        datetime createdAt
+    }
+
+    userAssessments {
+        int id PK
+        int userId FK
+        int userContentCompletionId FK
+        int assessmentTypeId FK
+        text userResponse
+        boolean isCorrect
+        float score
+        json feedback
+        enum confidence
+        json metadata
+        datetime createdAt
+    }
+
+    userWeaknessAnalyses {
+        int id PK
+        int userId FK
+        datetime analyzedAt
+        int timeframeDays
+        enum confidenceLevel
+        json primaryWeaknesses
+        json improvementAreas
+        json strengthAreas
+        json recommendations
+        datetime createdAt
+    }
+
+    assessmentTypes ||--|{ userAssessments : "classifies"
+    user_content_completions ||--o{ userAssessments : "consists_of"
+    users ||--o{ userAssessments : "receives"
+    users ||--o{ userWeaknessAnalyses : "has_analysis_for"
+}

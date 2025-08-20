@@ -68,7 +68,3 @@ Cline/
 
 # Gemini configuration (contains API keys)
 .gemini/
-
-# Auto-generated documentation
-docs/auto-generated/
-docs/auto-generated 2/

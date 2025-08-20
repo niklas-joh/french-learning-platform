@@ -7,17 +7,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-// Extend Express Request type to include user property
-export interface AuthenticatedRequest extends Request { // Added export
-  user?: {
-    userId: number; // Changed from id to userId for consistency
-    email?: string;
-    role?: string;
-    // Add other properties from JWT payload if needed
-  };
-}
-
-export const protect = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const protect = (req: Request, res: Response, next: NextFunction) => {
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {

@@ -4,12 +4,17 @@ import { generateContentId } from '../../types/Content';
 import { ILogger } from '../../types/ILogger';
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 export class ContentFallbackHandler implements IContentFallbackHandler {
   private fallbackCache: Map<ContentType, StructuredContent> = new Map();
-  private readonly fallbackDir = path.resolve(__dirname, '../../../../content/fallback');
+  private readonly fallbackDir: string;
 
   constructor(private logger: ILogger) {
+    // In ES modules, we need to use import.meta.url instead of __dirname
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    this.fallbackDir = path.resolve(__dirname, '../../../../content/fallback');
     this.loadFallbackContent();
   }
 

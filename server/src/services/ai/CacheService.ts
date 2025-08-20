@@ -22,6 +22,7 @@ import {
   AITaskType 
 } from '../../types/AI';
 import { ILogger } from '../../types/logger';
+import { ICacheService } from '../common/ICacheService';
 
 /**
  * @class CacheService
@@ -29,7 +30,7 @@ import { ILogger } from '../../types/logger';
  *              Implements semantic caching with deterministic key generation to maximize
  *              cache hit rates while maintaining full type safety.
  */
-export class CacheService {
+export class CacheService implements ICacheService {
   private redis: Redis;
   private config: CacheStrategyConfig;
   private logger: ILogger;
@@ -106,28 +107,23 @@ export class CacheService {
    * @param payload - The request payload to look up
    * @returns Cached response or null if not found/error occurred
    */
-  async get<T extends AITaskType>(
-    taskType: T, 
-    payload: AITaskRequestPayload<T>
-  ): Promise<AIResponse<T> | null> {
+  async get<T>(key: string): Promise<T | null> {
     if (!this.config.enabled) {
       return null;
     }
-
-    const key = this.generateCacheKey(taskType, payload);
     
     try {
       const cachedData = await this.redis.get(key);
       
       if (cachedData) {
         this.logger.info(`[CacheService] Cache HIT for key: ${key.substring(0, 32)}...`);
-        return JSON.parse(cachedData) as AIResponse<T>;
+        return JSON.parse(cachedData) as T;
       }
       
       this.logger.info(`[CacheService] Cache MISS for key: ${key.substring(0, 32)}...`);
       return null;
     } catch (error) {
-      this.logger.error('[CacheService] Redis GET operation failed. Bypassing cache.', error);
+      this.logger.error(`[CacheService] Redis GET operation for key ${key} failed. Bypassing cache.`, error);
       return null; // Fail open - allow request to proceed without cache
     }
   }
@@ -142,23 +138,16 @@ export class CacheService {
    * @param payload - The request payload used for key generation
    * @param response - The AI response to cache
    */
-  async set<T extends AITaskType>(
-    taskType: T, 
-    payload: AITaskRequestPayload<T>, 
-    response: AIResponse<T>
-  ): Promise<void> {
+  async set<T>(key: string, value: T, ttlSeconds: number): Promise<void> {
     if (!this.config.enabled) {
       return;
     }
-
-    const key = this.generateCacheKey(taskType, payload);
-    const ttl = this.config.ttlSeconds;
     
     try {
-      this.logger.info(`[CacheService] Caching response for key: ${key.substring(0, 32)}... with TTL: ${ttl}s`);
-      await this.redis.set(key, JSON.stringify(response), 'EX', ttl);
+      this.logger.info(`[CacheService] Caching response for key: ${key.substring(0, 32)}... with TTL: ${ttlSeconds}s`);
+      await this.redis.set(key, JSON.stringify(value), 'EX', ttlSeconds);
     } catch (error) {
-      this.logger.error('[CacheService] Redis SET operation failed. Skipping cache set.', error);
+      this.logger.error(`[CacheService] Redis SET operation for key ${key} failed. Skipping cache set.`, error);
       // Fail open - don't throw error, just skip caching
     }
   }
@@ -168,6 +157,15 @@ export class CacheService {
    * 
    * @param pattern - Redis key pattern to match (defaults to all AI cache keys)
    */
+  async del(key: string): Promise<void> {
+    try {
+      await this.redis.del(key);
+      this.logger.info(`[CacheService] Deleted key: ${key}`);
+    } catch (error) {
+      this.logger.error(`[CacheService] Redis DEL operation for key ${key} failed.`, error);
+    }
+  }
+
   async clear(pattern: string = 'ai-cache:*'): Promise<void> {
     try {
       const keys = await this.redis.keys(pattern);

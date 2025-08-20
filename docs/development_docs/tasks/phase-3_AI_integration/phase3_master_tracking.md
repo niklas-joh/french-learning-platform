@@ -21,10 +21,10 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.A.5 | [Implement Public Orchestrator Methods](./3-1-A-5-public-methods.md) | 1h | ✅ **Completed** | - | Jan 7, 2025 | Jan 7, 2025 | 3.1.A.4 |
 | 3.1.A.6 | [API Layer Integration](./3-1-A-6-api.md) | 0.5h | ✅ **Completed** | - | Jan 7, 2025 | Jan 7, 2025 | 3.1.A.5 |
 | 3.1.A.7 | [Unit & Integration Testing](./3-1-A-7-testing.md) | 1h | 🔵 **Deferred** | - | - | - | 3.1.A.6 |
-| 3.1.B | [Dynamic Content Generation](./3-1-B-dynamic-content-generation.md) | 6h | 🟡 **In Progress** | - | - | - | 3.1.A |
+| 3.1.B | [Dynamic Content Generation](./3-1-B-dynamic-content-generation.md) | 6h | ✅ **Completed** | - | July 1, 2025 | July 3, 2025 | 3.1.A |
 | 3.1.B.1 | [Initial Scaffolding & Type Definition](./3-1-B-1-scaffolding-types.md) | 1h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.A |
 | 3.1.B.2 | [Refactor to Async Workflow](./3-1-B-2-async-workflow.md) | 2h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.1 |
-| 3.1.B.3 | [Implement Core Generation Logic](./3-1-B-3-generation-logic.md) | 2.5h | 🟡 **In Progress** | - | - | - | 3.1.B.2 |
+| 3.1.B.3 | [Implement Core Generation Logic](./3-1-B-3-generation-logic.md) | 2.5h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.2 |
 | 3.1.B.3a| [Implement Raw Content Generation](./3-1-B-3-a-implement-raw-content-generation.md) | 0.75h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.2 |
 | 3.1.B.3b| [Implement Content Structuring](./3-1-B-3-b-implement-content-structuring.md) | 0.75h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.3a |
 | 3.1.B.3c| [Implement User Context Service](./3-1-B-3-c-implement-user-context-service.md) | 0.5h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.3b |
@@ -37,22 +37,22 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.B.3a| Create reusable DB trigger for updatedAt | 0.25h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.2 |
 | 3.1.B.4 | [DB Schema for Generated Content](./3-1-B-4-db-schema.md) | 0.5h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.3a |
 | 3.1.B.5 | [Implement Validator & Enhancer Services](./3-1-B-5-validator-enhancer-services.md) | 1.5h | ✅ **Completed** | - | July 1, 2025 | July 1, 2025 | 3.1.B.4 |
-| 3.1.B.6 | [Refactor to Async Job Queue Workflow](./3-1-B-6-async-job-queue.md) | 2.5h | 🟡 **In Progress** | - | - | - | 3.1.B.3 |
+| 3.1.B.6 | [Refactor to Async Job Queue Workflow](./3-1-B-6-async-job-queue.md) | 2.5h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.3 |
 | 3.1.B.6a| Implement `DatabaseJobQueueService` | 1h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.3 |
 | 3.1.B.6b| Implement `ContentGenerationJobHandler` | 0.75h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.6a |
-| 3.1.B.6c| Refactor `DynamicContentGenerator` & Implement Worker | 0.5h | ✅ **Completed** | - | - | - | 3.1.B.6b |
+| 3.1.B.6c| Refactor `DynamicContentGenerator` & Implement Worker | 0.5h | ✅ **Completed** | - | July 2, 2025 | July 2, 2025 | 3.1.B.6b |
 | 3.1.B.6d| Implement API Endpoints for Job Management | 1.25h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6c |
 | 3.1.B.6d.1| Implement "List Jobs" Endpoint | 0.5h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6c |
 | 3.1.B.6d.2| Implement "Cancel Job" Endpoint | 0.5h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6c |
-| 3.1.B.6d.3| Update API & Architecture Documentation | 0.25h | 🟡 **In Progress** | - | July 3, 2025 | - | 3.1.B.6d.2 |
+| 3.1.B.6d.3| Update API & Architecture Documentation | 0.25h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6d.2 |
 | 3.1.B.7 | [Fix Generic Generate Endpoint](./3-1-B-7-fix-generic-generate-endpoint.md) | 1.5h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.6 |
 | 3.1.B.8 | [Consolidate API Endpoints](./3-1-B-8-consolidate-api-endpoints.md) | 1h | ✅ **Completed** | - | July 3, 2025 | July 3, 2025 | 3.1.B.7 |
 | **3.1.C** | **AI Assessment & Grading Engine** | **6h** | 🟡 **In Progress** | - | - | - | **3.1.A** |
 | 3.1.C.1 | [Assessment Strategy Pattern](./3-1-C-1-assessment-strategy-pattern.md) | 1.5h | ✅ **Completed** | - | - | - | 3.1.A |
 | 3.1.C.2 | [Assessment Service Integration](./3-1-C-2-assessment-service-integration.md) | 1h | ✅ **Completed** | - | - | - | 3.1.C.1 |
-| 3.1.C.3 | [Assessment Persistence & Analytics](./3-1-C-3-assessment-persistence-analytics.md) | 1.5h | ✅ **Completed** | - | - | - | 3.1.C.1 |
-| 3.1.C.4 | [Batch Assessment Processing](./3-1-C-4-batch-assessment-processing.md) | 1h | ✅ **Completed** | - | - | - | 3.1.C.2, 3.1.C.3 |
-| 3.1.C.5 | [API Layer & Testing Integration](./3-1-C-5-api-testing-integration.md) | 1h | ✅ **Completed** | - | - | - | 3.1.C.1, 3.1.C.2, 3.1.C.3, 3.1.C.4 |
+| 3.1.C.3 | [Assessment Persistence & Analytics](./3-1-C-3-assessment-persistence-analytics.md) | 1.5h | ✅ **Completed** | - | - | - | 3.1.C.2 |
+| 3.1.C.4 | [Batch Assessment Processing](./3-1-C-4-batch-assessment-processing.md) | 1h | ✅ **Completed** | - | - | - | 3.1.C.3 |
+| 3.1.C.5 | [API & Testing Integration](./3-1-C-5-api-testing-integration.md) | 1h | ✅ **Completed** | - | - | - | 3.1.C.4 |
 | 3.1.D | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |
 
 ### **Phase 3.2: Advanced AI Features (Week 2) - Total: 22 hours**
