@@ -11,6 +11,20 @@
 ## **Objective**
 Implement AI-powered assessment and grading system that provides intelligent evaluation of user responses, personalized feedback, and weakness pattern analysis to drive adaptive learning.
 
+## **Architectural Approach**
+This task has been broken down into **5 modular subtasks** following the **Strategy Pattern** for maintainable, testable, and extensible architecture:
+
+- **[3.1.C.1: Assessment Strategy Pattern](./3-1-C-1-assessment-strategy-pattern.md)** (1.5h) - Core strategy interface and implementations
+- **[3.1.C.2: Assessment Service Integration](./3-1-C-2-assessment-service-integration.md)** (1h) - Unified service with AIOrchestrator integration
+- **[3.1.C.3: Assessment Persistence & Analytics](./3-1-C-3-assessment-persistence-analytics.md)** (1.5h) - Data storage and real-time analytics
+- **[3.1.C.4: Batch Assessment Processing](./3-1-C-4-batch-assessment-processing.md)** (1h) - Parallel processing and job queue integration  
+- **[3.1.C.5: API Layer & Testing Integration](./3-1-C-5-api-testing-integration.md)** (1h) - RESTful endpoints and comprehensive testing
+
+**Additional Components:**
+- **[3.1.C.7: Async Weakness Analysis Worker](./3.1.C.7-async-weakness-analysis-worker.md)** (1h) - Background analytics processing
+
+This modular approach supersedes the monolithic implementation shown below, providing better separation of concerns, testability, and maintainability while following SOLID principles and KISS methodology.
+
 ## **Success Criteria**
 - [ ] AI accurately grades multiple response types (multiple-choice, fill-in-blank, open-ended)
 - [ ] Assessment accuracy > 85% compared to human grading
@@ -21,11 +35,82 @@ Implement AI-powered assessment and grading system that provides intelligent eva
 - [ ] Handles edge cases gracefully with confidence scoring
 - [ ] Integrates seamlessly with content generation and user progress
 
-## **Implementation Details**
+## **Reference Implementation Details**
 
-### **Core Architecture**
+> **Note**: The implementation below represents the comprehensive monolithic approach. The **recommended implementation** follows the modular Strategy Pattern outlined in the subtasks above, which provides better maintainability, testability, and extensibility.
 
-#### **1. AI Assessment Engine Service**
+### **Core Architecture Overview**
+
+#### **1. Strategy Pattern Foundation**
+The recommended architecture uses the **Strategy Pattern** to handle different assessment types:
+
+```typescript
+// Core Strategy Interface (from 3.1.C.1)
+interface IAssessmentStrategy {
+  assessResponse(request: AssessmentRequest): Promise<AssessmentResult>;
+  getStrategyName(): string;
+  getSupportedTypes(): ResponseType[];
+  validateRequest(request: AssessmentRequest): Promise<boolean>;
+}
+
+// Factory for Strategy Selection
+class AssessmentStrategyFactory {
+  getStrategy(responseType: ResponseType): IAssessmentStrategy;
+}
+
+// Unified Service Orchestrating All Strategies (from 3.1.C.2)
+class AssessmentService {
+  async assessSingleResponse(request: AssessmentRequest): Promise<AssessmentResult>;
+  async assessBatch(batchRequest: BatchAssessmentRequest): Promise<BatchAssessmentResult>;
+}
+```
+
+#### **2. Modular Service Integration**
+- **Assessment Persistence Service** (3.1.C.3): Uses existing `ai_generated_content` table for optimal database reuse
+- **Batch Assessment Processor** (3.1.C.4): Handles parallel processing with configurable concurrency
+- **Background Analytics Worker** (3.1.C.7): Processes weakness analysis asynchronously
+
+### **Legacy Monolithic Reference Implementation**
+
+#### **1. AI Assessment Engine Service (Legacy)**
+## **Reference Implementation Details**
+
+> **Note**: The implementation below represents the comprehensive monolithic approach. The **recommended implementation** follows the modular Strategy Pattern outlined in the subtasks above, which provides better maintainability, testability, and extensibility.
+
+### **Core Architecture Overview**
+
+#### **1. Strategy Pattern Foundation**
+The recommended architecture uses the **Strategy Pattern** to handle different assessment types:
+
+```typescript
+// Core Strategy Interface (from 3.1.C.1)
+interface IAssessmentStrategy {
+  assessResponse(request: AssessmentRequest): Promise<AssessmentResult>;
+  getStrategyName(): string;
+  getSupportedTypes(): ResponseType[];
+  validateRequest(request: AssessmentRequest): Promise<boolean>;
+}
+
+// Factory for Strategy Selection
+class AssessmentStrategyFactory {
+  getStrategy(responseType: ResponseType): IAssessmentStrategy;
+}
+
+// Unified Service Orchestrating All Strategies (from 3.1.C.2)
+class AssessmentService {
+  async assessSingleResponse(request: AssessmentRequest): Promise<AssessmentResult>;
+  async assessBatch(batchRequest: BatchAssessmentRequest): Promise<BatchAssessmentResult>;
+}
+```
+
+#### **2. Modular Service Integration**
+- **Assessment Persistence Service** (3.1.C.3): Uses existing `ai_generated_content` table for optimal database reuse
+- **Batch Assessment Processor** (3.1.C.4): Handles parallel processing with configurable concurrency
+- **Background Analytics Worker** (3.1.C.7): Processes weakness analysis asynchronously
+
+### **Legacy Monolithic Reference Implementation**
+
+#### **1. AI Assessment Engine Service (Legacy)**
 ```typescript
 // server/src/services/aiAssessmentEngine.ts
 
