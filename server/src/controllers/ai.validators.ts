@@ -74,6 +74,31 @@ export const gradeResponsePayloadSchema = z.object({
 });
 
 /**
+ * Validation schema for lesson generation requests
+ * Corresponds to AITaskPayloads['GENERATE_LESSON']['request']
+ */
+export const generateLessonPayloadSchema = z.object({
+  topic: z.string()
+    .min(1, 'Topic is required')
+    .max(200, 'Topic must be less than 200 characters'),
+  level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
+    .optional()
+    .default('A1'),
+  duration: z.number()
+    .int('Duration must be an integer')
+    .min(5, 'Duration must be at least 5 minutes')
+    .max(120, 'Duration must be less than 120 minutes')
+    .optional()
+    .default(30),
+  focusAreas: z.array(z.string())
+    .optional()
+    .default([]),
+  includeExercises: z.boolean()
+    .optional()
+    .default(true),
+});
+
+/**
  * Validation schema for pagination query parameters
  */
 export const paginationSchema = z.object({
@@ -104,6 +129,7 @@ export const paginationSchema = z.object({
  */
 export const validationSchemaMap = {
   GENERATE_CONTENT: generateContentPayloadSchema,
+  GENERATE_LESSON: generateLessonPayloadSchema,
   ASSESS_PRONUNCIATION: assessPronunciationPayloadSchema,
   GRADE_RESPONSE: gradeResponsePayloadSchema,
   // TODO: Add future schemas as they are implemented

@@ -26,6 +26,7 @@ import { Lesson } from '../models/Lesson.js';
  */
 export type AITaskType =
   | 'GENERATE_CONTENT'
+  | 'GENERATE_LESSON'
   | 'ASSESS_PRONUNCIATION' 
   | 'GRADE_RESPONSE'
   | 'GENERATE_CURRICULUM_PATH'
@@ -151,6 +152,37 @@ export interface AITaskPayloads {
           duration?: number;
         };
     response: any; // The response will be structured content, can be defined later
+  };
+
+  GENERATE_LESSON: {
+    request: {
+      /** Topic for the lesson */
+      topic: string;
+      /** CEFR level for the lesson */
+      level?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+      /** Duration in minutes */
+      duration?: number;
+      /** Specific areas to focus on */
+      focusAreas?: string[];
+      /** Whether to include exercises */
+      includeExercises?: boolean;
+    };
+    response: {
+      /** Generated lesson ID */
+      id: number;
+      /** Lesson title */
+      title: string;
+      /** Lesson content */
+      content?: string;
+      /** Associated exercises */
+      exercises?: any[];
+      /** Lesson metadata */
+      metadata?: {
+        level: string;
+        estimatedDuration: number;
+        topics: string[];
+      };
+    };
   };
   
   ASSESS_PRONUNCIATION: {

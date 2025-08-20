@@ -108,7 +108,7 @@ async function handleAIRequest<T extends ValidatedAITask>(
       case 'GENERATE_LESSON':
         result = await aiOrchestrator.generateLesson(
           userContext,
-          validationResult.data as any // Bypassing type conflict for now
+          validationResult.data as AITaskPayloads['GENERATE_LESSON']['request']
         );
         break;
       case 'ASSESS_PRONUNCIATION':
@@ -303,8 +303,33 @@ export const getGenerationStatus = async (req: Request, res: Response) => {
   }
 };
 
-// NOTE: Legacy endpoint handlers removed due to type incompatibilities
-// Use generateContentAsync, and the new AI orchestration endpoints instead
+// =================================================================
+// AI ORCHESTRATION ENDPOINTS - New type-safe endpoints
+// =================================================================
+
+/**
+ * [ASYNC] Controller for pronunciation assessment
+ * POST /api/ai/assess-pronunciation
+ */
+export const assessPronunciation = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'ASSESS_PRONUNCIATION');
+};
+
+/**
+ * [ASYNC] Controller for response grading
+ * POST /api/ai/grade-response
+ */
+export const gradeResponse = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'GRADE_RESPONSE');
+};
+
+/**
+ * [ASYNC] Controller for lesson generation
+ * POST /api/ai/generate-lesson
+ */
+export const generateLesson = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'GENERATE_LESSON');
+};
 
 // =================================================================
 // LEGACY ENDPOINTS - Maintained for backward compatibility
