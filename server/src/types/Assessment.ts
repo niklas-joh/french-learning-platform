@@ -53,6 +53,7 @@ export interface AssessmentContext {
   questionContext?: string;
   culturalContext?: boolean;
   previousAttempts?: number;
+  batchIndex?: number; // Index in batch processing for analytics and debugging
 }
 
 /**
@@ -127,9 +128,41 @@ export interface GradingResult {
   feedback: PersonalizedFeedback;
   timeSpent: number;
   completedAt: Date;
-  strengths: string[];
-  weaknesses: string[];
-  nextRecommendations: string[];
+}
+
+/**
+ * Batch assessment request for processing multiple assessments
+ */
+export interface BatchAssessmentRequest {
+  userId: number;
+  requests: AssessmentRequest[];
+  exerciseId?: string;
+  lessonId?: string;
+  exerciseType?: string;
+  metadata?: {
+    timeSpent?: number;
+    hintsUsed?: number;
+    attempts?: number;
+  };
+}
+
+/**
+ * Batch assessment result with comprehensive metrics
+ */
+export interface BatchAssessmentResult {
+  exerciseId: string;
+  lessonId: string;
+  overallScore: number;
+  accuracy: number;
+  totalQuestions: number;
+  successfulAssessments: number;
+  failedAssessments: number;
+  results: AssessmentResult[];
+  failures: { request: AssessmentRequest; error: string }[];
+  batchFeedback: PersonalizedFeedback;
+  processingTime: number;
+  timestamp: Date;
+  fallback?: boolean;
 }
 
 /**
