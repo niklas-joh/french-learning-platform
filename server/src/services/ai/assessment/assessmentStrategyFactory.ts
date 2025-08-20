@@ -1,10 +1,13 @@
 import { OpenAI } from 'openai';
-import { ResponseType } from '../../../types/Assessment';
-import { IAssessmentStrategy } from './strategies/IAssessmentStrategy';
-import { MultipleChoiceStrategy } from './strategies/multipleChoiceStrategy';
-import { OpenEndedStrategy } from './strategies/openEndedStrategy';
-import { PromptTemplateEngine } from '../PromptTemplateEngine';
-import { ILogger } from '../../../utils/logger';
+import { ResponseType } from '../../../types/Assessment.js';
+import { IAssessmentStrategy } from './strategies/IAssessmentStrategy.js';
+import { MultipleChoiceStrategy } from './strategies/multipleChoiceStrategy.js';
+import { OpenEndedStrategy } from './strategies/openEndedStrategy.js';
+import { FillInBlankStrategy } from './strategies/fillInBlankStrategy.js';
+import { PronunciationStrategy } from './strategies/pronunciationStrategy.js';
+import { ConversationStrategy } from './strategies/conversationStrategy.js';
+import { PromptTemplateEngine } from '../PromptTemplateEngine.js';
+import { ILogger } from '../../../utils/logger.js';
 
 /**
  * @class AssessmentStrategyFactory
@@ -22,19 +25,12 @@ export class AssessmentStrategyFactory {
    * @param {ILogger} logger A logger instance for logging factory-level events.
    */
   constructor(
-    openai: OpenAI,
-    promptEngine: PromptTemplateEngine,
+    private openai: OpenAI,
+    private promptEngine: PromptTemplateEngine,
     private logger: ILogger
   ) {
-    this.strategies = new Map<ResponseType, IAssessmentStrategy>([
-      ['multiple-choice', new MultipleChoiceStrategy()],
-      ['open-ended', new OpenEndedStrategy(openai, promptEngine, this.logger)],
-      // TODO: Add other strategies here as they are implemented.
-      // For example:
-      // ['fill-in-the-blank', new FillInTheBlankStrategy()],
-      // ['pronunciation', new PronunciationStrategy(openai, someSpeechService)],
-    ]);
-    this.logger.info('AssessmentStrategyFactory initialized with available strategies.');
+    this.strategies = new Map<ResponseType, IAssessmentStrategy>();
+    this.logger.info('AssessmentStrategyFactory initialized with lazy-loading strategy pattern.');
   }
 
   /**
@@ -44,14 +40,45 @@ export class AssessmentStrategyFactory {
    * @throws {Error} If no strategy is found for the given type.
    */
   public getStrategy(type: ResponseType): IAssessmentStrategy {
+    // Lazy loading: create strategy instance only when needed
+    if (!this.strategies.has(type)) {
+      this.strategies.set(type, this.createStrategy(type));
+    }
+    
     const strategy = this.strategies.get(type);
     if (!strategy) {
       this.logger.error(`Unsupported assessment type requested: ${type}. No strategy found.`);
-      // In a production system, you might want a default or "do-nothing" strategy
-      // as a fallback, but for now, throwing an error is appropriate.
       throw new Error(`Unsupported assessment type: ${type}`);
     }
+    
     this.logger.debug(`Strategy for type "${type}" retrieved successfully.`);
     return strategy;
+  }
+
+  /**
+   * Creates a new strategy instance based on the response type
+   * @private
+   * @param type The response type to create a strategy for
+   * @returns The strategy instance
+   */
+  private createStrategy(type: ResponseType): IAssessmentStrategy {
+    switch (type) {
+      case 'multiple-choice':
+        return new MultipleChoiceStrategy();
+      case 'open-ended':
+        return new OpenEndedStrategy(this.openai, this.promptEngine);
+      case 'fill-in-blank':
+        return new FillInBlankStrategy();
+      case 'pronunciation':
+        // TODO: Need AIOrchestrator instance - temporarily throw error until dependency resolved
+        throw new Error(`PronunciationStrategy requires AIOrchestrator dependency - not yet available in factory`);
+      case 'conversation':
+        // TODO: Need AIOrchestrator instance - temporarily throw error until dependency resolved  
+        throw new Error(`ConversationStrategy requires AIOrchestrator dependency - not yet available in factory`);
+      case 'listening-comprehension':
+        throw new Error(`Strategy for type "${type}" not yet implemented`);
+      default:
+        throw new Error(`Unknown assessment type: ${type}`);
+    }
   }
 }

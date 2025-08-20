@@ -1,6 +1,6 @@
-import { BaseStrategy } from './BaseStrategy';
-import { AssessmentRequest, AssessmentResult, PersonalizedFeedback } from '../../../../types/Assessment';
-import { IAssessmentStrategy } from './IAssessmentStrategy';
+import { BaseStrategy } from './BaseStrategy.js';
+import { AssessmentRequest, AssessmentResult, PersonalizedFeedback } from '../../../../types/Assessment.js';
+import { IAssessmentStrategy } from './IAssessmentStrategy.js';
 
 /**
  * @class MultipleChoiceStrategy
@@ -24,7 +24,7 @@ export class MultipleChoiceStrategy extends BaseStrategy implements IAssessmentS
   public async assess(request: AssessmentRequest): Promise<AssessmentResult> {
     if (typeof request.userResponse !== 'string' || typeof request.expectedAnswer !== 'string') {
       this.logger.error('Invalid request for MultipleChoiceStrategy', { request });
-      return this.getFallbackAssessment('multiple-choice', 'Invalid request payload.');
+      return this.getFallbackAssessment('multiple-choice', 'Invalid request payload.', request.userResponse);
     }
 
     const isCorrect = this.normalize(request.userResponse) === this.normalize(request.expectedAnswer);
@@ -42,6 +42,7 @@ export class MultipleChoiceStrategy extends BaseStrategy implements IAssessmentS
         };
 
     return {
+      userResponse: request.userResponse,
       score: isCorrect ? 100 : 0,
       isCorrect,
       feedback,

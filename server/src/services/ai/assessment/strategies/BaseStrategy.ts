@@ -1,6 +1,6 @@
-import { ILogger, createLogger } from '../../../../utils/logger';
-import { AssessmentResult } from '../../../../types/Assessment';
-import { IAssessmentStrategy } from './IAssessmentStrategy';
+import { ILogger, createLogger } from '../../../../utils/logger.js';
+import { AssessmentResult, ResponseType } from '../../../../types/Assessment.js';
+import { IAssessmentStrategy } from './IAssessmentStrategy.js';
 
 /**
  * @abstract
@@ -36,11 +36,13 @@ export abstract class BaseStrategy implements IAssessmentStrategy {
    * @returns {AssessmentResult} A structured fallback assessment result.
    */
   protected getFallbackAssessment(
-    assessmentType: string,
-    errorMessage: string = "An unexpected error occurred."
+    assessmentType: ResponseType,
+    errorMessage: string = "An unexpected error occurred.",
+    userResponse: string = ""
   ): AssessmentResult {
     this.logger.warn(`Using fallback assessment for ${assessmentType} due to error: ${errorMessage}`);
     return {
+      userResponse,
       score: 0,
       isCorrect: false,
       feedback: {

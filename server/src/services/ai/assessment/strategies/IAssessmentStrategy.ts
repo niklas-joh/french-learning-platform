@@ -1,4 +1,4 @@
-import { AssessmentRequest, AssessmentResult } from '../../../../types/Assessment';
+import { AssessmentRequest, AssessmentResult } from '../../../../types/Assessment.js';
 
 /**
  * Interface that all assessment strategies must implement.
