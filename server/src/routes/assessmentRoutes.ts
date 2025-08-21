@@ -23,7 +23,29 @@ export const createAssessmentRoutes = (controller: AssessmentController): expres
     controller.assessResponse
   );
 
-  // Add other assessment-related routes here in the future as the feature expands.
+  /**
+   * @route GET /api/v1/assessment/analysis
+   * @description Retrieves cached weakness analysis results for the authenticated user.
+   * Returns cached results if available, otherwise triggers async analysis.
+   * @access Private (requires authentication)
+   */
+  router.get(
+    '/analysis',
+    protect,
+    controller.getWeaknessAnalysis
+  );
+
+  /**
+   * @route POST /api/v1/assessment/analysis/trigger
+   * @description Manually triggers a new weakness analysis for the authenticated user.
+   * Enqueues analysis job regardless of existing cached results.
+   * @access Private (requires authentication)
+   */
+  router.post(
+    '/analysis/trigger',
+    protect,
+    controller.triggerWeaknessAnalysis
+  );
 
   return router;
 };

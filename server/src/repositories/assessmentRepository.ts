@@ -1,5 +1,19 @@
 import Knex from 'knex';
-import { GradingResult, AssessmentResult } from '../types/Assessment.js';
+import { GradingResult, AssessmentResult, ConfidenceLevel } from '../types/Assessment.js';
+
+/**
+ * Interface for weakness analysis result data structure
+ * @interface WeaknessAnalysisResult
+ */
+interface WeaknessAnalysisResult {
+  analyzedAt: Date;
+  timeframeDays: number;
+  confidenceLevel: ConfidenceLevel;
+  primaryWeaknesses: string[];
+  improvementAreas: string[];
+  strengthAreas: string[];
+  recommendations: string[];
+}
 
 /**
  * @class AssessmentRepository
@@ -79,5 +93,111 @@ export class AssessmentRepository {
     // and might be better handled by a separate service or a database trigger.
     // For now, we leave this as a placeholder for a future task.
     // await this.db('userProgress').where({ userId }).increment('totalXp', calculateXp(result));
+  }
+
+  /**
+   * Retrieves recent assessment data for a user within a specified timeframe.
+   * Used for weakness analysis pattern recognition.
+   * @param {number} userId - The ID of the user.
+   * @param {number} timeframeDays - Number of days to look back from current date.
+   * @returns {Promise<AssessmentResult[]>} Array of assessment results with user context.
+   */
+  async getAssessmentsForUser(userId: number, timeframeDays: number = 30): Promise<AssessmentResult[]> {
+    const cutoffDate = new Date(Date.now() - (timeframeDays * 24 * 60 * 60 * 1000));
+    
+    const rawResults = await this.db('userAssessments')
+      .join('userContentCompletions', 'userAssessments.userContentCompletionId', 'userContentCompletions.id')
+      .leftJoin('assessmentTypes', 'userAssessments.assessmentTypeId', 'assessmentTypes.id')
+      .select(
+        'userAssessments.userResponse',
+        'userAssessments.isCorrect',
+        'userAssessments.score',
+        'userAssessments.feedback',
+        'userAssessments.confidence',
+        'userAssessments.metadata',
+        'userAssessments.createdAt',
+        'assessmentTypes.name as assessmentType',
+        'userContentCompletions.contentId'
+      )
+      .where('userAssessments.userId', userId)
+      .where('userAssessments.createdAt', '>=', cutoffDate)
+      .orderBy('userAssessments.createdAt', 'desc');
+
+    // Transform raw results to AssessmentResult format
+    return rawResults.map(row => ({
+      userResponse: row.userResponse,
+      isCorrect: row.isCorrect,
+      score: row.score,
+      feedback: typeof row.feedback === 'string' ? JSON.parse(row.feedback) : row.feedback,
+      confidence: row.confidence as ConfidenceLevel,
+      assessmentType: (row.assessmentType || 'unknown') as any,
+      metadata: row.metadata ? (typeof row.metadata === 'string' ? JSON.parse(row.metadata) : row.metadata) : undefined,
+      processingTime: undefined, // Not stored in current schema
+      assessmentTypeId: undefined // Will be resolved from assessmentType if needed
+    }));
+  }
+
+  /**
+   * Saves a weakness analysis result to the database.
+   * Follows camelCase naming convention as per development principles.
+   * @param {number} userId - The ID of the user.
+   * @param {WeaknessAnalysisResult} analysis - The analysis result to save.
+   * @returns {Promise<void>}
+   */
+  async saveWeaknessAnalysis(userId: number, analysis: WeaknessAnalysisResult): Promise<void> {
+    await this.db('userWeaknessAnalyses').insert({
+      userId,
+      analyzedAt: analysis.analyzedAt,
+      timeframeDays: analysis.timeframeDays,
+      confidenceLevel: analysis.confidenceLevel,
+      primaryWeaknesses: JSON.stringify(analysis.primaryWeaknesses),
+      improvementAreas: JSON.stringify(analysis.improvementAreas),
+      strengthAreas: JSON.stringify(analysis.strengthAreas),
+      recommendations: JSON.stringify(analysis.recommendations)
+    });
+  }
+
+  /**
+   * Retrieves the most recent weakness analysis for a user.
+   * Used by the analysis endpoint to provide cached results.
+   * @param {number} userId - The ID of the user.
+   * @returns {Promise<WeaknessAnalysisResult | null>} The most recent analysis or null if none exists.
+   */
+  async getLatestWeaknessAnalysis(userId: number): Promise<WeaknessAnalysisResult | null> {
+    const result = await this.db('userWeaknessAnalyses')
+      .select(
+        'analyzedAt',
+        'timeframeDays',
+        'confidenceLevel',
+        'primaryWeaknesses',
+        'improvementAreas',
+        'strengthAreas',
+        'recommendations'
+      )
+      .where({ userId })
+      .orderBy('analyzedAt', 'desc')
+      .first();
+
+    if (!result) {
+      return null;
+    }
+
+    return {
+      analyzedAt: result.analyzedAt,
+      timeframeDays: result.timeframeDays,
+      confidenceLevel: result.confidenceLevel as ConfidenceLevel,
+      primaryWeaknesses: typeof result.primaryWeaknesses === 'string' 
+        ? JSON.parse(result.primaryWeaknesses) 
+        : result.primaryWeaknesses,
+      improvementAreas: typeof result.improvementAreas === 'string' 
+        ? JSON.parse(result.improvementAreas) 
+        : result.improvementAreas,
+      strengthAreas: typeof result.strengthAreas === 'string' 
+        ? JSON.parse(result.strengthAreas) 
+        : result.strengthAreas,
+      recommendations: typeof result.recommendations === 'string' 
+        ? JSON.parse(result.recommendations) 
+        : result.recommendations
+    };
   }
 }

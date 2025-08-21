@@ -364,6 +364,130 @@ export class FrenchLanguageUtils implements IFrenchUtils {
 
     return (wordCountSimilarity + lengthSimilarity) / 2;
   }
+
+  /**
+   * Identifies common French language patterns in user responses for weakness analysis.
+   * Analyzes text patterns to identify specific French language challenges.
+   * 
+   * @param {string[]} responses - Array of user responses to analyze
+   * @returns {Record<string, number>} Pattern counts for weakness analysis
+   */
+  public identifyCommonPatterns(responses: string[]): Record<string, number> {
+    const patterns: Record<string, number> = {};
+    
+    responses.forEach(response => {
+      const normalizedResponse = response.toLowerCase().trim();
+      
+      // Accent-related patterns
+      if (!this.hasAccents(normalizedResponse) && this.shouldHaveAccents(normalizedResponse)) {
+        patterns['missing_accents'] = (patterns['missing_accents'] || 0) + 1;
+      }
+      
+      // Gender agreement patterns (simplified heuristic)
+      if (this.hasGenderAgreementIssues(normalizedResponse)) {
+        patterns['gender_agreement'] = (patterns['gender_agreement'] || 0) + 1;
+      }
+      
+      // Contraction usage patterns
+      if (this.hasContractionIssues(normalizedResponse)) {
+        patterns['contraction_errors'] = (patterns['contraction_errors'] || 0) + 1;
+      }
+      
+      // Verb conjugation patterns (basic detection)
+      if (this.hasVerbConjugationIssues(normalizedResponse)) {
+        patterns['verb_conjugation'] = (patterns['verb_conjugation'] || 0) + 1;
+      }
+      
+      // Article usage patterns
+      if (this.hasArticleIssues(normalizedResponse)) {
+        patterns['article_usage'] = (patterns['article_usage'] || 0) + 1;
+      }
+    });
+    
+    return patterns;
+  }
+
+  /**
+   * Checks if text should contain accents but doesn't
+   * @private
+   */
+  private shouldHaveAccents(text: string): boolean {
+    // Common French words that should have accents
+    const wordsNeedingAccents = ['etre', 'avoir', 'faire', 'aller', 'ecole', 'francais', 'pere', 'mere'];
+    return wordsNeedingAccents.some(word => text.includes(word));
+  }
+
+  /**
+   * Basic detection of gender agreement issues
+   * @private  
+   */
+  private hasGenderAgreementIssues(text: string): boolean {
+    // Very simplified detection - could be enhanced with NLP
+    const masculineArticles = ['le', 'un', 'du', 'au'];
+    const feminineArticles = ['la', 'une', 'de la', 'à la'];
+    const commonMismatchPatterns = [
+      /le\s+maison/, // should be "la maison"
+      /un\s+école/, // should be "une école"
+      /la\s+livre/   // should be "le livre"
+    ];
+    
+    return commonMismatchPatterns.some(pattern => pattern.test(text));
+  }
+
+  /**
+   * Detects contraction usage issues
+   * @private
+   */
+  private hasContractionIssues(text: string): boolean {
+    // Check for missing contractions
+    const shouldContract = [
+      /de\s+le/, // should be "du"
+      /à\s+le/,  // should be "au"  
+      /de\s+les/, // should be "des"
+      /à\s+les/   // should be "aux"
+    ];
+    
+    return shouldContract.some(pattern => pattern.test(text));
+  }
+
+  /**
+   * Basic verb conjugation issue detection
+   * @private
+   */
+  private hasVerbConjugationIssues(text: string): boolean {
+    // Very basic detection of common conjugation errors
+    const commonErrors = [
+      /je\s+est/, // should be "je suis"
+      /tu\s+es\s+aller/, // should be "tu vas"
+      /nous\s+est/ // should be "nous sommes"
+    ];
+    
+    return commonErrors.some(pattern => pattern.test(text));
+  }
+
+  /**
+   * Detects article usage issues
+   * @private
+   */
+  private hasArticleIssues(text: string): boolean {
+    // Check for missing or incorrect articles
+    const words = text.split(/\s+/);
+    let hasIssues = false;
+    
+    // Look for nouns without articles (very simplified)
+    const commonNouns = ['maison', 'école', 'livre', 'chat', 'chien', 'voiture'];
+    words.forEach((word, index) => {
+      if (commonNouns.includes(word)) {
+        const prevWord = words[index - 1];
+        const hasArticle = prevWord && /^(le|la|un|une|du|de\s+la|au|à\s+la)$/.test(prevWord);
+        if (!hasArticle && index > 0) {
+          hasIssues = true;
+        }
+      }
+    });
+    
+    return hasIssues;
+  }
 }
 
 /**

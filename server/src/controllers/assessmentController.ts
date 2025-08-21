@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { AIOrchestrator } from '../services/ai/AIOrchestrator.js';
 import { AssessmentRequest } from '../types/Assessment.js';
+import { AssessmentRepository } from '../repositories/assessmentRepository.js';
+import db from '../config/db.js';
+import { enqueueWeaknessAnalysis } from '../workers/weaknessAnalysisWorker.js';
 import { ZodError, z } from 'zod';
 
 // Basic validation schema for AssessmentRequest
@@ -31,9 +34,14 @@ const AssessmentRequestSchema = z.object({
  * @class AssessmentController
  * @description Handles API requests related to assessments, validating incoming data
  * and delegating business logic to the AIOrchestrator.
+ * Enhanced with weakness analysis endpoint for Task 3.1.C.7.
  */
 export class AssessmentController {
-  constructor(private orchestrator: AIOrchestrator) {}
+  private assessmentRepo: AssessmentRepository;
+
+  constructor(private orchestrator: AIOrchestrator) {
+    this.assessmentRepo = new AssessmentRepository(db);
+  }
 
   /**
    * @description Handles the API request to assess a single user response.
@@ -69,6 +77,107 @@ export class AssessmentController {
           details: (error as Error).message
         });
       }
+    }
+  };
+
+  /**
+   * @description Handles the API request to get user weakness analysis results.
+   * Returns cached analysis results or triggers new analysis if none exists.
+   * This endpoint provides fast response times by serving cached analysis results
+   * from the async weakness analysis worker (Task 3.1.C.7).
+   */
+  getWeaknessAnalysis = async (req: Request, res: Response): Promise<void> => {
+    try {
+      // 1. Get userId from the authenticated request object.
+      if (!req.user) {
+        res.status(401).json({ message: 'Not authorized, user not found on request.' });
+        return;
+      }
+
+      const userId = req.user.userId;
+      
+      // 2. Try to get cached analysis results first
+      const cachedAnalysis = await this.assessmentRepo.getLatestWeaknessAnalysis(userId);
+      
+      if (cachedAnalysis) {
+        // Return cached results with metadata
+        res.status(200).json({
+          analysis: cachedAnalysis,
+          cached: true,
+          generatedAt: cachedAnalysis.analyzedAt
+        });
+        return;
+      }
+
+      // 3. No cached analysis exists - trigger async analysis and inform user
+      try {
+        const jobId = await enqueueWeaknessAnalysis(userId, 'manual');
+        
+        res.status(202).json({
+          message: 'Weakness analysis requested. Results will be available shortly.',
+          jobId,
+          cached: false,
+          estimatedWaitTime: '2-3 minutes'
+        });
+      } catch (enqueueError) {
+        // Fallback: return message indicating analysis is not available
+        res.status(503).json({
+          message: 'Weakness analysis service temporarily unavailable. Please try again later.',
+          error: 'Analysis queue unavailable'
+        });
+      }
+
+    } catch (error) {
+      res.status(500).json({
+        message: 'An unexpected error occurred while retrieving weakness analysis.',
+        details: (error as Error).message
+      });
+    }
+  };
+
+  /**
+   * @description Handles the API request to trigger a manual weakness analysis.
+   * Enqueues a new analysis job regardless of existing cached results.
+   * Useful for users who want fresh analysis or administrators triggering updates.
+   */
+  triggerWeaknessAnalysis = async (req: Request, res: Response): Promise<void> => {
+    try {
+      // 1. Get userId from the authenticated request object.
+      if (!req.user) {
+        res.status(401).json({ message: 'Not authorized, user not found on request.' });
+        return;
+      }
+
+      const userId = req.user.userId;
+      
+      // 2. Optional timeframe parameter validation
+      let timeframeDays = 30; // default
+      if (req.body.timeframeDays) {
+        const parsed = parseInt(req.body.timeframeDays);
+        if (isNaN(parsed) || parsed < 1 || parsed > 365) {
+          res.status(400).json({
+            message: 'Invalid timeframeDays. Must be between 1 and 365.'
+          });
+          return;
+        }
+        timeframeDays = parsed;
+      }
+
+      // 3. Enqueue the analysis job
+      const jobId = await enqueueWeaknessAnalysis(userId, 'manual', timeframeDays);
+      
+      res.status(202).json({
+        message: 'Weakness analysis job enqueued successfully.',
+        jobId,
+        timeframeDays,
+        estimatedWaitTime: '2-3 minutes'
+      });
+
+    } catch (error) {
+      res.status(500).json({
+        message: 'Failed to trigger weakness analysis.',
+        details: (error as Error).message
+      });
     }
   };
 }
