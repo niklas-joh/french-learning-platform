@@ -98,7 +98,7 @@ graph TD
             subgraph "Assessment Engine"
                 direction TB
                 AIAssessmentEngine["AIAssessmentEngine"]
-                BatchAssessmentProcessor["BatchAssessmentProcessor"]
+                BatchAssessmentProcessor["BatchAssessmentProcessor (Enhanced)"]
                 AssessmentStrategyFactory["AssessmentStrategyFactory"]
                 
                 subgraph "Assessment Services (Refactored)"
@@ -107,6 +107,15 @@ graph TD
                     AssessmentAnalyticsService["AssessmentAnalyticsService"]
                     AssessmentPersistenceService["AssessmentPersistenceService"]
                     AssessmentServiceFactory["AssessmentServiceFactory"]
+                end
+
+                subgraph "Batch Processing Enhancement (Task 3.1.C.4)"
+                    direction TB
+                    IBatchAssessmentProcessor["IBatchAssessmentProcessor Interface"]
+                    JobQueueIntegration["Job Queue Integration"]
+                    EnhancedAnalytics["Enhanced Exercise Analytics"]
+                    FrenchLanguageUtils["French Language Utilities"]
+                    ExerciseFeedback["Exercise-Level Feedback"]
                 end
                 
                 subgraph "Assessment Strategies"
@@ -122,6 +131,7 @@ graph TD
             subgraph "Content Generation Engine"
                 direction TB
                 DynamicContentGenerator["DynamicContentGenerator"]
+                DatabaseJobQueueService["DatabaseJobQueueService"]
                 
                 subgraph "Strategy Pattern Services"
                     direction LR
@@ -168,7 +178,16 @@ graph TD
             AIAssessmentEngine --> Database
             
             BatchAssessmentProcessor --> AIAssessmentEngine
+            BatchAssessmentProcessor --> AssessmentAnalyticsService
+            BatchAssessmentProcessor --> FrenchLanguageUtils
+            BatchAssessmentProcessor --> JobQueueIntegration
             AssessmentAnalyticsService --> Database
+            
+            %% Task 3.1.C.4 Enhanced Integration
+            IBatchAssessmentProcessor -.-> BatchAssessmentProcessor
+            JobQueueIntegration --> DatabaseJobQueueService
+            EnhancedAnalytics --> AssessmentAnalyticsService
+            ExerciseFeedback --> FrenchLanguageUtils
             
             AssessmentStrategyFactory --> MultipleChoiceStrategy
             AssessmentStrategyFactory --> FillInBlankStrategy

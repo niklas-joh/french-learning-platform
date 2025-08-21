@@ -27,7 +27,7 @@ export type ConfidenceLevel = 'low' | 'medium' | 'high';
 /**
  * Feedback tone types for personalized responses
  */
-export type FeedbackTone = 'encouraging' | 'neutral' | 'needs-improvement' | 'congratulatory' | 'motivational' | 'corrective';
+export type FeedbackTone = 'encouraging' | 'neutral' | 'needs-improvement' | 'congratulatory' | 'motivational' | 'corrective' | 'supportive' | 'gentle' | 'enthusiastic';
 
 /**
  * Assessment request structure with comprehensive context
@@ -148,20 +148,37 @@ export interface BatchAssessmentRequest {
 
 /**
  * Batch assessment result with comprehensive metrics
+ * Enhanced to match Task 3.1.C.4 specification requirements
  */
 export interface BatchAssessmentResult {
+  batchId: string;
   exerciseId: string;
   lessonId: string;
-  overallScore: number;
-  accuracy: number;
-  totalQuestions: number;
+  totalAssessments: number;
   successfulAssessments: number;
   failedAssessments: number;
-  results: AssessmentResult[];
-  failures: { request: AssessmentRequest; error: string }[];
-  batchFeedback: PersonalizedFeedback;
-  processingTime: number;
-  timestamp: Date;
+  overallScore: number;
+  processingTimeMs: number;
+  individualResults: AssessmentResult[];
+  exerciseAnalytics: ExerciseAnalytics;
+  exerciseFeedback: ExerciseFeedback;
+  errors: Array<{
+    message: string;
+    stack?: string;
+  }>;
+  metadata: {
+    concurrency: number;
+    chunkCount: number;
+    averageAssessmentTime: number;
+  };
+  // Legacy fields for backward compatibility
+  accuracy?: number;
+  totalQuestions?: number;
+  results?: AssessmentResult[];
+  failures?: { request: AssessmentRequest; error: string }[];
+  batchFeedback?: PersonalizedFeedback;
+  processingTime?: number;
+  timestamp?: Date;
   fallback?: boolean;
 }
 
@@ -179,4 +196,139 @@ export interface FrenchSimilarityScore {
     liaisonConsidered: boolean;
     genderVariationAllowed: boolean;
   };
+}
+
+/**
+ * Exercise batch request structure for comprehensive exercise assessment
+ * Following the specification in Task 3.1.C.4
+ * 
+ * Note: Corrected assessmentRequests type from AssessmentContext[] to AssessmentRequest[]
+ * to align with actual usage patterns and implementation requirements.
+ */
+export interface ExerciseBatch {
+  assessmentRequests: AssessmentRequest[];
+  exerciseContext: {
+    exerciseId: string;
+    userId: number;
+    exerciseType: string;
+    timeLimit?: number;
+    skillAreas?: string[];
+    difficultyLevel?: string;
+  };
+}
+
+/**
+ * Batch processing options for configuring performance and behavior
+ */
+export interface BatchProcessingOptions {
+  concurrency?: number;
+  priority?: 'low' | 'normal' | 'high';
+  notifyOnCompletion?: boolean;
+}
+
+/**
+ * Batch progress status for tracking async processing
+ */
+export interface BatchProgressStatus {
+  batchId: string;
+  status: BatchStatus;
+  progress: number; // 0-100 percentage
+  totalItems: number;
+  processedItems: number;
+  estimatedTimeRemaining: number;
+  createdAt: Date;
+  updatedAt: Date;
+  results?: any; // Available when status is 'completed'
+}
+
+/**
+ * Batch status enumeration for job tracking
+ */
+export type BatchStatus = 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled' | 'unknown';
+
+/**
+ * Exercise analytics with comprehensive performance metrics
+ */
+export interface ExerciseAnalytics {
+  totalQuestions: number;
+  correctAnswers: number;
+  accuracy: number;
+  averageScore: number;
+  averageConfidence: number;
+  performanceByType: Record<string, TypePerformance>;
+  difficultyAnalysis: DifficultyAnalysis;
+  timeMetrics: TimeMetrics;
+  skillAreas: string[];
+  recommendations: string[];
+}
+
+/**
+ * Performance metrics by assessment type
+ */
+export interface TypePerformance {
+  totalQuestions: number;
+  correctAnswers: number;
+  accuracy: number;
+  averageScore: number;
+  averageConfidence: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+}
+
+/**
+ * Difficulty analysis with distribution breakdown
+ */
+export interface DifficultyAnalysis {
+  easy: { count: number; percentage: number };
+  medium: { count: number; percentage: number };
+  hard: { count: number; percentage: number };
+  overallDifficulty: 'easy' | 'appropriate' | 'challenging';
+}
+
+/**
+ * Time-based performance metrics
+ */
+export interface TimeMetrics {
+  averageTime: number;
+  minTime: number;
+  maxTime: number;
+  totalTime: number;
+}
+
+/**
+ * Comprehensive exercise-level feedback
+ */
+export interface ExerciseFeedback {
+  overallFeedback: {
+    message: string;
+    tone: FeedbackTone;
+    score: number;
+    accuracy: number;
+  };
+  strengthAreas: string[];
+  improvementAreas: string[];
+  specificSuggestions: string[];
+  nextSteps: string[];
+  motivationalMessage: string;
+  studyPlan: StudyPlanSuggestion;
+}
+
+/**
+ * Personalized study plan recommendations
+ */
+export interface StudyPlanSuggestion {
+  immediateAction: string;
+  weeklyGoal: string;
+  recommendedPracticeTime: number; // minutes
+  suggestedResources: string[];
+}
+
+/**
+ * Progress tracker for batch processing
+ */
+export interface ProgressTracker {
+  batchId: string;
+  totalItems: number;
+  processedItems: number;
+  startTime: number;
+  lastUpdateTime: number;
 }

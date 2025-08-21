@@ -248,4 +248,30 @@ erDiagram
     user_content_completions ||--o{ userAssessments : "consists_of"
     users ||--o{ userAssessments : "receives"
     users ||--o{ userWeaknessAnalyses : "has_analysis_for"
+
+    %% Task 3.1.C.4 Batch Assessment Processing Enhancement
+    %% Note: Uses existing ai_generated_content table with new job types
+    %% Future implementation will add dedicated batch_assessment_jobs table
+
+    batchAssessmentResults {
+        string id PK "UUID for batch processing jobs"
+        int userId FK "User who submitted the batch"
+        string exerciseId "Exercise identifier"
+        string lessonId "Lesson identifier" 
+        int totalAssessments "Total number of assessments"
+        int successfulAssessments "Number of successful assessments"
+        int failedAssessments "Number of failed assessments"
+        float overallScore "Average score for the batch"
+        int processingTimeMs "Processing time in milliseconds"
+        json exerciseAnalytics "Comprehensive exercise analytics"
+        json exerciseFeedback "Exercise-level feedback"
+        json individualResults "Array of individual assessment results"
+        json errors "Array of error messages"
+        json metadata "Processing metadata (concurrency, chunks, etc)"
+        string status "Processing status"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    users ||--o{ batchAssessmentResults : "submits_batches_for"
 }

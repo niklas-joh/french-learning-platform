@@ -529,3 +529,51 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Data Integrity**: Proper constraints and relationships
   - **Analytics Efficiency**: Pre-calculated metrics for instant dashboards
   - **Standards Compliance**: Follows established database design patterns
+
+## 41. Assessment Job Queue Type System Enhancement
+- **Identified**: During Task 3.1.C.4 implementation analysis (Batch Assessment Processing).
+- **Current State**: DatabaseJobQueueService optimized for content generation with basic job types.
+- **Problem**: Assessment batch processing requires specialized job types, progress tracking, and error handling patterns that differ from content generation workflows.
+- **Proposed Solution**: Extend job queue system with assessment-specific job types and processing patterns.
+  1. Create discriminated union for job types including BATCH_ASSESSMENT, INDIVIDUAL_ASSESSMENT
+  2. Add assessment-specific job metadata (batch size, concurrency settings, user context)
+  3. Implement specialized progress tracking for assessment batches
+  4. Create assessment job error handling with partial success reporting
+  5. Add assessment job priority management based on user tiers
+- **Benefits**:
+  - **Type Safety**: Compile-time validation of assessment job payloads
+  - **Monitoring**: Specialized dashboards for assessment job performance
+  - **Error Handling**: Graceful degradation with partial batch results
+  - **Performance**: Optimized job processing for assessment workloads
+
+## 42. Exercise-Level Analytics Materialized Views
+- **Identified**: During Task 3.1.C.4 implementation analysis (Batch Assessment Processing).
+- **Current State**: Exercise analytics calculated on-demand using complex JSON queries across multiple assessment records.
+- **Problem**: Real-time analytics queries will become performance bottlenecks as assessment data scales to millions of records.
+- **Proposed Solution**: Implement materialized views and pre-calculated analytics for exercise-level insights.
+  1. Create materialized views for common exercise performance metrics
+  2. Implement incremental refresh strategies for near real-time updates
+  3. Add composite indexes optimized for exercise analytics queries
+  4. Create analytics data partitioning by time and user segments
+  5. Implement analytics caching layer with Redis integration
+- **Benefits**:
+  - **Performance**: Sub-100ms response times for complex exercise analytics
+  - **Scalability**: Handle millions of assessment records efficiently
+  - **Real-time Insights**: Near real-time dashboard updates without query overhead
+  - **Cost Efficiency**: Reduced database CPU usage for analytics queries
+
+## 43. Semantic Similarity Assessment Caching Enhancement
+- **Identified**: During Task 3.1.C.4 implementation analysis (Batch Assessment Processing).
+- **Current State**: Assessment caching uses exact string matching, missing opportunities for semantically similar responses.
+- **Problem**: Similar assessment responses (e.g., "Bonjour" vs "bonjour!" vs "Bonjour!") cache separately, reducing cache hit rates and increasing AI API costs significantly.
+- **Proposed Solution**: Implement embedding-based semantic similarity matching for intelligent assessment cache hits.
+  1. Generate text embeddings for assessment responses using lightweight French language models
+  2. Store embeddings alongside cached assessment results with TTL management
+  3. Use cosine similarity to find semantically similar cached responses (threshold: 0.95)
+  4. Implement embedding cache with intelligent eviction based on usage patterns
+  5. Add fallback to exact matching for edge cases and low-similarity scenarios
+- **Benefits**:
+  - **Cost Optimization**: 70-80% cache hit rates reducing OpenAI API costs significantly
+  - **Performance**: Faster responses for semantically similar French language inputs
+  - **Consistency**: More consistent feedback for similar user responses with accent variations
+  - **Intelligence**: French-aware caching that understands language nuances and cultural context
