@@ -99,8 +99,15 @@ graph TD
                 direction TB
                 AIAssessmentEngine["AIAssessmentEngine"]
                 BatchAssessmentProcessor["BatchAssessmentProcessor"]
-                AssessmentAnalyticsService["AssessmentAnalyticsService"]
                 AssessmentStrategyFactory["AssessmentStrategyFactory"]
+                
+                subgraph "Assessment Services (Refactored)"
+                    direction TB
+                    AssessmentQueryService["AssessmentQueryService"]
+                    AssessmentAnalyticsService["AssessmentAnalyticsService"]
+                    AssessmentPersistenceService["AssessmentPersistenceService"]
+                    AssessmentServiceFactory["AssessmentServiceFactory"]
+                end
                 
                 subgraph "Assessment Strategies"
                     direction LR

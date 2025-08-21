@@ -480,3 +480,52 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Scalability**: Independent scaling of assessment and analytics services
   - **Reliability**: Analytics failures don't impact core assessment functionality
   - **Real-time Insights**: Immediate analytics updates without blocking user experience
+
+## 38. Assessment Persistence Service Architecture Overhaul
+- **Identified**: During Task 3.1.C.3 critical analysis (Assessment Persistence & Analytics).
+- **Current State**: Monolithic 494-line service mixing persistence, analytics, SQL queries, and business logic.
+- **Problem**: Violates Single Responsibility Principle, Service Layer principles, and Dependency Injection patterns established in development principles.
+- **Proposed Solution**: Complete architectural refactoring following established patterns.
+  1. Extract AssessmentQueryService following existing model-based query patterns
+  2. Create dedicated AssessmentAnalyticsService for calculations
+  3. Implement proper factory pattern for dependency injection
+  4. Replace raw SQL with existing model query methods
+  5. Add proper caching layer with intelligent invalidation
+  6. Implement proper error boundaries and logging
+- **Benefits**:
+  - **Code Quality**: Follows established development principles and patterns
+  - **Maintainability**: Focused services with clear responsibilities
+  - **Performance**: Optimized queries using existing model patterns
+  - **Testability**: Isolated services are easier to unit test
+
+## 39. Database Query Performance Optimization for Analytics
+- **Identified**: During Task 3.1.C.3 critical analysis (Assessment Persistence & Analytics).
+- **Current State**: Complex JSON extraction queries will become performance bottlenecks at scale.
+- **Problem**: Raw SQL queries with complex JSON parsing violate established model patterns and will be slow with large datasets.
+- **Proposed Solution**: Implement analytics-optimized database design and query patterns.
+  1. Create materialized views for common analytics queries
+  2. Implement proper composite indexes for assessment queries
+  3. Add query result caching with Redis integration
+  4. Create database partitioning strategy for time-series data
+  5. Implement query optimization monitoring and alerting
+- **Benefits**:
+  - **Performance**: Sub-500ms response times for complex analytics
+  - **Scalability**: Handle millions of assessment records efficiently
+  - **Cost Efficiency**: Reduced database resource usage
+  - **Monitoring**: Real-time query performance visibility
+
+## 40. Assessment Data Model Refactoring for Analytics Efficiency
+- **Identified**: During Task 3.1.C.3 critical analysis (Assessment Persistence & Analytics).
+- **Current State**: Using ai_generated_content table with complex JSON fields for assessment storage.
+- **Problem**: JSON extraction queries are inefficient, violate database normalization, and don't follow existing relational patterns.
+- **Proposed Solution**: Create dedicated assessment tables with proper normalization.
+  1. Design assessment_results table with normalized score/metadata columns
+  2. Create assessment_analytics table for pre-calculated metrics
+  3. Implement data migration strategy from ai_generated_content
+  4. Add proper foreign key relationships and constraints
+  5. Create assessment-specific indexes for query optimization
+- **Benefits**:
+  - **Performance**: Native SQL queries instead of JSON extraction
+  - **Data Integrity**: Proper constraints and relationships
+  - **Analytics Efficiency**: Pre-calculated metrics for instant dashboards
+  - **Standards Compliance**: Follows established database design patterns

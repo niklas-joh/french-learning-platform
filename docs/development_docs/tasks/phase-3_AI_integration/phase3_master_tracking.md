@@ -58,7 +58,11 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.C.2.2 | Create BatchAssessmentProcessor service | 0.25h | ✅ **Completed** | - | Aug 20, 2025 | Aug 20, 2025 | Chunking, memory optimization, progress tracking, concurrency control |
 | 3.1.C.2.3 | Enhanced ContextService for assessment context | 0.15h | ✅ **Completed** | - | Aug 20, 2025 | Aug 20, 2025 | Assessment-specific context, batch loading, intelligent French level detection |
 | 3.1.C.3 | [Assessment Persistence & Analytics](./3-1-C-3-assessment-persistence-analytics.md) | 1.5h | ⏳ **Ready for Implementation** | - | - | - | 3.1.C.2 |
-| 3.1.C.4 | [Batch Assessment Processing](./3-1-C-4-batch-assessment-processing.md) | 1h | ⏳ **Ready for Implementation** | - | - | - | 3.1.C.3 |
+| 3.1.C.3.refactor | **Assessment Service Architecture Refactoring** | **1.5h** | ✅ **Completed** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.C.3 |
+| | <i>3.1.C.3.refactor.1: Create AssessmentQueryService</i> | <i>0.5h</i> | <i>✅ Completed</i> | - | Aug 21, 2025 | Aug 21, 2025 | <i>Extract database queries following existing model patterns</i> |
+| | <i>3.1.C.3.refactor.2: Create AssessmentAnalyticsService</i> | <i>0.5h</i> | <i>✅ Completed</i> | - | Aug 21, 2025 | Aug 21, 2025 | <i>Separate analytics calculations from persistence logic</i> |
+| | <i>3.1.C.3.refactor.3: Refactor AssessmentPersistenceService</i> | <i>0.5h</i> | <i>✅ Completed</i> | - | Aug 21, 2025 | Aug 21, 2025 | <i>Simplify to focus only on persistence, use factory pattern</i> |
+| 3.1.C.4 | [Batch Assessment Processing](./3-1-C-4-batch-assessment-processing.md) | 1h | ⏳ **Ready for Implementation** | - | - | - | 3.1.C.3.refactor |
 | 3.1.C.5 | [API & Testing Integration](./3-1-C-5-api-testing-integration.md) | 1h | ⏳ **Ready for Implementation** | - | - | - | 3.1.C.4 |
 | **3.1.D** | [AI-First Dashboard Implementation](./tasks/3-1-D-ai-dashboard-implementation.md) | 8h | ⏳ Not Started | - | - | - | 3.1.A, 3.1.B, 3.1.C |
 
@@ -84,11 +88,11 @@ Transform the language learning platform from a traditional quiz-based system to
 ### **Overall Progress - UPDATED**
 - **Total Tasks**: 8 major tasks
 - **Completed**: 2 (25%) - 3.1.A ✅, 3.1.B ✅
-- **In Progress**: 1 (12.5%) - 3.1.C 🟡 (Enhanced Strategy Pattern Completed)
+- **In Progress**: 1 (12.5%) - 3.1.C 🟡 (Assessment Refactoring Completed)
 - **Not Started**: 5 (62.5%) - 3.1.D, 3.2.A, 3.2.B, 3.2.C, 3.2.D
 - **Total Estimated Hours**: 53h (50h + 3h enhanced implementation)
-- **Hours Completed**: 18.2h (14h base + 3.5h enhanced + 0.7h service integration)
-- **Completion Rate**: 34%
+- **Hours Completed**: 19.7h (14h base + 3.5h enhanced + 0.7h service integration + 1.5h refactoring)
+- **Completion Rate**: 37%
 
 ### **Phase 3.1 Progress (Week 1) - UPDATED**
 - **Target**: Complete core AI infrastructure
