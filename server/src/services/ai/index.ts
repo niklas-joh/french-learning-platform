@@ -27,6 +27,7 @@ import { AIAssessmentEngine } from './assessment/aiAssessmentEngine.js';
 import { BatchAssessmentProcessor } from './assessment/BatchAssessmentProcessor.js';
 import { AssessmentAnalyticsService } from './assessment/AssessmentAnalyticsService.js';
 import { AssessmentStrategyFactory } from './assessment/assessmentStrategyFactory.js';
+import { assessmentServiceFactory } from '../assessment/assessmentServiceFactory.js';
 import { AssessmentRepository } from '../../repositories/assessmentRepository.js';
 import db from '../../config/db.js';
 import { aiConfig } from '../../config/aiConfig.js';
@@ -232,7 +233,11 @@ export const aiServiceFactory = {
     return () => {
       if (!instance) {
         const orchestrator = aiServiceFactory.getAIOrchestrator();
-        instance = new AssessmentController(orchestrator);
+        // PERFORMANCE: Inject singleton services following dependency injection pattern
+        const batchProcessor = assessmentServiceFactory.getBatchAssessmentProcessor();
+        const analyticsService = assessmentServiceFactory.getAssessmentAnalyticsService();
+        
+        instance = new AssessmentController(orchestrator, batchProcessor, analyticsService);
       }
       return instance;
     };

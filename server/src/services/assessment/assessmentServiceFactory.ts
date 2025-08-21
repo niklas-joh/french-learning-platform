@@ -14,6 +14,8 @@ import { AssessmentQueryService } from './AssessmentQueryService.js';
 import { AssessmentAnalyticsService } from './AssessmentAnalyticsService.js';
 import { AssessmentPersistenceService, AssessmentPersistenceConfig } from './AssessmentPersistenceService.js';
 import { WeaknessAnalysisService } from '../ai/assessment/WeaknessAnalysisService.js';
+import { BatchAssessmentProcessor } from '../ai/assessment/BatchAssessmentProcessor.js';
+import { AssessmentStrategyFactory } from '../ai/assessment/assessmentStrategyFactory.js';
 import { AssessmentRepository } from '../../repositories/assessmentRepository.js';
 import { PromptTemplateEngine } from '../ai/PromptTemplateEngine.js';
 import { FrenchLanguageUtils } from '../ai/assessment/utils/FrenchLanguageUtils.js';
@@ -310,6 +312,68 @@ export class AssessmentServiceFactory {
   }
 
   /**
+   * Singleton getter methods following aiServiceFactory pattern for performance
+   * These methods ensure services are created once and reused across requests
+   */
+
+  /**
+   * Gets singleton BatchAssessmentProcessor instance
+   */
+  static getBatchAssessmentProcessor = (() => {
+    let instance: BatchAssessmentProcessor;
+    return () => {
+      if (!instance) {
+        const services = AssessmentServiceFactory.createProductionServices();
+        const strategyFactory = new AssessmentStrategyFactory();
+        instance = new BatchAssessmentProcessor(
+          strategyFactory,
+          services.persistenceService
+        );
+      }
+      return instance;
+    };
+  })();
+
+  /**
+   * Gets singleton AssessmentAnalyticsService instance
+   */
+  static getAssessmentAnalyticsService = (() => {
+    let instance: AssessmentAnalyticsService;
+    return () => {
+      if (!instance) {
+        instance = AssessmentServiceFactory.createAnalyticsService();
+      }
+      return instance;
+    };
+  })();
+
+  /**
+   * Gets singleton AssessmentQueryService instance
+   */
+  static getAssessmentQueryService = (() => {
+    let instance: AssessmentQueryService;
+    return () => {
+      if (!instance) {
+        instance = AssessmentServiceFactory.createQueryService();
+      }
+      return instance;
+    };
+  })();
+
+  /**
+   * Gets singleton AssessmentPersistenceService instance
+   */
+  static getAssessmentPersistenceService = (() => {
+    let instance: AssessmentPersistenceService;
+    return () => {
+      if (!instance) {
+        instance = AssessmentServiceFactory.createPersistenceService();
+      }
+      return instance;
+    };
+  })();
+
+  /**
    * Gets factory information and service statistics.
    * 
    * @returns Factory metadata and service information
@@ -322,13 +386,15 @@ export class AssessmentServiceFactory {
         'AssessmentQueryService',
         'AssessmentAnalyticsService', 
         'AssessmentPersistenceService',
-        'WeaknessAnalysisService'
+        'WeaknessAnalysisService',
+        'BatchAssessmentProcessor'
       ],
       patterns: [
         'dependency_injection',
         'factory_pattern',
         'single_responsibility_principle',
-        'configuration_injection'
+        'configuration_injection',
+        'singleton_pattern'
       ],
       environments: [
         'development',
@@ -339,7 +405,8 @@ export class AssessmentServiceFactory {
         'service_suite_creation',
         'individual_service_creation',
         'environment_specific_configurations',
-        'dependency_management'
+        'dependency_management',
+        'singleton_service_getters'
       ]
     };
   }
