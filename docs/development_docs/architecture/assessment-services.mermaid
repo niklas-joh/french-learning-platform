@@ -1,0 +1,120 @@
+graph TB
+    subgraph "Assessment Services Architecture"
+        direction TB
+        
+        subgraph "API Layer"
+            AssessmentController["AssessmentController"]
+            AssessmentRoutes["Assessment Routes"]
+            ValidationMiddleware["Assessment Validation Middleware"]
+        end
+
+        subgraph "Core Assessment Services"
+            direction TB
+            AIAssessmentEngine["AIAssessmentEngine<br/>(Single & Batch Assessment)"]
+            BatchAssessmentProcessor["BatchAssessmentProcessor<br/>(Chunking & Optimization)"]
+            AssessmentAnalyticsService["AssessmentAnalyticsService<br/>(History & Analytics)"]
+            AssessmentStrategyFactory["AssessmentStrategyFactory<br/>(Strategy Pattern Implementation)"]
+        end
+
+        subgraph "Assessment Strategy Pattern"
+            direction LR
+            
+            subgraph "Assessment Strategies"
+                MultipleChoiceStrategy["MultipleChoiceStrategy<br/>(Simple matching logic)"]
+                FillInBlankStrategy["FillInBlankStrategy<br/>(AI-powered validation)"]
+                OpenEndedStrategy["OpenEndedStrategy<br/>(Comprehensive AI analysis)"]
+                PronunciationStrategy["PronunciationStrategy<br/>(IPA phonetic analysis)"]
+                ConversationStrategy["ConversationStrategy<br/>(Dialogue & cultural context)"]
+            end
+
+            subgraph "French Language Processing"
+                FrenchLanguageUtils["FrenchLanguageUtils<br/>(CEFR integration, accent handling)"]
+                SimilarityScoring["Similarity Scoring<br/>(Phonetic, semantic, structural)"]
+                CulturalContext["Cultural Context<br/>(Social etiquette, appropriateness)"]
+            end
+        end
+
+        subgraph "Supporting Services"
+            direction LR
+            ContextService["ContextService<br/>(Assessment-specific context)"]
+            CacheService["CacheService<br/>(Results & context caching)"]
+            AssessmentRepository["AssessmentRepository<br/>(Database operations)"]
+            ServiceFactory["AIServiceFactory<br/>(Dependency injection)"]
+        end
+
+        subgraph "Data Storage"
+            UserAssessments["userAssessments table<br/>(Individual assessment records)"]
+            UserContentCompletions["userContentCompletions table<br/>(Exercise completion summaries)"]
+            AssessmentTypes["assessmentTypes table<br/>(Assessment categorization)"]
+        end
+
+        subgraph "External Dependencies"
+            AIOrchestrator["AIOrchestrator<br/>(AI coordination)"]
+            OpenAI["OpenAI API<br/>(Language processing)"]
+            Database["Database<br/>(PostgreSQL + Knex)"]
+        end
+
+        %% API Layer connections
+        AssessmentRoutes --> ValidationMiddleware
+        ValidationMiddleware --> AssessmentController
+        AssessmentController --> ServiceFactory
+
+        %% Core Service connections
+        ServiceFactory --> AIAssessmentEngine
+        ServiceFactory --> BatchAssessmentProcessor
+        ServiceFactory --> AssessmentAnalyticsService
+        ServiceFactory --> AssessmentStrategyFactory
+
+        AIAssessmentEngine --> AssessmentStrategyFactory
+        AIAssessmentEngine --> CacheService
+        AIAssessmentEngine --> ContextService
+
+        BatchAssessmentProcessor --> AIAssessmentEngine
+        AssessmentAnalyticsService --> AssessmentRepository
+        AssessmentAnalyticsService --> Database
+
+        %% Strategy Pattern connections
+        AssessmentStrategyFactory --> MultipleChoiceStrategy
+        AssessmentStrategyFactory --> FillInBlankStrategy
+        AssessmentStrategyFactory --> OpenEndedStrategy
+        AssessmentStrategyFactory --> PronunciationStrategy
+        AssessmentStrategyFactory --> ConversationStrategy
+
+        %% French Language Processing
+        FillInBlankStrategy --> FrenchLanguageUtils
+        OpenEndedStrategy --> FrenchLanguageUtils
+        PronunciationStrategy --> FrenchLanguageUtils
+        ConversationStrategy --> FrenchLanguageUtils
+
+        FrenchLanguageUtils --> SimilarityScoring
+        ConversationStrategy --> CulturalContext
+        PronunciationStrategy --> CulturalContext
+
+        %% External Service connections
+        OpenEndedStrategy --> AIOrchestrator
+        PronunciationStrategy --> AIOrchestrator
+        ConversationStrategy --> AIOrchestrator
+        FillInBlankStrategy --> AIOrchestrator
+
+        AIOrchestrator --> OpenAI
+        ContextService --> Database
+        CacheService --> Database
+        AssessmentRepository --> UserAssessments
+        AssessmentRepository --> UserContentCompletions
+        AssessmentRepository --> AssessmentTypes
+
+        %% Data flow annotations
+        classDef apiLayer fill:#e1f5fe
+        classDef coreService fill:#f3e5f5
+        classDef strategy fill:#e8f5e8
+        classDef language fill:#fff3e0
+        classDef supporting fill:#fce4ec
+        classDef data fill:#f1f8e9
+
+        class AssessmentController,AssessmentRoutes,ValidationMiddleware apiLayer
+        class AIAssessmentEngine,BatchAssessmentProcessor,AssessmentAnalyticsService,AssessmentStrategyFactory coreService
+        class MultipleChoiceStrategy,FillInBlankStrategy,OpenEndedStrategy,PronunciationStrategy,ConversationStrategy strategy
+        class FrenchLanguageUtils,SimilarityScoring,CulturalContext language
+        class ContextService,CacheService,AssessmentRepository,ServiceFactory supporting
+        class UserAssessments,UserContentCompletions,AssessmentTypes data
+end

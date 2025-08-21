@@ -94,7 +94,23 @@ graph TD
         subgraph "AI Services Layer"
             direction TB
             AIOrchestrator["AIOrchestrator"]
-            AIAssessmentEngine["AIAssessmentEngine"]
+            
+            subgraph "Assessment Engine"
+                direction TB
+                AIAssessmentEngine["AIAssessmentEngine"]
+                BatchAssessmentProcessor["BatchAssessmentProcessor"]
+                AssessmentAnalyticsService["AssessmentAnalyticsService"]
+                AssessmentStrategyFactory["AssessmentStrategyFactory"]
+                
+                subgraph "Assessment Strategies"
+                    direction LR
+                    MultipleChoiceStrategy["MultipleChoiceStrategy"]
+                    FillInBlankStrategy["FillInBlankStrategy"]
+                    OpenEndedStrategy["OpenEndedStrategy"]
+                    PronunciationStrategy["PronunciationStrategy"]
+                    ConversationStrategy["ConversationStrategy"]
+                end
+            end
 
             subgraph "Content Generation Engine"
                 direction TB
@@ -135,12 +151,27 @@ graph TD
             end
             
             AIController --> AIOrchestrator
-            AssessmentController --> AIOrchestrator
+            AssessmentController --> AIAssessmentEngine
+            AssessmentController --> BatchAssessmentProcessor
+            AssessmentController --> AssessmentAnalyticsService
+            
             AIOrchestrator --> AIAssessmentEngine
-            AIAssessmentEngine --> PromptTemplateEngine
+            AIAssessmentEngine --> AssessmentStrategyFactory
             AIAssessmentEngine --> CacheService
-            AIAssessmentEngine --> FallbackHandler
             AIAssessmentEngine --> Database
+            
+            BatchAssessmentProcessor --> AIAssessmentEngine
+            AssessmentAnalyticsService --> Database
+            
+            AssessmentStrategyFactory --> MultipleChoiceStrategy
+            AssessmentStrategyFactory --> FillInBlankStrategy
+            AssessmentStrategyFactory --> OpenEndedStrategy
+            AssessmentStrategyFactory --> PronunciationStrategy
+            AssessmentStrategyFactory --> ConversationStrategy
+            
+            PronunciationStrategy --> AIOrchestrator
+            OpenEndedStrategy --> PromptTemplateEngine
+            ConversationStrategy --> AIOrchestrator
 
             AIController --> DynamicContentGenerator
             AIOrchestrator --> CacheService
