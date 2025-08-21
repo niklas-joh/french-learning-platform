@@ -14,6 +14,7 @@ graph TB
             BatchAssessmentProcessor["BatchAssessmentProcessor<br/>(Chunking & Optimization)"]
             AssessmentAnalyticsService["AssessmentAnalyticsService<br/>(History & Analytics)"]
             AssessmentStrategyFactory["AssessmentStrategyFactory<br/>(Strategy Pattern Implementation)"]
+            WeaknessAnalysisService["WeaknessAnalysisService<br/>(Async Pattern Analysis)"]
         end
 
         subgraph "Assessment Strategy Pattern"
@@ -38,14 +39,16 @@ graph TB
             direction LR
             ContextService["ContextService<br/>(Assessment-specific context)"]
             CacheService["CacheService<br/>(Results & context caching)"]
-            AssessmentRepository["AssessmentRepository<br/>(Database operations)"]
+            AssessmentRepository["AssessmentRepository<br/>(Database operations & weakness analysis)"]
             ServiceFactory["AIServiceFactory<br/>(Dependency injection)"]
+            WeaknessAnalysisWorker["WeaknessAnalysisWorker<br/>(Background job processing)"]
         end
 
         subgraph "Data Storage"
             UserAssessments["userAssessments table<br/>(Individual assessment records)"]
             UserContentCompletions["userContentCompletions table<br/>(Exercise completion summaries)"]
             AssessmentTypes["assessmentTypes table<br/>(Assessment categorization)"]
+            UserWeaknessAnalyses["userWeaknessAnalyses table<br/>(Cached analysis results)"]
         end
 
         subgraph "External Dependencies"
@@ -64,6 +67,7 @@ graph TB
         ServiceFactory --> BatchAssessmentProcessor
         ServiceFactory --> AssessmentAnalyticsService
         ServiceFactory --> AssessmentStrategyFactory
+        ServiceFactory --> WeaknessAnalysisService
 
         AIAssessmentEngine --> AssessmentStrategyFactory
         AIAssessmentEngine --> CacheService
@@ -102,6 +106,14 @@ graph TB
         AssessmentRepository --> UserAssessments
         AssessmentRepository --> UserContentCompletions
         AssessmentRepository --> AssessmentTypes
+        AssessmentRepository --> UserWeaknessAnalyses
+        
+        %% Weakness Analysis Worker connections
+        WeaknessAnalysisWorker --> WeaknessAnalysisService
+        WeaknessAnalysisService --> AssessmentRepository
+        WeaknessAnalysisService --> AssessmentAnalyticsService
+        WeaknessAnalysisService --> FrenchLanguageUtils
+        WeaknessAnalysisService --> AIOrchestrator
 
         %% Data flow annotations
         classDef apiLayer fill:#e1f5fe
@@ -115,6 +127,6 @@ graph TB
         class AIAssessmentEngine,BatchAssessmentProcessor,AssessmentAnalyticsService,AssessmentStrategyFactory coreService
         class MultipleChoiceStrategy,FillInBlankStrategy,OpenEndedStrategy,PronunciationStrategy,ConversationStrategy strategy
         class FrenchLanguageUtils,SimilarityScoring,CulturalContext language
-        class ContextService,CacheService,AssessmentRepository,ServiceFactory supporting
-        class UserAssessments,UserContentCompletions,AssessmentTypes data
+        class ContextService,CacheService,AssessmentRepository,ServiceFactory,WeaknessAnalysisWorker supporting
+        class UserAssessments,UserContentCompletions,AssessmentTypes,UserWeaknessAnalyses data
 end

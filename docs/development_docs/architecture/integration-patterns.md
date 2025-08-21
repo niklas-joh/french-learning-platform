@@ -96,3 +96,45 @@ Centralized dependency injection for assessment ecosystem:
 - **Circular Dependency Resolution**: Proper initialization order for interdependent services
 - **Lazy Initialization**: Services created only when needed
 - **Clean Separation**: Clear boundaries between assessment services
+
+---
+
+# Async Processing Integration Patterns
+
+## 11. Background Worker Pattern for Weakness Analysis (Task 3.1.C.7)
+
+Asynchronous processing pattern for heavy analytical operations:
+
+- **Async Job Queue**: BullMQ-based background job processing for weakness analysis
+- **Cached Results**: Pre-computed analysis results stored for fast API responses
+- **French Language Patterns**: Specialized linguistic pattern recognition for French learning
+- **CEFR Integration**: Analysis tailored to user's French proficiency level
+- **Multi-trigger System**: Analysis triggered by assessment completion thresholds and manual requests
+
+Benefits:
+- **Performance**: Moves heavy processing off synchronous API request path
+- **User Experience**: Fast response times through cached analysis results
+- **Scalability**: Background processing prevents API blocking during complex analysis
+- **Specialized Analysis**: French-specific weakness identification (accents, gender agreement, conjugation)
+- **Educational Value**: CEFR-aware feedback with pedagogical recommendations
+
+## 12. Async Analysis Workflow Pattern
+
+Structured workflow for background weakness analysis:
+
+1. **Trigger Detection**: Assessment completion count or manual analysis request
+2. **Job Enqueuing**: WeaknessAnalysisWorker job added to queue with user context
+3. **Data Aggregation**: Recent assessment history retrieval with pattern analysis
+4. **AI Processing**: Enhanced PromptTemplateEngine generates CEFR-tailored analysis prompts
+5. **Result Caching**: Analysis results stored in userWeaknessAnalyses table
+6. **API Response**: Fast cached result retrieval via assessment controller endpoints
+
+## 13. Enhanced Repository Pattern for Analysis Storage
+
+Extended repository pattern for weakness analysis data management:
+
+- **Analysis Persistence**: `saveWeaknessAnalysis()` and `getLatestWeaknessAnalysis()` methods
+- **Confidence Scoring**: Multi-factor confidence assessment based on data quality and patterns
+- **Pattern Tracking**: Detailed tracking of French language mistake patterns
+- **Time-based Analysis**: Configurable timeframe analysis (default 30 days)
+- **Result Validation**: Zod schema validation for AI-generated analysis results
