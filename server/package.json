@@ -4,8 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec tsx src/app.ts",
-    "start": "tsx src/app.ts",
+    "dev": "nodemon --exec npx tsx src/app.ts",
+    "start": "npx tsx src/app.ts",
     "clean": "rimraf dist",
     "build": "tsc",
     "test": "jest",
