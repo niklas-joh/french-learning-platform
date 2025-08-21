@@ -1,10 +1,10 @@
 import Knex from 'knex';
 import { createHash } from 'crypto';
-import { AssessmentRepository } from '../../../repositories/assessmentRepository';
-import { ICacheService } from '../../common/ICacheService';
-import { AssessmentRequest, AssessmentResult, BatchAssessmentRequest, BatchAssessmentResult } from '../../../types/Assessment';
-import { AssessmentStrategyFactory } from './assessmentStrategyFactory';
-import { ILogger, createLogger } from '../../../utils/logger';
+import { AssessmentRepository } from '../../../repositories/assessmentRepository.js';
+import { ICacheService } from '../../common/ICacheService.js';
+import { AssessmentRequest, AssessmentResult, BatchAssessmentRequest, BatchAssessmentResult } from '../../../types/Assessment.js';
+import { AssessmentStrategyFactory } from './assessmentStrategyFactory.js';
+import { ILogger, createLogger } from '../../../utils/logger.js';
 
 /**
  * @class AIAssessmentEngine

@@ -23,6 +23,11 @@ import { redisConnection } from '../../config/redis.js';
 import { ILogger } from '../../types/ILogger.js';
 import { OrchestrationConfig } from '../../types/AI.js';
 import { AssessmentController } from '../../controllers/assessmentController.js';
+import { AIAssessmentEngine } from './assessment/aiAssessmentEngine.js';
+import { BatchAssessmentProcessor } from './assessment/BatchAssessmentProcessor.js';
+import { AssessmentAnalyticsService } from './assessment/AssessmentAnalyticsService.js';
+import { AssessmentStrategyFactory } from './assessment/assessmentStrategyFactory.js';
+import { AssessmentRepository } from '../../repositories/assessmentRepository.js';
 import db from '../../config/db.js';
 import { aiConfig } from '../../config/aiConfig.js';
 import OpenAI from 'openai';
@@ -172,6 +177,56 @@ export const aiServiceFactory = {
     };
   })(),
 
+  getAssessmentStrategyFactory: (() => {
+    let instance: AssessmentStrategyFactory;
+    return () => {
+      if (!instance) {
+        const openai = new OpenAI(aiConfig.openai);
+        const promptEngine = aiServiceFactory.getPromptEngine();
+        instance = new AssessmentStrategyFactory(openai, promptEngine, console);
+        // Set AIOrchestrator after creation to avoid circular dependencies
+        const orchestrator = aiServiceFactory.getAIOrchestrator();
+        instance.setAIOrchestrator(orchestrator);
+      }
+      return instance;
+    };
+  })(),
+
+  getAIAssessmentEngine: (() => {
+    let instance: AIAssessmentEngine;
+    return () => {
+      if (!instance) {
+        const assessmentRepository = new AssessmentRepository(db);
+        const cacheService = getCacheServiceInstance();
+        const strategyFactory = aiServiceFactory.getAssessmentStrategyFactory();
+        instance = new AIAssessmentEngine(db, assessmentRepository, cacheService, strategyFactory);
+      }
+      return instance;
+    };
+  })(),
+
+  getBatchAssessmentProcessor: (() => {
+    let instance: BatchAssessmentProcessor;
+    return () => {
+      if (!instance) {
+        const assessmentEngine = aiServiceFactory.getAIAssessmentEngine();
+        instance = new BatchAssessmentProcessor(assessmentEngine);
+      }
+      return instance;
+    };
+  })(),
+
+  getAssessmentAnalyticsService: (() => {
+    let instance: AssessmentAnalyticsService;
+    return () => {
+      if (!instance) {
+        const assessmentRepository = new AssessmentRepository(db);
+        instance = new AssessmentAnalyticsService(assessmentRepository, db);
+      }
+      return instance;
+    };
+  })(),
+
   getAssessmentController: (() => {
     let instance: AssessmentController;
     return () => {
@@ -183,6 +238,21 @@ export const aiServiceFactory = {
     };
   })(),
 };
+
+// Export individual service getters for convenience
+export const {
+  getCacheService,
+  getContextService,
+  getPromptEngine,
+  getContentValidator,
+  getContentEnhancer,
+  getAIOrchestrator,
+  getAssessmentStrategyFactory,
+  getAIAssessmentEngine,
+  getBatchAssessmentProcessor,
+  getAssessmentAnalyticsService,
+  getAssessmentController,
+} = aiServiceFactory;
 
 // Export type for dependency injection interfaces (future enhancement)
 export type AIServiceFactory = typeof aiServiceFactory;
