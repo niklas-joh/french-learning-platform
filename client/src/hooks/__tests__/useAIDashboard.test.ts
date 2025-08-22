@@ -9,11 +9,11 @@
  */
 
 import { renderHook, act } from '@testing-library/react';
-import { useAIDashboard } from '../useAIDashboard.js';
-import api from '../../services/api.js';
+import { useAIDashboard } from '../useAIDashboard';
+import api from '../../services/api';
 
 // Mock the API service
-jest.mock('../../services/api.js', () => ({
+jest.mock('../../services/api', () => ({
   __esModule: true,
   default: {
     aiDashboard: {
@@ -113,7 +113,7 @@ describe('useAIDashboard', () => {
       });
     });
 
-    const job = result.current.activeJobs.find(j => j.jobId === 'job-1');
+    const job = result.current.activeJobs.find((j: any) => j.jobId === 'job-1');
     expect(job?.status).toBe('completed');
   });
 

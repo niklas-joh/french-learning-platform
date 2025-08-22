@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useCallback, useMemo } from 'react';
-import { AIDashboardState, AIDashboardAction, AIGenerationJob } from '../types/AIDashboard.js';
-import api from '../services/api.js';
+import { AIDashboardState, AIDashboardAction, AIGenerationJob } from '../types/AIDashboard';
+import api from '../services/api';
 
 // Type augmentation for the extended API instance
 interface ExtendedApi {

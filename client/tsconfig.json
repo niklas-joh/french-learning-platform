@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client"] // This line adds Vite's client types
+    "types": ["vite/client", "jest", "@testing-library/jest-dom"]
   },
   "include": ["src"], // Ensure this includes your source files
   "references": [{ "path": "./tsconfig.node.json" }] // If you have a tsconfig.node.json for Vite config
