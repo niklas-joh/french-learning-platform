@@ -86,6 +86,7 @@ Transform the language learning platform from a traditional quiz-based system to
 | | <i>• Developed AIDashboardLayout with error boundaries</i> | <i>-</i> | <i>✅ Completed</i> | - | Aug 22, 2025 | Aug 22, 2025 | <i>Responsive layout with offline banner support</i> |
 | | <i>• Transformed HomePage using component composition</i> | <i>-</i> | <i>✅ Completed</i> | - | Aug 22, 2025 | Aug 22, 2025 | <i>90% code reuse, ESM compliance, TypeScript verified</i> |
 | 3.1.D.4 | [Integration & Optimization](./3-1-D-4-integration-optimization.md) | 1.5h | ✅ **Documentation Complete** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.D.3.implementation |
+| 3.1.D.5 | [Debugging & Environment Setup](./3-1-D-5-debugging-environment-setup.md) | 2h | ✅ **Completed** | - | Aug 22, 2025 | Aug 22, 2025 | 3.1.D.3.implementation |
 
 ### **Phase 3.2: Advanced AI Features (Week 2) - Total: 22 hours**
 | Task ID | Task Name | Estimated Hours | Status | Assignee | Start Date | End Date | Dependencies |
