@@ -75,6 +75,28 @@ import {
 } from '../types/AIDashboard.js';
 
 /**
+ * Extended API instance interface for type safety
+ * Ensures TypeScript knows about the aiDashboard methods
+ */
+interface ExtendedApiInstance {
+  aiDashboard: {
+    getDailyPlan(): Promise<DailyLearningPlan>;
+    generateContent(request: ContentGenerationRequest): Promise<{ jobId: string }>;
+    getJobStatus(jobId: string): Promise<AIGenerationJob>;
+    getRecommendations(): Promise<ContentRecommendation[]>;
+    listJobs(options?: { status?: string; limit?: number; offset?: number }): Promise<AIGenerationJob[]>;
+    cancelJob(jobId: string): Promise<void>;
+    getDashboardAnalytics(timeRange?: '7d' | '30d' | '90d'): Promise<any>;
+    generateBatchContent(
+      requests: ContentGenerationRequest[],
+      options?: { priority?: 'low' | 'normal' | 'high'; maxConcurrent?: number }
+    ): Promise<{ batchId: string; jobIds: string[] }>;
+    getAIPreferences(): Promise<any>;
+    updateAIPreferences(preferences: any): Promise<any>;
+  };
+}
+
+/**
  * Factory function to create AI dashboard service methods
  * Following the factory pattern from development principles
  */
@@ -307,13 +329,6 @@ const aiDashboardMethods = createAIDashboardService();
 
 // Extend the existing api object with AI dashboard methods
 // This follows the established pattern of extending rather than replacing
-Object.assign(api, { aiDashboard: aiDashboardMethods });
+const extendedApi = Object.assign(api, { aiDashboard: aiDashboardMethods }) as typeof api & ExtendedApiInstance;
 
-// Type augmentation for TypeScript intellisense and type safety
-declare module './api' {
-  interface ApiInstance {
-    aiDashboard: typeof aiDashboardMethods;
-  }
-}
-
-export default api;
+export default extendedApi;
