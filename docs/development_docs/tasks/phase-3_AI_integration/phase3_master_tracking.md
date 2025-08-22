@@ -69,7 +69,11 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.1.C.7 | [Async Weakness Analysis Worker](./3.1.C.7-async-weakness-analysis-worker.md) | 1h | ✅ **Completed** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.C.3 |
 | **3.1.D** | **[AI-First Dashboard Implementation](./3-1-D-ai-dashboard-implementation.md)** | **8h** | ✅ **Documentation Complete** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.A, 3.1.B, 3.1.C |
 | 3.1.D.1 | [API Service Extension](./3-1-D-1-api-service-extension.md) | 2h | ✅ **COMPLETED** | - | Aug 21, 2025 | Aug 22, 2025 | 3.1.A, 3.1.B, 3.1.C |
-| 3.1.D.2 | [Dashboard Hooks Implementation](./3-1-D-2-dashboard-hooks.md) | 2h | ✅ **Documentation Complete** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.D.1 |
+| 3.1.D.2 | [Dashboard Hooks Implementation](./3-1-D-2-dashboard-hooks.md) | 2h | ✅ **Completed** | - | Aug 21, 2025 | Aug 22, 2025 | 3.1.D.1 |
+| 3.1.D.2.1 | Create useAIDashboard Hook (Lightweight Wrapper) | 0.3h | ✅ **Completed** | - | Aug 22, 2025 | Aug 22, 2025 | 3.1.D.1 |
+| 3.1.D.2.2 | Create useAIContentGeneration Hook (Polling Integration) | 0.4h | ✅ **Completed** | - | Aug 22, 2025 | Aug 22, 2025 | 3.1.D.2.1 |
+| 3.1.D.2.3 | Create useOfflineDetection Hook (Performance Optimized) | 0.3h | ✅ **Completed** | - | Aug 22, 2025 | Aug 22, 2025 | 3.1.D.2.2 |
+| 3.1.D.2.4 | Integration Testing & Documentation Update | 0.2h | ✅ **Completed** | - | Aug 22, 2025 | Aug 22, 2025 | 3.1.D.2.3 |
 | 3.1.D.3 | [Dashboard Components](./3-1-D-3-dashboard-components.md) | 2.5h | ✅ **Documentation Complete** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.D.2 |
 | 3.1.D.4 | [Integration & Optimization](./3-1-D-4-integration-optimization.md) | 1.5h | ✅ **Documentation Complete** | - | Aug 21, 2025 | Aug 21, 2025 | 3.1.D.3 |
 
