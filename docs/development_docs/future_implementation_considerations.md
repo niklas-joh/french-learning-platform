@@ -693,3 +693,100 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **Reliability**: Dashboard remains functional during temporary network issues
   - **Data Preservation**: No loss of user work or context during technical issues
   - **Cross-Device Sync**: Consistent dashboard experience across multiple devices
+
+## 51. TanStack Query Migration for Server State Management
+- **Identified**: During Task 3.1.D.2 critical analysis (AI Dashboard Hooks & State Management).
+- **Current State**: Custom React hooks (`useLearningPath`, proposed `useAIDashboard`) handle server state with basic caching and polling.
+- **Problem**: Custom server state management leads to code duplication, missing performance optimizations (request deduplication, intelligent caching, background refetching), and increased maintenance overhead. The proposed `useAIDashboard` hook would duplicate 90% of functionality already available in the sophisticated `aiPolling.ts` infrastructure.
+- **Proposed Solution**: Migrate to TanStack Query for comprehensive server state management.
+  1. **Phase 1**: Replace existing `useLearningPath` hook with TanStack Query equivalent
+  2. **Phase 2**: Implement AI Dashboard queries using TanStack Query patterns
+  3. **Phase 3**: Integrate existing `aiPolling.ts` infrastructure as custom query functions
+  4. **Phase 4**: Add advanced features like optimistic updates, infinite queries, and offline support
+- **Benefits**:
+  - **Performance**: Automatic request deduplication, intelligent caching, and background refetching
+  - **Developer Experience**: Standardized patterns for server state with minimal boilerplate
+  - **Reliability**: Built-in error handling, retry logic, and loading states
+  - **Maintainability**: Eliminate custom polling infrastructure in favor of battle-tested library
+  - **Feature Rich**: Advanced capabilities like dependent queries, parallel queries, and mutations
+
+## 52. Advanced AI Dashboard Hook Architecture Refactoring
+- **Identified**: During Task 3.1.D.2 critical analysis (AI Dashboard Hooks & State Management).
+- **Current State**: Proposed monolithic hooks mixing server state, client state, and business logic.
+- **Problem**: The proposed `useAIDashboard` and `useAIContentGeneration` hooks violate Single Responsibility Principle by mixing server state management, client state, business logic, and side effects. This creates tight coupling and reduces reusability.
+- **Proposed Solution**: Implement service-oriented hook architecture leveraging existing infrastructure.
+  1. **Leverage Existing Infrastructure**: Reuse sophisticated `aiPolling.ts` instead of creating duplicate polling logic
+  2. **Separation of Concerns**: Split into focused hooks - `useAIPolling`, `useAIDashboardState`, `useJobManagement`
+  3. **Factory Pattern Integration**: Use existing `APIServiceFactory` patterns for consistent service access
+  4. **Service Layer Delegation**: Delegate business logic to service layer instead of embedding in hooks
+- **Benefits**:
+  - **Code Reuse**: Eliminate 90% duplication by leveraging existing sophisticated polling infrastructure
+  - **Maintainability**: Focused hooks with clear responsibilities and minimal complexity
+  - **Performance**: Leverage existing circuit breakers, request deduplication, and memory management
+  - **Consistency**: Follow established patterns from `client/src/services/api.ts` and `useLearningPath.ts`
+
+## 53. Intelligent Polling Strategy Enhancement
+- **Identified**: During Task 3.1.D.2 critical analysis (AI Dashboard Hooks & State Management).
+- **Current State**: Existing `aiPolling.ts` provides sophisticated polling with circuit breakers, but AI Dashboard requirements need job-type-specific strategies.
+- **Problem**: Different AI job types (assessment: 2-5s, content generation: 10-30s, batch processing: 1-5min) need different polling strategies for optimal performance and resource usage.
+- **Proposed Solution**: Extend existing polling infrastructure with job-type-specific intelligent strategies.
+  1. **Job Type Classification**: Automatic polling strategy selection based on job metadata
+  2. **Adaptive Intervals**: Dynamic interval adjustment based on job type and completion patterns
+  3. **Batch Optimization**: Group similar job status checks into single API calls
+  4. **Priority Queues**: Higher priority polling for user-initiated jobs vs. background tasks
+  5. **Smart Preemption**: Cancel polling for jobs likely to complete soon via other channels
+- **Benefits**:
+  - **Resource Efficiency**: 60% reduction in unnecessary polling through intelligent strategies
+  - **User Experience**: Faster updates for quick jobs, appropriate intervals for long-running tasks
+  - **Cost Optimization**: Reduced server load through batched and prioritized polling
+  - **Scalability**: Polling infrastructure that adapts to different AI service characteristics
+
+## 54. Memory Management Enhancement for Long-Running Sessions
+- **Identified**: During Task 3.1.D.2 critical analysis (AI Dashboard Hooks & State Management).
+- **Current State**: Existing `aiPolling.ts` has advanced memory management, but AI Dashboard hooks may create additional memory pressure.
+- **Problem**: Long-running dashboard sessions with multiple active jobs, cached data, and polling operations can lead to memory leaks and degraded performance over time.
+- **Proposed Solution**: Enhance memory management for sustained AI Dashboard usage.
+  1. **Job State Compression**: Compress large job payloads and results for long-term storage
+  2. **Intelligent Cache Eviction**: LRU cache with size limits and automatic cleanup
+  3. **Weak References**: Use WeakRef for job tracking to prevent memory leaks
+  4. **Periodic Cleanup**: Scheduled cleanup of completed jobs and stale cache entries
+  5. **Memory Monitoring**: Real-time memory usage tracking with alerts
+- **Benefits**:
+  - **Stability**: Prevent memory leaks in long-running dashboard sessions
+  - **Performance**: Maintain consistent performance over extended usage periods
+  - **Resource Efficiency**: Optimal memory usage even with hundreds of completed jobs
+  - **Monitoring**: Visibility into memory usage patterns for optimization
+
+## 55. React Hook Development Principles Standardization
+- **Identified**: During Task 3.1.D.2 critical analysis (AI Dashboard Hooks & State Management).
+- **Current State**: Mixed hook patterns across codebase with inconsistent approaches to server state, error handling, and side effects.
+- **Problem**: Inconsistent hook patterns make the codebase harder to maintain, onboard new developers, and can lead to subtle bugs and performance issues.
+- **Proposed Solution**: Establish and document comprehensive React hook development standards.
+  1. **Hook Naming Conventions**: Standardize naming patterns for different hook types (data fetching, state management, effects)
+  2. **Server vs Client State Guidelines**: Clear guidelines on when to use server state libraries vs. local state
+  3. **Error Handling Patterns**: Standardized error handling and recovery strategies across all hooks
+  4. **Performance Best Practices**: Guidelines for memoization, dependency arrays, and re-render optimization
+  5. **Testing Standards**: Standardized testing patterns for different hook types
+  6. **Documentation Requirements**: Mandatory JSDoc patterns for hook documentation
+- **Benefits**:
+  - **Consistency**: Uniform hook patterns across the entire codebase
+  - **Developer Experience**: Clear guidelines reduce decision fatigue and improve onboarding
+  - **Maintainability**: Predictable patterns make code easier to understand and modify
+  - **Quality**: Standardized testing and documentation improve overall code quality
+
+## 56. Advanced Offline Capability Architecture
+- **Identified**: During Task 3.1.D.2 critical analysis (AI Dashboard Hooks & State Management).
+- **Current State**: Proposed basic offline detection with simple fallback strategies.
+- **Problem**: Basic offline detection doesn't address sophisticated offline scenarios like partial connectivity, slow networks, or service-specific outages.
+- **Proposed Solution**: Implement comprehensive offline-first architecture for AI Dashboard.
+  1. **Service-Specific Health Checks**: Individual health monitoring for different AI services
+  2. **Partial Functionality Modes**: Graceful degradation with different levels of available functionality
+  3. **Offline Queue Management**: Queue actions for synchronization when connectivity returns
+  4. **Smart Sync Strategies**: Intelligent conflict resolution and data merging on reconnection
+  5. **Progressive Enhancement**: Core functionality works offline with enhanced features when online
+  6. **Network Quality Adaptation**: Adjust features based on network speed and reliability
+- **Benefits**:
+  - **Reliability**: Dashboard remains functional during various network issues
+  - **User Experience**: Smooth experience regardless of connectivity quality
+  - **Data Integrity**: Robust conflict resolution prevents data loss
+  - **Global Accessibility**: Better experience for users with unreliable internet connections

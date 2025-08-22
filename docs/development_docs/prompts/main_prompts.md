@@ -29,11 +29,11 @@ Now criticise your approach, identifying flaws or ineffiencies, validate that yo
 ## ACT MODE
 If you have found tasks for future implementation, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
 
-1. Implement the code as per your suggestion, adding comprehensive JSDOCs as you go along
+1. Implement the code as per your suggestion, adding comprehensive JSDOCs/DOCstring as you go along
 2. Consistnently review your code for consistency, logic and potential flaws
 3. Analyse if changes are needed to other files
-4. Condense your context window withouth losing details needed for subsequent steps.
-5. Update @/docs\development_docs\tasks\phase-3_AI_integration\phase3_master_tracking.md , @/docs\development_docs\tasks\phase-3_AI_integration\phase3_complete_summary.md , and the subtask and other documentation plans with our progress (e.g. @docs/architecture/system_architecture.mermaid.
+4. 
+5. Update @/docs\development_docs\tasks\phase-3_AI_integration\phase3_master_tracking.md, the subtask and other documentation plans with our progress (e.g. @docs/architecture/system_architecture.mermaid.
 6. Push to git with comprehensive message and git body in a separate file
 7. Create a new task for the next subtask to keep to atomic changes, repeating these instructions.
 
