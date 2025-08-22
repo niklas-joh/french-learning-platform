@@ -790,3 +790,83 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - **User Experience**: Smooth experience regardless of connectivity quality
   - **Data Integrity**: Robust conflict resolution prevents data loss
   - **Global Accessibility**: Better experience for users with unreliable internet connections
+
+## 57. AI Dashboard Component Architecture Refactoring
+- **Identified**: During Task 3.1.D.3 critical analysis (AI Dashboard Components Implementation).
+- **Current State**: Proposed monolithic HomePage transformation with mixed concerns and duplicate logic.
+- **Problem**: The proposed implementation violates Single Responsibility Principle, creates duplicate polling logic, and doesn't leverage existing sophisticated infrastructure from `aiPolling.ts` and `useAIDashboard.ts`.
+- **Proposed Solution**: Implement service-oriented component architecture leveraging existing patterns.
+  1. **Leverage Existing Infrastructure**: Reuse sophisticated `aiPolling.ts` and established service patterns
+  2. **Component Composition**: Create focused, reusable AI components following existing patterns
+  3. **Error Boundary Integration**: Implement proper error boundaries for AI component failures
+  4. **Performance Optimization**: Strategic React.memo and useMemo following established patterns
+  5. **Accessibility Compliance**: Comprehensive ARIA labels, screen reader support, keyboard navigation
+- **Benefits**:
+  - **Code Reuse**: Eliminate 90% duplication by leveraging existing infrastructure
+  - **Maintainability**: Focused components following established development principles
+  - **Performance**: Leverage existing circuit breakers, request deduplication, and memory management
+  - **Accessibility**: WCAG compliance for inclusive user experience
+
+## 58. Material-UI Integration Pattern Standardization
+- **Identified**: During Task 3.1.D.3 critical analysis (AI Dashboard Components Implementation).
+- **Current State**: Inconsistent Material-UI usage patterns and custom styling approaches across components.
+- **Problem**: Mixed styling approaches (custom CSS, sx props, theme tokens) create maintenance overhead and inconsistent user experience.
+- **Proposed Solution**: Standardize Material-UI integration patterns following established codebase conventions.
+  1. **Theme Token Consistency**: Standardize usage of design tokens from `design-tokens.css`
+  2. **Component Styling Patterns**: Establish consistent patterns for sx props vs. custom classes
+  3. **Glass Card Pattern**: Formalize the glass-card styling pattern as a reusable theme component
+  4. **Responsive Design Standards**: Standardize mobile-first responsive patterns across AI components
+  5. **Animation Consistency**: Establish consistent animation patterns for loading states and transitions
+- **Benefits**:
+  - **Consistency**: Uniform visual language across all AI dashboard components
+  - **Maintainability**: Reduced CSS complexity through standardized patterns
+  - **Performance**: Optimized styling through consistent theme usage
+  - **Developer Experience**: Clear guidelines reduce decision fatigue
+
+## 59. AI Component Performance Optimization Architecture
+- **Identified**: During Task 3.1.D.3 critical analysis (AI Dashboard Components Implementation).
+- **Current State**: Proposed basic memoization without considering complex AI component interaction patterns.
+- **Problem**: AI components have unique performance challenges with real-time updates, job polling, and large recommendation lists that require sophisticated optimization strategies.
+- **Proposed Solution**: Implement comprehensive performance optimization architecture for AI components.
+  1. **Intelligent Memoization**: Component and value memoization based on actual change patterns
+  2. **Virtual Scrolling**: For large recommendation lists and job queues using react-window
+  3. **Progressive Loading**: Load AI components and data incrementally based on viewport and user interaction
+  4. **Smart Update Batching**: Batch real-time updates to prevent excessive re-renders
+  5. **Memory Management**: Cleanup strategies for long-running AI dashboard sessions
+- **Benefits**:
+  - **Performance**: 60-80% reduction in unnecessary re-renders and memory usage
+  - **Scalability**: Handle large datasets (hundreds of recommendations/jobs) efficiently
+  - **User Experience**: Smooth interactions even with complex real-time AI data
+  - **Resource Efficiency**: Optimal CPU and memory usage for AI-intensive operations
+
+## 60. React Hook Development Standards Documentation
+- **Identified**: During Task 3.1.D.3 critical analysis (AI Dashboard Components Implementation).
+- **Current State**: Inconsistent React hook patterns across codebase with mixed server state, client state, and business logic approaches.
+- **Problem**: Lack of documented standards leads to duplicate polling logic, inconsistent error handling, and violation of hook best practices.
+- **Proposed Solution**: Document comprehensive React hook development standards based on existing successful patterns.
+  1. **Hook Categorization**: Clear categories for data fetching, state management, effects, and business logic hooks
+  2. **Server State Patterns**: Standardize server state management leveraging existing `aiPolling.ts` infrastructure
+  3. **Error Handling Standards**: Consistent error boundary integration and error state management
+  4. **Testing Patterns**: Standardized testing approaches for different hook types
+  5. **Performance Guidelines**: Memoization, dependency arrays, and re-render optimization patterns
+- **Benefits**:
+  - **Consistency**: Uniform hook patterns across entire codebase
+  - **Quality**: Reduced bugs through standardized error handling and testing
+  - **Maintainability**: Predictable patterns improve code comprehension and modification
+  - **Developer Experience**: Clear guidelines accelerate development and reduce errors
+
+## 61. ESM Import Standards Compliance Enhancement
+- **Identified**: During Task 3.1.D.3 critical analysis (AI Dashboard Components Implementation).
+- **Current State**: Development principles mandate `.js` extensions for imports, but proposed implementation shows inconsistent compliance.
+- **Problem**: Inconsistent import extension usage violates established development principles and can cause module resolution issues in production builds.
+- **Proposed Solution**: Implement comprehensive ESM import standards compliance across all AI components.
+  1. **Automated Linting**: ESLint rules to enforce `.js` extension usage in imports
+  2. **Migration Scripts**: Automated tools to update existing imports to comply with standards
+  3. **Build Validation**: CI/CD checks to prevent non-compliant imports from being merged
+  4. **Developer Tooling**: IDE configuration to automatically add correct extensions
+  5. **Documentation Updates**: Clear examples and guidelines in development principles
+- **Benefits**:
+  - **Standards Compliance**: 100% adherence to established development principles
+  - **Build Reliability**: Consistent module resolution across development and production
+  - **Team Efficiency**: Automated enforcement reduces manual review overhead
+  - **Future Compatibility**: Alignment with ES module standards for long-term maintainability
