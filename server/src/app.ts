@@ -45,7 +45,7 @@ app.use('/api/v1/users', userRoutes); // Note: This now contains more than just 
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/learning', learningRoutes);
 app.use('/api/v1/meta', metaRoutes);
-app.use('/api/ai', aiRoutes); // AI routes (no versioning yet)
+app.use('/api/v1/ai', aiRoutes); // AI routes (moved to v1 for consistency)
 
 // AI Assessment Routes
 const assessmentController = aiServiceFactory.getAssessmentController();

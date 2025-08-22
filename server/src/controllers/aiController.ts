@@ -362,6 +362,51 @@ export const chatWithAI = async (req: Request, res: Response) => {
   }
 };
 
+// =================================================================
+// AI DASHBOARD CONTROLLERS - Placeholder implementations for testing
+// =================================================================
+
+export const getDailyPlan = async (req: Request, res: Response) => {
+  console.log(`[aiController] Placeholder: Firing getDailyPlan for user ${req.user?.userId}`);
+  res.status(200).json({
+    planId: `plan_${new Date().getTime()}`,
+    userId: req.user?.userId,
+    date: new Date().toISOString().split('T')[0],
+    goals: [
+      { goalId: 'goal_1', description: 'Complete one lesson on Subjunctive mood.', status: 'pending' },
+      { goalId: 'goal_2', description: 'Practice 10 vocabulary words.', status: 'pending' },
+    ],
+    recommendations: [],
+  });
+};
+
+export const getRecommendations = async (req: Request, res: Response) => {
+  console.log(`[aiController] Placeholder: Firing getRecommendations for user ${req.user?.userId}`);
+  res.status(200).json([]);
+};
+
+export const getDashboardAnalytics = async (req: Request, res: Response) => {
+  console.log(`[aiController] Placeholder: Firing getDashboardAnalytics for user ${req.user?.userId}`);
+  res.status(200).json({
+    totalLessons: 0,
+    totalPractice: 0,
+    streak: 0,
+  });
+};
+
+export const getAIPreferences = async (req: Request, res: Response) => {
+  console.log(`[aiController] Placeholder: Firing getAIPreferences for user ${req.user?.userId}`);
+  res.status(200).json({
+    difficulty: 'beginner',
+    learningPace: 'moderate',
+  });
+};
+
+export const updateAIPreferences = async (req: Request, res: Response) => {
+  console.log(`[aiController] Placeholder: Firing updateAIPreferences for user ${req.user?.userId}`);
+  res.status(200).json(req.body);
+};
+
 /**
  * Legacy prompts endpoint - maintained for backward compatibility
  * @deprecated Use the new AI orchestration endpoints instead

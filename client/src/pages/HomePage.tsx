@@ -70,9 +70,7 @@ const HomePage: React.FC = () => {
   }), []);
 
   // Show loading skeleton during initial dashboard load
-  if (dashboardLoading && !dailyPlan && !recommendations.length) {
-    return <DashboardSkeleton />;
-  }
+  const showSkeleton = dashboardLoading && !dailyPlan && !recommendations.length;
 
   /**
    * Handle AI content generation start
@@ -176,6 +174,10 @@ const HomePage: React.FC = () => {
       disabled: isOffline && action.contentType !== 'lesson' // Only lessons available offline
     })), [isOffline]
   );
+
+  if (showSkeleton) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <AIDashboardLayout>

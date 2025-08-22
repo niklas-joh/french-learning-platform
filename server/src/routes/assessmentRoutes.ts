@@ -62,13 +62,27 @@ export const createAssessmentRoutes = (controller: AssessmentController): expres
   );
 
   /**
-   * @route GET /api/v1/assessment/analytics/:timeframe?
-   * @description Retrieves comprehensive analytics for user assessments
+   * @route GET /api/v1/assessment/analytics/:timeframe
+   * @description Retrieves comprehensive analytics for a specific timeframe.
    * PERFORMANCE: Cached responses, supports query parameters for optimization
    * @access Private (requires authentication)
    */
   router.get(
-    '/analytics/:timeframe?',
+    '/analytics/:timeframe',
+    protect,
+    // PERFORMANCE: Moderate rate limiting for analytics (cached responses)
+    // rateLimitMiddleware({ maxRequests: 30, windowMs: 60000 }), // Uncomment when available
+    controller.getAnalytics
+  );
+
+  /**
+   * @route GET /api/v1/assessment/analytics
+   * @description Retrieves comprehensive analytics with default timeframe.
+   * PERFORMANCE: Cached responses, supports query parameters for optimization
+   * @access Private (requires authentication)
+   */
+  router.get(
+    '/analytics',
     protect,
     // PERFORMANCE: Moderate rate limiting for analytics (cached responses)
     // rateLimitMiddleware({ maxRequests: 30, windowMs: 60000 }), // Uncomment when available

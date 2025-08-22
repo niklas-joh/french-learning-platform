@@ -35,6 +35,40 @@ router.get('/jobs', aiController.listJobs as RequestHandler);
  */
 router.delete('/jobs/:jobId', aiController.cancelJob as RequestHandler);
 
+// =================================================================
+// AI DASHBOARD ENDPOINTS
+// =================================================================
+
+/**
+ * GET /api/ai/dashboard/daily-plan
+ * Retrieves the user's personalized daily learning plan.
+ */
+router.get('/dashboard/daily-plan', aiController.getDailyPlan);
+
+/**
+ * GET /api/ai/dashboard/recommendations
+ * Fetches content recommendations for the user.
+ */
+router.get('/dashboard/recommendations', aiController.getRecommendations);
+
+/**
+ * GET /api/ai/dashboard/analytics
+ * Retrieves analytics data for the user's dashboard.
+ */
+router.get('/dashboard/analytics', aiController.getDashboardAnalytics);
+
+/**
+ * GET /api/ai/preferences
+ * Fetches the user's AI-related preferences.
+ */
+router.get('/preferences', aiController.getAIPreferences);
+
+/**
+ * PUT /api/ai/preferences
+ * Updates the user's AI-related preferences.
+ */
+router.put('/preferences', aiController.updateAIPreferences);
+
 
 /**
  * POST /api/ai/assess-pronunciation

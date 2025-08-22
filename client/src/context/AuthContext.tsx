@@ -15,6 +15,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  // Temporary development bypass - REMOVE AFTER TESTING
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const allowTestAccess = isDevelopment && window.location.search.includes('test=true');
+
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +35,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const validateToken = async () => {
+      // Temporary development bypass - REMOVE AFTER TESTING
+      if (allowTestAccess) {
+        const mockUser: User = {
+          id: 1,
+          firstName: 'Test',
+          lastName: 'User',
+          email: 'test@example.com',
+          role: 'user'
+        };
+        setUser(mockUser);
+        setToken('test-token');
+        setIsLoading(false);
+        return;
+      }
+
       if (token) {
         try {
           // We optimistically trust the token. Let's fetch user data.
@@ -47,14 +66,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     validateToken();
 
-    // Set up the event listener for global auth errors
-    window.addEventListener('auth-error', handleLogout);
+    // Only set up auth error listener when not in test mode
+    if (!allowTestAccess) {
+      window.addEventListener('auth-error', handleLogout);
+    }
 
     // Cleanup listener on component unmount
     return () => {
-      window.removeEventListener('auth-error', handleLogout);
+      if (!allowTestAccess) {
+        window.removeEventListener('auth-error', handleLogout);
+      }
     };
-  }, [token, handleLogout]);
+  }, [token, handleLogout, allowTestAccess]);
 
   const login = async (credentials: any) => {
     const { token, user } = await authService.login(credentials);

@@ -11,11 +11,12 @@
  */
 
 import { AssessmentQueryService } from './AssessmentQueryService.js';
-import { AssessmentAnalyticsService } from './AssessmentAnalyticsService.js';
+import { AssessmentAnalyticsService } from '../ai/assessment/AssessmentAnalyticsService.js';
 import { AssessmentPersistenceService, AssessmentPersistenceConfig } from './AssessmentPersistenceService.js';
 import { WeaknessAnalysisService } from '../ai/assessment/WeaknessAnalysisService.js';
 import { BatchAssessmentProcessor } from '../ai/assessment/BatchAssessmentProcessor.js';
 import { AssessmentStrategyFactory } from '../ai/assessment/assessmentStrategyFactory.js';
+import { AIAssessmentEngine } from '../ai/assessment/aiAssessmentEngine.js';
 import { AssessmentRepository } from '../../repositories/assessmentRepository.js';
 import { PromptTemplateEngine } from '../ai/PromptTemplateEngine.js';
 import { FrenchLanguageUtils } from '../ai/assessment/utils/FrenchLanguageUtils.js';
@@ -113,9 +114,10 @@ export class AssessmentServiceFactory {
    * const analysis = await analyticsService.analyzeUserWeaknesses(123);
    * ```
    */
-  static createAnalyticsService(queryService?: AssessmentQueryService): AssessmentAnalyticsService {
-    const query = queryService || this.createQueryService();
-    return new AssessmentAnalyticsService(query);
+  static createAnalyticsService(): AssessmentAnalyticsService {
+    const assessmentRepo = new AssessmentRepository(db);
+    const logger = createLogger('AssessmentAnalyticsService');
+    return new AssessmentAnalyticsService(assessmentRepo, db, logger);
   }
 
   /**
@@ -184,7 +186,7 @@ export class AssessmentServiceFactory {
 
     // Create services with proper dependency injection
     const queryService = this.createQueryService();
-    const analyticsService = this.createAnalyticsService(queryService);
+    const analyticsService = this.createAnalyticsService();
     const persistenceService = this.createPersistenceService(persistenceConfig);
     const weaknessAnalysisService = this.createWeaknessAnalysisService(analyticsService);
 
@@ -324,10 +326,18 @@ export class AssessmentServiceFactory {
     return () => {
       if (!instance) {
         const services = AssessmentServiceFactory.createProductionServices();
-        const strategyFactory = new AssessmentStrategyFactory();
+        const logger = createLogger('AssessmentStrategyFactory');
+        const promptEngine = new PromptTemplateEngine();
+        const openai = new OpenAI(aiConfig.openai);
+        const strategyFactory = new AssessmentStrategyFactory(openai, promptEngine, logger);
+        const assessmentEngine = new AIAssessmentEngine(db, strategyFactory, logger);
+        const analyticsService = AssessmentServiceFactory.createAnalyticsService();
         instance = new BatchAssessmentProcessor(
-          strategyFactory,
-          services.persistenceService
+          assessmentEngine,
+          analyticsService,
+          new FrenchLanguageUtils(),
+          undefined, // No job queue service for now
+          logger
         );
       }
       return instance;

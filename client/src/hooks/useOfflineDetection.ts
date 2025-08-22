@@ -38,9 +38,13 @@ interface UseOfflineDetectionReturn {
  * @returns Object containing connectivity state and retry functionality
  */
 export function useOfflineDetection(): UseOfflineDetectionReturn {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  // Temporary development bypass - REMOVE AFTER TESTING
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const allowTestAccess = isDevelopment && window.location.search.includes('test=true');
+
+  const [isOnline, setIsOnline] = useState(allowTestAccess ? true : navigator.onLine);
   const [lastOnlineAt, setLastOnlineAt] = useState<Date | null>(
-    navigator.onLine ? new Date() : null
+    (allowTestAccess || navigator.onLine) ? new Date() : null
   );
 
   /**
@@ -121,6 +125,12 @@ export function useOfflineDetection(): UseOfflineDetectionReturn {
    * Includes proper cleanup to prevent memory leaks
    */
   useEffect(() => {
+    // Temporary development bypass - REMOVE AFTER TESTING
+    if (allowTestAccess) {
+      // Skip connectivity testing and event listeners in test mode
+      return;
+    }
+
     // Add event listeners for browser connectivity changes
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -144,7 +154,7 @@ export function useOfflineDetection(): UseOfflineDetectionReturn {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [handleOnline, handleOffline, testConnection]);
+  }, [handleOnline, handleOffline, testConnection, allowTestAccess]);
 
   return {
     isOnline,

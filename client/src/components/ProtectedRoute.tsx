@@ -6,6 +6,13 @@ import { Box, CircularProgress } from '@mui/material';
 const ProtectedRoute: React.FC = () => {
   const { user, isLoading } = useAuth();
 
+  // Temporary development bypass - REMOVE AFTER TESTING
+  const allowTestAccess = import.meta.env.DEV && window.location.search.includes('testing=true');
+
+  if (allowTestAccess) {
+    return <Outlet />;
+  }
+
   if (isLoading) {
     // While checking for authentication, show a loading spinner
     return (
