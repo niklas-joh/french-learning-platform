@@ -1,3 +1,7 @@
+%% System Architecture - French Learning Platform
+%% Updated: 2025-08-26 - Task 3.2.A.2 - Added AI Curriculum Features
+%% Enhanced Progress and Learning Path Services with AI-powered curriculum functions
+
 graph TD
     subgraph "Frontend (React + TypeScript)"
         direction TB
@@ -85,8 +89,26 @@ graph TD
         end
 
         subgraph "Services"
-            ProgressService["progress.service.ts"]
-            LearningPathService["learningPath.service.ts"]
+            subgraph "Enhanced Progress Service (Task 3.2.A.2)"
+                direction TB
+                ProgressService["progress.service.ts"]
+                ProgressAIFeatures["AI Progress Functions"]
+                ProgressAIFeatures --> getUserRecentProgress["getUserRecentProgress()"]
+                ProgressAIFeatures --> getUserLevel["getUserLevel()"]
+                ProgressAIFeatures --> identifyWeakAreas["identifyWeakAreas()"]
+                ProgressService --> ProgressAIFeatures
+            end
+            
+            subgraph "Enhanced Learning Path Service (Task 3.2.A.2)"
+                direction TB
+                LearningPathService["learningPath.service.ts"]
+                CurriculumFeatures["AI Curriculum Functions"]
+                CurriculumFeatures --> getAdaptiveLearningRecommendations["getAdaptiveLearningRecommendations()"]
+                CurriculumFeatures --> getCachedDailyPlan["getCachedDailyPlan()"]
+                CurriculumFeatures --> adaptLearningPath["adaptLearningPath()"]
+                LearningPathService --> CurriculumFeatures
+            end
+            
             GamificationService["gamification.service.ts (placeholder)"]
             SpeechService["speech.service.ts (placeholder)"]
         end
@@ -226,6 +248,15 @@ graph TD
             AIOrchestrator --> FallbackHandler
             AIOrchestrator --> ContextService
             
+            %% Task 3.2.A.2 AI Curriculum Integration
+            CurriculumFeatures --> AIOrchestrator
+            CurriculumFeatures --> CacheService
+            ProgressAIFeatures --> AssessmentAnalyticsService
+            getAdaptiveLearningRecommendations --> AIOrchestrator
+            getCachedDailyPlan --> CacheService
+            adaptLearningPath --> AIOrchestrator
+            identifyWeakAreas --> AssessmentAnalyticsService
+            
             DynamicContentGenerator --> AIOrchestrator
             DynamicContentGenerator --> ContentValidatorFactory
             DynamicContentGenerator --> ContentEnhancerFactory
@@ -269,6 +300,10 @@ graph TD
         GamificationController --> GamificationService
         LearningPathController --> LearningPathService
         SpeechController --> SpeechService
+        
+        %% Task 3.2.A.2 Enhanced Service Connections
+        AIController --> CurriculumFeatures
+        AIController --> ProgressAIFeatures
     end
 
     subgraph "Data & External Services"
