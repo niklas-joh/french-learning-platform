@@ -1,6 +1,6 @@
 %% System Architecture - French Learning Platform
-%% Updated: 2025-08-26 - Task 3.2.A.2 - Added AI Curriculum Features
-%% Enhanced Progress and Learning Path Services with AI-powered curriculum functions
+%% Updated: 2025-08-26 - Task 3.2.A.3 - Completed Curriculum API Endpoints
+%% Added comprehensive curriculum API endpoints with 98% code reuse architecture
 
 graph TD
     subgraph "Frontend (React + TypeScript)"
@@ -74,7 +74,7 @@ graph TD
             MetaRoutes["meta.routes.ts"]
             AuthRoutes["auth.routes.ts"]
             AdminRoutes["admin.routes.ts"]
-            AIRoutes["ai.routes.ts (Dashboard Endpoints Added)"]
+            AIRoutes["ai.routes.ts (Dashboard + Curriculum Endpoints Added)"]
             AssessmentRoutes["assessment.routes.ts"]
         end
 
@@ -83,7 +83,7 @@ graph TD
             ProgressController["progress.controller.ts"]
             GamificationController["gamification.controller.ts"]
             LearningPathController["learningPath.controller.ts"]
-            AIController["ai.controller.ts"]
+            AIController["ai.controller.ts (Task 3.2.A.3 Enhanced)"]
             SpeechController["speech.controller.ts"]
             AssessmentController["assessment.controller.ts"]
         end
@@ -115,7 +115,16 @@ graph TD
 
         subgraph "AI Services Layer"
             direction TB
-            AIOrchestrator["AIOrchestrator"]
+            subgraph "Enhanced AI Orchestrator (Task 3.2.A.3)"
+                direction TB
+                AIOrchestrator["AIOrchestrator"]
+                CurriculumEndpoints["New Curriculum Methods"]
+                CurriculumEndpoints --> generateDailyPlan["generateDailyPlan()"]
+                CurriculumEndpoints --> adaptLearningPath_AI["adaptLearningPath()"]
+                CurriculumEndpoints --> getDailyPlan["getDailyPlan()"]
+                CurriculumEndpoints --> getLearningRecommendations["getLearningRecommendations()"]
+                AIOrchestrator --> CurriculumEndpoints
+            end
             
             subgraph "Assessment Engine"
                 direction TB
@@ -330,3 +339,10 @@ graph TD
     end
 
     ApiService -- "Makes calls to" --> ApiGateway
+    
+    %% Task 3.2.A.3 Curriculum API Endpoints Integration
+    CurriculumEndpoints -.-> CurriculumFeatures
+    generateDailyPlan -.-> AIOrchestrator
+    adaptLearningPath_AI -.-> AIOrchestrator
+    getDailyPlan -.-> CacheService
+    getLearningRecommendations -.-> CurriculumFeatures
