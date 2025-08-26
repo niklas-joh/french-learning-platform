@@ -188,6 +188,95 @@ This project uses **ES Modules (ESM)** as the standard module system across all 
 -   **Service Layer**: Business logic should be encapsulated within service classes to separate concerns from the controller and data access layers.
 -   **Dependency Injection**: Services and other dependencies should be provided through factory functions (e.g., `aiServiceFactory`) to promote loose coupling and testability.
 
+## 6. Performance Anti-Patterns to Avoid
+
+### a. Dynamic Import Performance Issues
+
+**❌ Incorrect - Performance Anti-Pattern:**
+```typescript
+// AVOID: Dynamic imports in frequently called functions
+export async function identifyWeakAreas(userId: number): Promise<string[]> {
+  const { AssessmentAnalyticsService } = await import('./ai/assessment/AssessmentAnalyticsService.js');
+  // This loads the module on EVERY function call
+  const service = new AssessmentAnalyticsService();
+  // ... rest of function
+}
+```
+
+**✅ Correct - Factory Singleton Pattern:**
+```typescript
+// RECOMMENDED: Use factory singletons for frequently used services
+import { assessmentServiceFactory } from './assessment/assessmentServiceFactory.js';
+
+export async function identifyWeakAreas(userId: number): Promise<string[]> {
+  // Factory provides singleton - loaded once, reused
+  const analyticsService = assessmentServiceFactory.getAssessmentAnalyticsService();
+  // ... rest of function
+}
+```
+
+**Performance Impact**: Dynamic imports can add 20-50ms per call vs <1ms for factory singletons.
+
+### b. TypeScript Type Safety Patterns
+
+**❌ Incorrect - Namespace Import Issues:**
+```typescript
+import Knex from 'knex';
+// This will fail for Transaction type
+function useTransaction(trx: Knex.Transaction) { } 
+```
+
+**✅ Correct - Type-Only Imports:**
+```typescript
+import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
+// Use type import for type-only usage
+function useTransaction(trx: KnexTypes.Transaction) { }
+```
+
+### c. Service Pattern Consistency
+
+**❌ Incorrect - Mixed Patterns:**
+```typescript
+// Mixing direct instantiation with factory patterns
+const repo = new AssessmentRepository(db);        // Direct
+const service = factory.getAnalyticsService();    // Factory
+```
+
+**✅ Correct - Consistent Factory Usage:**
+```typescript
+// Use factory pattern consistently
+const services = assessmentServiceFactory.createAssessmentServices();
+// All services created through same pattern
+```
+
+### d. Unused Variable Management
+
+**❌ Incorrect - Unused Parameters:**
+```typescript
+async function checkAchievements(userId: number, activity: any, trx: any) {
+  console.log(`Checking for user ${userId}`);
+  // activity and trx are never used - creates linting errors
+}
+```
+
+**✅ Correct - Remove Unused or Add TODO:**
+```typescript
+async function checkAchievements(userId: number) {
+  console.log(`Checking for user ${userId}`);
+  // TODO: Add activity and transaction parameters when implementing
+}
+```
+
+### e. Performance Measurement Guidelines
+
+When optimizing code:
+1. **Measure Before**: Document baseline performance
+2. **Target Bottlenecks**: Focus on frequently called functions
+3. **Factory Over Dynamic**: Prefer factory singletons over dynamic imports
+4. **Type Safety**: Proper imports prevent runtime errors
+5. **Consistent Patterns**: Follow established architectural patterns
+
 ---
 
 *This document is a living document and should be updated as new principles and conventions are established.*
