@@ -13,6 +13,12 @@ Make sure it is future-proof, following best coding standards, and reuses existi
 
 Make sure to use a tool in your request.
 
+ Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for for the         │
+│   referenced file '/Users/niklas/Documents/Coding/french-learning-platform/docs/development_docs/tasks/phase-3_AI_integration/  │
+│   task_3_2_A_4.md'? Make sure it is future-proof, following best coding standards, and reuses existing content whenever         │
+│   possible. Follow KISS and Single Responsibility Principle (SRP), adhering to our                                              │
+│   '/Users/niklas/Documents/Coding/french-learning-platform/docs/development_docs/development_principles.md'   
+
 ## Second review
 
 # AI Integration
@@ -30,7 +36,7 @@ Now criticise your approach, identifying flaws or ineffiencies, validate that yo
 If you have found tasks for future implementation, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
 
 1. Implement the code as per your suggestion, adding comprehensive JSDOCs/DOCstring as you go along
-2. Consistnently review your code for consistency, logic and potential flaws
+2. Regularly review your code for consistency, logic and potential flaws
 3. Analyse if changes are needed to other files
 4. 
 5. Update @/docs\development_docs\tasks\phase-3_AI_integration\phase3_master_tracking.md, the subtask and other documentation plans with our progress (e.g. @docs/architecture/system_architecture.mermaid.
