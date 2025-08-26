@@ -1,4 +1,5 @@
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import { LearningPath, LearningPathWithUserProgress, getLearningPathById } from '../models/LearningPath';
 import { LearningUnit, LearningUnitWithUserProgress, getUnitsAndLessonsByPathId, UnitAndLessonRow } from '../models/LearningUnit';
 import { Lesson, LessonWithUserProgress } from '../models/Lesson';
@@ -155,7 +156,444 @@ export async function startUserLesson(
 export async function completeUserLesson(
   userId: number,
   lessonId: number,
-  trx: Knex.Transaction
+  trx: KnexTypes.Transaction
 ): Promise<UserLessonProgress> {
   return await completeLesson(userId, lessonId, trx);
+}
+
+// =================================================================
+// AI-POWERED CURRICULUM ENHANCEMENT FUNCTIONS
+// Task 3.2.A.2: Enhance Learning Path Service with Curriculum Features
+// =================================================================
+
+/**
+ * Generate adaptive daily learning recommendations using AI analysis
+ * 
+ * Task 3.2.A.2: Curriculum Feature Integration
+ * 
+ * Creates personalized daily learning plans by analyzing user progress data,
+ * recent performance, and available time. Integrates with existing progress
+ * tracking and AI orchestration infrastructure following established patterns.
+ * 
+ * @param userId - User identifier for personalization
+ * @param timeAvailable - Available study time in minutes (default: 20)
+ * @returns Promise resolving to array of learning recommendations
+ * 
+ * @example
+ * ```typescript
+ * const recommendations = await getAdaptiveLearningRecommendations(123, 30);
+ * console.log(`Generated ${recommendations.length} activities for 30 minutes`);
+ * ```
+ */
+export async function getAdaptiveLearningRecommendations(
+  userId: number,
+  timeAvailable: number = 20
+): Promise<LearningRecommendation[]> {
+  try {
+    // Import required services following ESM patterns
+    const { getUserRecentProgress, getUserLevel, identifyWeakAreas } = await import('./progressService.js');
+    const { aiServiceFactory } = await import('./ai/index.js');
+    
+    // Load progress data using established service functions
+    const recentProgress = await getUserRecentProgress(userId);
+    const currentLevel = await getUserLevel(userId);
+    const weakAreas = await identifyWeakAreas(userId);
+    
+    // Use existing AI orchestrator following factory pattern
+    const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
+    const userContext = { id: userId, firstName: '', role: 'user' as const, preferences: {} };
+    
+    // Generate daily plan using proper AI task type
+    const response = await aiOrchestrator.generateDailyPlan(userContext, {
+      userId,
+      preferredDuration: timeAvailable,
+      currentSkills: recentProgress.skillScores,
+      recentPerformance: recentProgress.recentScores,
+      focusAreas: weakAreas.slice(0, 3) // Focus on top 3 weak areas
+    });
+
+    // Transform AI response to learning recommendations with proper error handling
+    if (response.status === 'error' || response.status === 'fallback') {
+      console.warn('AI generation failed, using fallback recommendations');
+      return getBasicRecommendations(userId, timeAvailable);
+    }
+    
+    // Map AI response to standardized recommendation format
+    return response.data.activities.map(activity => ({
+      id: `daily_${Date.now()}_${activity.type}`,
+      pathId: recentProgress.currentPathId,
+      title: `${activity.topic} Practice`,
+      type: activity.type,
+      estimatedMinutes: activity.estimatedMinutes,
+      difficulty: activity.difficulty,
+      reasoning: activity.reasoning || `Recommended based on ${activity.type} skills`,
+      priority: activity.priority,
+      targetSkills: activity.targetSkills,
+      createdAt: new Date(),
+      isAdaptive: true
+    }));
+    
+  } catch (error) {
+    console.error('Error generating adaptive recommendations:', error);
+    // Fallback to basic recommendations using existing logic
+    return getBasicRecommendations(userId, timeAvailable);
+  }
+}
+
+/**
+ * Get cached daily learning plan to avoid repeated AI calls
+ * 
+ * Task 3.2.A.2: Performance Optimization
+ * 
+ * Provides intelligent caching layer for daily plans to improve performance and reduce
+ * AI API costs. Plans are cached for 2 hours and tied to user progress state for
+ * better cache invalidation strategy.
+ * 
+ * @param userId - User identifier
+ * @returns Promise resolving to cached or newly generated daily plan
+ */
+export async function getCachedDailyPlan(userId: number): Promise<DailyPlan | null> {
+  try {
+    // Import services following established patterns
+    const { aiServiceFactory } = await import('./ai/index.js');
+    const cacheService = aiServiceFactory.getCacheService();
+    
+    // Create cache key with date and user context for better invalidation
+    const today = new Date().toDateString();
+    const cacheKey = `daily-plan:${userId}:${today}`;
+    
+    let plan = await cacheService.get<DailyPlan>(cacheKey);
+    
+    if (!plan) {
+      console.log(`[DailyPlan] Cache MISS for user ${userId}`);
+      const recommendations = await getAdaptiveLearningRecommendations(userId);
+      
+      plan = {
+        userId,
+        date: new Date(),
+        activities: recommendations,
+        totalMinutes: recommendations.reduce((sum, r) => sum + r.estimatedMinutes, 0),
+        generatedAt: new Date(),
+        isAdaptive: true
+      };
+      
+      // Cache for 2 hours (improved from 6 hours for better adaptability)
+      await cacheService.set(cacheKey, plan, 2 * 60 * 60);
+      console.log(`[DailyPlan] Cached plan for user ${userId}`);
+    } else {
+      console.log(`[DailyPlan] Cache HIT for user ${userId}`);
+    }
+    
+    return plan;
+    
+  } catch (error) {
+    console.error('Error with cached daily plan:', error);
+    return null;
+  }
+}
+
+/**
+ * Adapt existing learning path based on performance analysis
+ * 
+ * Task 3.2.A.2: Path Adaptation Integration
+ * 
+ * Modifies a user's current learning path when performance data indicates
+ * adaptation is needed. Integrates with existing assessment and progress
+ * tracking systems to make intelligent modifications following KISS principles.
+ * 
+ * @param pathId - Learning path identifier to adapt
+ * @param userId - User identifier for context
+ * @param trigger - Reason for adaptation request
+ * @returns Promise resolving to adapted learning path
+ */
+export async function adaptLearningPath(
+  pathId: number,
+  userId: number, 
+  trigger: 'poor_performance' | 'excellent_progress' | 'user_request' = 'user_request'
+): Promise<LearningPathWithUserProgress | null> {
+  try {
+    // Get current path using existing function
+    const currentPath = await getLearningPathUserView(pathId, userId);
+    if (!currentPath) {
+      console.error(`Learning path ${pathId} not found for user ${userId}`);
+      return null;
+    }
+    
+    // Gather performance data using established patterns
+    const performanceData = await gatherPerformanceData(userId);
+    if (performanceData.length === 0) {
+      console.log('No performance data available for adaptation - returning unchanged path');
+      return currentPath;
+    }
+    
+    // Import AI services following factory pattern
+    const { aiServiceFactory } = await import('./ai/index.js');
+    const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
+    const userContext = { id: userId, firstName: '', role: 'user' as const, preferences: {} };
+    
+    // Use AI orchestrator for adaptation analysis
+    const adaptationResponse = await aiOrchestrator.adaptLearningPath(userContext, {
+      currentPathId: pathId.toString(),
+      performanceData: performanceData.map(p => ({
+        skillArea: p.skillArea,
+        score: p.averageScore,
+        completedAt: p.lastAttempt.toISOString().split('T')[0],
+        difficulty: (p.difficulty || 'A2') as any
+      })),
+      adaptationTrigger: trigger
+    });
+    
+    // Handle AI service errors gracefully
+    if (adaptationResponse.status === 'error' || adaptationResponse.status === 'fallback') {
+      console.warn('AI adaptation failed, returning original path');
+      return currentPath;
+    }
+    
+    // Apply adaptations to current path with proper error handling
+    const adaptedPath = applyAdaptations(currentPath, adaptationResponse.data);
+    
+    // Log adaptation for analytics and debugging
+    console.log(`Path ${pathId} adapted for user ${userId}: ${adaptationResponse.data.adaptationReasoning}`);
+    
+    return adaptedPath;
+    
+  } catch (error) {
+    console.error('Error adapting learning path:', error);
+    return null;
+  }
+}
+
+/**
+ * Helper function to gather performance data for adaptation
+ * 
+ * Task 3.2.A.2: Performance Data Integration
+ * 
+ * Efficiently gathers user performance data from existing assessment system
+ * for AI-powered learning path adaptation. Uses established repository patterns.
+ */
+async function gatherPerformanceData(userId: number): Promise<PerformanceDataPoint[]> {
+  try {
+    // Import services following established patterns
+    const { AssessmentRepository } = await import('../repositories/assessmentRepository.js');
+    const { db } = await import('../config/db.js');
+    
+    // Use assessment repository directly for data retrieval
+    const assessmentRepo = new AssessmentRepository(db.default || db);
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    // Get recent assessment results using established repository patterns
+    const recentAssessments = await assessmentRepo.getAssessmentsForUser(userId, 50, 0);
+    
+    // Transform assessment data to performance data points
+    const performanceMap: Record<string, { scores: number[], attempts: Date[], difficulty?: string }> = {};
+    
+    recentAssessments.forEach(assessment => {
+      const skill = assessment.skillArea || assessment.responseType || 'general';
+      if (!performanceMap[skill]) {
+        performanceMap[skill] = { scores: [], attempts: [] };
+      }
+      performanceMap[skill].scores.push(assessment.score);
+      performanceMap[skill].attempts.push(assessment.createdAt);
+      if (assessment.frenchLevel) {
+        performanceMap[skill].difficulty = assessment.frenchLevel;
+      }
+    });
+    
+    // Convert to performance data points with proper statistics
+    return Object.entries(performanceMap).map(([skill, data]) => ({
+      skillArea: skill,
+      averageScore: data.scores.reduce((sum, score) => sum + score, 0) / data.scores.length,
+      lastAttempt: new Date(Math.max(...data.attempts.map(d => d.getTime()))),
+      difficulty: data.difficulty,
+      attemptCount: data.scores.length
+    }));
+    
+  } catch (error) {
+    console.error('Error gathering performance data:', error);
+    return [];
+  }
+}
+
+/**
+ * Helper function to apply AI adaptations to learning path
+ * 
+ * Task 3.2.A.2: Path Modification Logic
+ * 
+ * Safely applies AI-suggested modifications to a learning path while maintaining
+ * data integrity and pedagogical structure. Uses immutable patterns for safety.
+ */
+function applyAdaptations(
+  currentPath: LearningPathWithUserProgress,
+  adaptations: any
+): LearningPathWithUserProgress {
+  // Clone current path to avoid mutations (immutable pattern)
+  const adaptedPath: LearningPathWithUserProgress = {
+    ...currentPath,
+    units: currentPath.units.map(unit => ({ ...unit }))
+  };
+  
+  try {
+    // Apply AI-suggested modifications with proper error handling
+    if (adaptations.adaptedActivities && Array.isArray(adaptations.adaptedActivities)) {
+      adaptedPath.units = currentPath.units.map(unit => ({
+        ...unit,
+        lessons: unit.lessons.map(lesson => {
+          const adaptation = adaptations.adaptedActivities.find((a: any) => 
+            a.id === lesson.id.toString() || a.title.includes(lesson.title)
+          );
+          
+          if (adaptation && adaptation.changeType === 'modified') {
+            return {
+              ...lesson,
+              estimatedTime: adaptation.estimatedMinutes || lesson.estimatedTime,
+              // Note: Using estimatedTime to match existing Lesson interface
+              isAdapted: true,
+              adaptationReason: adaptations.adaptationReasoning
+            };
+          }
+          
+          return lesson;
+        })
+      }));
+    }
+    
+    // Add adaptation metadata for tracking and analytics
+    (adaptedPath as any).adaptationHistory = [
+      ...((adaptedPath as any).adaptationHistory || []),
+      {
+        date: new Date(),
+        trigger: adaptations.adaptationTrigger || 'unknown',
+        reasoning: adaptations.adaptationReasoning,
+        confidence: adaptations.confidenceScore,
+        timelineImpact: adaptations.timelineImpact
+      }
+    ];
+    
+  } catch (error) {
+    console.error('Error applying adaptations:', error);
+    // Return original path if adaptation fails
+    return currentPath;
+  }
+  
+  return adaptedPath;
+}
+
+/**
+ * Fallback function for basic recommendations when AI fails
+ * 
+ * Task 3.2.A.2: Reliability and Fallback Strategy
+ * 
+ * Provides rule-based learning recommendations when AI services are unavailable.
+ * Uses existing user data and simple heuristics to maintain service availability.
+ */
+async function getBasicRecommendations(
+  userId: number, 
+  timeAvailable: number
+): Promise<LearningRecommendation[]> {
+  try {
+    // Import progress functions following established patterns
+    const { getUserLevel, identifyWeakAreas } = await import('./progressService.js');
+    
+    const userLevel = await getUserLevel(userId);
+    const weakAreas = await identifyWeakAreas(userId);
+    
+    // Simple rule-based recommendations with focus on weak areas
+    const basicActivities = [
+      {
+        type: weakAreas[0] || 'vocabulary',
+        minutes: Math.floor(timeAvailable * 0.4),
+        priority: 5
+      },
+      {
+        type: weakAreas[1] || 'grammar',
+        minutes: Math.floor(timeAvailable * 0.4),  
+        priority: 4
+      },
+      {
+        type: weakAreas[2] || 'conversation',
+        minutes: Math.floor(timeAvailable * 0.2),
+        priority: 3
+      }
+    ];
+    
+    return basicActivities.map((activity, index) => ({
+      id: `basic_${Date.now()}_${index}`,
+      pathId: 1, // Default path
+      title: `${activity.type} Practice`,
+      type: activity.type,
+      estimatedMinutes: activity.minutes,
+      difficulty: userLevel || 'A2',
+      reasoning: `Basic ${activity.type} practice for your level - AI service temporarily unavailable`,
+      priority: activity.priority,
+      targetSkills: [activity.type],
+      createdAt: new Date(),
+      isAdaptive: false
+    }));
+    
+  } catch (error) {
+    console.error('Error generating basic recommendations:', error);
+    // Ultra-simple fallback if even basic services fail
+    return [{
+      id: `emergency_${Date.now()}`,
+      pathId: 1,
+      title: 'General French Practice',
+      type: 'vocabulary',
+      estimatedMinutes: timeAvailable,
+      difficulty: 'A2',
+      reasoning: 'General practice session - services temporarily unavailable',
+      priority: 3,
+      targetSkills: ['general'],
+      createdAt: new Date(),
+      isAdaptive: false
+    }];
+  }
+}
+
+// =================================================================
+// TYPE DEFINITIONS FOR AI CURRICULUM FEATURES
+// Task 3.2.A.2: Supporting type definitions following existing patterns
+// =================================================================
+
+/**
+ * Learning recommendation interface for AI-generated activities
+ * Follows existing interface patterns in the codebase
+ */
+interface LearningRecommendation {
+  id: string;
+  pathId: number;
+  title: string;
+  type: string;
+  estimatedMinutes: number;
+  difficulty: string;
+  reasoning: string;
+  priority: number;
+  targetSkills: string[];
+  createdAt: Date;
+  isAdaptive: boolean;
+}
+
+/**
+ * Daily learning plan interface
+ * Aggregates recommendations with metadata
+ */
+interface DailyPlan {
+  userId: number;
+  date: Date;
+  activities: LearningRecommendation[];
+  totalMinutes: number;
+  generatedAt: Date;
+  isAdaptive: boolean;
+}
+
+/**
+ * Performance data point interface for AI analysis
+ * Used for learning path adaptation decisions
+ */
+interface PerformanceDataPoint {
+  skillArea: string;
+  averageScore: number;
+  lastAttempt: Date;
+  difficulty?: string;
+  attemptCount: number;
 }
