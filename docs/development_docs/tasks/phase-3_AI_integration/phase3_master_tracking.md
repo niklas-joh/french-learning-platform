@@ -91,7 +91,12 @@ Transform the language learning platform from a traditional quiz-based system to
 ### **Phase 3.2: Advanced AI Features (Week 2) - Total: 22 hours**
 | Task ID | Task Name | Estimated Hours | Status | Assignee | Start Date | End Date | Dependencies |
 |---------|-----------|----------------|---------|----------|------------|----------|-----------------|
-| 3.2.A | [Adaptive Curriculum Engine](./tasks/3-2-A-adaptive-curriculum-engine.md) | 6h | ⏳ **Not Started** | - | - | - | 3.1.A, 3.1.C |
+| **3.2.A** | **[Adaptive Curriculum Engine](./task_3_2_A.md)** | **3h** | 🟡 **In Progress** | - | Aug 26, 2025 | - | **3.1.A, 3.1.C** |
+| 3.2.A.1 | [Extend AI Types for Curriculum Features](./task_3_2_A_1.md) | 0.5h | ✅ **Completed** | - | Aug 26, 2025 | Aug 26, 2025 | 3.1.A |
+| 3.2.A.2 | [Enhance Learning Path Service](./task_3_2_A_2.md) | 0.75h | ⏳ **Not Started** | - | - | - | 3.2.A.1, progressService |
+| 3.2.A.3 | [Add Curriculum API Endpoints](./task_3_2_A_3.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.A.2 |
+| 3.2.A.4 | [Implement Skill Assessment Integration](./task_3_2_A_4.md) | 0.75h | ⏳ **Not Started** | - | - | - | 3.2.A.1, progressService |
+| 3.2.A.5 | [Add Testing and Documentation](./task_3_2_A_5.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.A.2, 3.2.A.3, 3.2.A.4 |
 | 3.2.B | [Conversational AI Tutor](./tasks/3-2-B-conversational-ai-tutor.md) | 6h | ⏳ **Not Started** | - | - | - | 3.1.A, 3.1.D |
 | 3.2.C | [Real-time Performance Analytics](./tasks/3-2-C-performance-analytics.md) | 4h | ⏳ **Not Started** | - | - | - | 3.1.C, 3.2.A |
 | 3.2.D | [Multi-modal AI Integration](./tasks/3-2-D-multimodal-ai.md) | 6h | ⏳ **Not Started** | - | - | - | 3.2.B |
