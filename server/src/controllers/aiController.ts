@@ -48,6 +48,29 @@ const taskHandlerMap = {
     handler: 'gradeResponse' as const,
     validator: validationSchemaMap.GRADE_RESPONSE,
   },
+  /**
+   * Task 3.2.A.3: Curriculum Feature Task Mappings
+   * 
+   * These task mappings enable the curriculum API endpoints to use the established
+   * handleAIRequest pattern for maximum code reuse and consistency. Each mapping
+   * connects a curriculum task type to its validation schema and handler method.
+   */
+  GENERATE_DAILY_PLAN: {
+    handler: 'generateDailyPlan' as const,
+    validator: validationSchemaMap.GENERATE_DAILY_PLAN,
+  },
+  ADAPT_LEARNING_PATH: {
+    handler: 'adaptLearningPath' as const,
+    validator: validationSchemaMap.ADAPT_LEARNING_PATH,
+  },
+  GET_DAILY_PLAN: {
+    handler: 'getDailyPlan' as const,
+    validator: validationSchemaMap.GET_DAILY_PLAN,
+  },
+  GET_LEARNING_RECOMMENDATIONS: {
+    handler: 'getLearningRecommendations' as const,
+    validator: validationSchemaMap.GET_LEARNING_RECOMMENDATIONS,
+  },
   // TODO: Add future task mappings as new AI features are implemented
 } as const;
 
@@ -121,6 +144,37 @@ async function handleAIRequest<T extends ValidatedAITask>(
         result = await aiOrchestrator.gradeResponse(
           userContext, 
           validationResult.data as AITaskPayloads['GRADE_RESPONSE']['request']
+        );
+        break;
+      /**
+       * Task 3.2.A.3: Curriculum Feature Switch Cases
+       * 
+       * These cases handle curriculum-related AI tasks using the same pattern
+       * as existing tasks, ensuring consistency and type safety throughout
+       * the AI orchestration system.
+       */
+      case 'GENERATE_DAILY_PLAN':
+        result = await aiOrchestrator.generateDailyPlan(
+          userContext,
+          validationResult.data as AITaskPayloads['GENERATE_DAILY_PLAN']['request']
+        );
+        break;
+      case 'ADAPT_LEARNING_PATH':
+        result = await aiOrchestrator.adaptLearningPath(
+          userContext,
+          validationResult.data as AITaskPayloads['ADAPT_LEARNING_PATH']['request']
+        );
+        break;
+      case 'GET_DAILY_PLAN':
+        result = await aiOrchestrator.getDailyPlan(
+          userContext,
+          validationResult.data as AITaskPayloads['GET_DAILY_PLAN']['request']
+        );
+        break;
+      case 'GET_LEARNING_RECOMMENDATIONS':
+        result = await aiOrchestrator.getLearningRecommendations(
+          userContext,
+          validationResult.data as AITaskPayloads['GET_LEARNING_RECOMMENDATIONS']['request']
         );
         break;
       default:

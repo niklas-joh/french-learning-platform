@@ -33,7 +33,10 @@ export type AITaskType =
   | 'CONVERSATIONAL_TUTOR_RESPONSE'
   // Task 3.2.A.1: Curriculum feature task types
   | 'GENERATE_DAILY_PLAN'
-  | 'ADAPT_LEARNING_PATH';
+  | 'ADAPT_LEARNING_PATH'
+  // Task 3.2.A.3: Additional curriculum API task types
+  | 'GET_DAILY_PLAN'
+  | 'GET_LEARNING_RECOMMENDATIONS';
 
 // =================================================================
 // EFFICIENT USER CONTEXT TYPES
@@ -364,6 +367,94 @@ export interface AITaskPayloads {
       response: string;
       /** Follow-up suggestions */
       suggestions?: string[];
+    };
+  };
+  
+  /**
+   * Task 3.2.A.3: Get cached daily learning plan
+   * 
+   * Retrieves previously generated daily learning plans from cache for fast access.
+   * This endpoint focuses on performance optimization by serving cached AI-generated
+   * plans while falling back to generation if cache is empty or expired.
+   */
+  GET_DAILY_PLAN: {
+    request: {
+      /** User ID from URL parameters */
+      userId: number;
+    };
+    response: {
+      /** Cached daily learning plan */
+      planId: string;
+      /** User identifier */
+      userId: number;
+      /** Plan generation date */
+      date: string;
+      /** Learning activities for the day */
+      activities: Array<{
+        /** Activity identifier */
+        id: string;
+        /** Activity type */
+        type: ActivityType;
+        /** Activity title */
+        title: string;
+        /** Estimated completion time */
+        estimatedMinutes: number;
+        /** Difficulty level */
+        difficulty: CEFRLevel;
+        /** Priority ranking */
+        priority: number;
+      }>;
+      /** Total estimated time for all activities */
+      totalMinutes: number;
+      /** When the plan was generated */
+      generatedAt: string;
+      /** Whether this plan was AI-generated adaptively */
+      isAdaptive: boolean;
+    };
+  };
+  
+  /**
+   * Task 3.2.A.3: Get learning recommendations based on available time
+   * 
+   * Provides learning recommendations tailored to user's available study time
+   * and current progress. Integrates with existing progress tracking and
+   * assessment systems for contextual suggestions.
+   */
+  GET_LEARNING_RECOMMENDATIONS: {
+    request: {
+      /** User ID from URL parameters */
+      userId: number;
+      /** Available study time in minutes from query parameters */
+      timeAvailable: number;
+    };
+    response: {
+      /** Array of learning recommendations */
+      recommendations: Array<{
+        /** Recommendation identifier */
+        id: string;
+        /** Learning path this recommendation belongs to */
+        pathId: number;
+        /** Recommendation title */
+        title: string;
+        /** Type of learning activity */
+        type: ActivityType;
+        /** Estimated completion time */
+        estimatedMinutes: number;
+        /** Difficulty level */
+        difficulty: CEFRLevel;
+        /** Explanation for why this is recommended */
+        reasoning: string;
+        /** Priority ranking (1-5) */
+        priority: number;
+        /** Skills this recommendation targets */
+        targetSkills: string[];
+      }>;
+      /** Total estimated time for all recommendations */
+      totalMinutes: number;
+      /** When these recommendations were generated */
+      generatedAt: string;
+      /** Whether recommendations are AI-powered adaptive suggestions */
+      isAdaptive: boolean;
     };
   };
 }

@@ -184,6 +184,40 @@ export const adaptLearningPathPayloadSchema = z.object({
 });
 
 /**
+ * Task 3.2.A.3: Validation schema for retrieving cached daily learning plans
+ * 
+ * Validates URL parameters for GET endpoint that retrieves previously generated
+ * daily learning plans. Focuses on user ID validation to ensure data access
+ * security and proper type conversion from string parameters.
+ */
+export const getDailyPlanParamsSchema = z.object({
+  userId: z.coerce.number()
+    .int('User ID must be an integer')
+    .positive('User ID must be positive')
+    .describe('User identifier for retrieving cached daily plan'),
+});
+
+/**
+ * Task 3.2.A.3: Validation schema for learning recommendations endpoint
+ * 
+ * Validates both URL parameters and query parameters for the learning
+ * recommendations endpoint. Ensures proper time constraints and user
+ * identification for generating contextual learning suggestions.
+ */
+export const getLearningRecommendationsSchema = z.object({
+  userId: z.coerce.number()
+    .int('User ID must be an integer')
+    .positive('User ID must be positive')
+    .describe('User identifier for personalization'),
+  timeAvailable: z.coerce.number()
+    .int('Time available must be an integer')
+    .min(5, 'Minimum study time is 5 minutes')
+    .max(120, 'Maximum study time is 120 minutes')
+    .default(20)
+    .describe('Available study time in minutes for recommendations'),
+});
+
+/**
  * Future validation schemas for upcoming AI tasks
  * TODO: Implement these when the corresponding features are developed
  */
@@ -212,6 +246,9 @@ export const validationSchemaMap = {
   // Task 3.2.A.1: Curriculum feature validation schemas
   GENERATE_DAILY_PLAN: generateDailyPlanPayloadSchema,
   ADAPT_LEARNING_PATH: adaptLearningPathPayloadSchema,
+  // Task 3.2.A.3: Additional curriculum endpoint validation schemas
+  GET_DAILY_PLAN: getDailyPlanParamsSchema,
+  GET_LEARNING_RECOMMENDATIONS: getLearningRecommendationsSchema,
   // TODO: Add future schemas as they are implemented
 } as const;
 
