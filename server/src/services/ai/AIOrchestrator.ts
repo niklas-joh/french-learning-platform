@@ -376,6 +376,74 @@ export class AIOrchestrator {
   }
 
   /**
+   * @description Retrieve cached daily learning plan for fast access
+   * 
+   * Task 3.2.A.3: Curriculum API Endpoints - Cached Daily Plan Access
+   * 
+   * Provides fast access to previously generated daily learning plans by utilizing
+   * caching strategies and service layer integration. Falls back to generating new
+   * plans if cache is empty or expired. Optimized for performance and cost-efficiency
+   * by avoiding repeated AI API calls for the same user and date.
+   * 
+   * @param context - User context for personalization and access control
+   * @param payload - Request parameters containing userId for plan retrieval
+   * @returns Promise resolving to cached or newly generated daily learning plan
+   * 
+   * @example
+   * ```typescript
+   * const dailyPlan = await orchestrator.getDailyPlan(
+   *   { id: 123, firstName: 'Marie', role: 'user', preferences: {} },
+   *   { userId: 123 }
+   * );
+   * ```
+   */
+  public async getDailyPlan(
+    context: AIRequest<'GET_DAILY_PLAN'>['context'],
+    payload: AIRequest<'GET_DAILY_PLAN'>['payload']
+  ): Promise<AIResponse<'GET_DAILY_PLAN'>> {
+    const request: AIRequest<'GET_DAILY_PLAN'> = {
+      task: 'GET_DAILY_PLAN',
+      context,
+      payload,
+    };
+    return this.processAIRequest(request);
+  }
+
+  /**
+   * @description Get learning recommendations based on available time and user context
+   * 
+   * Task 3.2.A.3: Curriculum API Endpoints - Learning Recommendations
+   * 
+   * Provides personalized learning recommendations tailored to the user's available
+   * study time and current progress. Integrates with existing progress tracking and
+   * assessment systems to deliver contextual, AI-powered suggestions that maximize
+   * learning efficiency within time constraints.
+   * 
+   * @param context - User context for personalization and progress analysis
+   * @param payload - Request parameters including userId and timeAvailable
+   * @returns Promise resolving to personalized learning recommendations
+   * 
+   * @example
+   * ```typescript
+   * const recommendations = await orchestrator.getLearningRecommendations(
+   *   { id: 123, firstName: 'Jean', role: 'user', preferences: {} },
+   *   { userId: 123, timeAvailable: 30 }
+   * );
+   * ```
+   */
+  public async getLearningRecommendations(
+    context: AIRequest<'GET_LEARNING_RECOMMENDATIONS'>['context'],
+    payload: AIRequest<'GET_LEARNING_RECOMMENDATIONS'>['payload']
+  ): Promise<AIResponse<'GET_LEARNING_RECOMMENDATIONS'>> {
+    const request: AIRequest<'GET_LEARNING_RECOMMENDATIONS'> = {
+      task: 'GET_LEARNING_RECOMMENDATIONS',
+      context,
+      payload,
+    };
+    return this.processAIRequest(request);
+  }
+
+  /**
    * @description Generate content using AI for dynamic content generation
    * Added for Task 3.1.B.3.a - Raw Content Generation
    */

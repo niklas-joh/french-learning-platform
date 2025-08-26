@@ -83,6 +83,39 @@ router.post('/assess-pronunciation', aiController.assessPronunciation);
 router.post('/grade-response', aiController.gradeResponse);
 
 // =================================================================
+// CURRICULUM API ENDPOINTS - Task 3.2.A.3
+// =================================================================
+
+/**
+ * POST /api/ai/curriculum/daily-plan
+ * Generate personalized daily learning plan using AI analysis of user context,
+ * available time, and performance data. Uses established handleAIRequest pattern.
+ */
+router.post('/curriculum/daily-plan', aiController.generateDailyPlan);
+
+/**
+ * POST /api/ai/curriculum/adapt-path
+ * Adapt existing learning path based on performance triggers, goal changes,
+ * or time constraints. Provides intelligent modification while maintaining 
+ * learning continuity.
+ */
+router.post('/curriculum/adapt-path', aiController.adaptLearningPath);
+
+/**
+ * GET /api/ai/curriculum/daily-plan/:userId
+ * Retrieve cached daily learning plan for fast access to previously generated
+ * AI recommendations. Falls back to generation if cache is empty or expired.
+ */
+router.get('/curriculum/daily-plan/:userId', aiController.getDailyPlan);
+
+/**
+ * GET /api/ai/curriculum/recommendations/:userId?timeAvailable=20
+ * Get learning recommendations tailored to available study time and current
+ * progress. Integrates with existing progress tracking for contextual suggestions.
+ */
+router.get('/curriculum/recommendations/:userId', aiController.getLearningRecommendations);
+
+// =================================================================
 // LEGACY ENDPOINTS - Maintained for backward compatibility
 // TODO: Phase out these endpoints in favor of the new AI orchestration endpoints
 // =================================================================

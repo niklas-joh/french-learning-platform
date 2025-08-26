@@ -486,3 +486,156 @@ export const getPrompts = async (req: Request, res: Response) => {
     });
   }
 };
+
+// =================================================================
+// CURRICULUM API ENDPOINTS - Task 3.2.A.3
+// =================================================================
+
+/**
+ * [ASYNC] Controller for generating personalized daily learning plans
+ * POST /api/ai/curriculum/daily-plan
+ * 
+ * Task 3.2.A.3: Curriculum API Endpoints - Daily Plan Generation
+ * 
+ * Generates AI-powered daily learning plans using the established handleAIRequest pattern
+ * for maximum code reuse and consistency. Integrates with existing validation, error handling,
+ * and AI orchestration infrastructure to provide personalized learning activities based on
+ * user context, available time, and performance data.
+ * 
+ * @param req - Express request with validated daily plan parameters in body
+ * @param res - Express response object
+ * @returns Promise<void>
+ * 
+ * @example
+ * POST /api/ai/curriculum/daily-plan
+ * Body: {
+ *   "userId": 123,
+ *   "preferredDuration": 30,
+ *   "focusAreas": ["grammar", "vocabulary"]
+ * }
+ * 
+ * Response: {
+ *   "status": "success",
+ *   "data": {
+ *     "activities": [...],
+ *     "totalMinutes": 30,
+ *     "confidence": 0.85
+ *   },
+ *   "metadata": { ... }
+ * }
+ */
+export const generateDailyPlan = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'GENERATE_DAILY_PLAN');
+};
+
+/**
+ * [ASYNC] Controller for adapting existing learning paths
+ * POST /api/ai/curriculum/adapt-path
+ * 
+ * Task 3.2.A.3: Curriculum API Endpoints - Learning Path Adaptation
+ * 
+ * Modifies existing learning paths based on performance data, goal changes, or time constraints
+ * using the established handleAIRequest pattern for consistency. Provides intelligent adaptation
+ * while maintaining learning continuity and pedagogical soundness through AI analysis.
+ * 
+ * @param req - Express request with adaptation parameters in body
+ * @param res - Express response object
+ * @returns Promise<void>
+ * 
+ * @example
+ * POST /api/ai/curriculum/adapt-path
+ * Body: {
+ *   "currentPathId": "123",
+ *   "performanceData": [
+ *     {"skillArea": "grammar", "score": 65, "completedAt": "2025-08-25", "difficulty": "A2"}
+ *   ],
+ *   "adaptationTrigger": "poor_performance"
+ * }
+ * 
+ * Response: {
+ *   "status": "success",
+ *   "data": {
+ *     "adaptedActivities": [...],
+ *     "adaptationReasoning": "Based on recent performance...",
+ *     "confidenceScore": 0.78
+ *   },
+ *   "metadata": { ... }
+ * }
+ */
+export const adaptLearningPath = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'ADAPT_LEARNING_PATH');
+};
+
+/**
+ * [ASYNC] Controller for retrieving cached daily learning plans
+ * GET /api/ai/curriculum/daily-plan/:userId
+ * 
+ * Task 3.2.A.3: Curriculum API Endpoints - Cached Daily Plan Access
+ * 
+ * Retrieves cached daily learning plans using the established handleAIRequest pattern
+ * for consistency and performance optimization. Provides fast access to previously
+ * generated AI recommendations while maintaining the same validation and error
+ * handling standards as other endpoints.
+ * 
+ * @param req - Express request with userId parameter and optional query parameters
+ * @param res - Express response object
+ * @returns Promise<void>
+ * 
+ * @example
+ * GET /api/ai/curriculum/daily-plan/123
+ * 
+ * Response: {
+ *   "status": "success",
+ *   "data": {
+ *     "planId": "plan_123_2025-08-26",
+ *     "userId": 123,
+ *     "activities": [...],
+ *     "totalMinutes": 30,
+ *     "isAdaptive": true
+ *   },
+ *   "metadata": { ... }
+ * }
+ */
+export const getDailyPlan = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'GET_DAILY_PLAN');
+};
+
+/**
+ * [ASYNC] Controller for learning recommendations based on available time
+ * GET /api/ai/curriculum/recommendations/:userId?timeAvailable=20
+ * 
+ * Task 3.2.A.3: Curriculum API Endpoints - Learning Recommendations
+ * 
+ * Provides learning recommendations tailored to user's available study time and current
+ * progress using the established handleAIRequest pattern. Integrates with existing
+ * progress tracking and assessment systems for contextual, AI-powered suggestions
+ * while maintaining consistency with all other AI endpoints.
+ * 
+ * @param req - Express request with userId parameter and timeAvailable query parameter
+ * @param res - Express response object  
+ * @returns Promise<void>
+ * 
+ * @example
+ * GET /api/ai/curriculum/recommendations/123?timeAvailable=30
+ * 
+ * Response: {
+ *   "status": "success",
+ *   "data": {
+ *     "recommendations": [
+ *       {
+ *         "id": "rec_123",
+ *         "title": "Grammar Practice",
+ *         "estimatedMinutes": 15,
+ *         "difficulty": "A2",
+ *         "priority": 5
+ *       }
+ *     ],
+ *     "totalMinutes": 30,
+ *     "isAdaptive": true
+ *   },
+ *   "metadata": { ... }
+ * }
+ */
+export const getLearningRecommendations = async (req: Request, res: Response) => {
+  await handleAIRequest(req, res, 'GET_LEARNING_RECOMMENDATIONS');
+};
