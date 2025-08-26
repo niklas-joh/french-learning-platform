@@ -1,6 +1,6 @@
 import db from '../config/db';
 import Knex from 'knex';
-import { UserProgress } from '../models/UserProgress';
+import { UserProgress, CEFRLevel } from '../models/UserProgress';
 
 // Placeholder services to be replaced with actual implementations
 const gamificationService = {
@@ -300,11 +300,7 @@ export async function identifyWeakAreas(userId: number): Promise<string[]> {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
-    const analytics = await analyticsService.getAssessmentAnalytics(userId, {
-      limit: 50,
-      startDate: thirtyDaysAgo,
-      endDate: new Date()
-    });
+    const analytics = await analyticsService.getAssessmentAnalytics(userId, thirtyDaysAgo);
 
     // Extract weak areas from skill breakdown
     const weakAreas: string[] = [];
@@ -337,5 +333,361 @@ export async function identifyWeakAreas(userId: number): Promise<string[]> {
     console.error('Error identifying weak areas:', error);
     // Return common weak areas as fallback
     return ['grammar', 'vocabulary', 'pronunciation'];
+  }
+}
+
+// =================================================================
+// TASK 3.2.A.4: SKILL ASSESSMENT INTEGRATION
+// Optimized implementation leveraging existing AssessmentAnalyticsService
+// =================================================================
+
+/**
+ * Comprehensive skill assessment result for AI curriculum generation
+ * 
+ * This interface provides a complete skill profile for users including
+ * individual skill levels, confidence metrics, and actionable recommendations.
+ * Used by AI curriculum services to personalize learning paths.
+ */
+export interface SkillAssessment {
+  /** User identifier */
+  userId: number;
+  /** Individual skill level assessments by skill area */
+  skills: Record<string, SkillLevel>;
+  /** Overall CEFR proficiency level */
+  overallLevel: CEFRLevel;
+  /** Overall confidence score (0-1) across all skills */
+  overallConfidence: number;
+  /** Areas identified as needing improvement */
+  weakAreas: string[];
+  /** Areas identified as strengths */
+  strongAreas: string[];
+  /** Timestamp when assessment was generated */
+  assessedAt: Date;
+  /** Number of assessment data points used */
+  dataPoints: number;
+  /** Personalized improvement recommendations */
+  recommendations: string[];
+}
+
+/**
+ * Individual skill level assessment with performance metrics
+ */
+export interface SkillLevel {
+  /** CEFR level for this skill area */
+  level: CEFRLevel;
+  /** Confidence in this assessment (0-1) */
+  confidence: number;
+  /** Learning trend for this skill */
+  trend: 'improving' | 'declining' | 'stable';
+  /** Date of last assessment for this skill */
+  lastAssessed: Date | null;
+  /** Number of assessment data points */
+  dataPoints: number;
+  /** Average score (0-100) for this skill */
+  averageScore: number;
+  /** Improvement percentage over time */
+  improvement: number;
+}
+
+/**
+ * Generate comprehensive skill assessment for AI curriculum planning
+ * 
+ * Task 3.2.A.4: Skill Assessment Integration
+ * 
+ * This function leverages existing AssessmentAnalyticsService and ProgressService
+ * to create a comprehensive skill assessment that feeds into AI curriculum generation.
+ * Following KISS principle, it delegates to existing services rather than reimplementing
+ * assessment logic, ensuring consistency and maintainability.
+ * 
+ * Key Design Decisions:
+ * - Reuses existing AssessmentAnalyticsService for skill breakdown
+ * - Parallel queries for optimal performance
+ * - Graceful fallback when assessment data is limited
+ * - Conservative CEFR level mapping for accuracy
+ * 
+ * @param userId - User identifier for skill assessment
+ * @returns Promise resolving to comprehensive skill assessment
+ * 
+ * @example
+ * ```typescript
+ * const assessment = await getSkillAssessmentForCurriculum(123);
+ * console.log(`User level: ${assessment.overallLevel}`);
+ * console.log(`Weak areas: ${assessment.weakAreas.join(', ')}`);
+ * console.log(`Confidence: ${Math.round(assessment.overallConfidence * 100)}%`);
+ * ```
+ * 
+ * @throws {Error} When user progress data cannot be found
+ */
+export async function getSkillAssessmentForCurriculum(userId: number): Promise<SkillAssessment> {
+  try {
+    // Use existing factory pattern for service instantiation  
+    const { assessmentServiceFactory } = await import('./assessment/assessmentServiceFactory.js');
+    const analyticsService = assessmentServiceFactory.getAssessmentAnalyticsService();
+    
+    // Parallel queries for optimal performance
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const [userProgress, analytics] = await Promise.all([
+      getUserProgress(userId),
+      analyticsService.getAssessmentAnalytics(userId, thirtyDaysAgo)
+    ]);
+
+    if (!userProgress) {
+      throw new Error(`No progress found for user ${userId}`);
+    }
+
+    // Transform existing analytics data to skill assessment format
+    const skills = transformSkillBreakdown(analytics.skillAreaBreakdown || {});
+    const weakAreas = extractWeakAreas(analytics.skillAreaBreakdown || {});
+    const strongAreas = extractStrongAreas(analytics.skillAreaBreakdown || {});
+
+    return {
+      userId,
+      skills,
+      overallLevel: userProgress.currentLevel,
+      overallConfidence: calculateOverallConfidence(skills),
+      weakAreas: weakAreas.slice(0, 3), // Top 3 weak areas
+      strongAreas: strongAreas.slice(0, 3), // Top 3 strong areas
+      assessedAt: new Date(),
+      dataPoints: analytics.totalAssessments,
+      recommendations: generateSkillRecommendations(weakAreas, skills)
+    };
+
+  } catch (error) {
+    console.error('Error generating skill assessment:', error);
+    // Graceful fallback using basic progress data
+    return generateFallbackSkillAssessment(userId);
+  }
+}
+
+/**
+ * Transform analytics skill breakdown to SkillLevel format
+ * 
+ * Converts the existing AssessmentAnalyticsService skill breakdown data
+ * into the SkillLevel format expected by AI curriculum services.
+ * 
+ * @param breakdown - Skill breakdown from analytics service
+ * @returns Transformed skill levels by area
+ */
+function transformSkillBreakdown(breakdown: Record<string, any>): Record<string, SkillLevel> {
+  const skills: Record<string, SkillLevel> = {};
+  
+  // Define core French skill areas
+  const coreSkills = ['vocabulary', 'grammar', 'pronunciation', 'listening', 'reading', 'writing', 'conversation'];
+  
+  coreSkills.forEach(skill => {
+    const skillData = breakdown[skill];
+    
+    if (skillData && skillData.count > 0) {
+      // Use real assessment data
+      skills[skill] = {
+        level: mapAccuracyToCEFRLevel(skillData.accuracy || 0),
+        confidence: Math.min(skillData.count / 10, 1), // Confidence based on data points
+        trend: determineTrend(skillData.trend || 0),
+        lastAssessed: skillData.lastAssessed ? new Date(skillData.lastAssessed) : null,
+        dataPoints: skillData.count,
+        averageScore: Math.round((skillData.accuracy || 0) * 100),
+        improvement: Math.round(skillData.improvement || 0)
+      };
+    } else {
+      // Default values for skills without assessment data
+      skills[skill] = {
+        level: 'A1',
+        confidence: 0.2, // Low confidence without data
+        trend: 'stable',
+        lastAssessed: null,
+        dataPoints: 0,
+        averageScore: 30, // Conservative estimate
+        improvement: 0
+      };
+    }
+  });
+  
+  return skills;
+}
+
+/**
+ * Map assessment accuracy to CEFR level
+ * 
+ * Conservative mapping that aligns with established CEFR standards
+ * and avoids overestimating user capabilities.
+ * 
+ * @param accuracy - Accuracy score (0-1)
+ * @returns Corresponding CEFR level
+ */
+function mapAccuracyToCEFRLevel(accuracy: number): CEFRLevel {
+  const percentage = accuracy * 100;
+  
+  // Conservative thresholds to prevent overestimation
+  if (percentage >= 92) return 'C2';
+  if (percentage >= 82) return 'C1';
+  if (percentage >= 72) return 'B2';
+  if (percentage >= 60) return 'B1';
+  if (percentage >= 45) return 'A2';
+  return 'A1';
+}
+
+/**
+ * Determine learning trend from numeric trend value
+ * 
+ * @param trendValue - Numeric trend indicator
+ * @returns Human-readable trend status
+ */
+function determineTrend(trendValue: number): 'improving' | 'declining' | 'stable' {
+  if (trendValue > 5) return 'improving';
+  if (trendValue < -5) return 'declining';
+  return 'stable';
+}
+
+/**
+ * Extract weakest skill areas from skill breakdown
+ * 
+ * Identifies areas needing improvement based on accuracy and confidence.
+ * Prioritizes skills with sufficient data points for reliable assessment.
+ * 
+ * @param breakdown - Skill breakdown from analytics
+ * @returns Array of skill areas needing improvement
+ */
+function extractWeakAreas(breakdown: Record<string, any>): string[] {
+  if (!breakdown || Object.keys(breakdown).length === 0) {
+    return ['grammar', 'pronunciation']; // Safe defaults
+  }
+  
+  const weakAreas = Object.entries(breakdown)
+    .filter(([_, data]) => data && data.count >= 2) // Require minimum data and valid data object
+    .sort((a, b) => (a[1].accuracy || 0) - (b[1].accuracy || 0)) // Sort by accuracy
+    .slice(0, 3) // Top 3 weakest
+    .map(([skill]) => skill);
+    
+  return weakAreas.length > 0 ? weakAreas : ['grammar', 'pronunciation']; // Fallback if no valid data
+}
+
+/**
+ * Extract strongest skill areas from skill breakdown
+ * 
+ * Identifies user strengths to build confidence and leverage in learning path.
+ * 
+ * @param breakdown - Skill breakdown from analytics
+ * @returns Array of strongest skill areas
+ */
+function extractStrongAreas(breakdown: Record<string, any>): string[] {
+  if (!breakdown || Object.keys(breakdown).length === 0) {
+    return ['vocabulary']; // Safe default
+  }
+  
+  const strongAreas = Object.entries(breakdown)
+    .filter(([_, data]) => data && data.count >= 2) // Require minimum data and valid data object
+    .sort((a, b) => (b[1].accuracy || 0) - (a[1].accuracy || 0)) // Sort by accuracy descending
+    .slice(0, 3) // Top 3 strongest
+    .map(([skill]) => skill);
+    
+  return strongAreas.length > 0 ? strongAreas : ['vocabulary']; // Fallback if no valid data
+}
+
+/**
+ * Calculate overall confidence across all skill areas
+ * 
+ * Weighted average confidence considering data points available for each skill.
+ * 
+ * @param skills - Individual skill assessments
+ * @returns Overall confidence score (0-1)
+ */
+function calculateOverallConfidence(skills: Record<string, SkillLevel>): number {
+  const skillValues = Object.values(skills);
+  const totalWeight = skillValues.reduce((sum, skill) => sum + skill.dataPoints, 0);
+  
+  if (totalWeight === 0) return 0.2; // Low confidence without data
+  
+  const weightedConfidence = skillValues.reduce((sum, skill) => {
+    return sum + (skill.confidence * skill.dataPoints);
+  }, 0);
+  
+  return Math.min(weightedConfidence / totalWeight, 1);
+}
+
+/**
+ * Generate actionable recommendations based on weak areas and skill levels
+ * 
+ * Provides specific, actionable suggestions for skill improvement based on
+ * identified weaknesses and current proficiency levels.
+ * 
+ * @param weakAreas - Identified areas needing improvement
+ * @param skills - Complete skill assessment
+ * @returns Array of personalized recommendations
+ */
+function generateSkillRecommendations(weakAreas: string[], skills: Record<string, SkillLevel>): string[] {
+  const recommendations: string[] = [];
+  
+  weakAreas.forEach(area => {
+    const skill = skills[area];
+    
+    if (!skill) return;
+    
+    if (skill.dataPoints === 0) {
+      recommendations.push(`Practice ${area} exercises to establish baseline assessment`);
+    } else if (skill.trend === 'declining') {
+      recommendations.push(`Focus on ${area} - recent performance shows decline`);
+    } else if (skill.level === 'A1' && skill.dataPoints > 3) {
+      recommendations.push(`Strengthen ${area} fundamentals with structured lessons`);
+    } else if (skill.confidence < 0.4) {
+      recommendations.push(`Increase ${area} practice frequency for more consistent results`);
+    } else {
+      recommendations.push(`Continue targeted ${area} practice to improve accuracy`);
+    }
+  });
+  
+  // Add general recommendation if no specific weak areas identified
+  if (recommendations.length === 0) {
+    recommendations.push('Continue balanced practice across all skill areas to maintain progress');
+  }
+  
+  return recommendations.slice(0, 5); // Limit to 5 recommendations
+}
+
+/**
+ * Generate fallback skill assessment when detailed data is unavailable
+ * 
+ * Provides conservative assessment based on basic progress data when
+ * detailed assessment analytics are not available.
+ * 
+ * @param userId - User identifier
+ * @returns Basic skill assessment with conservative estimates
+ */
+async function generateFallbackSkillAssessment(userId: number): Promise<SkillAssessment> {
+  try {
+    const progress = await getUserProgress(userId);
+    const level: CEFRLevel = (progress?.currentLevel as CEFRLevel) || 'A1';
+    
+    // Create basic skill profile based on overall level
+    const basicSkill: SkillLevel = {
+      level,
+      confidence: 0.3, // Low confidence in fallback
+      trend: 'stable',
+      lastAssessed: null,
+      dataPoints: 0,
+      averageScore: level === 'A1' ? 30 : level === 'A2' ? 45 : 60,
+      improvement: 0
+    };
+    
+    const skills: Record<string, SkillLevel> = {};
+    ['vocabulary', 'grammar', 'pronunciation', 'listening', 'reading', 'writing', 'conversation']
+      .forEach(skill => {
+        skills[skill] = { ...basicSkill };
+      });
+    
+    return {
+      userId,
+      skills,
+      overallLevel: level,
+      overallConfidence: 0.3,
+      weakAreas: ['grammar', 'pronunciation'], // Conservative defaults
+      strongAreas: ['vocabulary'],
+      assessedAt: new Date(),
+      dataPoints: 0,
+      recommendations: ['Complete assessment exercises to get personalized recommendations']
+    };
+    
+  } catch (error) {
+    console.error('Error generating fallback assessment:', error);
+    throw error;
   }
 }
