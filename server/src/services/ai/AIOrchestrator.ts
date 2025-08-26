@@ -164,6 +164,81 @@ export class AIOrchestrator {
             ? ['Try practicing more complex variations of this concept']
             : ['Review the lesson material', 'Practice similar exercises', 'Focus on key vocabulary']
         } as any;
+
+      case 'GENERATE_DAILY_PLAN':
+        const dailyPlanPayload = payload as any;
+        return {
+          activities: [
+            {
+              type: 'vocabulary',
+              topic: 'Daily Routines',
+              estimatedMinutes: Math.floor(dailyPlanPayload.preferredDuration * 0.4),
+              difficulty: 'A2',
+              reasoning: 'Vocabulary building strengthens your foundation',
+              targetSkills: ['vocabulary', 'reading'],
+              priority: 5
+            },
+            {
+              type: 'grammar',
+              topic: 'Present Tense',
+              estimatedMinutes: Math.floor(dailyPlanPayload.preferredDuration * 0.4),
+              difficulty: 'A2',
+              reasoning: 'Grammar practice improves sentence structure',
+              targetSkills: ['grammar', 'writing'],
+              priority: 4
+            },
+            {
+              type: 'conversation',
+              topic: 'Greetings',
+              estimatedMinutes: Math.floor(dailyPlanPayload.preferredDuration * 0.2),
+              difficulty: 'A1',
+              reasoning: 'Speaking practice builds confidence',
+              targetSkills: ['speaking', 'listening'],
+              priority: 3
+            }
+          ],
+          totalMinutes: dailyPlanPayload.preferredDuration,
+          focusAreas: dailyPlanPayload.focusAreas || ['vocabulary', 'grammar'],
+          expectedOutcomes: ['Learn 8-10 new vocabulary words', 'Practice present tense conjugation', 'Improve pronunciation confidence'],
+          confidence: 0.85
+        } as any;
+
+      case 'ADAPT_LEARNING_PATH':
+        const adaptPayload = payload as any;
+        const averageScore = adaptPayload.performanceData.reduce((sum, p) => sum + p.score, 0) / adaptPayload.performanceData.length;
+        const needsRemediation = averageScore < 70;
+        
+        return {
+          adaptedActivities: [
+            {
+              id: 'activity_1',
+              type: needsRemediation ? 'grammar' : 'conversation',
+              title: needsRemediation ? 'Grammar Review Session' : 'Advanced Conversation Practice',
+              estimatedMinutes: 25,
+              difficulty: needsRemediation ? 'A1' : 'B1',
+              changeType: 'modified'
+            },
+            {
+              id: 'activity_2', 
+              type: 'vocabulary',
+              title: 'Vocabulary Reinforcement',
+              estimatedMinutes: 15,
+              difficulty: 'A2',
+              changeType: 'unchanged'
+            }
+          ],
+          adaptationReasoning: needsRemediation 
+            ? `Based on recent performance (average: ${averageScore.toFixed(1)}%), focusing on foundational skills before advancing.`
+            : `Great progress detected (average: ${averageScore.toFixed(1)}%)! Moving to more challenging material.`,
+          timelineImpact: {
+            daysDelta: needsRemediation ? 3 : -2,
+            newCompletionDate: new Date(Date.now() + (needsRemediation ? 7 : 3) * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+          },
+          confidenceScore: 0.78,
+          followUpRecommendations: needsRemediation 
+            ? ['Schedule extra grammar review sessions', 'Consider one-on-one tutoring'] 
+            : ['Explore advanced topics', 'Join conversation groups']
+        } as any;
       
       default:
         return {
@@ -214,6 +289,86 @@ export class AIOrchestrator {
   ): Promise<AIResponse<'GRADE_RESPONSE'>> {
     const request: AIRequest<'GRADE_RESPONSE'> = {
       task: 'GRADE_RESPONSE',
+      context,
+      payload,
+    };
+    return this.processAIRequest(request);
+  }
+
+  /**
+   * @description Generate a personalized daily learning plan using AI analysis
+   * 
+   * Task 3.2.A.1: Adaptive Curriculum Engine Integration
+   * 
+   * Creates a customized daily learning plan based on the user's current skill level,
+   * recent performance data, available time, and learning preferences. The AI analyzes
+   * the user's context to provide balanced activities that promote effective learning
+   * while maintaining engagement and optimal challenge levels.
+   * 
+   * @param context - User context for personalization including ID, preferences, and role
+   * @param payload - Daily plan generation parameters including duration, skills, and focus areas
+   * @returns Promise resolving to structured daily learning plan with activities and outcomes
+   * 
+   * @example
+   * ```typescript
+   * const dailyPlan = await orchestrator.generateDailyPlan(
+   *   { id: 123, firstName: 'Marie', role: 'user', preferences: {} },
+   *   { 
+   *     userId: 123, 
+   *     preferredDuration: 20, 
+   *     currentSkills: { vocabulary: 0.7, grammar: 0.6 },
+   *     focusAreas: ['conversation', 'pronunciation'] 
+   *   }
+   * );
+   * ```
+   */
+  public async generateDailyPlan(
+    context: AIRequest<'GENERATE_DAILY_PLAN'>['context'],
+    payload: AIRequest<'GENERATE_DAILY_PLAN'>['payload']
+  ): Promise<AIResponse<'GENERATE_DAILY_PLAN'>> {
+    const request: AIRequest<'GENERATE_DAILY_PLAN'> = {
+      task: 'GENERATE_DAILY_PLAN',
+      context,
+      payload,
+    };
+    return this.processAIRequest(request);
+  }
+
+  /**
+   * @description Adapt an existing learning path based on performance data and triggers
+   * 
+   * Task 3.2.A.1: Adaptive Curriculum Engine Integration
+   * 
+   * Intelligently modifies a user's current learning path when performance patterns,
+   * goal changes, or time constraints indicate that adaptation is needed. The AI
+   * analyzes recent assessment data and triggers to recommend path modifications
+   * that maintain learning continuity while addressing identified needs.
+   * 
+   * @param context - User context for personalization and access control
+   * @param payload - Adaptation parameters including performance data, triggers, and constraints
+   * @returns Promise resolving to adapted learning path with detailed reasoning and timeline impact
+   * 
+   * @example
+   * ```typescript
+   * const adaptedPath = await orchestrator.adaptLearningPath(
+   *   { id: 123, firstName: 'Pierre', role: 'user', preferences: {} },
+   *   {
+   *     currentPathId: 'path_456',
+   *     performanceData: [
+   *       { skillArea: 'grammar', score: 65, completedAt: '2025-01-10', difficulty: 'A2' }
+   *     ],
+   *     adaptationTrigger: 'poor_performance',
+   *     constraints: { weeklyHours: 5, skillAdjustments: { grammar: 'increase' } }
+   *   }
+   * );
+   * ```
+   */
+  public async adaptLearningPath(
+    context: AIRequest<'ADAPT_LEARNING_PATH'>['context'],
+    payload: AIRequest<'ADAPT_LEARNING_PATH'>['payload']
+  ): Promise<AIResponse<'ADAPT_LEARNING_PATH'>> {
+    const request: AIRequest<'ADAPT_LEARNING_PATH'> = {
+      task: 'ADAPT_LEARNING_PATH',
       context,
       payload,
     };

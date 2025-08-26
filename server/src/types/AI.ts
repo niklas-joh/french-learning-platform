@@ -30,7 +30,10 @@ export type AITaskType =
   | 'ASSESS_PRONUNCIATION' 
   | 'GRADE_RESPONSE'
   | 'GENERATE_CURRICULUM_PATH'
-  | 'CONVERSATIONAL_TUTOR_RESPONSE';
+  | 'CONVERSATIONAL_TUTOR_RESPONSE'
+  // Task 3.2.A.1: Curriculum feature task types
+  | 'GENERATE_DAILY_PLAN'
+  | 'ADAPT_LEARNING_PATH';
 
 // =================================================================
 // EFFICIENT USER CONTEXT TYPES
@@ -223,7 +226,118 @@ export interface AITaskPayloads {
     };
   };
   
-  // TODO: Task 3.2.A - Define GENERATE_CURRICULUM_PATH payload when Adaptive Curriculum Engine is implemented
+  /**
+   * Task 3.2.A.1: Generate daily learning plan based on user context and preferences
+   * 
+   * This task type generates personalized daily learning activities using AI analysis
+   * of the user's current skill level, recent performance, and available study time.
+   * Integrates with existing progress tracking and assessment systems for context.
+   */
+  GENERATE_DAILY_PLAN: {
+    request: {
+      /** User ID for personalization context */
+      userId: number;
+      /** Preferred session duration in minutes */
+      preferredDuration: number;
+      /** Current skill levels across different areas (0-1 scale) */
+      currentSkills?: Record<string, number>;
+      /** Recent performance scores for context */
+      recentPerformance?: number[];
+      /** Specific focus areas requested by user */
+      focusAreas?: string[];
+    };
+    response: {
+      /** Generated learning activities for the day */
+      activities: Array<{
+        /** Type of learning activity */
+        type: ActivityType;
+        /** Specific topic or content area */
+        topic: string;
+        /** Estimated time to complete in minutes */
+        estimatedMinutes: number;
+        /** CEFR difficulty level */
+        difficulty: CEFRLevel;
+        /** Brief explanation of why this activity was recommended */
+        reasoning?: string;
+        /** Skills this activity will develop */
+        targetSkills: string[];
+        /** Priority ranking (1-5, higher = more important) */
+        priority: number;
+      }>;
+      /** Total estimated time for all activities */
+      totalMinutes: number;
+      /** Primary skills this plan focuses on developing */
+      focusAreas: string[];
+      /** Expected learning outcomes from completing this plan */
+      expectedOutcomes: string[];
+      /** AI confidence in this recommendation (0-1) */
+      confidence: number;
+    };
+  };
+
+  /**
+   * Task 3.2.A.1: Adapt learning path based on performance triggers
+   * 
+   * This task type modifies an existing learning path based on user performance
+   * patterns, goal changes, or time constraints. Provides intelligent adaptation
+   * while maintaining learning continuity and pedagogical soundness.
+   */
+  ADAPT_LEARNING_PATH: {
+    request: {
+      /** ID of the current learning path to adapt */
+      currentPathId: string;
+      /** User's recent assessment results for analysis */
+      performanceData: Array<{
+        skillArea: string;
+        score: number;
+        completedAt: string;
+        difficulty: CEFRLevel;
+      }>;
+      /** Reason for adaptation request */
+      adaptationTrigger: 'poor_performance' | 'excellent_progress' | 'goal_change' | 'time_constraint' | 'user_request';
+      /** New constraints or preferences */
+      constraints?: {
+        /** Available study time per week in hours */
+        weeklyHours?: number;
+        /** Updated learning goals */
+        newGoals?: string[];
+        /** Skills to emphasize or de-emphasize */
+        skillAdjustments?: Record<string, 'increase' | 'decrease' | 'maintain'>;
+      };
+    };
+    response: {
+      /** Adapted learning activities to replace current plan */
+      adaptedActivities: Array<{
+        /** Activity identifier */
+        id: string;
+        /** Type of learning activity */
+        type: ActivityType;
+        /** Activity title */
+        title: string;
+        /** Estimated completion time in minutes */
+        estimatedMinutes: number;
+        /** Difficulty level */
+        difficulty: CEFRLevel;
+        /** Whether this is a new addition, modification, or removal */
+        changeType: 'added' | 'modified' | 'removed' | 'unchanged';
+      }>;
+      /** Detailed explanation of adaptation reasoning */
+      adaptationReasoning: string;
+      /** Estimated impact on learning timeline */
+      timelineImpact: {
+        /** Change in estimated completion time (days) */
+        daysDelta: number;
+        /** New estimated completion date */
+        newCompletionDate: string;
+      };
+      /** AI confidence in the adaptation (0-1) */
+      confidenceScore: number;
+      /** Recommended follow-up actions */
+      followUpRecommendations?: string[];
+    };
+  };
+
+  // TODO: Task 3.2.A - Keep existing GENERATE_CURRICULUM_PATH for backward compatibility
   GENERATE_CURRICULUM_PATH: {
     request: {
       /** Current user level */
@@ -350,3 +464,33 @@ export type AnyAIRequest = {
 export type AnyAIResponse = {
   [K in keyof AITaskPayloads]: AIResponse<K>;
 }[keyof AITaskPayloads];
+
+// =================================================================
+// CURRICULUM FEATURE TYPE DEFINITIONS
+// =================================================================
+
+/**
+ * Task 3.2.A.1: Activity types supported by the curriculum engine
+ * 
+ * Defines the different types of learning activities that can be generated
+ * and adapted by the AI curriculum system. Each type represents a distinct
+ * category of language learning with specific pedagogical objectives.
+ */
+export type ActivityType = 
+  | 'vocabulary'    // Word learning and expansion
+  | 'grammar'       // Language structure and rules
+  | 'conversation'  // Speaking and dialogue practice
+  | 'listening'     // Audio comprehension skills
+  | 'reading'       // Text comprehension and analysis
+  | 'writing'       // Written expression and composition
+  | 'pronunciation' // Speech articulation and phonetics
+  | 'culture';      // Cultural context and understanding
+
+/**
+ * Task 3.2.A.1: CEFR (Common European Framework of Reference) level definitions
+ * 
+ * Standardized language proficiency levels used throughout the curriculum system
+ * for difficulty assessment, content generation, and progress tracking.
+ * Ensures consistent skill level mapping across all AI-generated content.
+ */
+export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
