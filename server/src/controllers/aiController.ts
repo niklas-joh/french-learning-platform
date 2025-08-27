@@ -420,19 +420,7 @@ export const chatWithAI = async (req: Request, res: Response) => {
 // AI DASHBOARD CONTROLLERS - Placeholder implementations for testing
 // =================================================================
 
-export const getDailyPlan = async (req: Request, res: Response) => {
-  console.log(`[aiController] Placeholder: Firing getDailyPlan for user ${req.user?.userId}`);
-  res.status(200).json({
-    planId: `plan_${new Date().getTime()}`,
-    userId: req.user?.userId,
-    date: new Date().toISOString().split('T')[0],
-    goals: [
-      { goalId: 'goal_1', description: 'Complete one lesson on Subjunctive mood.', status: 'pending' },
-      { goalId: 'goal_2', description: 'Practice 10 vocabulary words.', status: 'pending' },
-    ],
-    recommendations: [],
-  });
-};
+// getDailyPlan moved to curriculum section - see line 599
 
 export const getRecommendations = async (req: Request, res: Response) => {
   console.log(`[aiController] Placeholder: Firing getRecommendations for user ${req.user?.userId}`);
