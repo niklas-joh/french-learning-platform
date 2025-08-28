@@ -21,6 +21,9 @@ Make sure to use a tool in your request.
 
 ## Second review
 
+ Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for for the referenced file. Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP), adhering to our '/Users/niklas/Documents/Coding/french-learning-platform/docs/development_docs/development_principles.md'.
+
+
 # AI Integration
 What are the detailed changes needed in these files, and are there other files that needs update (e.g. @/docs\development_docs\architecture\system_architecture.mermaid, @/docs\development_docs\architecture\database_schema.mermaid  or other high-level overview documents)? 
 
@@ -28,9 +31,9 @@ If the task require larger changes, break down the tasks into subtasks, updating
 
 ## Third and final review
 
-Can you criticise the approach in the current task or specified files, identifying flaws or ineffiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md . When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
+Can you criticise the approach in the current task or specified files, identifying flaws or inefficiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md . When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
 
-Now criticise your approach, identifying flaws or ineffiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md. When you find a better coding option, suggest this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
+Now criticise your approach, identifying flaws or inefficiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md. When you find a better coding option, suggest this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
 
 ## ACT MODE
 If you have found tasks for future implementation, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
