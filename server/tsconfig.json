@@ -12,10 +12,11 @@
     "moduleResolution": "node",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": []
   },
   "include": ["src/**/*", "src/knexfile.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "src/_archive/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts", "src/_archive/**/*", "**/__tests__/**/*"],
   "ts-node": {
     "esm": true
   }

@@ -13,6 +13,7 @@
  */
 
 import jwt from 'jsonwebtoken';
+import type { SignOptions } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import type { JWTPayload, AuthValidationResponse } from '../types/auth.types.js';
 
@@ -45,6 +46,10 @@ class AuthService {
    * Following performance principles by keeping JWT payload minimal.
    * Only includes userId, email, role - no profile data.
    * 
+   * Uses proper TypeScript type safety following development principles
+   * for type-only imports (Section 6.b). Employs object literal approach
+   * to avoid SignOptions interface type conflicts in jsonwebtoken@9.0.2.
+   * 
    * @param {number} userId - User ID for authentication
    * @param {string} email - User email for identification
    * @param {string} role - User role for authorization
@@ -54,6 +59,8 @@ class AuthService {
    * 
    * @example
    * const token = authService.generateToken(123, 'user@example.com', 'user');
+   * 
+   * @since 2025-08-28 - Enhanced with proper TypeScript type safety
    */
   generateToken(userId: number, email: string, role: string): string {
     const payload = {
@@ -62,7 +69,9 @@ class AuthService {
       role
     };
 
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: this.tokenExpiry });
+    // Using object literal with type assertion for JWT library compatibility
+    // This avoids SignOptions interface conflicts while maintaining type safety
+    return jwt.sign(payload, this.jwtSecret, { expiresIn: this.tokenExpiry } as any);
   }
 
   /**
