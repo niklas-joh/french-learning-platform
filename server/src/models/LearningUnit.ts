@@ -41,7 +41,7 @@ export type UnitAndLessonRow = {
   };
 
 export const getUnitsAndLessonsByPathId = async (pathId: number): Promise<UnitAndLessonRow[]> => {
-    const unitsAndLessonsRaw = await db('learning_units as lu')
+    const unitsAndLessonsRaw = await db('learningUnits as lu')
         .join('lessons as l', 'lu.id', '=', 'l.learningUnitId')
         .where('lu.learningPathId', pathId)
         .select(
