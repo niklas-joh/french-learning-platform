@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [navigate]);
 
   useEffect(() => {
-    const validateToken = async () => {
+    const validateTokenAndLoadUser = async () => {
       // Temporary development bypass - REMOVE AFTER TESTING
       if (allowTestAccess) {
         const mockUser: User = {
@@ -52,19 +52,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (token) {
         try {
-          // We optimistically trust the token. Let's fetch user data.
-          const profile = await authService.getProfile();
-          setUser(profile);
+          // Step 1: Validate authentication token (fast, minimal data)
+          // Uses /auth/me endpoint for authentication validation only
+          const isValid = await authService.validateToken();
+          
+          if (isValid) {
+            // Step 2: Load complete user profile data (separate concern)
+            // Uses /users/me endpoint for complete user profile
+            const profile = await authService.getUserProfile();
+            setUser(profile);
+          } else {
+            console.error("Token validation failed - invalid token");
+            handleLogout();
+          }
         } catch (error) {
-          console.error("Initial token validation failed:", error);
-          // The token is invalid, so we log out.
+          console.error("Authentication validation or profile loading failed:", error);
+          // The token is invalid or profile loading failed, so we log out
           handleLogout();
         }
       }
       setIsLoading(false);
     };
 
-    validateToken();
+    validateTokenAndLoadUser();
 
     // Only set up auth error listener when not in test mode
     if (!allowTestAccess) {

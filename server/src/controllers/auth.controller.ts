@@ -4,28 +4,19 @@
  * Handles registration, login, and authentication validation logic. Issues JWT tokens 
  * that are later consumed by the auth middleware. Follows Single Responsibility Principle
  * by focusing purely on authentication concerns (not user management).
+ * 
+ * Updated to use centralized authentication types and improved error handling.
+ * Follows development principles: type safety, performance optimization, and clean architecture.
+ * 
+ * @fileoverview Authentication controller with centralized types and comprehensive logging
+ * @since 2025-01-28 - Updated to use centralized auth types and remove duplicate declarations
  */
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import type { JWTPayload, AuthValidationResponse } from '../types/auth.types.js';
 import { getUserByEmail, createUser, getInternalUserByEmailWithPassword, UserApplicationData } from '../models/User.js';
 import { progressService } from '../services/progressService.js';
-
-/**
- * Type augmentation for Express Request to include user property.
- * The protect middleware attaches user data to req.user after successful JWT validation.
- */
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        userId: number;
-        email?: string;
-        role?: string;
-      };
-    }
-  }
-}
 
 /**
  * Registers a new user and returns a JWT token.
@@ -58,9 +49,15 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     // Initialize user progress
     await progressService.initializeUserProgress(createdUser.id);
 
-    // Generate JWT using data from UserApplicationData
+    // Generate minimal JWT (performance optimized - only authentication data)
+    const jwtPayload: Omit<JWTPayload, 'iat' | 'exp'> = {
+      userId: createdUser.id,
+      email: createdUser.email,
+      role: createdUser.role
+    };
+    
     const token = jwt.sign(
-      { userId: createdUser.id, email: createdUser.email, role: createdUser.role },
+      jwtPayload,
       process.env.JWT_SECRET || 'test_secret',
       { expiresIn: '24h' }
     );
@@ -183,15 +180,21 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       jwtSecretConfigured: !!(process.env.JWT_SECRET || 'test_secret')
     });
 
-    // Generate JWT with enhanced error handling
+    // Generate minimal JWT with enhanced error handling (performance optimized)
     let token: string;
     try {
+      const jwtPayload: Omit<JWTPayload, 'iat' | 'exp'> = {
+        userId: userForResponse.id,
+        email: userForResponse.email,
+        role: userForResponse.role
+      };
+      
       token = jwt.sign(
-        { userId: userForResponse.id, email: userForResponse.email, role: userForResponse.role },
+        jwtPayload,
         process.env.JWT_SECRET || 'test_secret',
         { expiresIn: '24h' }
       );
-      console.log('✅ JWT token generated successfully');
+      console.log('✅ Minimal JWT token generated successfully');
     } catch (jwtError) {
       const errorMessage = jwtError instanceof Error ? jwtError.message : String(jwtError);
       const errorStack = jwtError instanceof Error ? jwtError.stack : undefined;
@@ -250,13 +253,16 @@ export const login = async (req: Request, res: Response): Promise<void> => {
  * 
  * Performance optimized: No database calls needed since JWT validation is handled
  * by middleware. Returns data directly from the validated token payload.
+ * Uses centralized AuthValidationResponse type for consistency.
  * 
- * @param req - Authenticated request with user data attached by protect middleware
- * @param res - Express response object
- * @returns JSON response with authentication status and basic token information
+ * @param {Request} req - Authenticated request with user data attached by protect middleware
+ * @param {Response} res - Express response object
+ * @returns {void} JSON response with authentication status and basic token information
+ * 
+ * @throws {401} User not authenticated - if protect middleware failed to populate req.user
  * 
  * @example
- * Response format:
+ * Response format (AuthValidationResponse):
  * {
  *   "success": true,
  *   "userId": 123,
@@ -266,25 +272,32 @@ export const login = async (req: Request, res: Response): Promise<void> => {
  *   "message": "Authentication token is valid"
  * }
  * 
- * @since 2025-01-28 - Added to resolve frontend 404 errors for /auth/me endpoint
+ * @since 2025-01-28 - Updated to use centralized types and improved validation
  */
 export const validateToken = (req: Request, res: Response): void => {
   // At this point, the protect middleware has already validated the JWT token
-  // and attached the user data to req.user. No additional validation needed.
+  // and attached the minimal user data to req.user. No additional validation needed.
   
   // Safety check - this should not happen if protect middleware works correctly
   if (!req.user?.userId) {
+    console.error('validateToken called without user data:', {
+      hasUser: !!req.user,
+      timestamp: new Date().toISOString(),
+      userAgent: req.headers['user-agent']?.substring(0, 50)
+    });
     res.status(401).json({ message: 'User not authenticated' });
     return;
   }
   
-  // Return minimal authentication information only (following SRP)
-  res.json({
+  // Return minimal authentication information following centralized types
+  const response: AuthValidationResponse = {
     success: true,
     userId: req.user.userId,
-    email: req.user.email,
-    role: req.user.role,
+    email: req.user.email || '',
+    role: req.user.role || 'user',
     tokenValid: true,
     message: 'Authentication token is valid'
-  });
+  };
+  
+  res.json(response);
 };
