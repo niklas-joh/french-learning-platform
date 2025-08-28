@@ -46,11 +46,33 @@ export const authService = {
   },
 
   /**
-   * Fetches the current user's profile from the backend.
-   * This is used to validate an existing token and get user details.
-   * @returns A promise that resolves with the user's profile data.
+   * Validates the current authentication token and returns basic user information.
+   * 
+   * This method calls /auth/me which is optimized for authentication validation.
+   * It does NOT return full user profile data - use a separate getUserProfile method for that.
+   * 
+   * @returns A promise that resolves with basic user authentication data
+   * @since 2025-01-28 - Updated to use /auth/me for authentication validation (resolves 404 errors)
    */
   getProfile: async (): Promise<User> => {
+    const response = await api.get<any>('/auth/me');
+    
+    // Transform the auth validation response to match User interface expected by AuthContext
+    return {
+      id: response.data.userId,
+      email: response.data.email || '',
+      firstName: response.data.firstName || '',
+      lastName: response.data.lastName || '',
+      role: response.data.role || 'user'
+    };
+  },
+
+  /**
+   * Fetches the complete user profile from the backend.
+   * This should be used when full user profile data is needed (preferences, detailed info, etc.).
+   * @returns A promise that resolves with complete user profile data
+   */
+  getUserProfile: async (): Promise<User> => {
     const response = await api.get<User>('/users/me');
     return response.data;
   },
