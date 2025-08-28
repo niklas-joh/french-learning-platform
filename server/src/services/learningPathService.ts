@@ -375,28 +375,30 @@ async function gatherPerformanceData(userId: number): Promise<PerformanceDataPoi
   try {
     // Import services following established patterns
     const { AssessmentRepository } = await import('../repositories/assessmentRepository.js');
-    const { db } = await import('../config/db.js');
+    const db = await import('../config/db.js');
     
     // Use assessment repository directly for data retrieval
-    const assessmentRepo = new AssessmentRepository(db.default || db);
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const assessmentRepo = new AssessmentRepository(db.default);
     
-    // Get recent assessment results using established repository patterns
-    const recentAssessments = await assessmentRepo.getAssessmentsForUser(userId, 50, 0);
+    // Get recent assessment results using correct method signature (timeframeDays parameter)
+    const recentAssessments = await assessmentRepo.getAssessmentsForUser(userId, 30);
     
     // Transform assessment data to performance data points
     const performanceMap: Record<string, { scores: number[], attempts: Date[], difficulty?: string }> = {};
     
     recentAssessments.forEach(assessment => {
-      const skill = assessment.skillArea || assessment.responseType || 'general';
+      // Use assessmentType as skill area since skillArea and responseType don't exist in AssessmentResult
+      const skill = assessment.assessmentType || 'general';
       if (!performanceMap[skill]) {
         performanceMap[skill] = { scores: [], attempts: [] };
       }
       performanceMap[skill].scores.push(assessment.score);
-      performanceMap[skill].attempts.push(assessment.createdAt);
-      if (assessment.frenchLevel) {
-        performanceMap[skill].difficulty = assessment.frenchLevel;
+      // Use metadata.createdAt or current date as AssessmentResult doesn't have createdAt directly
+      const attemptDate = (assessment.metadata?.createdAt ? new Date(assessment.metadata.createdAt) : new Date());
+      performanceMap[skill].attempts.push(attemptDate);
+      // Use metadata.userLevel for difficulty if available
+      if (assessment.metadata?.userLevel) {
+        performanceMap[skill].difficulty = assessment.metadata.userLevel;
       }
     });
     

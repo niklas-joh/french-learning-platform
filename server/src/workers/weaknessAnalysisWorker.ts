@@ -49,7 +49,7 @@ export async function processWeaknessAnalysisJob(job: Job<WeaknessAnalysisJobDat
     // Step 2: Initialize services following dependency injection patterns
     const assessmentRepo = new AssessmentRepository(db);
     const promptEngine = new PromptTemplateEngine();
-    const analyticsService = new AssessmentAnalyticsService(db, logger);
+    const analyticsService = new AssessmentAnalyticsService(assessmentRepo, db, logger);
     const frenchUtils = new FrenchLanguageUtils();
     const openai = new OpenAI(aiConfig.openai);
 

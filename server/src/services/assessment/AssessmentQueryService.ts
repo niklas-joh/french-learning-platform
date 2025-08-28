@@ -92,7 +92,7 @@ export class AssessmentQueryService {
       // Start with base query using existing model pattern
       let query = AIGeneratedContent.query()
         .where('userId', userId)
-        .where('type', 'assessment_result')
+        .where('type', 'personalized_exercise')
         .where('status', 'completed')
         .orderBy('createdAt', 'desc');
 
@@ -355,7 +355,7 @@ export class AssessmentQueryService {
       // Use count query for efficiency instead of fetching all records
       let query = AIGeneratedContent.query()
         .where('userId', userId)
-        .where('type', 'assessment_result')
+        .where('type', 'personalized_exercise')
         .where('status', 'completed');
 
       // Apply timeframe filter if needed
@@ -366,8 +366,8 @@ export class AssessmentQueryService {
         query = query.where('createdAt', '>=', cutoffDate);
       }
 
-      const countResult = await query.count('* as count').first();
-      const count = parseInt(countResult?.count as string) || 0;
+      const countResult = await query.count('* as count').first() as { count: string | number } | undefined;
+      const count = parseInt(String(countResult?.count || 0)) || 0;
 
       return count >= minAssessments;
     } catch (error) {

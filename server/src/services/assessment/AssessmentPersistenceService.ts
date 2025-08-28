@@ -124,7 +124,7 @@ export class AssessmentPersistenceService {
    */
   async saveAssessmentResult(
     result: AssessmentResult,
-    context: AssessmentContext
+    context: AssessmentContext & { userResponse?: string; expectedAnswer?: string; assessmentType?: string; metadata?: any }
   ): Promise<SaveResult> {
     try {
       if (this.config.enableLogging) {
@@ -136,9 +136,10 @@ export class AssessmentPersistenceService {
       }
 
       // Create assessment record using existing AIGeneratedContent model
+      // Using 'personalized_exercise' as the closest matching type for assessment results
       const assessmentRecord = await AIGeneratedContent.query().insert({
         userId: context.userId,
-        type: 'assessment_result',
+        type: 'personalized_exercise',
         status: 'completed',
         requestPayload: {
           userResponse: context.userResponse || '',
@@ -238,7 +239,7 @@ export class AssessmentPersistenceService {
     try {
       const assessment = await AIGeneratedContent.query()
         .findById(assessmentId)
-        .where('type', 'assessment_result');
+        .where('type', 'personalized_exercise');
 
       return assessment || null;
 
@@ -267,7 +268,7 @@ export class AssessmentPersistenceService {
     try {
       let query = AIGeneratedContent.query()
         .where('userId', userId)
-        .where('type', 'assessment_result')
+        .where('type', 'personalized_exercise')
         .where('status', 'completed')
         .orderBy('createdAt', 'desc')
         .limit(1);
@@ -311,7 +312,7 @@ export class AssessmentPersistenceService {
     try {
       let query = AIGeneratedContent.query()
         .where('userId', userId)
-        .where('type', 'assessment_result')
+        .where('type', 'personalized_exercise')
         .where('status', 'completed')
         .whereJsonSupersetOf('metadata', { exerciseId });
 
@@ -319,8 +320,8 @@ export class AssessmentPersistenceService {
         query = query.whereJsonSupersetOf('metadata', { batchIndex });
       }
 
-      const count = await query.count('* as count').first();
-      return (parseInt(count?.count as string) || 0) > 0;
+      const countResult = await query.count('* as count').first() as { count: string | number } | undefined;
+      return (parseInt(String(countResult?.count || 0)) || 0) > 0;
 
     } catch (error) {
       console.error('Error checking assessment existence:', error);
@@ -424,7 +425,7 @@ export class AssessmentPersistenceService {
    * Extracts topics from assessment context.
    * @private
    */
-  private extractTopics(context: AssessmentContext): string[] {
+  private extractTopics(context: AssessmentContext & { metadata?: any }): string[] {
     const topics: string[] = [];
     
     // Add skill area as a topic
@@ -445,7 +446,7 @@ export class AssessmentPersistenceService {
    * Extracts focus areas from assessment context.
    * @private
    */
-  private extractFocusAreas(context: AssessmentContext): string[] {
+  private extractFocusAreas(context: AssessmentContext & { assessmentType?: string; metadata?: any }): string[] {
     const focusAreas: string[] = [];
 
     // Add assessment type as focus area
@@ -511,13 +512,13 @@ export class AssessmentPersistenceService {
       // Count recent high-scoring assessments for streak calculation
       const recentHighScores = await AIGeneratedContent.query()
         .where('userId', userId)
-        .where('type', 'assessment_result')
+        .where('type', 'personalized_exercise')
         .whereRaw('CAST(JSON_UNQUOTE(JSON_EXTRACT(generatedData, "$.score")) AS DECIMAL(5,2)) >= 80')
         .where('createdAt', '>=', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))
-        .count()
-        .first();
+        .count('* as count')
+        .first() as { count: string | number } | undefined;
 
-      const streakCount = parseInt(recentHighScores?.count as string) || 0;
+      const streakCount = parseInt(String(recentHighScores?.count || 0)) || 0;
       
       if (streakCount >= 5) {
         // Trigger achievement or notification
