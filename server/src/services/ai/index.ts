@@ -211,7 +211,8 @@ export const aiServiceFactory = {
     return () => {
       if (!instance) {
         const assessmentEngine = aiServiceFactory.getAIAssessmentEngine();
-        instance = new BatchAssessmentProcessor(assessmentEngine);
+        const analyticsService = aiServiceFactory.getAssessmentAnalyticsService();
+        instance = new BatchAssessmentProcessor(assessmentEngine, analyticsService);
       }
       return instance;
     };

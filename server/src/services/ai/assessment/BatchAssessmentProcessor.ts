@@ -6,7 +6,15 @@ import {
   AssessmentResult,
   ExerciseBatch,
   BatchProcessingOptions,
-  BatchProgressStatus
+  BatchProgressStatus,
+  BatchStatus,
+  ExerciseAnalytics,
+  ExerciseFeedback,
+  TypePerformance,
+  DifficultyAnalysis,
+  TimeMetrics,
+  FeedbackTone,
+  StudyPlanSuggestion
 } from '../../../types/Assessment.js';
 import { IBatchAssessmentProcessor } from './interfaces/IBatchAssessmentProcessor.js';
 import { DatabaseJobQueueService } from '../../contentGeneration/DatabaseJobQueueService.js';
@@ -239,14 +247,14 @@ export class BatchAssessmentProcessor implements IBatchAssessmentProcessor {
         const chunkNumber = i + chunkIndex + 1;
         
         if (result.status === 'fulfilled') {
-          allResults.push(...result.value.results);
-          allFailures.push(...result.value.failures);
+          allResults.push(...(result.value.results || []));
+          allFailures.push(...(result.value.failures || []));
           completedItems += currentChunks[chunkIndex].length;
           
           this.logger.debug(`Chunk ${chunkNumber} completed successfully`, {
             chunkSize: currentChunks[chunkIndex].length,
-            successfulResults: result.value.results.length,
-            failures: result.value.failures.length
+            successfulResults: (result.value.results || []).length,
+            failures: (result.value.failures || []).length
           });
         } else {
           // Handle chunk failure - mark all items in chunk as failed
@@ -302,13 +310,61 @@ export class BatchAssessmentProcessor implements IBatchAssessmentProcessor {
     });
 
     return {
+      // New BatchAssessmentResult required fields
+      batchId: `chunk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       exerciseId: batchRequest.exerciseId || 'unknown',
       lessonId: batchRequest.lessonId || 'unknown',
-      overallScore,
-      accuracy,
-      totalQuestions: requests.length,
+      totalAssessments: requests.length,
       successfulAssessments: allResults.length,
       failedAssessments: allFailures.length,
+      overallScore,
+      processingTimeMs: processingTime,
+      individualResults: allResults,
+      exerciseAnalytics: {
+        totalQuestions: requests.length,
+        correctAnswers: allResults.filter(r => r.isCorrect).length,
+        accuracy,
+        averageScore: allResults.length > 0 ? allResults.reduce((sum, r) => sum + r.score, 0) / allResults.length : 0,
+        averageConfidence: allResults.length > 0 ? allResults.reduce((sum, r) => sum + (r.confidence === 'high' ? 3 : r.confidence === 'medium' ? 2 : 1), 0) / allResults.length : 0,
+        performanceByType: {},
+        difficultyAnalysis: {
+          easy: { count: 0, percentage: 0 },
+          medium: { count: 0, percentage: 0 },
+          hard: { count: 0, percentage: 0 },
+          overallDifficulty: 'appropriate' as const
+        },
+        timeMetrics: { averageTime: 0, minTime: 0, maxTime: 0, totalTime: 0 },
+        skillAreas: [],
+        recommendations: []
+      },
+      exerciseFeedback: {
+        overallFeedback: {
+          message: `Processed ${requests.length} assessments with ${accuracy.toFixed(1)}% accuracy`,
+          tone: accuracy >= 80 ? 'encouraging' : 'supportive' as FeedbackTone,
+          score: overallScore,
+          accuracy
+        },
+        strengthAreas: [],
+        improvementAreas: [],
+        specificSuggestions: [],
+        nextSteps: [],
+        motivationalMessage: 'Keep up the great work!',
+        studyPlan: {
+          immediateAction: 'Review your results',
+          weeklyGoal: 'Continue practicing',
+          recommendedPracticeTime: 15,
+          suggestedResources: []
+        }
+      },
+      errors: allFailures.map(f => ({ message: f.error, stack: undefined })),
+      metadata: {
+        concurrency: 1,
+        chunkCount: totalChunks,
+        averageAssessmentTime: allResults.length > 0 ? processingTime / allResults.length : 0
+      },
+      // Legacy fields for backward compatibility
+      accuracy,
+      totalQuestions: requests.length,
       results: allResults,
       failures: allFailures,
       batchFeedback,
@@ -639,7 +695,7 @@ export class BatchAssessmentProcessor implements IBatchAssessmentProcessor {
       // Create assessment batch job using existing job queue infrastructure
       const jobData = {
         userId: batch.exerciseContext.userId,
-        type: 'BATCH_ASSESSMENT', // New job type for assessment batches
+        type: 'personalized_exercise' as const, // Use existing ContentType value
         payload: {
           batch,
           options: {
@@ -675,7 +731,7 @@ export class BatchAssessmentProcessor implements IBatchAssessmentProcessor {
           requestCount: batch.assessmentRequests.length
         }
       });
-      throw new Error(`Failed to queue batch assessment job: ${error.message}`);
+      throw new Error(`Failed to queue batch assessment job: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
@@ -744,7 +800,7 @@ export class BatchAssessmentProcessor implements IBatchAssessmentProcessor {
 
     } catch (error) {
       this.logger.error('Failed to retrieve batch status', { error, batchId });
-      throw new Error(`Failed to retrieve batch status: ${error.message}`);
+      throw new Error(`Failed to retrieve batch status: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 

@@ -4,8 +4,12 @@
  * Separate configurations are provided for the development and test
  * environments. Tests run against an in-memory SQLite database to avoid
  * touching the developer's local data.
+ * 
+ * @file Enhanced with proper TypeScript type safety following development principles
+ * @version 2.0 - Fixed Knex namespace type usage for ESM compliance
  */
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
@@ -22,7 +26,11 @@ const migrationsDirectory = path.join(projectRoot, 'database', 'migrations');
 console.log('[knexfile.ts] projectRoot:', projectRoot);
 console.log('[knexfile.ts] Resolved migrations directory:', migrationsDirectory);
 
-const config: { [key: string]: Knex.Config } = {
+/**
+ * Knex configuration object with proper TypeScript type safety
+ * Uses KnexTypes.Config for type-only import as per development principles
+ */
+const config: { [key: string]: KnexTypes.Config } = {
   development: {
     client: 'sqlite3',
     connection: {

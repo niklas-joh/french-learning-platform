@@ -1,5 +1,10 @@
 import db from '../config/db.js';
-import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
+
+/**
+ * @file UserLessonProgress model with proper TypeScript type safety
+ * @version 2.0 - Fixed Knex namespace type usage for ESM compliance
+ */
 
 // Shared type for lesson statuses
 export type LessonStatus = 'locked' | 'available' | 'in-progress' | 'completed';
@@ -55,7 +60,7 @@ export const startLesson = async (userId: number, lessonId: number): Promise<Use
     return newProgress;
 };
 
-export const completeLesson = async (userId: number, lessonId: number, trx: Knex.Transaction): Promise<UserLessonProgress> => {
+export const completeLesson = async (userId: number, lessonId: number, trx: KnexTypes.Transaction): Promise<UserLessonProgress> => {
     const progressToUpdate = await trx('userLessonProgress')
         .where({ userId, lessonId })
         .first();

@@ -1,4 +1,5 @@
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import { createHash } from 'crypto';
 import { AssessmentRepository } from '../../../repositories/assessmentRepository.js';
 import { ICacheService } from '../../common/ICacheService.js';
@@ -23,7 +24,7 @@ export class AIAssessmentEngine {
    * @param {ILogger} [logger] Optional logger instance.
    */
   constructor(
-    private readonly db: Knex,
+    private readonly db: KnexTypes,
     private readonly assessmentRepo: AssessmentRepository,
     private readonly cache: ICacheService,
     private readonly strategyFactory: AssessmentStrategyFactory,
@@ -184,13 +185,67 @@ export class AIAssessmentEngine {
       });
       
       return {
+        // Required fields
+        batchId: `batch_${Date.now()}_${batchRequest.userId}`,
         exerciseId: exerciseId || 'unknown',
         lessonId: lessonId || 'unknown',
-        overallScore,
-        accuracy,
-        totalQuestions: requests.length,
+        totalAssessments: requests.length,
         successfulAssessments: successfulResults.length,
         failedAssessments: failedResults.length,
+        overallScore,
+        processingTimeMs: processingTime,
+        individualResults: successfulResults,
+        exerciseAnalytics: {
+          totalQuestions: requests.length,
+          correctAnswers: successfulResults.filter(r => r.isCorrect).length,
+          accuracy,
+          averageScore: overallScore,
+          averageConfidence: successfulResults.length > 0 ? 
+            successfulResults.reduce((sum, r) => sum + (r.confidence === 'high' ? 3 : r.confidence === 'medium' ? 2 : 1), 0) / successfulResults.length : 1,
+          performanceByType: {},
+          difficultyAnalysis: {
+            easy: { count: 0, percentage: 0 },
+            medium: { count: requests.length, percentage: 100 },
+            hard: { count: 0, percentage: 0 },
+            overallDifficulty: 'appropriate' as const
+          },
+          timeMetrics: {
+            averageTime: processingTime / requests.length,
+            minTime: 0,
+            maxTime: processingTime,
+            totalTime: processingTime
+          },
+          skillAreas: [...new Set(requests.map(r => r.context.skillArea))],
+          recommendations: []
+        },
+        exerciseFeedback: {
+          overallFeedback: {
+            message: batchFeedback.message,
+            tone: batchFeedback.tone,
+            score: overallScore,
+            accuracy
+          },
+          strengthAreas: [],
+          improvementAreas: [],
+          specificSuggestions: batchFeedback.suggestions || [],
+          nextSteps: [],
+          motivationalMessage: batchFeedback.encouragement || '',
+          studyPlan: {
+            immediateAction: 'Continue practicing',
+            weeklyGoal: 'Complete daily exercises',
+            recommendedPracticeTime: 20,
+            suggestedResources: []
+          }
+        },
+        errors: failedResults.map(f => ({ message: f.error })),
+        metadata: {
+          concurrency: 1,
+          chunkCount: 1,
+          averageAssessmentTime: processingTime / requests.length
+        },
+        // Legacy fields for backward compatibility
+        accuracy,
+        totalQuestions: requests.length,
         results: successfulResults,
         failures: failedResults,
         batchFeedback,
@@ -266,13 +321,66 @@ export class AIAssessmentEngine {
     processingTime: number
   ): BatchAssessmentResult {
     return {
+      // Required fields
+      batchId: `batch_error_${Date.now()}_${batchRequest.userId}`,
       exerciseId: batchRequest.exerciseId || 'unknown',
       lessonId: batchRequest.lessonId || 'unknown',
-      overallScore: 0,
-      accuracy: 0,
-      totalQuestions: batchRequest.requests.length,
+      totalAssessments: batchRequest.requests.length,
       successfulAssessments: 0,
       failedAssessments: batchRequest.requests.length,
+      overallScore: 0,
+      processingTimeMs: processingTime,
+      individualResults: [],
+      exerciseAnalytics: {
+        totalQuestions: batchRequest.requests.length,
+        correctAnswers: 0,
+        accuracy: 0,
+        averageScore: 0,
+        averageConfidence: 1,
+        performanceByType: {},
+        difficultyAnalysis: {
+          easy: { count: 0, percentage: 0 },
+          medium: { count: batchRequest.requests.length, percentage: 100 },
+          hard: { count: 0, percentage: 0 },
+          overallDifficulty: 'appropriate' as const
+        },
+        timeMetrics: {
+          averageTime: 0,
+          minTime: 0,
+          maxTime: 0,
+          totalTime: processingTime
+        },
+        skillAreas: [...new Set(batchRequest.requests.map(r => r.context.skillArea))],
+        recommendations: ['Please try again later']
+      },
+      exerciseFeedback: {
+        overallFeedback: {
+          message: 'Unable to assess this exercise right now. Please try again.',
+          tone: 'neutral' as const,
+          score: 0,
+          accuracy: 0
+        },
+        strengthAreas: [],
+        improvementAreas: [],
+        specificSuggestions: ['Check your internet connection', 'Try restarting the exercise'],
+        nextSteps: [],
+        motivationalMessage: 'Technical difficulties happen. Please try again!',
+        studyPlan: {
+          immediateAction: 'Try again later',
+          weeklyGoal: 'Continue with regular practice',
+          recommendedPracticeTime: 20,
+          suggestedResources: []
+        }
+      },
+      errors: [{ message: error.message, stack: error.stack }],
+      metadata: {
+        concurrency: 1,
+        chunkCount: 1,
+        averageAssessmentTime: 0
+      },
+      // Legacy fields for backward compatibility
+      accuracy: 0,
+      totalQuestions: batchRequest.requests.length,
       results: [],
       failures: batchRequest.requests.map(req => ({
         request: req,

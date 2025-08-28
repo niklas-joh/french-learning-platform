@@ -3,7 +3,7 @@ import { AIOrchestrator } from '../services/ai/AIOrchestrator.js';
 import { AssessmentRequest, BatchAssessmentRequest, AssessmentResult } from '../types/Assessment.js';
 import { AssessmentRepository } from '../repositories/assessmentRepository.js';
 import { BatchAssessmentProcessor } from '../services/ai/assessment/BatchAssessmentProcessor.js';
-import { AssessmentAnalyticsService } from '../services/assessment/AssessmentAnalyticsService.js';
+import { AssessmentAnalyticsService } from '../services/ai/assessment/AssessmentAnalyticsService.js';
 import { assessmentServiceFactory } from '../services/assessment/assessmentServiceFactory.js';
 import db from '../config/db.js';
 import { enqueueWeaknessAnalysis } from '../workers/weaknessAnalysisWorker.js';
@@ -239,9 +239,10 @@ export class AssessmentController {
       
       // 3. PERFORMANCE: Use pre-initialized singleton services
       const result = await this.batchProcessor.processBatch({
-        assessmentRequests: validatedRequest.requests.map(req => ({
-          ...req,
-          userId: req.user!.userId // Override with authenticated user ID
+        assessmentRequests: validatedRequest.requests.map(requestItem => ({
+          ...requestItem,
+          userId: req.user!.userId, // Override with authenticated user ID
+          expectedAnswer: requestItem.expectedAnswer // Ensure required field is present
         })),
         exerciseContext: {
           exerciseId: validatedRequest.exerciseId,
@@ -283,14 +284,7 @@ export class AssessmentController {
       });
 
       // 3. PERFORMANCE: Use singleton analytics service with caching
-      const analytics = await this.analyticsService.getUserAnalytics(
-        req.user.userId,
-        queryParams.timeframe,
-        {
-          skillArea: queryParams.skillArea,
-          includeDetails: queryParams.includeDetails
-        }
-      );
+      const analytics = await this.analyticsService.getAssessmentAnalytics(req.user.userId);
 
       // 4. Consistent response format with metadata
       res.status(200).json({
@@ -325,26 +319,25 @@ export class AssessmentController {
       // 2. Validate query parameters with pagination
       const queryParams = HistoryRequestSchema.parse(req.query);
 
-      // 3. PERFORMANCE: Use repository with optimized queries
-      const history = await this.assessmentRepo.getAssessmentHistory(
+      // 3. PERFORMANCE: Use analytics service with optimized queries
+      const history = await this.analyticsService.getAssessmentHistory(
         req.user.userId,
         {
-          page: queryParams.page,
           limit: queryParams.limit,
-          skillArea: queryParams.skillArea,
-          timeframe: queryParams.timeframe
+          offset: (queryParams.page - 1) * queryParams.limit,
+          skillArea: queryParams.skillArea
         }
       );
 
       // 4. Paginated response format
       res.status(200).json({
         success: true,
-        data: history.results,
+        data: history,
         pagination: {
           page: queryParams.page,
           limit: queryParams.limit,
-          total: history.total,
-          hasMore: history.hasMore
+          total: history.length,
+          hasMore: history.length === queryParams.limit
         },
         message: 'Assessment history retrieved successfully'
       });

@@ -1,5 +1,6 @@
 import { AssessmentRepository } from '../../../repositories/assessmentRepository.js';
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import { 
   AssessmentRequest, 
   AssessmentResult, 
@@ -92,7 +93,7 @@ export class AssessmentAnalyticsService {
    */
   constructor(
     private readonly assessmentRepository: AssessmentRepository,
-    private readonly db: Knex,
+    private readonly db: KnexTypes,
     logger?: ILogger
   ) {
     this.logger = logger || createLogger('AssessmentAnalyticsService');

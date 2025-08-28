@@ -1,4 +1,5 @@
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import { IJobQueueService, JobStatus } from './interfaces';
 import { ContentRequest, GeneratedContent } from '../../types/Content';
 import { ILogger } from '../../types/ILogger';
@@ -15,7 +16,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @param {Knex} knex - The Knex instance for database connectivity.
    * @param {ILogger} logger - The logger instance for logging messages.
    */
-  constructor(private knex: Knex, private logger: ILogger) {
+  constructor(private knex: KnexTypes, private logger: ILogger) {
     this.logger.info('DatabaseJobQueueService initialized.');
   }
 
@@ -155,7 +156,7 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @returns The job to be processed, or null if no jobs are available.
    */
   async getNextJob(): Promise<{ id: string; payload: ContentRequest } | null> {
-    const job = await this.knex.transaction(async (trx: Knex.Transaction) => {
+    const job = await this.knex.transaction(async (trx: KnexTypes.Transaction) => {
       const nextJob = await AiGenerationJobsModel.query(trx as any)
         .where({ status: 'queued' })
         .orderBy('createdAt', 'asc')

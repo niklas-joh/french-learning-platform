@@ -1,4 +1,5 @@
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import { GradingResult, AssessmentResult, ConfidenceLevel } from '../types/Assessment.js';
 
 /**
@@ -18,24 +19,25 @@ interface WeaknessAnalysisResult {
 /**
  * @class AssessmentRepository
  * @description Handles all database operations related to assessments, grading, and analysis.
+ * Enhanced with proper TypeScript type safety following development principles.
  */
 export class AssessmentRepository {
-  private db: Knex;
+  private db: KnexTypes;
 
   /**
    * @constructor
-   * @param {Knex} db - The Knex database instance.
+   * @param {KnexTypes} db - The Knex database instance.
    */
-  constructor(db: Knex) {
+  constructor(db: KnexTypes) {
     this.db = db;
   }
 
   /**
    * Returns a new instance of the repository that is bound to a specific database transaction.
-   * @param {Knex.Transaction} trx - The Knex transaction object.
+   * @param {KnexTypes.Transaction} trx - The Knex transaction object.
    * @returns {AssessmentRepository} A new repository instance with the transaction context.
    */
-  withTransaction(trx: Knex.Transaction): AssessmentRepository {
+  withTransaction(trx: KnexTypes.Transaction): AssessmentRepository {
     return new AssessmentRepository(trx);
   }
 
@@ -123,8 +125,50 @@ export class AssessmentRepository {
       .where('userAssessments.createdAt', '>=', cutoffDate)
       .orderBy('userAssessments.createdAt', 'desc');
 
-    // Transform raw results to AssessmentResult format
-    return rawResults.map(row => ({
+    // Transform raw results to AssessmentResult format with proper typing
+    return rawResults.map((row: any) => ({
+      userResponse: row.userResponse,
+      isCorrect: row.isCorrect,
+      score: row.score,
+      feedback: typeof row.feedback === 'string' ? JSON.parse(row.feedback) : row.feedback,
+      confidence: row.confidence as ConfidenceLevel,
+      assessmentType: (row.assessmentType || 'unknown') as any,
+      metadata: row.metadata ? (typeof row.metadata === 'string' ? JSON.parse(row.metadata) : row.metadata) : undefined,
+      processingTime: undefined, // Not stored in current schema
+      assessmentTypeId: undefined // Will be resolved from assessmentType if needed
+    }));
+  }
+
+  /**
+   * Retrieves assessment history for a user with pagination support.
+   * Used by assessment controller for historical analysis.
+   * @param {number} userId - The ID of the user.
+   * @param {number} limit - Maximum number of assessments to retrieve.
+   * @param {number} offset - Number of assessments to skip for pagination.
+   * @returns {Promise<AssessmentResult[]>} Array of historical assessment results.
+   */
+  async getAssessmentHistory(userId: number, limit: number = 50, offset: number = 0): Promise<AssessmentResult[]> {
+    const rawResults = await this.db('userAssessments')
+      .join('userContentCompletions', 'userAssessments.userContentCompletionId', 'userContentCompletions.id')
+      .leftJoin('assessmentTypes', 'userAssessments.assessmentTypeId', 'assessmentTypes.id')
+      .select(
+        'userAssessments.userResponse',
+        'userAssessments.isCorrect',
+        'userAssessments.score',
+        'userAssessments.feedback',
+        'userAssessments.confidence',
+        'userAssessments.metadata',
+        'userAssessments.createdAt',
+        'assessmentTypes.name as assessmentType',
+        'userContentCompletions.contentId'
+      )
+      .where('userAssessments.userId', userId)
+      .orderBy('userAssessments.createdAt', 'desc')
+      .limit(limit)
+      .offset(offset);
+
+    // Transform raw results to AssessmentResult format with proper typing
+    return rawResults.map((row: any) => ({
       userResponse: row.userResponse,
       isCorrect: row.isCorrect,
       score: row.score,

@@ -330,7 +330,29 @@ export class AssessmentServiceFactory {
         const promptEngine = new PromptTemplateEngine();
         const openai = new OpenAI(aiConfig.openai);
         const strategyFactory = new AssessmentStrategyFactory(openai, promptEngine, logger);
-        const assessmentEngine = new AIAssessmentEngine(db, strategyFactory, logger);
+        const assessmentRepo = new AssessmentRepository(db);
+        
+        // Create a simple cache service - we'll use a Map for basic caching
+        const cacheService = {
+          async get<T>(key: string): Promise<T | null> {
+            // Simple in-memory cache implementation
+            return null; // For now, always return null (no cache)
+          },
+          async set<T>(key: string, value: T, ttl: number): Promise<void> {
+            // Simple in-memory cache implementation
+            // For now, do nothing
+          },
+          async del(key: string): Promise<void> {
+            // Simple in-memory cache implementation
+            // For now, do nothing
+          },
+          async clear(pattern?: string): Promise<void> {
+            // Simple in-memory cache implementation
+            // For now, do nothing
+          }
+        };
+        
+        const assessmentEngine = new AIAssessmentEngine(db, assessmentRepo, cacheService, strategyFactory, logger);
         const analyticsService = AssessmentServiceFactory.createAnalyticsService();
         instance = new BatchAssessmentProcessor(
           assessmentEngine,

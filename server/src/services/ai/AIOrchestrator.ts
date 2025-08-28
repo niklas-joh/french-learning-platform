@@ -18,6 +18,7 @@ import { AIAssessmentEngine } from './assessment/aiAssessmentEngine';
 import { AssessmentStrategyFactory } from './assessment/assessmentStrategyFactory';
 import { AssessmentRepository } from '../../repositories/assessmentRepository';
 import Knex from 'knex';
+import type { Knex as KnexTypes } from 'knex';
 import { OpenAI } from 'openai';
 
 /**
@@ -31,7 +32,7 @@ export class AIOrchestrator {
 
   constructor(
     private readonly config: OrchestrationConfig,
-    private readonly db: Knex, // Added for AssessmentRepository
+    private readonly db: KnexTypes, // Added for AssessmentRepository
     private readonly openai: OpenAI, // Added for AIAssessmentEngine
     private readonly cacheService: ICacheService,
     private readonly rateLimitService: RateLimitService,
@@ -205,7 +206,7 @@ export class AIOrchestrator {
 
       case 'ADAPT_LEARNING_PATH':
         const adaptPayload = payload as any;
-        const averageScore = adaptPayload.performanceData.reduce((sum, p) => sum + p.score, 0) / adaptPayload.performanceData.length;
+        const averageScore = adaptPayload.performanceData.reduce((sum: number, p: any) => sum + p.score, 0) / adaptPayload.performanceData.length;
         const needsRemediation = averageScore < 70;
         
         return {
