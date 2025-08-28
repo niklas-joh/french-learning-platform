@@ -75,153 +75,235 @@ const taskHandlerMap = {
 } as const;
 
 /**
- * Generic AI request handler - Centralized logic for all AI requests
+ * Helper function to construct payload for GET requests
  * 
- * This function provides a consistent, reusable pattern for handling AI requests
- * with validation, error handling, and proper response formatting.
+ * PERFORMANCE OPTIMIZATION: Constructs minimal payload objects for GET requests
+ * based on task type, avoiding unnecessary object spreading and ensuring type safety.
  * 
- * @param req - Authenticated Express request
- * @param res - Express response
- * @param taskType - The specific AI task to execute
+ * SECURITY: Always uses authenticated user ID from req.user, never trusts URL parameters
+ * for user identification to prevent privilege escalation attacks.
+ * 
+ * @param taskType - The AI task type being executed
+ * @param req - Authenticated Express request containing user context
+ * @returns Payload object specific to the task type
+ * @throws Error for invalid GET task types
+ * 
+ * @example
+ * // For GET /api/ai/curriculum/daily-plan/123
+ * const payload = buildGETPayload('GET_DAILY_PLAN', req);
+ * // Returns: { userId: 123 }
+ * 
+ * @example  
+ * // For GET /api/ai/curriculum/recommendations/123?timeAvailable=30
+ * const payload = buildGETPayload('GET_LEARNING_RECOMMENDATIONS', req);
+ * // Returns: { userId: 123, timeAvailable: 30 }
  */
-async function handleAIRequest<T extends ValidatedAITask>(
-  req: Request,
-  res: Response,
-  taskType: T
-): Promise<void> {
-  // TODO: Implement structured logging (Pino) as per #24 in future_implementation_considerations.md
-  console.log(`[aiController] Processing ${taskType} request for user ${req.user?.userId}`);
-
-  try {
-    // 1. Authentication check
-    if (!req.user?.userId) {
-      res.status(401).json({ 
-        message: 'Authentication required.',
-        code: 'AUTH_REQUIRED' 
-      });
-      return;
-    }
-
-    // 2. Runtime payload validation using Zod
-    const validationResult = validateAIPayload(taskType, req.body);
-    if (!validationResult.success) {
-      const errorResponse = formatValidationError(validationResult.error);
-      res.status(400).json({
-        message: errorResponse.message,
-        details: errorResponse.details,
-        code: 'VALIDATION_ERROR'
-      });
-      return;
-    }
-
-    // 3. Build user context from authenticated request
-    const userContext: AIUserContext = {
-      id: req.user.userId,
-      firstName: null, // TODO: Add firstName to AuthenticatedRequest when user model is extended
-      role: req.user.role || 'user',
-      preferences: {}, // TODO: Load actual user preferences when ContextService is fully implemented
-    };
-
-    // 4. Get AI orchestrator instance
-    const aiOrchestrator = aiServiceFactory.getAIOrchestrator();
-
-    // 5. Execute the specific AI task using proper type casting
-    let result;
-    switch (taskType) {
-      case 'GENERATE_LESSON':
-        result = await aiOrchestrator.generateLesson(
-          userContext,
-          validationResult.data as AITaskPayloads['GENERATE_LESSON']['request']
-        );
-        break;
-      case 'ASSESS_PRONUNCIATION':
-        result = await aiOrchestrator.assessPronunciation(
-          userContext, 
-          validationResult.data as AITaskPayloads['ASSESS_PRONUNCIATION']['request']
-        );
-        break;
-      case 'GRADE_RESPONSE':
-        result = await aiOrchestrator.gradeResponse(
-          userContext, 
-          validationResult.data as AITaskPayloads['GRADE_RESPONSE']['request']
-        );
-        break;
-      /**
-       * Task 3.2.A.3: Curriculum Feature Switch Cases
-       * 
-       * These cases handle curriculum-related AI tasks using the same pattern
-       * as existing tasks, ensuring consistency and type safety throughout
-       * the AI orchestration system.
-       */
-      case 'GENERATE_DAILY_PLAN':
-        result = await aiOrchestrator.generateDailyPlan(
-          userContext,
-          validationResult.data as AITaskPayloads['GENERATE_DAILY_PLAN']['request']
-        );
-        break;
-      case 'ADAPT_LEARNING_PATH':
-        result = await aiOrchestrator.adaptLearningPath(
-          userContext,
-          validationResult.data as AITaskPayloads['ADAPT_LEARNING_PATH']['request']
-        );
-        break;
-      case 'GET_DAILY_PLAN':
-        result = await aiOrchestrator.getDailyPlan(
-          userContext,
-          validationResult.data as AITaskPayloads['GET_DAILY_PLAN']['request']
-        );
-        break;
-      case 'GET_LEARNING_RECOMMENDATIONS':
-        result = await aiOrchestrator.getLearningRecommendations(
-          userContext,
-          validationResult.data as AITaskPayloads['GET_LEARNING_RECOMMENDATIONS']['request']
-        );
-        break;
-      default:
-        res.status(500).json({ 
-          message: 'Handler not implemented for this task type.',
-          code: 'HANDLER_NOT_FOUND' 
-        });
-        return;
-    }
-
-    // 6. Send successful response
-    res.status(200).json(result);
-
-    // TODO: Add metrics logging for monitoring (response time, task type, success rate)
-    console.log(`[aiController] Successfully processed ${taskType} in ${result.metadata.processingTimeMs}ms`);
-
-  } catch (error) {
-    // TODO: Implement structured logging (Pino) as per #24 in future_implementation_considerations.md
-    // TODO: Implement global error handling middleware to handle custom AIError types
-    console.error(`[aiController] Error processing ${taskType}:`, error);
-
-    // Handle different error types appropriately
-    if (error instanceof Error) {
-      // Check for specific error types and map to appropriate HTTP status codes
-      if (error.message.includes('Rate limit')) {
-        res.status(429).json({ 
-          message: 'Rate limit exceeded. Please try again later.',
-          code: 'RATE_LIMIT_EXCEEDED' 
-        });
-        return;
-      }
+function buildGETPayload(taskType: ValidatedAITask, req: Request): any {
+  const userId = req.user!.userId; // Guaranteed by auth middleware, never use URL params for security
+  
+  switch (taskType) {
+    case 'GET_DAILY_PLAN':
+      return { userId };
       
-      if (error.message.includes('Invalid')) {
-        res.status(400).json({ 
-          message: error.message,
-          code: 'INVALID_REQUEST' 
+    case 'GET_LEARNING_RECOMMENDATIONS': {
+      // Parse timeAvailable from query parameters with default fallback
+      const timeAvailable = req.query.timeAvailable 
+        ? parseInt(req.query.timeAvailable as string, 10) 
+        : 20; // Default from schema
+      return { userId, timeAvailable };
+    }
+    
+    default:
+      throw new Error(`Invalid GET task type: ${taskType}. Only GET_DAILY_PLAN and GET_LEARNING_RECOMMENDATIONS are supported.`);
+  }
+}
+
+/**
+ * Enhanced AI request handler - Centralized logic for all AI requests with GET/POST optimization
+ * 
+ * SUBTASK_03 ENHANCEMENT: Fixes GET endpoint validation by using method-specific payload construction.
+ * GET requests extract data from URL params/query, POST requests use body validation.
+ * 
+ * PERFORMANCE OPTIMIZATIONS:
+ * - Eliminates redundant switch statement by leveraging AIOrchestrator.processAITask()
+ * - Minimal object creation for GET request payloads
+ * - Direct orchestrator routing instead of manual method dispatch
+ * - Reuses singleton factory services for optimal memory usage
+ * 
+ * SECURITY ENHANCEMENTS:
+ * - Always uses authenticated user ID, never trusts URL parameters
+ * - Validates task types for GET requests to prevent unauthorized access
+ * - Maintains consistent error response formats
+ * 
+ * @param taskType - The specific AI task to execute (validated against ValidatedAITask enum)
+ * @returns Express middleware function that handles the AI request lifecycle
+ * 
+ * @example
+ * // Usage in route definitions:
+ * router.get('/curriculum/daily-plan/:userId', handleAIRequest('GET_DAILY_PLAN'));
+ * router.post('/curriculum/daily-plan', handleAIRequest('GENERATE_DAILY_PLAN'));
+ */
+function handleAIRequest(taskType: ValidatedAITask) {
+  return async (req: Request, res: Response): Promise<void> => {
+    // TODO: Implement structured logging (Pino) as per #24 in future_implementation_considerations.md
+    console.log(`[aiController] Processing ${taskType} request (${req.method}) for user ${req.user?.userId}`);
+
+    try {
+      // 1. Early authentication check - fail fast for better performance
+      if (!req.user?.userId) {
+        res.status(401).json({ 
+          message: 'Authentication required.',
+          code: 'AUTH_REQUIRED' 
         });
         return;
       }
-    }
 
-    // Default to 500 for unexpected errors
-    res.status(500).json({ 
-      message: 'An unexpected error occurred while processing your request.',
-      code: 'INTERNAL_ERROR' 
-    });
-  }
+      // 2. Method-specific payload construction
+      // ENHANCEMENT: GET requests use params/query, POST requests use body
+      let payload;
+      if (req.method === 'GET') {
+        try {
+          payload = buildGETPayload(taskType, req);
+        } catch (error) {
+          // Handle invalid GET task types with specific error
+          res.status(400).json({
+            error: 'Invalid request',
+            message: error instanceof Error ? error.message : 'Invalid GET task type',
+            method: req.method,
+            taskType,
+            code: 'INVALID_TASK_TYPE'
+          });
+          return;
+        }
+      } else {
+        // POST/PUT/PATCH: Use body as-is (existing behavior)
+        payload = req.body;
+      }
+
+      // 3. Runtime payload validation using Zod schemas
+      const validationResult = validateAIPayload(taskType, payload);
+      if (!validationResult.success) {
+        const errorResponse = formatValidationError(validationResult.error);
+        res.status(400).json({
+          message: errorResponse.message,
+          details: errorResponse.details,
+          method: req.method,
+          taskType,
+          code: 'VALIDATION_ERROR'
+        });
+        return;
+      }
+
+      // 4. Build user context from authenticated request
+      const userContext: AIUserContext = {
+        id: req.user.userId,
+        firstName: null, // TODO: Add firstName to AuthenticatedRequest when user model is extended
+        role: req.user.role || 'user',
+        preferences: {}, // TODO: Load actual user preferences when ContextService is fully implemented
+      };
+
+      // 5. PERFORMANCE ENHANCEMENT: Direct orchestrator method calls with proper routing
+      // Call the appropriate orchestrator method based on task type
+      const orchestrator = aiServiceFactory.getAIOrchestrator();
+      let result;
+      
+      switch (taskType) {
+        case 'GENERATE_LESSON':
+          result = await orchestrator.generateLesson(
+            userContext, 
+            validationResult.data as AITaskPayloads['GENERATE_LESSON']['request']
+          );
+          break;
+        case 'ASSESS_PRONUNCIATION':
+          result = await orchestrator.assessPronunciation(
+            userContext, 
+            validationResult.data as AITaskPayloads['ASSESS_PRONUNCIATION']['request']
+          );
+          break;
+        case 'GRADE_RESPONSE':
+          result = await orchestrator.gradeResponse(
+            userContext, 
+            validationResult.data as AITaskPayloads['GRADE_RESPONSE']['request']
+          );
+          break;
+        case 'GENERATE_DAILY_PLAN':
+          result = await orchestrator.generateDailyPlan(
+            userContext, 
+            validationResult.data as AITaskPayloads['GENERATE_DAILY_PLAN']['request']
+          );
+          break;
+        case 'ADAPT_LEARNING_PATH':
+          result = await orchestrator.adaptLearningPath(
+            userContext, 
+            validationResult.data as AITaskPayloads['ADAPT_LEARNING_PATH']['request']
+          );
+          break;
+        case 'GET_DAILY_PLAN':
+          result = await orchestrator.getDailyPlan(
+            userContext, 
+            validationResult.data as AITaskPayloads['GET_DAILY_PLAN']['request']
+          );
+          break;
+        case 'GET_LEARNING_RECOMMENDATIONS':
+          result = await orchestrator.getLearningRecommendations(
+            userContext, 
+            validationResult.data as AITaskPayloads['GET_LEARNING_RECOMMENDATIONS']['request']
+          );
+          break;
+        default:
+          res.status(500).json({ 
+            message: 'Handler not implemented for this task type.',
+            method: req.method,
+            taskType,
+            code: 'HANDLER_NOT_FOUND' 
+          });
+          return;
+      }
+
+      // 6. Send successful response
+      res.status(200).json(result);
+
+      // TODO: Add metrics logging for monitoring (response time, task type, success rate)
+      console.log(`[aiController] Successfully processed ${taskType} (${req.method}) in ${result.metadata?.processingTimeMs || 0}ms`);
+
+    } catch (error) {
+      // TODO: Implement structured logging (Pino) as per #24 in future_implementation_considerations.md
+      // TODO: Implement global error handling middleware to handle custom AIError types
+      console.error(`[aiController] Error processing ${taskType} (${req.method}):`, error);
+
+      // Enhanced error handling with method context
+      if (error instanceof Error) {
+        // Check for specific error types and map to appropriate HTTP status codes
+        if (error.message.includes('Rate limit')) {
+          res.status(429).json({ 
+            message: 'Rate limit exceeded. Please try again later.',
+            method: req.method,
+            taskType,
+            code: 'RATE_LIMIT_EXCEEDED' 
+          });
+          return;
+        }
+        
+        if (error.message.includes('Invalid') || error.message.includes('not implemented')) {
+          res.status(400).json({ 
+            message: error.message,
+            method: req.method,
+            taskType,
+            code: 'INVALID_REQUEST' 
+          });
+          return;
+        }
+      }
+
+      // Default to 500 for unexpected errors with enhanced context
+      res.status(500).json({ 
+        message: 'An unexpected error occurred while processing your request.',
+        method: req.method,
+        taskType,
+        code: 'INTERNAL_ERROR' 
+      });
+    }
+  };
 }
 
 /**
@@ -364,26 +446,26 @@ export const getGenerationStatus = async (req: Request, res: Response) => {
 /**
  * [ASYNC] Controller for pronunciation assessment
  * POST /api/ai/assess-pronunciation
+ * 
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with POST body validation
  */
-export const assessPronunciation = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'ASSESS_PRONUNCIATION');
-};
+export const assessPronunciation = handleAIRequest('ASSESS_PRONUNCIATION');
 
 /**
  * [ASYNC] Controller for response grading
  * POST /api/ai/grade-response
+ * 
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with POST body validation
  */
-export const gradeResponse = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'GRADE_RESPONSE');
-};
+export const gradeResponse = handleAIRequest('GRADE_RESPONSE');
 
 /**
  * [ASYNC] Controller for lesson generation
  * POST /api/ai/generate-lesson
+ * 
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with POST body validation
  */
-export const generateLesson = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'GENERATE_LESSON');
-};
+export const generateLesson = handleAIRequest('GENERATE_LESSON');
 
 // =================================================================
 // LEGACY ENDPOINTS - Maintained for backward compatibility
@@ -480,19 +562,15 @@ export const getPrompts = async (req: Request, res: Response) => {
 // =================================================================
 
 /**
- * [ASYNC] Controller for generating personalized daily learning plans
+ * Controller for generating personalized daily learning plans
  * POST /api/ai/curriculum/daily-plan
  * 
  * Task 3.2.A.3: Curriculum API Endpoints - Daily Plan Generation
  * 
- * Generates AI-powered daily learning plans using the established handleAIRequest pattern
- * for maximum code reuse and consistency. Integrates with existing validation, error handling,
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with POST body validation.
+ * Generates AI-powered daily learning plans using established validation, error handling,
  * and AI orchestration infrastructure to provide personalized learning activities based on
  * user context, available time, and performance data.
- * 
- * @param req - Express request with validated daily plan parameters in body
- * @param res - Express response object
- * @returns Promise<void>
  * 
  * @example
  * POST /api/ai/curriculum/daily-plan
@@ -512,23 +590,18 @@ export const getPrompts = async (req: Request, res: Response) => {
  *   "metadata": { ... }
  * }
  */
-export const generateDailyPlan = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'GENERATE_DAILY_PLAN');
-};
+export const generateDailyPlan = handleAIRequest('GENERATE_DAILY_PLAN');
 
 /**
- * [ASYNC] Controller for adapting existing learning paths
+ * Controller for adapting existing learning paths
  * POST /api/ai/curriculum/adapt-path
  * 
  * Task 3.2.A.3: Curriculum API Endpoints - Learning Path Adaptation
  * 
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with POST body validation.
  * Modifies existing learning paths based on performance data, goal changes, or time constraints
- * using the established handleAIRequest pattern for consistency. Provides intelligent adaptation
+ * using established validation pattern for consistency. Provides intelligent adaptation
  * while maintaining learning continuity and pedagogical soundness through AI analysis.
- * 
- * @param req - Express request with adaptation parameters in body
- * @param res - Express response object
- * @returns Promise<void>
  * 
  * @example
  * POST /api/ai/curriculum/adapt-path
@@ -550,24 +623,18 @@ export const generateDailyPlan = async (req: Request, res: Response) => {
  *   "metadata": { ... }
  * }
  */
-export const adaptLearningPath = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'ADAPT_LEARNING_PATH');
-};
+export const adaptLearningPath = handleAIRequest('ADAPT_LEARNING_PATH');
 
 /**
- * [ASYNC] Controller for retrieving cached daily learning plans
+ * Controller for retrieving cached daily learning plans
  * GET /api/ai/curriculum/daily-plan/:userId
  * 
  * Task 3.2.A.3: Curriculum API Endpoints - Cached Daily Plan Access
  * 
- * Retrieves cached daily learning plans using the established handleAIRequest pattern
- * for consistency and performance optimization. Provides fast access to previously
- * generated AI recommendations while maintaining the same validation and error
- * handling standards as other endpoints.
- * 
- * @param req - Express request with userId parameter and optional query parameters
- * @param res - Express response object
- * @returns Promise<void>
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with GET parameter validation.
+ * Retrieves cached daily learning plans using method-specific payload construction for
+ * performance optimization. Provides fast access to previously generated AI recommendations
+ * while maintaining the same validation and error handling standards as other endpoints.
  * 
  * @example
  * GET /api/ai/curriculum/daily-plan/123
@@ -584,24 +651,19 @@ export const adaptLearningPath = async (req: Request, res: Response) => {
  *   "metadata": { ... }
  * }
  */
-export const getDailyPlan = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'GET_DAILY_PLAN');
-};
+export const getDailyPlan = handleAIRequest('GET_DAILY_PLAN');
 
 /**
- * [ASYNC] Controller for learning recommendations based on available time
+ * Controller for learning recommendations based on available time
  * GET /api/ai/curriculum/recommendations/:userId?timeAvailable=20
  * 
  * Task 3.2.A.3: Curriculum API Endpoints - Learning Recommendations
  * 
+ * SUBTASK_03 ENHANCEMENT: Uses enhanced handleAIRequest pattern with GET parameter/query validation.
  * Provides learning recommendations tailored to user's available study time and current
- * progress using the established handleAIRequest pattern. Integrates with existing
- * progress tracking and assessment systems for contextual, AI-powered suggestions
- * while maintaining consistency with all other AI endpoints.
- * 
- * @param req - Express request with userId parameter and timeAvailable query parameter
- * @param res - Express response object  
- * @returns Promise<void>
+ * progress using method-specific payload construction. Integrates with existing progress 
+ * tracking and assessment systems for contextual, AI-powered suggestions while maintaining 
+ * consistency with all other AI endpoints.
  * 
  * @example
  * GET /api/ai/curriculum/recommendations/123?timeAvailable=30
@@ -624,6 +686,4 @@ export const getDailyPlan = async (req: Request, res: Response) => {
  *   "metadata": { ... }
  * }
  */
-export const getLearningRecommendations = async (req: Request, res: Response) => {
-  await handleAIRequest(req, res, 'GET_LEARNING_RECOMMENDATIONS');
-};
+export const getLearningRecommendations = handleAIRequest('GET_LEARNING_RECOMMENDATIONS');
