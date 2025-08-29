@@ -1,5 +1,21 @@
 # System Patterns: French Learning Platform Architecture
 
+## Recent Updates (2025-08-29)
+
+### AI Content Generation API Contract Fix
+**Issue Resolved**: Fixed 400 Bad Request errors in `/api/v1/ai/generate` endpoint due to client-server API contract mismatch.
+
+**Key Pattern Established**: **Inline API Transformation Pattern**
+- Transform client requests to match server expectations within service methods
+- Use CEFR level detection hierarchy: explicit → user preferences → 'A2' default
+- Maintain fast fallback mechanisms for non-critical API dependencies
+
+**Files Modified**:
+- `client/src/services/api.ts`: Added payload transformation in `generateContent` method
+- `client/src/types/AIDashboard.ts`: Updated interface documentation for clarity
+
+**Technical Implementation**: Followed KISS principle with single-method inline transformation, avoiding unnecessary abstractions while maintaining performance and type safety.
+
 ## Overall Architecture Philosophy
 
 The platform follows a **Service-Oriented Architecture** with clear separation between frontend presentation, backend business logic, and data persistence. The system emphasizes modularity, testability, and scalability through well-defined interfaces and dependency injection patterns.

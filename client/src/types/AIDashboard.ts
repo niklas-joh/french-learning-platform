@@ -108,13 +108,18 @@ export interface AIGenerationJob {
 /**
  * Content generation request payload
  * Used to initiate AI content creation
+ * 
+ * @note The API service automatically transforms this format to match server expectations:
+ * - `topic` (string) → `topics` (string array)  
+ * - Adds required `level` field using difficulty, user preferences, or 'A2' default
+ * - Maps optional fields to server schema format
  */
 export interface ContentGenerationRequest {
-  /** Topic or subject for content generation */
+  /** Topic or subject for content generation (automatically converted to topics array) */
   topic: string;
   /** Type of content to generate */
   contentType: 'lesson' | 'vocabulary_drill' | 'grammar_exercise' | 'conversation_practice';
-  /** Target CEFR difficulty level */
+  /** Target CEFR difficulty level (optional - will auto-detect from preferences or use A2 default) */
   difficulty?: CEFRLevel;
   /** Desired completion time in minutes */
   estimatedTime?: number;

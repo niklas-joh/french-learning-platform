@@ -38,13 +38,14 @@ Now criticise your approach, identifying flaws or inefficiencies, validate that 
 ## ACT MODE
 If you have found tasks for future implementation, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
 
-1. Implement the code as per your suggestion, adding comprehensive JSDOCs/DOCstring as you go along
-2. Regularly review your code for consistency, logic and potential flaws
-3. Analyse if changes are needed to other files
-4. 
-5. Update @/docs\development_docs\tasks\phase-3_AI_integration\phase3_master_tracking.md, the subtask and other documentation plans with our progress (e.g. @docs/architecture/system_architecture.mermaid.
+If you have identified multiple tasks/subtasks, capture them first as .md files in @development_docs/tasks, before working on any code. Once captured, follow the below approach for each task/subtask one at a time:
+2. Implement the code as per your suggestion for the first subtask, adding comprehensive JSDOCs/DOCstring as you go along
+3. Regularly review your code for consistency, logic and potential flaws
+4. Analyse if changes are needed to other files
+5. Update the subtask document and other documentation plans with our progress
+6. Update system architecture and your memory bank.
 6. Push to git with comprehensive message and git body in a separate file
-7. Create a new task for the next subtask to keep to atomic changes, repeating these instructions.
+7. Handof a new task for the next subtask to keep to atomic changes, repeating these instructions.
 
 ## Creating subtasks
 Create each of your identified subtasks as separate files, provide details of the changes in each of these subtasks, including any example code you have already identified. Also include dependent files, review points you raised above to be aware of, and possible solutions that considered.

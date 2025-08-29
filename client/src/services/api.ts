@@ -121,21 +121,52 @@ function createAIDashboardService() {
     /**
      * Generate AI content with immediate job ID return for polling
      * 
-     * @param request - Content generation parameters
+     * Transforms client request format to match server API expectations.
+     * Handles required field mapping and CEFR level detection with smart defaults.
+     * 
+     * @param request - Content generation parameters in client format
      * @returns Promise<{jobId: string}> - Job ID for status tracking
      * @throws {Error} - When content generation request fails
+     * 
+     * @example
+     * ```typescript
+     * const result = await api.aiDashboard.generateContent({
+     *   topic: 'Subjunctive',
+     *   contentType: 'lesson',
+     *   difficulty: 'A2'  // Optional - will detect from preferences or use A2
+     * });
+     * ```
      */
     generateContent: async (request: ContentGenerationRequest): Promise<{ jobId: string }> => {
       try {
-        const response = await api.post('/ai/generate', {
-          contentType: request.contentType,
-          topic: request.topic,
-          difficulty: request.difficulty || 'A1',
-          estimatedTime: request.estimatedTime || 15,
-          focusAreas: request.focusAreas || [],
-          context: request.context || {}
-        });
+        // Determine CEFR level using preference hierarchy (performance optimized)
+        let cefrLevel = request.difficulty;
+        if (!cefrLevel) {
+          try {
+            // Call preferences endpoint directly to avoid circular dependency
+            const response = await api.get('/ai/preferences');
+            cefrLevel = response.data?.defaultDifficulty || 'A2';
+          } catch (prefError) {
+            // Fast fallback without logging (preferences failure is non-critical)
+            cefrLevel = 'A2';
+          }
+        }
+
+        // Transform client request to server payload format (inline transformation per KISS principle)
+        const serverPayload = {
+          contentType: request.contentType,                    // Direct mapping
+          level: cefrLevel,                                    // Required server field (was missing)
+          topics: Array.isArray(request.topic)                // Transform topic -> topics array
+            ? request.topic 
+            : [request.topic],
+          duration: request.estimatedTime,                     // Optional field mapping
+          focusAreas: request.focusAreas || [],                // Server expects array, provide default
+          learningStyle: 'mixed' as const,                     // Server schema requires this field
+        };
+
+        const response = await api.post('/ai/generate', serverPayload);
         return response.data;
+        
       } catch (error) {
         console.error('Failed to generate content:', error);
         throw new Error('Unable to start content generation. Please try again.');
