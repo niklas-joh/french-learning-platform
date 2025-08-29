@@ -105,6 +105,12 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.2.B | [Conversational AI Tutor](./tasks/3-2-B-conversational-ai-tutor.md) | 6h | ⏳ **Not Started** | - | - | - | 3.1.A, 3.1.D |
 | 3.2.C | [Real-time Performance Analytics](./tasks/3-2-C-performance-analytics.md) | 4h | ⏳ **Not Started** | - | - | - | 3.1.C, 3.2.A |
 | 3.2.D | [Multi-modal AI Integration](./tasks/3-2-D-multimodal-ai.md) | 6h | ⏳ **Not Started** | - | - | - | 3.2.B |
+| **3.2.E** | **[Real AI Provider Integration](./task_3_2_E.md)** | **3h** | 🟡 **In Progress** | - | Aug 29, 2025 | - | **3.1.A, OpenAI API Setup** |
+| 3.2.E.1 | [Transform AIOrchestrator to Real OpenAI Integration](./task_3_2_E_1.md) | 1h | 🟡 **In Progress** | - | Aug 29, 2025 | - | 3.1.A |
+| 3.2.E.2 | [Implement AIMetricsService with Cost Tracking](./task_3_2_E_2.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.E.1 |
+| 3.2.E.3 | [Enhance PromptTemplateEngine with Real Templates](./task_3_2_E_3.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.E.1 |
+| 3.2.E.4 | [Extend aiConfig and Environment Setup](./task_3_2_E_4.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.E.2, 3.2.E.3 |
+| 3.2.E.5 | [Integration Testing and Validation](./task_3_2_E_5.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.E.4 |
 
 ### **Phase 3.3: Testing & Polish (Week 3) - Total: 15 hours**
 | Task ID | Task Name | Estimated Hours | Status | Assignee | Start Date | End Date | Dependencies |
