@@ -3,7 +3,7 @@ import { IContentGenerator, IJobQueueService } from './interfaces.js';
 import { ContentRequest } from '../../types/Content.js';
 import { AIGenerationError } from '../../utils/errors.js';
 import { redisConnection } from '../../config/redis.js';
-import { ContentGenerationJobQueue } from './ContentGenerationJobQueue.js';
+import { ContentGenerationJobQueue, createContentGenerationJobQueue } from './ContentGenerationJobQueue.js';
 
 /**
  * Main implementation of dynamic content generation.
@@ -23,16 +23,17 @@ export class DynamicContentGenerator implements IContentGenerator {
    * @param {IJobQueueService} jobQueueService - The database job queue service.
    */
   constructor(private jobQueueService: IJobQueueService) {
-    // Initialize BullMQ queue if Redis is available
-    if (redisConnection) {
-      try {
-        this.bullMQQueue = new ContentGenerationJobQueue();
+    // Initialize BullMQ queue using factory function (safe when Redis disabled)
+    try {
+      this.bullMQQueue = createContentGenerationJobQueue();
+      if (this.bullMQQueue) {
         console.log('[DynamicContentGenerator] BullMQ integration enabled');
-      } catch (error) {
-        console.warn('[DynamicContentGenerator] BullMQ initialization failed, falling back to database-only:', error);
+      } else {
+        console.log('[DynamicContentGenerator] Redis disabled, using database-only job processing');
       }
-    } else {
-      console.log('[DynamicContentGenerator] Redis disabled, using database-only job processing');
+    } catch (error) {
+      console.warn('[DynamicContentGenerator] BullMQ initialization failed, falling back to database-only:', error);
+      this.bullMQQueue = null;
     }
   }
 

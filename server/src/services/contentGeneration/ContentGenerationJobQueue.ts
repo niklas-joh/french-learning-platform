@@ -55,6 +55,12 @@ export class ContentGenerationJobQueue {
 }
 
 /**
- * Singleton instance of the ContentGenerationJobQueue service.
+ * Factory function for creating ContentGenerationJobQueue instance.
+ * Only creates instance when Redis is available.
  */
-export const contentGenerationJobQueue = new ContentGenerationJobQueue();
+export const createContentGenerationJobQueue = (): ContentGenerationJobQueue | null => {
+  if (!redisConnection) {
+    return null;
+  }
+  return new ContentGenerationJobQueue();
+};
