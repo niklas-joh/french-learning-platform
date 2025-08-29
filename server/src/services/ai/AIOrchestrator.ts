@@ -20,6 +20,9 @@ import { AssessmentRepository } from '../../repositories/assessmentRepository';
 import Knex from 'knex';
 import type { Knex as KnexTypes } from 'knex';
 import { OpenAI } from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
+import https from 'https';
+import { aiConfig } from '../../config/aiConfig';
 
 /**
  * @class AIOrchestrator
@@ -29,6 +32,8 @@ export class AIOrchestrator {
   private readonly logger: ILogger;
   private assessmentEngine: AIAssessmentEngine;
   private assessmentRepository: AssessmentRepository;
+  private primaryProvider: OpenAI | Anthropic | null = null;
+  private fallbackProvider: OpenAI | Anthropic | null = null;
 
   constructor(
     private readonly config: OrchestrationConfig,
@@ -131,89 +136,204 @@ export class AIOrchestrator {
   }
 
   /**
-   * Executes real AI provider requests using OpenAI API integration.
+   * Executes AI provider requests with SSL-safe multi-provider support.
    * 
-   * This method replaces the previous stubbed implementation with real OpenAI API calls
-   * while maintaining full compatibility with existing architecture including caching,
-   * rate limiting, fallback mechanisms, and error handling.
+   * Simple implementation that addresses SSL certificate issues in corporate
+   * environments by providing configurable providers and basic fallback.
    * 
    * @template T - The AI task type from the AITaskType union
    * @param taskType - The specific AI task to execute
    * @param payload - Task-specific request payload with proper typing
    * @returns Promise resolving to type-safe task response
-   * 
-   * @example
-   * ```typescript
-   * const result = await orchestrator.executeRealAIProvider(
-   *   'GENERATE_DAILY_PLAN',
-   *   { userId: 123, preferredDuration: 20, focusAreas: ['vocabulary'] }
-   * );
-   * ```
    */
   private async executeRealAIProvider<T extends AITaskType>(
     taskType: T,
     payload: AITaskPayloads[T]['request']
   ): Promise<AITaskPayloads[T]['response']> {
     const startTime = Date.now();
-    this.logger.info(`Executing REAL AI for ${taskType}`, { 
-      payloadKeys: Object.keys(payload || {}),
-      taskType 
+    this.logger.info(`Executing AI for ${taskType}`, { 
+      primaryProvider: aiConfig.provider.primary,
+      fallbackEnabled: aiConfig.provider.fallbackEnabled
     });
 
-    try {
-      // Generate task-specific prompt using existing PromptTemplateEngine
-      const prompt = await this.generatePromptForTask(taskType, payload);
-      
-      // Get task-specific configuration
-      const taskConfig = this.getTaskConfiguration(taskType);
-      
-      // Make real OpenAI API call
-      const response = await this.openai.chat.completions.create({
-        model: taskConfig.model,
-        messages: [
-          {
-            role: 'system',
-            content: taskConfig.systemPrompt
-          },
-          {
-            role: 'user', 
-            content: prompt
-          }
-        ],
-        max_tokens: taskConfig.maxTokens,
-        temperature: taskConfig.temperature,
-        response_format: { type: 'json_object' }
-      });
+    // Initialize providers if needed
+    if (!this.primaryProvider) {
+      await this.initializeProviders();
+    }
 
-      const aiResult = JSON.parse(response.choices[0]?.message?.content || '{}');
+    // Generate task-specific prompt
+    const prompt = await this.generatePromptForTask(taskType, payload);
+    const taskConfig = this.getTaskConfiguration(taskType);
+    
+    // Try primary provider first
+    try {
+      const response = await this.callAIProvider(this.primaryProvider!, taskConfig, prompt);
+      const aiResult = JSON.parse(response.content || '{}');
       
-      // Track usage using existing AIMetricsService (will be implemented)
+      // Track usage
       if (this.metricsService.trackAPICall) {
         await this.metricsService.trackAPICall({
           taskType,
           model: taskConfig.model,
-          usage: response.usage || { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 },
+          usage: response.usage,
           processingTimeMs: Date.now() - startTime
         });
       }
       
-      // Validate and enhance response
       const validatedResponse = this.validateAndEnhanceResponse(taskType, aiResult, payload);
       
-      this.logger.info(`Real AI completed for ${taskType}`, {
+      this.logger.info(`AI completed for ${taskType} using ${aiConfig.provider.primary}`, {
         processingTimeMs: Date.now() - startTime,
         tokenUsage: response.usage
       });
       
       return validatedResponse;
       
-    } catch (error) {
-      this.logger.error(`Real AI execution failed for ${taskType}:`, error);
+    } catch (primaryError) {
+      this.logger.warn(`Primary provider ${aiConfig.provider.primary} failed:`, primaryError);
       
-      // Use existing fallback handler - maintain graceful degradation
-      const fallbackResponse = this.fallbackHandler.getFallback(taskType, error as Error);
+      // Try fallback provider if enabled and available
+      if (aiConfig.provider.fallbackEnabled && this.fallbackProvider) {
+        try {
+          this.logger.info(`Trying fallback provider...`);
+          const response = await this.callAIProvider(this.fallbackProvider, taskConfig, prompt);
+          const aiResult = JSON.parse(response.content || '{}');
+          
+          const validatedResponse = this.validateAndEnhanceResponse(taskType, aiResult, payload);
+          
+          this.logger.info(`AI completed for ${taskType} using fallback provider`, {
+            processingTimeMs: Date.now() - startTime
+          });
+          
+          return validatedResponse;
+          
+        } catch (fallbackError) {
+          this.logger.error(`Fallback provider also failed:`, fallbackError);
+        }
+      }
+      
+      // Both providers failed, use fallback handler
+      this.logger.error(`All AI providers failed for ${taskType}`, primaryError);
+      const fallbackResponse = this.fallbackHandler.getFallback(taskType, primaryError as Error);
       return fallbackResponse.data;
     }
+  }
+
+  /**
+   * Initialize AI providers with SSL-safe configurations.
+   */
+  private async initializeProviders(): Promise<void> {
+    this.logger.info('Initializing AI providers with SSL configuration');
+    
+    // Create HTTPS agent with SSL bypass for corporate environments
+    const httpsAgent = new https.Agent({
+      rejectUnauthorized: aiConfig.openai.sslOptions.rejectUnauthorized
+    });
+    
+    try {
+      // Initialize primary provider
+      if (aiConfig.provider.primary === 'openai' && aiConfig.openai.apiKey) {
+        this.primaryProvider = new OpenAI({
+          apiKey: aiConfig.openai.apiKey,
+          timeout: aiConfig.openai.timeout,
+          maxRetries: aiConfig.openai.maxRetries,
+          dangerouslyAllowBrowser: false,
+          // @ts-ignore - httpAgent is valid but not in types
+          httpAgent: httpsAgent
+        });
+        this.logger.info('OpenAI provider initialized as primary');
+      } else if (aiConfig.provider.primary === 'claude' && aiConfig.claude.apiKey) {
+        this.primaryProvider = new Anthropic({
+          apiKey: aiConfig.claude.apiKey,
+          timeout: aiConfig.claude.timeout,
+          maxRetries: aiConfig.claude.maxRetries,
+          // @ts-ignore - httpAgent is valid but not in types
+          httpAgent: httpsAgent
+        });
+        this.logger.info('Claude provider initialized as primary');
+      }
+      
+      // Initialize fallback provider
+      if (aiConfig.provider.fallbackEnabled) {
+        if (aiConfig.provider.primary === 'openai' && aiConfig.claude.apiKey) {
+          // Primary is OpenAI, fallback is Claude
+          this.fallbackProvider = new Anthropic({
+            apiKey: aiConfig.claude.apiKey,
+            timeout: aiConfig.claude.timeout,
+            maxRetries: aiConfig.claude.maxRetries,
+            // @ts-ignore - httpAgent is valid but not in types
+            httpAgent: httpsAgent
+          });
+          this.logger.info('Claude provider initialized as fallback');
+        } else if (aiConfig.provider.primary === 'claude' && aiConfig.openai.apiKey) {
+          // Primary is Claude, fallback is OpenAI
+          this.fallbackProvider = new OpenAI({
+            apiKey: aiConfig.openai.apiKey,
+            timeout: aiConfig.openai.timeout,
+            maxRetries: aiConfig.openai.maxRetries,
+            dangerouslyAllowBrowser: false,
+            // @ts-ignore - httpAgent is valid but not in types
+            httpAgent: httpsAgent
+          });
+          this.logger.info('OpenAI provider initialized as fallback');
+        }
+      }
+      
+    } catch (error) {
+      this.logger.error('Failed to initialize AI providers:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Call AI provider with unified interface.
+   */
+  private async callAIProvider(
+    provider: OpenAI | Anthropic,
+    taskConfig: any,
+    prompt: string
+  ): Promise<{ content: string; usage: any }> {
+    
+    if (provider instanceof OpenAI) {
+      const response = await provider.chat.completions.create({
+        model: taskConfig.model,
+        messages: [
+          { role: 'system', content: taskConfig.systemPrompt },
+          { role: 'user', content: prompt }
+        ],
+        max_tokens: taskConfig.maxTokens,
+        temperature: taskConfig.temperature,
+        response_format: { type: 'json_object' }
+      });
+      
+      return {
+        content: response.choices[0]?.message?.content || '',
+        usage: response.usage || { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 }
+      };
+      
+    } else if (provider instanceof Anthropic) {
+      const response = await provider.messages.create({
+        model: aiConfig.claude.defaultModel,
+        max_tokens: taskConfig.maxTokens,
+        temperature: taskConfig.temperature,
+        messages: [
+          { role: 'user', content: `${taskConfig.systemPrompt}\n\n${prompt}` }
+        ]
+      });
+      
+      const content = response.content[0]?.type === 'text' ? response.content[0].text : '';
+      
+      return {
+        content,
+        usage: {
+          prompt_tokens: response.usage?.input_tokens || 0,
+          completion_tokens: response.usage?.output_tokens || 0,
+          total_tokens: (response.usage?.input_tokens || 0) + (response.usage?.output_tokens || 0)
+        }
+      };
+    }
+    
+    throw new Error('Unknown provider type');
   }
 
   /**
