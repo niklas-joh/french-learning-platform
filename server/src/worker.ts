@@ -27,9 +27,35 @@ type JobPayload = ContentRequest;
 type JobResponse = GeneratedContent;
 
 /**
+ * Extracts the numeric database ID from the prefixed BullMQ job ID
+ * BullMQ job IDs are formatted as "job-{databaseId}" (e.g., "job-11")
+ * @param bullmqJobId - The prefixed job ID from BullMQ
+ * @returns The numeric database ID
+ * @throws Error if the job ID format is invalid
+ */
+const extractDatabaseId = (bullmqJobId: string): string => {
+  if (!bullmqJobId || typeof bullmqJobId !== 'string') {
+    throw new Error(`Invalid BullMQ job ID: ${bullmqJobId}`);
+  }
+  
+  const PREFIX = 'job-';
+  if (!bullmqJobId.startsWith(PREFIX)) {
+    throw new Error(`BullMQ job ID must start with "${PREFIX}". Got: ${bullmqJobId}`);
+  }
+  
+  const databaseId = bullmqJobId.substring(PREFIX.length);
+  if (!databaseId) {
+    throw new Error(`No database ID found in BullMQ job ID: ${bullmqJobId}`);
+  }
+  
+  return databaseId;
+};
+
+/**
  * Processes a single content generation job
  * 
  * This function handles the complete lifecycle of a content generation job:
+ * - Extracts database ID from BullMQ job ID
  * - Updates job status to 'processing'
  * - Executes the job using the content generation handler
  * - Updates job status to 'completed' with results
@@ -40,39 +66,48 @@ type JobResponse = GeneratedContent;
  * @throws Error if job processing fails
  */
 const processJob = async (job: Job<JobPayload, JobResponse>): Promise<JobResponse> => {
-  const { id: jobId } = job;
-  console.log(`🔄 Processing job ${jobId}`);
+  const { id: bullmqJobId } = job;
+  console.log(`🔄 Processing job ${bullmqJobId}`);
 
   try {
-    // Find the job in database
-    const dbJob = await AiGenerationJobsModel.query().findById(jobId!);
+    // Extract database ID from prefixed BullMQ job ID (e.g., "job-11" → "11")
+    const databaseId = extractDatabaseId(bullmqJobId!);
+    console.log(`🔍 Database ID: ${databaseId} (from BullMQ ID: ${bullmqJobId})`);
+
+    // Find the job in database using the extracted numeric ID
+    const dbJob = await AiGenerationJobsModel.query().findById(databaseId);
     if (!dbJob) {
-      throw new Error(`Job with ID ${jobId} not found in database.`);
+      throw new Error(`Job with database ID ${databaseId} not found in database.`);
     }
 
     // Update status to processing
-    await AiGenerationJobsModel.query().patchAndFetchById(jobId!, { status: 'processing' });
+    await AiGenerationJobsModel.query().patchAndFetchById(databaseId, { status: 'processing' });
 
     // Get job handler from factory (performance optimized)
     const jobHandler = contentGenerationServiceFactory.getContentGenerationJobHandler();
     const generatedContent = await jobHandler.handleJob(dbJob);
 
     // Update status to completed with results
-    await AiGenerationJobsModel.query().patchAndFetchById(jobId!, {
+    await AiGenerationJobsModel.query().patchAndFetchById(databaseId, {
       status: 'completed',
       result: JSON.stringify(generatedContent),
     });
 
-    console.log(`✅ Job ${jobId} completed successfully`);
+    console.log(`✅ Job ${bullmqJobId} (DB ID: ${databaseId}) completed successfully`);
     return generatedContent;
   } catch (error: any) {
-    console.error(`❌ Job ${jobId} failed:`, error);
+    console.error(`❌ Job ${bullmqJobId} failed:`, error);
     
-    // Update status to failed with error message
-    await AiGenerationJobsModel.query().patchAndFetchById(jobId!, {
-      status: 'failed',
-      errorMessage: error.message || 'An unknown error occurred.',
-    });
+    try {
+      // Attempt to update database status to failed (if we can extract the database ID)
+      const databaseId = extractDatabaseId(bullmqJobId!);
+      await AiGenerationJobsModel.query().patchAndFetchById(databaseId, {
+        status: 'failed',
+        errorMessage: error.message || 'An unknown error occurred.',
+      });
+    } catch (updateError) {
+      console.error(`❌ Failed to update job status in database:`, updateError);
+    }
     
     throw error;
   }

@@ -49,10 +49,11 @@ export class ContentGenerationJobQueue {
   }
 
   /**
-   * Validates and converts job ID to string format required by BullMQ.
+   * Validates and converts job ID to non-numeric string format required by BullMQ.
    * Follows type safety principles from development_principles.md
+   * BullMQ requires custom IDs to be non-integer strings, so we prefix with "job-"
    * @param jobId - The job ID to validate and convert
-   * @returns Valid string job ID
+   * @returns Valid non-numeric string job ID (e.g., "job-11")
    * @throws Error if job ID is invalid
    */
   private validateAndConvertJobId(jobId: string | number): string {
@@ -60,13 +61,17 @@ export class ContentGenerationJobQueue {
       throw new Error('Job ID cannot be null or undefined');
     }
     
-    const stringId = String(jobId);
+    const rawId = String(jobId);
     
-    if (!stringId || stringId === 'null' || stringId === 'undefined' || stringId.trim() === '') {
+    if (!rawId || rawId === 'null' || rawId === 'undefined' || rawId.trim() === '') {
       throw new Error(`Invalid job ID: ${jobId}`);
     }
     
-    return stringId;
+    // BullMQ requires non-integer custom IDs, so prefix with "job-"
+    // This ensures the ID is clearly non-numeric while maintaining database relationship
+    const prefixedId = `job-${rawId}`;
+    
+    return prefixedId;
   }
 
   /**

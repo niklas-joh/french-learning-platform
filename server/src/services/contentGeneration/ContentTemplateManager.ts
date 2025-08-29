@@ -1,14 +1,20 @@
-import { IContentTemplateManager } from './interfaces';
-import { ContentType, LearningContext, ContentTemplate } from '../../types/Content';
-import { ILogger } from '../../types/ILogger';
+import { IContentTemplateManager } from './interfaces.js';
+import { ContentType, LearningContext, ContentTemplate } from '../../types/Content.js';
+import { ILogger } from '../../types/ILogger.js';
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 export class ContentTemplateManager implements IContentTemplateManager {
   private templateCache: Map<ContentType, ContentTemplate> = new Map();
-  private readonly templateDir = path.join(__dirname, 'templates');
+  private readonly templateDir: string;
 
   constructor(private logger: ILogger) {
+    // ESM-compatible __dirname calculation following development principles
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    this.templateDir = path.join(__dirname, 'templates');
+    
     this.loadTemplates();
   }
 
