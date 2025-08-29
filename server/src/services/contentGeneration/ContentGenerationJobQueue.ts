@@ -35,13 +35,38 @@ export class ContentGenerationJobQueue {
 
   /**
    * Adds a new content generation job to the queue.
-   * @param jobId - A durable, unique ID (e.g., UUID) for the job.
+   * @param jobId - A durable, unique ID (string or number) for the job.
    * @param payload - The data required for the job, matching the generation request.
    * @returns The BullMQ Job object.
    */
-  async addJob(jobId: string, payload: JobPayload): Promise<Job> {
-    const job = await this.queue.add('generate-content', payload, { jobId });
+  async addJob(jobId: string | number, payload: JobPayload): Promise<Job> {
+    // Type-safe conversion with validation following development principles
+    const stringJobId = this.validateAndConvertJobId(jobId);
+    const job = await this.queue.add('generate-content', payload, { 
+      jobId: stringJobId 
+    });
     return job;
+  }
+
+  /**
+   * Validates and converts job ID to string format required by BullMQ.
+   * Follows type safety principles from development_principles.md
+   * @param jobId - The job ID to validate and convert
+   * @returns Valid string job ID
+   * @throws Error if job ID is invalid
+   */
+  private validateAndConvertJobId(jobId: string | number): string {
+    if (jobId === null || jobId === undefined) {
+      throw new Error('Job ID cannot be null or undefined');
+    }
+    
+    const stringId = String(jobId);
+    
+    if (!stringId || stringId === 'null' || stringId === 'undefined' || stringId.trim() === '') {
+      throw new Error(`Invalid job ID: ${jobId}`);
+    }
+    
+    return stringId;
   }
 
   /**
