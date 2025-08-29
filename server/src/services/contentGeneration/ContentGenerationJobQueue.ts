@@ -1,10 +1,8 @@
 import { Queue, Job } from 'bullmq';
-import { redisConnection, QUEUE_NAMES } from '../../config/redis';
-import { AITaskPayloads } from '../../types/AI';
+import { redisConnection, QUEUE_NAMES } from '../../config/redis.js';
+import { ContentRequest } from '../../types/Content.js';
 
-type JobPayload = AITaskPayloads['GENERATE_LESSON']['request'] & {
-  userId: number;
-};
+type JobPayload = ContentRequest;
 
 /**
  * A service class to abstract interactions with the BullMQ content generation queue.

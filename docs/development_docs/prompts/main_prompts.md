@@ -45,7 +45,7 @@ If you have identified multiple tasks/subtasks, capture them first as .md files 
 5. Update the subtask document and other documentation plans with our progress
 6. Update system architecture and your memory bank.
 6. Push to git with comprehensive message and git body in a separate file
-7. Handof a new task for the next subtask to keep to atomic changes, repeating these instructions.
+7. Handoff to a new task for the next subtask to keep to atomic changes, repeating these instructions.
 
 ## Creating subtasks
 Create each of your identified subtasks as separate files, provide details of the changes in each of these subtasks, including any example code you have already identified. Also include dependent files, review points you raised above to be aware of, and possible solutions that considered.
