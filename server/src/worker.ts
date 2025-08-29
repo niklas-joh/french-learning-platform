@@ -11,6 +11,9 @@
  * @version 1.0.0
  */
 
+// Load environment variables first
+import 'dotenv/config';
+
 import { Worker, Job } from 'bullmq';
 import { redisConnection, QUEUE_NAMES } from './config/redis.js';
 import { contentGenerationServiceFactory } from './services/contentGeneration/index.js';
