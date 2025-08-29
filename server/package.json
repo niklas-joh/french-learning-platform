@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec npx tsx src/app.ts",
+    "dev:full": "concurrently \"npm run dev\" \"npm run worker:dev\"",
     "start": "npx tsx src/app.ts",
+    "worker:start": "npx tsx src/worker.ts",
+    "worker:dev": "nodemon --exec npx tsx src/worker.ts",
     "clean": "rimraf dist",
     "build": "tsc",
     "test": "jest",
@@ -52,6 +55,7 @@
     "@types/morgan": "^1.9.10",
     "@types/object-hash": "^3.0.0",
     "@types/supertest": "^6.0.3",
+    "concurrently": "^9.2.1",
     "jest": "^30.0.0",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.1",
