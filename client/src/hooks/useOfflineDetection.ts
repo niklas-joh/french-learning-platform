@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { debounce } from '../utils/debounce.js';
 
 /**
  * Return type interface for the useOfflineDetection hook
@@ -23,48 +24,71 @@ interface UseOfflineDetectionReturn {
  * 
  * Key architectural decisions:
  * - Lightweight connectivity testing with minimal overhead
- * - Leverages existing API endpoints for connectivity validation
+ * - Uses existing unauthenticated health endpoint for reliable testing
  * - Performance-first approach with debounced checks
  * - Graceful degradation when connectivity tests fail
  * - Integrates with existing error handling patterns
  * 
  * Performance optimizations:
- * - Uses HEAD requests to minimize bandwidth usage
+ * - Uses existing /api/health endpoint (no authentication required)
  * - Debounced connectivity checks to avoid excessive network calls
- * - Cached results with TTL to reduce redundant testing
+ * - 2-second timeout for responsive user experience
  * - Efficient event listener management with proper cleanup
- * - Smart retry logic with exponential backoff
+ * - Browser-compatible timeout implementation
+ * 
+ * Architecture improvements:
+ * - Follows Single Responsibility Principle (connectivity testing only)
+ * - Reuses existing backend infrastructure
+ * - Eliminates authentication dependency for network testing
  * 
  * @returns Object containing connectivity state and retry functionality
+ * 
+ * @author AI Development Team
+ * @since 2025-08-29 - Optimized for performance and reliability
  */
 export function useOfflineDetection(): UseOfflineDetectionReturn {
-  // Temporary development bypass - REMOVE AFTER TESTING
-  const isDevelopment = process.env.NODE_ENV === 'development';
-  const allowTestAccess = isDevelopment && window.location.search.includes('test=true');
-
-  const [isOnline, setIsOnline] = useState(allowTestAccess ? true : navigator.onLine);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [lastOnlineAt, setLastOnlineAt] = useState<Date | null>(
-    (allowTestAccess || navigator.onLine) ? new Date() : null
+    navigator.onLine ? new Date() : null
   );
 
   /**
    * Test actual connectivity with performance optimizations
-   * Uses lightweight HEAD request to existing API endpoint
+   * 
+   * Uses the existing /api/health endpoint which:
+   * - Requires no authentication (eliminates 401 errors)
+   * - Is lightweight and fast
+   * - Accurately reflects backend server status
+   * - Follows development principles (reuse existing infrastructure)
+   * 
+   * Performance improvements:
+   * - 2-second timeout for responsive UX (reduced from 5 seconds)
+   * - Browser-compatible timeout implementation
+   * - Proper cleanup of timeout and controller
    * 
    * @returns Promise<boolean> - True if connection is working
    */
   const testConnection = useCallback(async (): Promise<boolean> => {
     try {
-      // Use lightweight HEAD request to minimize bandwidth
-      // Target existing API health endpoint for reliability
-      const response = await fetch('/api/v1/auth/me', {
-        method: 'HEAD',
-        cache: 'no-cache',
-        // Short timeout for quick failure detection
-        signal: AbortSignal.timeout(5000)
-      });
-      
-      return response.ok;
+      // Create AbortController for timeout management (better browser compatibility)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
+
+      try {
+        // Use existing health endpoint - no authentication required
+        // This eliminates the 401 errors documented in dashboard_error_analysis.md
+        const response = await fetch('/api/health', {
+          method: 'GET', // GET is more reliable than HEAD across different servers/proxies
+          cache: 'no-cache',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        return response.ok;
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        throw fetchError;
+      }
     } catch (error) {
       // Network errors indicate offline status
       console.debug('Connectivity test failed:', error);
@@ -93,23 +117,39 @@ export function useOfflineDetection(): UseOfflineDetectionReturn {
   }, [testConnection]);
 
   /**
-   * Handle browser online event with actual connectivity verification
-   * Navigator.onLine can be unreliable, so we verify with actual network test
+   * Debounced connectivity test to prevent excessive API calls
+   * 
+   * Performance optimization: Delays connectivity testing by 1 second
+   * to avoid spam during unstable network conditions or rapid state changes.
+   * This significantly reduces server load while maintaining accurate status.
+   * 
+   * @since 2025-08-29 - Added debouncing for performance optimization
    */
-  const handleOnline = useCallback(async () => {
-    console.debug('Browser reports online, verifying actual connectivity...');
-    
-    // Verify actual connectivity, not just network interface status
-    const actuallyOnline = await testConnection();
-    setIsOnline(actuallyOnline);
-    
-    if (actuallyOnline) {
-      setLastOnlineAt(new Date());
-      console.debug('Connectivity verified - truly online');
-    } else {
-      console.debug('Browser reports online but connectivity test failed');
-    }
-  }, [testConnection]);
+  const debouncedTestConnection = useMemo(
+    () => debounce(async () => {
+      const connectionStatus = await testConnection();
+      setIsOnline(connectionStatus);
+      
+      if (connectionStatus) {
+        setLastOnlineAt(new Date());
+        console.debug('Connectivity verified - truly online');
+      } else {
+        console.debug('Browser reports online but connectivity test failed');
+      }
+    }, 1000), // 1-second debounce for performance optimization
+    [testConnection]
+  );
+
+  /**
+   * Handle browser online event with debounced connectivity verification
+   * 
+   * Navigator.onLine can be unreliable, so we verify with actual network test.
+   * Uses debouncing to prevent excessive API calls during network instability.
+   */
+  const handleOnline = useCallback(() => {
+    console.debug('Browser reports online, scheduling connectivity verification...');
+    debouncedTestConnection();
+  }, [debouncedTestConnection]);
 
   /**
    * Handle browser offline event
@@ -122,31 +162,41 @@ export function useOfflineDetection(): UseOfflineDetectionReturn {
 
   /**
    * Effect for managing connectivity event listeners and initial testing
-   * Includes proper cleanup to prevent memory leaks
+   * 
+   * Performance improvements:
+   * - Uses debounced testing to reduce API calls
+   * - Proper cleanup to prevent memory leaks
+   * - Smart initial testing only when browser reports online
+   * 
+   * @since 2025-08-29 - Removed development bypass, added debouncing
    */
   useEffect(() => {
-    // Temporary development bypass - REMOVE AFTER TESTING
-    if (allowTestAccess) {
-      // Skip connectivity testing and event listeners in test mode
-      return;
-    }
-
     // Add event listeners for browser connectivity changes
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
-    // Initial connectivity test on mount
+    // Initial connectivity test on mount (debounced)
     // Only test if browser reports online to avoid unnecessary requests
     if (navigator.onLine) {
-      testConnection().then(online => {
-        setIsOnline(online);
-        if (online) {
-          setLastOnlineAt(new Date());
-        }
-      }).catch(() => {
-        // Graceful failure - assume offline if test fails
-        setIsOnline(false);
-      });
+      // Use a small delay to avoid immediate API call on component mount
+      const initialTestTimeout = setTimeout(() => {
+        testConnection().then(online => {
+          setIsOnline(online);
+          if (online) {
+            setLastOnlineAt(new Date());
+          }
+        }).catch(() => {
+          // Graceful failure - assume offline if test fails
+          setIsOnline(false);
+        });
+      }, 500); // 500ms delay to avoid immediate API call
+
+      // Cleanup function includes timeout cleanup
+      return () => {
+        window.removeEventListener('online', handleOnline);
+        window.removeEventListener('offline', handleOffline);
+        clearTimeout(initialTestTimeout);
+      };
     }
 
     // Cleanup event listeners on unmount
@@ -154,7 +204,7 @@ export function useOfflineDetection(): UseOfflineDetectionReturn {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [handleOnline, handleOffline, testConnection, allowTestAccess]);
+  }, [handleOnline, handleOffline, testConnection]);
 
   return {
     isOnline,
