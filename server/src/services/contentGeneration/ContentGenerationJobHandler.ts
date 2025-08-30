@@ -53,10 +53,18 @@ export class ContentGenerationJobHandler {
    */
   public async handleJob(job: AiGenerationJob): Promise<GeneratedContent> {
     const startTime = Date.now();
-    const request = job.payload as ContentRequest;
+    
+    // Parse the JSON payload if it's a string, otherwise use as-is
+    const request: ContentRequest = typeof job.payload === 'string' 
+      ? JSON.parse(job.payload) 
+      : job.payload as ContentRequest;
 
     this.metricsService.recordGenerationAttempt(request);
-    this.logger.info(`Starting content generation job`, { jobId: job.id, requestType: request.type });
+    this.logger.info(`Starting content generation job`, { 
+      jobId: job.id, 
+      requestType: request.type,
+      userId: request.userId // Add userId to logging for debugging
+    });
 
     try {
       const learningContext = await this.contextService.getUserContext(request.userId);
