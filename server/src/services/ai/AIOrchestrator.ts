@@ -729,6 +729,15 @@ export class AIOrchestrator {
 
   /**
    * Generate stubbed content for different content types
+   * 
+   * **PHASE 1 FIX**: Updated to return IStructuredLesson-compliant structure
+   * for content validation compatibility. Fixed root cause of validation failures
+   * by aligning field names with expected interface.
+   * 
+   * @param contentType - Type of content to generate (lesson, vocabulary_drill, etc.)
+   * @param options - Generation options including model, temperature, etc.
+   * @returns Structured content matching the appropriate interface
+   * 
    * TODO: Replace with actual AI provider integration
    */
   private generateStubbedContent(contentType: string, options: any): any {
@@ -740,13 +749,51 @@ export class AIOrchestrator {
 
     switch (contentType) {
       case 'lesson':
+        // ✅ FIXED: Return IStructuredLesson-compliant structure
+        // - Replace 'content' field with 'description' (min 20 chars requirement)
+        // - Replace 'exercises' field with 'sections' array (min 1 item requirement)
+        // - Add required fields: learningObjectives, estimatedTime, vocabulary
         return {
           ...baseContent,
           title: 'Generated French Lesson',
-          content: 'This is a stubbed lesson content about French grammar and vocabulary.',
-          exercises: [
-            { type: 'multiple_choice', question: 'What is "hello" in French?', options: ['Bonjour', 'Au revoir', 'Merci', 'S\'il vous plaît'], correct: 0 }
-          ]
+          description: 'This is a comprehensive French lesson covering essential grammar concepts and practical vocabulary for effective communication.', // ✅ Min 20 chars
+          sections: [ // ✅ Min 1 item array
+            {
+              type: 'introduction',
+              title: 'Lesson Introduction',
+              content: 'Welcome to this French lesson covering greetings and basic conversation.',
+              duration: 5
+            },
+            {
+              type: 'presentation',
+              title: 'Core Content',
+              content: 'Learn essential French greetings and their proper pronunciation.',
+              duration: 10,
+              exercises: [
+                { 
+                  type: 'multiple_choice', 
+                  question: 'What is "hello" in French?', 
+                  options: ['Bonjour', 'Au revoir', 'Merci', 'S\'il vous plaît'], 
+                  correct: 0 
+                }
+              ]
+            }
+          ],
+          vocabulary: [
+            {
+              word: 'bonjour',
+              definition: 'hello/good morning',
+              pronunciation: 'bon-ZHOOR',
+              examples: ['Bonjour madame!', 'Bonjour, comment allez-vous?'],
+              difficulty: 'easy' as const
+            }
+          ],
+          learningObjectives: [
+            'Master basic French greetings',
+            'Understand proper pronunciation of common phrases',
+            'Apply vocabulary in simple conversations'
+          ],
+          estimatedTime: 15
         };
       
       case 'vocabulary_drill':

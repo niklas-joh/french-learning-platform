@@ -6,14 +6,14 @@ Conduct a detailed analysis of your approach, impacted files, dependencies, and 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
 
 # AI Integration Phase 3: AI Orchestration
-Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for for the referenced file . Adhere to @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md 
+Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for the referenced file . Adhere to @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md 
  and @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md 
 
 Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP).
 
 Make sure to use a tool in your request.
 
- Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for for the         │
+ Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for the         │
 │   referenced file '/Users/niklas/Documents/Coding/french-learning-platform/docs/development_docs/tasks/phase-3_AI_integration/  │
 │   task_3_2_A_4.md'? Make sure it is future-proof, following best coding standards, and reuses existing content whenever         │
 │   possible. Follow KISS and Single Responsibility Principle (SRP), adhering to our                                              │
@@ -21,7 +21,7 @@ Make sure to use a tool in your request.
 
 ## Second review
 
- Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for for the referenced file. Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP), adhering to our @/docs/development_docs/development_principles.md.
+ Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for the referenced file. Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP), adhering to our @/docs/development_docs/development_principles.md.
 
 
 # AI Integration
@@ -38,12 +38,16 @@ Now criticise your approach, identifying flaws or inefficiencies, validate that 
 ## ACT MODE
 If you have found tasks for future implementation, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
 
-If you have identified multiple tasks/subtasks, capture them first as .md files in @development_docs/tasks, before working on any code. Once captured, follow the below approach for each task/subtask one at a time:
-2. Implement the code as per your suggestion for the first subtask, adding comprehensive JSDOCs/DOCstring as you go along
+If your approach involves multiple steps, capture the approach in one .md file in the folder @docs/development_docs/task, which we can reference as we go along. Capture any future tasks outside this scope in  @/docs/development_docs/future_implementation_considerations.md.
+
+Once captured, follow the below approach for each task, one at a time:
+1. Criticise your approach for the current task to work on, ensuring you are following our development principles before doing any code work. If you find critical violations, ask me for input before moving to step 2. 
+2. Implement the code as per your suggestion for the first task, adding comprehensive JSDOCs/DOCstring as you go along
 3. Regularly review your code for consistency, logic and potential flaws
 4. Analyse if changes are needed to other files
-5. Update the subtask document and other documentation plans with our progress
+5. Update the task document and other documentation plans with our progress
 6. Update system architecture and your memory bank.
+7. Ask me to validate, before moving to the next step.
 6. Push to git with comprehensive message and git body in a separate file
 7. Handoff to a new task for the next subtask to keep to atomic changes, repeating these instructions.
 
