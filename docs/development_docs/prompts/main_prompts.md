@@ -38,10 +38,10 @@ Now criticise your approach, identifying flaws or inefficiencies, validate that 
 ## ACT MODE
 If you have found tasks for future implementation, add them to @/docs/development_docs/future_implementation_considerations.md  before working on other activities and capture/update your sub-tasks. Then proceed to work on your identified sub-task one by one, following this approach for each subtask:
 
-If your approach involves multiple steps, capture the approach in one .md file in the folder @docs/development_docs/task, which we can reference as we go along. Capture any future tasks outside this scope in  @/docs/development_docs/future_implementation_considerations.md.
+To avoid losing the analysis if the context window is condensed, capture the full approach in the @/docs/development_docs/tasks/subtasks/learning-path-integration-missing.md before doing anything else, which we can reference as we go along. Next, capture any future tasks outside this scope in  @/docs/development_docs/future_implementation_considerations.md.
 
-Once captured, follow the below approach for each task, one at a time:
-1. Criticise your approach for the current task to work on, ensuring you are following our development principles before doing any code work. If you find critical violations, ask me for input before moving to step 2. 
+Once captured, follow the below approach for each task, one at a time. If you context window is condensed or your task is interrupted, read the task document again to now what to do, and continue where you left off following these steps:
+
 2. Implement the code as per your suggestion for the first task, adding comprehensive JSDOCs/DOCstring as you go along
 3. Regularly review your code for consistency, logic and potential flaws
 4. Analyse if changes are needed to other files
@@ -50,6 +50,7 @@ Once captured, follow the below approach for each task, one at a time:
 7. Ask me to validate, before moving to the next step.
 6. Push to git with comprehensive message and git body in a separate file
 7. Handoff to a new task for the next subtask to keep to atomic changes, repeating these instructions.
+
 
 ## Creating subtasks
 Create each of your identified subtasks as separate files, provide details of the changes in each of these subtasks, including any example code you have already identified. Also include dependent files, review points you raised above to be aware of, and possible solutions that considered.

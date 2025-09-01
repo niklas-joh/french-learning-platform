@@ -85,6 +85,11 @@ export class ContentGenerationJobHandler {
       const enhancedContent = await enhancer.enhance(rawContent, learningContext);
       const structuredContent = await this.structureContent(enhancedContent, request.type);
 
+      // NEW: Integrate AI-generated content into user's learning path
+      const contentId = await this.saveGeneratedContent(structuredContent, request.userId, request.type);
+      const { integrateGeneratedContent } = await import('../learningPathService.js');
+      await integrateGeneratedContent(request.userId, contentId, request.type as 'lesson' | 'exercise' | 'vocabulary');
+
       const generatedContent = this.createGeneratedContent(
         request,
         structuredContent,

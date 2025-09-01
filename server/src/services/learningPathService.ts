@@ -161,6 +161,122 @@ export async function completeUserLesson(
   return await completeLesson(userId, lessonId, trx);
 }
 
+/**
+ * Integrates AI-generated content into user's learning path following KISS principles.
+ * 
+ * This function bridges the gap between AI content generation and user accessibility by:
+ * 1. Creating a lesson entry from generated content
+ * 2. Adding the lesson to the user's active learning path
+ * 3. Updating user progress to reflect new content availability
+ * 
+ * Follows established transaction patterns and reuses existing infrastructure for
+ * optimal performance and maintainability. Critical for making AI-generated content
+ * visible and accessible to users immediately after generation completes.
+ * 
+ * @param userId - User identifier for content assignment
+ * @param contentId - Generated content identifier from aiGeneratedContent table
+ * @param contentType - Type of generated content ('lesson' | 'exercise' | 'vocabulary')
+ * @param transaction - Optional database transaction for atomic operations
+ * @returns Promise resolving when integration is complete
+ * @throws Error if content integration fails or user/content not found
+ * 
+ * @example
+ * ```typescript
+ * // Integrate lesson content after AI generation
+ * const contentId = await saveGeneratedContent(structuredContent, userId);
+ * await integrateGeneratedContent(userId, contentId, 'lesson');
+ * ```
+ */
+export async function integrateGeneratedContent(
+  userId: number,
+  contentId: number, 
+  contentType: 'lesson' | 'exercise' | 'vocabulary',
+  transaction?: KnexTypes.Transaction
+): Promise<void> {
+  const db = await import('../config/db.js');
+  const trx = transaction || await db.default.transaction();
+  
+  try {
+    // 1. Get or create active learning path for user (reuse existing pattern)
+    const activePath = await trx('userLearningPaths')
+      .where({ userId, isActive: true })
+      .first();
+    
+    if (!activePath) {
+      throw new Error(`No active learning path found for user ${userId}`);
+    }
+    
+    // 2. Get generated content details
+    const generatedContent = await trx('aiGeneratedContent')
+      .where({ id: contentId })
+      .first();
+    
+    if (!generatedContent) {
+      throw new Error(`Generated content ${contentId} not found`);
+    }
+    
+    // 3. Create lesson entry from generated content (following existing lesson structure)
+    const [lessonId] = await trx('lessons').insert({
+      learningUnitId: activePath.currentUnitId || 1, // Use current unit or default
+      title: generatedContent.title || `AI Generated ${contentType}`,
+      description: `AI-generated ${contentType} content`,
+      type: contentType,
+      estimatedTime: 15, // Default 15 minutes for AI content
+      orderIndex: await getNextLessonOrderIndex(trx, activePath.currentUnitId || 1),
+      contentData: generatedContent.content,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning('id');
+    
+    // 4. Create user lesson progress record (following startLesson pattern)
+    await trx('userLessonProgress').insert({
+      userId,
+      lessonId: lessonId.id || lessonId,
+      status: 'available', // Make immediately available
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+    
+    // 5. Update user learning path progress (reuse existing progress patterns)
+    await trx('userLearningPaths')
+      .where({ userId, isActive: true })
+      .update({
+        lastAccessedAt: new Date(),
+        updatedAt: new Date()
+      });
+    
+    // 6. Log successful integration for monitoring
+    console.log(`[LearningPath] Integrated ${contentType} content ${contentId} for user ${userId}`);
+    
+    if (!transaction) await trx.commit();
+  } catch (error) {
+    if (!transaction) await trx.rollback();
+    console.error('Error integrating generated content:', error);
+    throw error;
+  }
+}
+
+/**
+ * Helper function to get next lesson order index within a unit.
+ * Maintains proper lesson ordering when adding AI-generated content.
+ * 
+ * @param trx - Database transaction
+ * @param unitId - Learning unit identifier
+ * @returns Next available order index
+ */
+async function getNextLessonOrderIndex(
+  trx: KnexTypes.Transaction, 
+  unitId: number
+): Promise<number> {
+  const maxOrder = await trx('lessons')
+    .where({ learningUnitId: unitId })
+    .max('orderIndex as maxOrder')
+    .first();
+  
+  return (maxOrder?.maxOrder || 0) + 1;
+}
+
 // =================================================================
 // AI-POWERED CURRICULUM ENHANCEMENT FUNCTIONS
 // Task 3.2.A.2: Enhance Learning Path Service with Curriculum Features
