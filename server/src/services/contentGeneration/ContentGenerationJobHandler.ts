@@ -170,13 +170,23 @@ export class ContentGenerationJobHandler {
     return AI_CONTENT_CONFIG[type] || DEFAULT_AI_CONFIG;
   }
 
-  private async structureContent(rawContent: string, contentType: ContentType): Promise<StructuredContent> {
+  /**
+   * Structures raw content into the appropriate structured format.
+   * Supports both string (legacy JSON) and object (AIOrchestrator) inputs.
+   * 
+   * @param rawContent - The content to structure (string or object from AIOrchestrator)
+   * @param contentType - The type of content being structured
+   * @returns Promise<StructuredContent> - The structured content
+   * @throws {AIGenerationError} If structuring fails
+   */
+  private async structureContent(rawContent: string | object, contentType: ContentType): Promise<StructuredContent> {
     try {
       const structurer = this.structurerFactory.getStructurer(contentType);
       return await structurer.structure(rawContent);
     } catch (error) {
       this.logger.error(`Structuring content of type '${contentType}' failed.`, {
         error: (error as Error).message,
+        contentType: typeof rawContent, // Log the actual input type for debugging
       });
       // Let the main error handler decide on fallback logic
       throw new AIGenerationError('Failed to structure content', { originalError: error });
