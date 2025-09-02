@@ -28,7 +28,7 @@ export interface AIGeneratedContentData {
 }
 
 export class AIGeneratedContent extends Model implements AIGeneratedContentData {
-  static tableName = 'ai_generated_content';
+  static tableName = 'aiGeneratedContent'; // ✅ Match migration camelCase
 
   // Properties
   id!: string;

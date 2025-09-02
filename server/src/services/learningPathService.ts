@@ -189,7 +189,7 @@ export async function completeUserLesson(
  */
 export async function integrateGeneratedContent(
   userId: number,
-  contentId: number, 
+  contentId: string, // ✅ Fixed: UUID support (was: number)
   contentType: 'lesson' | 'exercise' | 'vocabulary',
   transaction?: KnexTypes.Transaction
 ): Promise<void> {

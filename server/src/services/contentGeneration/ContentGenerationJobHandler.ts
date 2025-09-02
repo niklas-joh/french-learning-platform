@@ -22,6 +22,9 @@ import { AIGenerationError } from '../../utils/errors';
 import { ContentStructurerFactory } from './ContentStructurerFactory';
 import { AI_CONTENT_CONFIG, DEFAULT_AI_CONFIG, AIModelConfig } from '../../config/aiContentConfig';
 import { AiGenerationJob } from '../../models/AiGenerationJob';
+import { AIGeneratedContent } from '../../models/AIGeneratedContent';
+import { v4 as uuidv4 } from 'uuid';
+import type { Knex as KnexTypes } from 'knex';
 
 /**
  * Handles the processing of a single content generation job.
@@ -86,7 +89,13 @@ export class ContentGenerationJobHandler {
       const structuredContent = await this.structureContent(enhancedContent, request.type);
 
       // NEW: Integrate AI-generated content into user's learning path
-      const contentId = await this.saveGeneratedContent(structuredContent, request.userId, request.type);
+      const contentId = await this.saveGeneratedContent(
+        structuredContent, 
+        request, 
+        validation, // From existing validation pipeline
+        Date.now() - startTime, // Pre-calculated generation time
+        undefined // Optional transaction for atomic operations
+      );
       const { integrateGeneratedContent } = await import('../learningPathService.js');
       await integrateGeneratedContent(request.userId, contentId, request.type as 'lesson' | 'exercise' | 'vocabulary');
 
@@ -256,5 +265,70 @@ export class ContentGenerationJobHandler {
       conversation_practice: ['Practice speaking', 'Improve conversational skills']
     };
     return fallbackObjectives[content.type] || ['Practice French language skills'];
+  }
+
+  /**
+   * Saves generated content using existing infrastructure and validation context.
+   * Optimized for performance by leveraging existing data and supporting transactions.
+   * Addresses critical type safety by returning UUID string for proper integration.
+   * 
+   * @param structuredContent - Already validated content from generation pipeline  
+   * @param request - Original content request with all metadata
+   * @param validation - Existing validation results from pipeline
+   * @param generationTimeMs - Time taken for generation (pre-calculated)
+   * @param trx - Optional transaction for atomic operations with learning path integration
+   * @returns Promise<string> - UUID for learning path integration (not parsed number)
+   * @throws {AIGenerationError} - If content saving fails with comprehensive error context
+   */
+  private async saveGeneratedContent(
+    structuredContent: StructuredContent,
+    request: ContentRequest,
+    validation: ContentValidation,
+    generationTimeMs: number,
+    trx?: KnexTypes.Transaction
+  ): Promise<string> {
+    try {
+      // ✅ Transaction support for atomic operations
+      const queryBuilder = trx ? AIGeneratedContent.query(trx) : AIGeneratedContent.query();
+      
+      const savedContent = await queryBuilder.insert({
+        userId: request.userId,
+        type: request.type,
+        status: 'completed',
+        requestPayload: request, // ✅ Reuse existing data (no helper method needed)
+        generatedData: structuredContent,
+        validationResults: validation, // ✅ Use existing validation context  
+        metadata: {
+          aiGenerated: true,
+          version: '1.0',
+          // TODO: Get modelUsed from AI config instead of hardcoding
+          modelUsed: 'gpt-4',
+          contentType: structuredContent.type
+        },
+        level: request.level,
+        topics: request.topics || [],
+        focusAreas: request.focusAreas || [],
+        estimatedCompletionTime: structuredContent.estimatedTime || request.duration || 15,
+        validationScore: validation.score,
+        generationTimeMs, // ✅ Use pre-calculated value
+        usageCount: 0,
+        lastAccessedAt: new Date()
+      });
+
+      this.logger.info('Generated content saved successfully', {
+        contentId: savedContent.id,
+        userId: request.userId,
+        type: request.type
+      });
+
+      return savedContent.id; // ✅ Return UUID string, not parsed number
+    } catch (error) {
+      this.logger.error('Failed to save generated content', {
+        userId: request.userId,
+        type: request.type,
+        error: error instanceof Error ? error.message : String(error)
+      });
+      throw new AIGenerationError('Content saving failed', { originalError: error });
+    }
   }
 }
