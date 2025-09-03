@@ -312,7 +312,7 @@ export class ContentGenerationJobHandler {
         validationScore: validation.score,
         generationTimeMs, // ✅ Use pre-calculated value
         usageCount: 0,
-        lastAccessedAt: new Date()
+        lastAccessedAt: new Date().toISOString()
       });
 
       this.logger.info('Generated content saved successfully', {

@@ -21,8 +21,8 @@ export interface AIGeneratedContentData {
   tokenUsage?: number;
   modelUsed?: string;
   usageCount: number;
-  lastAccessedAt?: Date;
-  expiresAt?: Date;
+  lastAccessedAt?: string;
+  expiresAt?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,8 +48,8 @@ export class AIGeneratedContent extends Model implements AIGeneratedContentData 
   tokenUsage?: number;
   modelUsed?: string;
   usageCount!: number;
-  lastAccessedAt?: Date;
-  expiresAt?: Date;
+  lastAccessedAt?: string;
+  expiresAt?: string;
   createdAt!: Date;
   updatedAt!: Date;
 
@@ -90,7 +90,7 @@ export class AIGeneratedContent extends Model implements AIGeneratedContentData 
       topics: { type: ['array', 'null'] },
       focusAreas: { type: ['array', 'null'] },
       estimatedCompletionTime: { type: ['integer', 'null'], minimum: 0 },
-      validationScore: { type: ['number', 'null'], minimum: 0, maximum: 1 },
+      validationScore: { type: ['number', 'null'], minimum: 0, maximum: 100 },
       generationTimeMs: { type: ['integer', 'null'], minimum: 0 },
       tokenUsage: { type: ['integer', 'null'], minimum: 0 },
       modelUsed: { type: ['string', 'null'], maxLength: 50 },
@@ -115,11 +115,11 @@ export class AIGeneratedContent extends Model implements AIGeneratedContentData 
 
   // Helper methods
   isExpired(): boolean {
-    return this.expiresAt ? new Date() > this.expiresAt : false;
+    return this.expiresAt ? new Date() > new Date(this.expiresAt) : false;
   }
 
   markAccessed(): void {
-    this.lastAccessedAt = new Date();
+    this.lastAccessedAt = new Date().toISOString();
     this.usageCount += 1;
   }
 
@@ -141,7 +141,7 @@ export class AIGeneratedContent extends Model implements AIGeneratedContentData 
       .where('type', type)
       .where('status', 'completed')
       .where(function() {
-        this.whereNull('expiresAt').orWhere('expiresAt', '>', new Date());
+        this.whereNull('expiresAt').orWhere('expiresAt', '>', new Date().toISOString());
       });
 
     if (level) {
@@ -157,7 +157,7 @@ export class AIGeneratedContent extends Model implements AIGeneratedContentData 
 
     return this.query()
       .delete()
-      .where('expiresAt', '<', new Date())
+      .where('expiresAt', '<', new Date().toISOString())
       .orWhere(function() {
         this.where('status', 'failed')
           .where('createdAt', '<', new Date(Date.now() - FAILED_JOB_RETENTION_MS));
