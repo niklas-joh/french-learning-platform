@@ -1,20 +1,18 @@
-const knex = require('knex');
-// The Knex configuration was moved under `server/src`.  Require the TypeScript
-// file directly so `ts-node` can execute migrations without a missing module
-// error.
-const knexConfig = require('../server/src/knexfile').default;
-
-const db = knex(knexConfig.development);
+import knex from 'knex';
+import knexConfig from '../server/src/knexfile.js';
 
 async function runMigration() {
   try {
+    const db = knex(knexConfig.development);
+    
     console.log('Running migrations...');
     await db.migrate.latest();
     console.log('Migrations completed successfully.');
+    
+    await db.destroy();
   } catch (error) {
     console.error('Error running migrations:', error);
-  } finally {
-    await db.destroy();
+    process.exit(1);
   }
 }
 
