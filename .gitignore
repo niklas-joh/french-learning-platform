@@ -65,6 +65,7 @@ Cline/
 .clinerules/
 
 .cline/
+memory/bank/
 
 # Gemini configuration (contains API keys)
 .gemini/
