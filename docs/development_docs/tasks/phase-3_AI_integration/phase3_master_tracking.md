@@ -112,6 +112,13 @@ Transform the language learning platform from a traditional quiz-based system to
 | 3.2.E.4 | [Extend aiConfig and Environment Setup](./task_3_2_E_4.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.E.2, 3.2.E.3 |
 | 3.2.E.5 | [Integration Testing and Validation](./task_3_2_E_5.md) | 0.5h | ⏳ **Not Started** | - | - | - | 3.2.E.4 |
 
+### **Phase 3.2.F: Redis Migration to Database-Only Architecture** | **1.75h** | ✅ **READY FOR IMPLEMENTATION** | - | Sep 7, 2025 | - | **Corporate Environment Compatibility** |
+| **3.2.F** | **[Redis Migration to Database-Only Job Processing](./redis-migration-overview.md)** | **1.75h** | ✅ **READY FOR IMPLEMENTATION** | - | Sep 7, 2025 | - | **Corporate Environment Requirements** |
+| 3.2.F.1 | [Phase 1: Configuration Updates](./redis-migration-phase-1-configuration.md) | 0.25h | ✅ **DOCUMENTED** | - | Sep 7, 2025 | Sep 7, 2025 | None |
+| 3.2.F.2 | [Phase 2: Code Optimization & Dependency Cleanup](./redis-migration-phase-2-code-optimization.md) | 0.75h | ✅ **DOCUMENTED** | - | Sep 7, 2025 | Sep 7, 2025 | 3.2.F.1 |
+| 3.2.F.3 | [Phase 3: Performance Enhancements](./redis-migration-phase-3-performance-enhancements.md) | 0.5h | ✅ **DOCUMENTED** | - | Sep 7, 2025 | Sep 7, 2025 | 3.2.F.2 |
+| 3.2.F.4 | [Phase 4: Monitoring & Documentation](./redis-migration-phase-4-monitoring-documentation.md) | 0.25h | ✅ **DOCUMENTED** | - | Sep 7, 2025 | Sep 7, 2025 | 3.2.F.3 |
+
 ### **Phase 3.3: Testing & Polish (Week 3) - Total: 15 hours**
 | Task ID | Task Name | Estimated Hours | Status | Assignee | Start Date | End Date | Dependencies |
 |---------|-----------|----------------|---------|----------|------------|----------|-----------------|

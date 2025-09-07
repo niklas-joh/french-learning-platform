@@ -329,16 +329,29 @@ graph TD
 
     subgraph "Data & External Services"
         direction TB
-        Database["Database (Postgres + Knex)"]
-        Redis["Redis (Caching, Rate Limiting)"]
+        Database["Database (SQLite + Knex)"]
+        InMemoryCache["In-Memory Cache (Database-Only)"]
+        DatabaseJobQueue["Database Job Queue (SQLite)"]
         OpenAI["OpenAI API"]
         
-        CacheService --> Redis
-        RateLimitService --> Redis
+        CacheService --> InMemoryCache
+        RateLimitService --> InMemoryCache
         ContextService --> Database
         AIOrchestrator --> OpenAI
         AIAssessmentEngine --> OpenAI
-        DynamicContentGenerator --> Database
+        DynamicContentGenerator --> DatabaseJobQueue
+        DatabaseJobQueueService --> Database
+    end
+
+    subgraph "Background Processing (Database-Only)"
+        direction TB
+        DatabaseWorker["Database Polling Worker"]
+        JobQueueMonitor["Job Queue Monitor"]
+        JobQueueMaintenance["Maintenance Service"]
+        
+        DatabaseWorker --> DatabaseJobQueue
+        JobQueueMonitor --> Database
+        JobQueueMaintenance --> Database
     end
 
     subgraph "External Services & Deployment"
