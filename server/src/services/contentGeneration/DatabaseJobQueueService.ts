@@ -152,19 +152,19 @@ export class DatabaseJobQueueService implements IJobQueueService {
 
   /**
    * Atomically fetches and locks the next available job.
-   * Uses SELECT ... FOR UPDATE SKIP LOCKED to prevent race conditions.
+   * SQLite-compatible implementation using transaction and immediate status update.
    * @returns The job to be processed, or null if no jobs are available.
    */
   async getNextJob(): Promise<{ id: string; payload: ContentRequest } | null> {
     const job = await this.knex.transaction(async (trx: KnexTypes.Transaction) => {
+      // First, get the oldest queued job
       const nextJob = await AiGenerationJobsModel.query(trx as any)
         .where({ status: 'queued' })
         .orderBy('createdAt', 'asc')
-        .first()
-        .forUpdate()
-        .skipLocked();
+        .first();
 
       if (nextJob) {
+        // Immediately update to processing status to prevent other workers from picking it up
         await AiGenerationJobsModel.query(trx as any).patchAndFetchById(nextJob.id, {
           status: 'processing',
         });

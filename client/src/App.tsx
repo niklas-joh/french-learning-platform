@@ -16,6 +16,8 @@ import RegisterPage from './pages/RegisterPage';
 import AdminRoute from './components/AdminRoute';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import { TwentyFirstToolbar } from '@21st-extension/toolbar-react';
+import { ReactPlugin } from '@21st-extension/react';
 import './styles/design-tokens.css';
 
 // Main application component
@@ -23,6 +25,11 @@ function App() {
   return (
     <CustomThemeProvider>
       <CssBaseline />
+      <TwentyFirstToolbar
+        config={{
+          plugins: [ReactPlugin],
+        }}
+      />
       <Router>
         <AuthProvider>
           <Routes>

@@ -27,6 +27,8 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
+    "@21st-extension/react": "^0.5.14",
+    "@21st-extension/toolbar-react": "^0.5.14",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.2",
