@@ -1,38 +1,35 @@
-import IORedis from 'ioredis';
-
-// Determine if Redis is enabled from environment variables
-export const isRedisEnabled = process.env.REDIS_ENABLED === 'true';
-
-// Base Redis configuration
-const redisConfig = {
-  host: process.env.REDIS_HOST || '127.0.0.1',
-  port: parseInt(process.env.REDIS_PORT || '6379', 10),
-  password: process.env.REDIS_PASSWORD,
-  maxRetriesPerRequest: null, // Recommended for BullMQ to handle connection retries
-  lazyConnect: true, // Don't connect until the first command is sent
-};
-
 /**
- * Singleton instance of the IORedis connection.
- * This connection is only created if Redis is enabled.
+ * @file server/src/config/redis.ts  
+ * @description Database-Only Redis Stub Configuration
+ * 
+ * This is a minimal stub that maintains API compatibility with legacy Redis imports
+ * while ensuring Redis is completely disabled for database-only job processing.
+ * All Redis functionality is stubbed to return null/false for graceful degradation.
+ * 
+ * @author AI Content Generation System
+ * @version 2.0.0 - Database-only stub implementation
+ * @created 2025-01-08
  */
-export const redisConnection = isRedisEnabled ? new IORedis(redisConfig) : null;
 
 /**
- * Centralized queue names to prevent typos and ensure consistency.
+ * Redis is permanently disabled for database-only operation
+ * This ensures corporate environment compatibility by removing external dependencies
+ */
+export const isRedisEnabled = false;
+
+/**
+ * Redis connection is always null in database-only mode
+ * Services that depend on Redis will gracefully degrade to no-op behavior
+ */
+export const redisConnection = null;
+
+/**
+ * Legacy queue names kept for backwards compatibility
+ * These are no longer used in database-only implementation
+ * @deprecated Use database-only job processing instead
  */
 export const QUEUE_NAMES = {
   CONTENT_GENERATION: 'content-generation-queue',
-};
+} as const;
 
-if (isRedisEnabled && redisConnection) {
-  redisConnection.on('connect', () => {
-      console.log('Successfully connected to Redis.');
-  });
-
-  redisConnection.on('error', (err: Error) => {
-      console.error('Could not connect to Redis.', err);
-  });
-} else {
-  console.log('Redis is disabled. Skipping Redis connection.');
-}
+console.log('📊 Redis disabled - using database-only job processing mode');

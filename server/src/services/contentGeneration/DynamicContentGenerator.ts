@@ -1,85 +1,88 @@
 // server/src/services/contentGeneration/DynamicContentGenerator.ts
-import { IContentGenerator, IJobQueueService } from './interfaces.js';
-import { ContentRequest } from '../../types/Content.js';
+import type { IContentGenerator, IJobQueueService } from './interfaces.js';
+import type { ContentRequest } from '../../types/Content.js';
 import { AIGenerationError } from '../../utils/errors.js';
-import { redisConnection } from '../../config/redis.js';
-import { ContentGenerationJobQueue, createContentGenerationJobQueue } from './ContentGenerationJobQueue.js';
+import { DB_JOB_QUEUE_CONFIG } from '../../config/database-job-queue.js';
 
 /**
- * Main implementation of dynamic content generation.
- * This class is responsible for receiving content generation requests
- * and enqueuing them for asynchronous processing by a worker.
+ * Database-only dynamic content generation implementation.
+ * This class receives content generation requests and enqueues them 
+ * directly to the database for processing by the database polling worker.
  * 
- * Supports both Redis/BullMQ and database-only job processing modes.
- * When Redis is available, jobs are added to BullMQ queue for optimal performance.
- * When Redis is unavailable, jobs remain in database for fallback processing.
+ * Replaces the previous Redis/BullMQ hybrid approach with a pure database
+ * solution for corporate environment compatibility.
  *
  * @implements {IContentGenerator}
+ * @version 2.0.0 - Database-only implementation
  */
 export class DynamicContentGenerator implements IContentGenerator {
-  private bullMQQueue: ContentGenerationJobQueue | null = null;
-
   /**
-   * @param {IJobQueueService} jobQueueService - The database job queue service.
+   * Creates a new DynamicContentGenerator instance
+   * 
+   * @param jobQueueService - The database job queue service with type safety
    */
-  constructor(private jobQueueService: IJobQueueService) {
-    // Initialize BullMQ queue using factory function (safe when Redis disabled)
-    try {
-      this.bullMQQueue = createContentGenerationJobQueue();
-      if (this.bullMQQueue) {
-        console.log('[DynamicContentGenerator] BullMQ integration enabled');
-      } else {
-        console.log('[DynamicContentGenerator] Redis disabled, using database-only job processing');
-      }
-    } catch (error) {
-      console.warn('[DynamicContentGenerator] BullMQ initialization failed, falling back to database-only:', error);
-      this.bullMQQueue = null;
-    }
+  constructor(private readonly jobQueueService: IJobQueueService) {
+    console.log('[DynamicContentGenerator] Database-only job processing initialized');
+    console.log(`[DynamicContentGenerator] Configuration: ${DB_JOB_QUEUE_CONFIG.enabled ? 'Enabled' : 'Disabled'}`);
   }
 
   /**
-   * Enqueues a content generation request and returns the job ID.
-   * The actual content generation is handled asynchronously by a worker.
+   * Enqueues a content generation request directly to the database.
+   * The database polling worker will automatically pick up and process this job.
    * 
-   * Process:
-   * 1. Create job record in database (always)
-   * 2. If Redis available, add job to BullMQ queue using database ID
-   * 3. Return database job ID for consistent tracking
+   * Database-Only Process (Simplified):
+   * 1. Validate request parameters
+   * 2. Create job record in database with 'queued' status
+   * 3. Database worker polls and processes job automatically
+   * 4. Return database job ID for tracking
    *
-   * @param {ContentRequest} request - The content generation request.
-   * @returns {Promise<{ jobId: string }>} A promise that resolves with the ID of the enqueued job.
-   * @throws {AIGenerationError} If the job cannot be enqueued.
+   * @param request - The content generation request with proper typing
+   * @returns Promise resolving to the enqueued job ID
+   * @throws {AIGenerationError} If the job cannot be enqueued to database
+   * 
+   * @example
+   * ```typescript
+   * const generator = new DynamicContentGenerator(jobQueueService);
+   * const { jobId } = await generator.generateContent({
+   *   userId: 1,
+   *   type: 'lesson',
+   *   payload: { topic: 'French Grammar' }
+   * });
+   * ```
    */
   public async generateContent(request: ContentRequest): Promise<{ jobId: string }> {
     try {
-      // Step 1: Create job in database first (always required for persistence)
-      const jobId = await this.jobQueueService.enqueueJob(request);
-      console.log(`[DynamicContentGenerator] Created database job ${jobId} for user ${request.userId}`);
-
-      // Step 2: Add to BullMQ queue if Redis is available
-      if (this.bullMQQueue) {
-        try {
-          await this.bullMQQueue.addJob(jobId, request);
-          console.log(`[DynamicContentGenerator] Added job ${jobId} to BullMQ queue`);
-        } catch (bullMQError) {
-          console.warn(`[DynamicContentGenerator] Failed to add job ${jobId} to BullMQ queue:`, bullMQError);
-          // Don't fail the entire operation - job is still in database
-        }
+      // Validate configuration is enabled
+      if (!DB_JOB_QUEUE_CONFIG.enabled) {
+        throw new AIGenerationError('Job queue is disabled in configuration');
       }
 
+      // Create job directly in database - worker will pick it up automatically
+      const jobId = await this.jobQueueService.enqueueJob(request);
+      console.log(`[DynamicContentGenerator] Enqueued database job ${jobId} for user ${request.userId} (${request.type})`);
+
       return { jobId };
-    } catch (error) {
+      
+    } catch (error: unknown) {
+      // Type-safe error handling following existing patterns
       const errorMessage = error instanceof Error ? error.message : String(error);
       console.error('[DynamicContentGenerator] Failed to enqueue content generation job:', {
-        request,
+        request: {
+          userId: request.userId,
+          type: request.type,
+          // Don't log sensitive payload data
+        },
         error: errorMessage,
       });
       
-      // Throw a more specific error to be handled by the controller
-      throw new AIGenerationError(`Failed to enqueue content generation job.`, {
-        originalError: error,
-        request,
-      });
+      // Preserve error chain for debugging
+      throw new AIGenerationError(
+        `Failed to enqueue content generation job: ${errorMessage}`,
+        {
+          originalError: error,
+          request,
+        }
+      );
     }
   }
 }

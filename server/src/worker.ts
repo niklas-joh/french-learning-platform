@@ -13,8 +13,11 @@
 // Load environment variables first
 import 'dotenv/config';
 
+import type { DatabaseJobQueueService } from './services/contentGeneration/DatabaseJobQueueService.js';
+import type { ContentGenerationJobHandler } from './services/contentGeneration/ContentGenerationJobHandler.js';
 import { contentGenerationServiceFactory } from './services/contentGeneration/index.js';
 import { AiGenerationJobsModel } from './models/AiGenerationJob.js';
+import { DB_JOB_QUEUE_CONFIG, validateConfiguration } from './config/database-job-queue.js';
 
 /**
  * Database polling worker - replaces BullMQ worker
@@ -23,16 +26,19 @@ import { AiGenerationJobsModel } from './models/AiGenerationJob.js';
 const startDatabaseWorker = async (): Promise<void> => {
   console.log('🚀 Starting database-only content generation worker...');
   
-  // ✅ Use existing factory services - no new services needed
-  const databaseJobQueue = contentGenerationServiceFactory.getDatabaseJobQueueService();
-  const jobHandler = contentGenerationServiceFactory.getContentGenerationJobHandler();
+  // Validate configuration before starting
+  validateConfiguration();
+  
+  // ✅ Use existing factory services with proper type safety
+  const databaseJobQueue: DatabaseJobQueueService = contentGenerationServiceFactory.getDatabaseJobQueueService();
+  const jobHandler: ContentGenerationJobHandler = contentGenerationServiceFactory.getContentGenerationJobHandler();
   
   let isRunning = true;
-  const pollInterval = parseInt(process.env.DB_JOB_POLL_INTERVAL_MS || '1000', 10);
-  const maxConcurrent = parseInt(process.env.DB_JOB_MAX_CONCURRENT || '5', 10);
+  // ✅ Use centralized, validated configuration
+  const { pollInterval, maxConcurrent, shutdownTimeout } = DB_JOB_QUEUE_CONFIG;
   let activeJobs = 0;
   
-  console.log(`⚙️  Configuration: Poll interval ${pollInterval}ms, Max concurrent ${maxConcurrent} jobs`);
+  console.log(`⚙️  Configuration: Poll interval ${pollInterval}ms, Max concurrent ${maxConcurrent}, Shutdown timeout ${shutdownTimeout}ms`);
   
   /**
    * Simple polling loop - leverages existing job queue infrastructure
@@ -72,15 +78,15 @@ const startDatabaseWorker = async (): Promise<void> => {
   };
   
   /**
-   * Processes a single job asynchronously
-   * @param jobId - Database job ID
-   * @param jobHandler - Content generation job handler
-   * @param databaseJobQueue - Database job queue service
+   * Processes a single job asynchronously with proper error handling
+   * @param jobId - Database job ID  
+   * @param jobHandler - Content generation job handler with type safety
+   * @param databaseJobQueue - Database job queue service with type safety
    */
   const processJobAsync = async (
     jobId: string,
-    jobHandler: any,
-    databaseJobQueue: any
+    jobHandler: ContentGenerationJobHandler,
+    databaseJobQueue: DatabaseJobQueueService
   ): Promise<void> => {
     try {
       // ✅ Reuse existing job processing pattern
@@ -112,20 +118,33 @@ const startDatabaseWorker = async (): Promise<void> => {
     }
   };
   
-  // ✅ Keep existing graceful shutdown logic (unchanged)
+  // ✅ Enhanced graceful shutdown with timeout and proper error handling
   const gracefulShutdown = async (signal: string): Promise<void> => {
     console.log(`🔄 Received ${signal}, initiating graceful shutdown...`);
     isRunning = false;
     
-    // Wait for active jobs to complete
-    console.log(`⏳ Waiting for ${activeJobs} active jobs to complete...`);
-    while (activeJobs > 0) {
-      await sleep(1000);
-      console.log(`⏳ ${activeJobs} jobs still processing...`);
+    if (activeJobs === 0) {
+      console.log('✅ No active jobs, shutting down immediately');
+      process.exit(0);
+      return;
     }
     
-    console.log('✅ All jobs completed, worker shutdown successful');
-    process.exit(0);
+    // Wait for active jobs to complete with timeout
+    console.log(`⏳ Waiting for ${activeJobs} active jobs to complete (max ${shutdownTimeout}ms)...`);
+    const startTime = Date.now();
+    
+    while (activeJobs > 0 && (Date.now() - startTime) < shutdownTimeout) {
+      await sleep(1000);
+      console.log(`⏳ ${activeJobs} jobs still processing... (${Math.round((Date.now() - startTime) / 1000)}s elapsed)`);
+    }
+    
+    if (activeJobs > 0) {
+      console.warn(`⚠️ Forcing shutdown with ${activeJobs} jobs still active after ${shutdownTimeout}ms timeout`);
+      process.exit(1);
+    } else {
+      console.log('✅ All jobs completed, worker shutdown successful');
+      process.exit(0);
+    }
   };
   
   process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
