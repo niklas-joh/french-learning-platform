@@ -236,24 +236,6 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Configurable log levels and output destinations
   - Better production monitoring and debugging
 
----
-
-## Implementation Priority
-
-**High Priority** (Impact: High, Effort: Medium)
-- Items 1, 2, 7, 10, 18: Performance and stability improvements
-
-**Medium Priority** (Impact: Medium, Effort: Low-Medium)  
-- Items 4, 5, 11, 16: User experience and development workflow
-
-**Low Priority** (Impact: High, Effort: High)
-- Items 12, 13, 14, 15: Advanced AI features requiring significant architecture changes
-
-**Future Consideration** (Impact: Medium, Effort: High)
-- Items 3, 6, 8, 9, 17: Scalability improvements for larger user bases
-
----
-
 ## AI Response Quality & Validation
 
 ### 19. Advanced AI Response Validation and Enhancement Pipeline
@@ -396,25 +378,6 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Standardized analysis approach across languages
   - Cross-language pattern insights
 
----
-
-## Implementation Priority
-
-**High Priority** (Impact: High, Effort: Medium)
-- Items 1, 2, 7, 10, 18: Performance and stability improvements
-- Items 19, 21, 24: Core architecture and validation enhancements
-
-**Medium Priority** (Impact: Medium, Effort: Low-Medium)  
-- Items 4, 5, 11, 16, 20, 26, 27: User experience and development workflow
-- Items 22, 23, 28: Analytics and content generation improvements
-
-**Low Priority** (Impact: High, Effort: High)
-- Items 12, 13, 14, 15: Advanced AI features requiring significant architecture changes
-- Items 25, 29: Infrastructure improvements for future extensibility
-
-**Future Consideration** (Impact: Medium, Effort: High)
-- Items 3, 6, 8, 9, 17: Scalability improvements for larger user bases
-
 ## Redis Migration Advanced Features (Future)
 
 ### 30. Intelligent Job Queue Optimization
@@ -456,11 +419,109 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Prevention of permanent job loss
   - Administrative tools for handling persistent failures
 
+## AI Controller Architectural Improvements (Critical Future Refactoring)
+
+### 33. aiController.ts Monolithic Architecture Refactoring
+- **Identified**: September 9, 2025 during server error analysis
+- **Current State**: 600+ line monolithic controller with complex task routing system
+- **Problem**: 
+  - Violates KISS and SRP principles (development_principles.md Section 7)
+  - Complex `taskHandlerMap` over-engineering for simple request handling
+  - Massive `handleAIRequest` function with embedded switch statements
+  - Multiple responsibilities in single controller
+  - Performance anti-patterns with potential dynamic import usage
+- **Proposed Solution**: 
+  1. **Extract Validation Service**: Move validation logic to separate service following existing patterns
+  2. **Simplify Task Routing**: Replace complex `taskHandlerMap` with direct controller method calls
+  3. **Leverage Existing Services**: Extend `learningPathService.ts` and `progressService.ts` patterns
+  4. **Follow Factory Patterns**: Use established `aiServiceFactory` patterns consistently
+  5. **Split Responsibilities**: Create focused controller methods following SRP
+- **Implementation Strategy**:
+  - **Phase 1**: Extract validation service (0.5h) - reuse existing service patterns
+  - **Phase 2**: Simplify task routing (1h) - direct method calls vs complex mapping
+  - **Phase 3**: Integrate with existing services (0.5h) - leverage `learningPathService` extensions
+- **Benefits**:
+  - 90%+ code reuse through existing infrastructure leverage
+  - <100 lines new code following development principles
+  - Elimination of over-engineered task routing system
+  - Performance optimization through factory singleton patterns
+  - Adherence to KISS and SRP principles
+  - Future extensibility without architectural debt
+- **Priority**: Medium (after server stability achieved)
+- **Estimated Effort**: 2 hours total
+- **Dependencies**: Server must be running and stable first
+- **Success Criteria**: 
+  - Controller file reduced from 600+ lines to <200 lines
+  - Simplified request handling with direct method calls
+  - Maintained functionality with improved performance
+  - Following established architectural patterns
+
+### 34. AI Request Handler Performance Optimization
+- **Identified**: September 9, 2025 during architectural analysis
+- **Current State**: Complex `handleAIRequest` function with potential performance issues
+- **Problem**: 
+  - Large function violating "Monolithic Function" anti-pattern (development_principles.md Section 7f)
+  - Switch statement routing adds unnecessary complexity
+  - Potential for dynamic import performance issues (20-50ms overhead)
+- **Proposed Solution**:
+  1. **Function Decomposition**: Break large function into focused, single-purpose functions
+  2. **Direct Method Routing**: Replace switch statements with direct orchestrator method calls
+  3. **Factory Singleton Usage**: Ensure consistent use of factory pattern for service access
+  4. **Performance Monitoring**: Add timing metrics for request processing
+- **Benefits**:
+  - Improved maintainability through focused functions
+  - Better performance with direct method calls
+  - Consistent factory pattern usage
+  - Easier testing and debugging
+- **Priority**: Medium
+- **Estimated Effort**: 1 hour
+- **Dependencies**: Task 33 completion
+
+### 35. API Endpoint Consolidation and Simplification
+- **Identified**: September 9, 2025 during code review
+- **Current State**: Multiple overlapping API patterns for similar functionality
+- **Problem**:
+  - Legacy endpoints maintained alongside new orchestration endpoints
+  - Inconsistent validation and error handling patterns
+  - Code duplication across similar endpoint handlers
+- **Proposed Solution**:
+  1. **Deprecate Legacy Endpoints**: Phase out deprecated AI endpoints
+  2. **Standardize Validation**: Use consistent Zod validation across all endpoints
+  3. **Unified Error Handling**: Implement consistent error response format
+  4. **Documentation Update**: Update API documentation to reflect simplified endpoints
+- **Benefits**:
+  - Reduced maintenance burden
+  - Consistent developer experience
+  - Simplified API surface area
+  - Better documentation and testing
+- **Priority**: Low
+- **Estimated Effort**: 1.5 hours
+- **Dependencies**: Task 33 and 34 completion
+
 ---
 
-**Last Updated**: January 8, 2025  
-**Document Status**: Comprehensive review completed + Redis migration additions  
-**Original Items**: 70 total items from original analysis  
-**Items Removed**: 41 completed, duplicate, or over-engineered items  
-**Items Retained**: 32 relevant future considerations (29 original + 3 Redis migration)  
-**Coverage**: Complete review including Redis migration future enhancements
+## Implementation Priority
+
+**High Priority** (Impact: High, Effort: Medium)
+- Items 1, 2, 7, 10, 18: Performance and stability improvements
+- Items 19, 21, 24: Core architecture and validation enhancements
+
+**Medium Priority** (Impact: Medium, Effort: Low-Medium)  
+- Items 4, 5, 11, 16, 20, 26, 27: User experience and development workflow
+- Items 22, 23, 28: Analytics and content generation improvements
+- Items 33, 34: AI controller architectural improvements (after server stability)
+
+**Low Priority** (Impact: High, Effort: High)
+- Items 12, 13, 14, 15: Advanced AI features requiring significant architecture changes
+- Items 25, 29, 35: Infrastructure improvements for future extensibility
+
+**Future Consideration** (Impact: Medium, Effort: High)
+- Items 3, 6, 8, 9, 17: Scalability improvements for larger user bases
+
+---
+
+**Last Updated**: September 9, 2025  
+**Document Status**: Updated with AI controller refactoring tasks  
+**Total Items**: 35 total considerations (32 original + 3 AI controller specific)  
+**Recent Additions**: Tasks 33-35 for aiController.ts architectural improvements  
+**Critical Priority**: Server ESM compliance must be resolved before architectural improvements

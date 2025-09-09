@@ -368,8 +368,12 @@ export const generateContentAsync = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  console.log(`[aiController] 🚀 DEBUGGING: Starting content generation for user ${req.user!.userId}`);
+  console.log(`[aiController] 🚀 DEBUGGING: Request body:`, JSON.stringify(req.body, null, 2));
+  
   const validationResult = validateAIPayload('GENERATE_CONTENT', req.body);
   if (!validationResult.success) {
+    console.log(`[aiController] ❌ DEBUGGING: Validation failed:`, validationResult.error);
     const errorResponse = formatValidationError(validationResult.error);
     res.status(400).json({
       message: errorResponse.message,
@@ -386,12 +390,27 @@ export const generateContentAsync = async (
     userId: req.user!.userId,
   };
 
+  console.log(`[aiController] 🚀 DEBUGGING: Content request prepared:`, JSON.stringify(contentRequest, null, 2));
+
   try {
+    console.log(`[aiController] 🚀 DEBUGGING: Getting content generator...`);
     const contentGenerator = contentGenerationServiceFactory.getDynamicContentGenerator();
+    console.log(`[aiController] 🚀 DEBUGGING: Content generator obtained, calling generateContent...`);
+    
     const { jobId } = await contentGenerator.generateContent(contentRequest);
+    console.log(`[aiController] ✅ DEBUGGING: Job created successfully with ID: ${jobId}`);
+    
+    // DEBUGGING: Immediately check if job exists in database
+    console.log(`[aiController] 🔍 DEBUGGING: Checking if job ${jobId} exists in database...`);
+    // TODO: Simplify controller architecture following KISS principle 
+    // See future_implementation_considerations.md #33 for detailed plan
+    // Priority: Medium (after server stability achieved)
+    const jobRecord = await AiGenerationJobsModel.query().findById(jobId);
+    console.log(`[aiController] 🔍 DEBUGGING: Job record found:`, JSON.stringify(jobRecord, null, 2));
+    
     res.status(202).json({ jobId });
   } catch (error) {
-    console.error(`[aiController] Failed to schedule job for user ${req.user!.userId}:`, error);
+    console.error(`[aiController] ❌ DEBUGGING: Failed to schedule job for user ${req.user!.userId}:`, error);
     res.status(500).json({ message: 'Failed to schedule content generation job.', code: 'JOB_SCHEDULE_FAILED' });
   }
 };
