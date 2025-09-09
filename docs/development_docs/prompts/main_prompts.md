@@ -49,7 +49,7 @@ Once captured, follow the below approach for each task, one at a time. If you co
 6. Update system architecture and your memory bank.
 7. Ask me to validate, before moving to the next step.
 6. Push to git with comprehensive message and git body in a separate file
-7. Handoff to a new task for the next subtask to keep to atomic changes, repeating these instructions.
+7. Handoff to a new task for the next subtask to keep to atomic changes, repeating these instructions, unless all original requirements are met.
 
 
 ## Creating subtasks
