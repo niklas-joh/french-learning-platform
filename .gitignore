@@ -71,3 +71,6 @@ memory/bank/
 
 # Gemini configuration (contains API keys)
 .gemini/
+
+# Git directory (uncomment if you want to ignore the .git directory, but usually not recommended)
+.git/
