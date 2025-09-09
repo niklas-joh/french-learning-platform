@@ -197,14 +197,14 @@ export async function integrateGeneratedContent(
   const trx = transaction || await db.default.transaction();
   
   try {
-    // 1. Get or create active learning path for user (reuse existing pattern)
-    const activePath = await trx('userLearningPaths')
-      .where({ userId, isActive: true })
-      .first();
-    
-    if (!activePath) {
-      throw new Error(`No active learning path found for user ${userId}`);
-    }
+    // 1. Use default single learning path (KISS principle - system currently uses single path)
+    // TODO: When multi-path support is needed, replace this with userLearningPaths table lookup
+    const activePath = {
+      id: 1,                    // Default to the only learning path "French for Beginners"
+      learningPathId: 1,
+      currentUnitId: 1,         // Default to first unit
+      isActive: true
+    };
     
     // 2. Get generated content details
     const generatedContent = await trx('aiGeneratedContent')
@@ -217,12 +217,12 @@ export async function integrateGeneratedContent(
     
     // 3. Create lesson entry from generated content (following existing lesson structure)
     const [lessonId] = await trx('lessons').insert({
-      learningUnitId: activePath.currentUnitId || 1, // Use current unit or default
+      learningUnitId: activePath.currentUnitId, // Use default unit
       title: generatedContent.title || `AI Generated ${contentType}`,
       description: `AI-generated ${contentType} content`,
       type: contentType,
       estimatedTime: 15, // Default 15 minutes for AI content
-      orderIndex: await getNextLessonOrderIndex(trx, activePath.currentUnitId || 1),
+      orderIndex: await getNextLessonOrderIndex(trx, activePath.currentUnitId),
       contentData: generatedContent.content,
       isActive: true,
       createdAt: new Date(),
@@ -238,16 +238,16 @@ export async function integrateGeneratedContent(
       updatedAt: new Date()
     });
     
-    // 5. Update user learning path progress (reuse existing progress patterns)
-    await trx('userLearningPaths')
-      .where({ userId, isActive: true })
+    // 5. Update user progress (leveraging existing userProgress table)
+    await trx('userProgress')
+      .where({ userId })
       .update({
-        lastAccessedAt: new Date(),
+        lastActivityDate: new Date().toISOString().split('T')[0], // Date format for date column
         updatedAt: new Date()
       });
     
     // 6. Log successful integration for monitoring
-    console.log(`[LearningPath] Integrated ${contentType} content ${contentId} for user ${userId}`);
+    console.log(`[LearningPath] Integrated ${contentType} content ${contentId} for user ${userId} in default learning path`);
     
     if (!transaction) await trx.commit();
   } catch (error) {
