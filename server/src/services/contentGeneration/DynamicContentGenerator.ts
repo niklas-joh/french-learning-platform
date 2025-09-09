@@ -51,28 +51,37 @@ export class DynamicContentGenerator implements IContentGenerator {
    * ```
    */
   public async generateContent(request: ContentRequest): Promise<{ jobId: string }> {
+    console.log(`[DynamicContentGenerator] 🚀 DEBUGGING: generateContent called with request:`, JSON.stringify(request, null, 2));
+    
     try {
       // Validate configuration is enabled
+      console.log(`[DynamicContentGenerator] 🚀 DEBUGGING: Checking if DB_JOB_QUEUE_CONFIG is enabled:`, DB_JOB_QUEUE_CONFIG.enabled);
+      
       if (!DB_JOB_QUEUE_CONFIG.enabled) {
+        console.log(`[DynamicContentGenerator] ❌ DEBUGGING: Job queue is disabled in configuration`);
         throw new AIGenerationError('Job queue is disabled in configuration');
       }
 
+      console.log(`[DynamicContentGenerator] 🚀 DEBUGGING: About to call jobQueueService.enqueueJob...`);
+      
       // Create job directly in database - worker will pick it up automatically
       const jobId = await this.jobQueueService.enqueueJob(request);
-      console.log(`[DynamicContentGenerator] Enqueued database job ${jobId} for user ${request.userId} (${request.type})`);
+      console.log(`[DynamicContentGenerator] ✅ DEBUGGING: Successfully enqueued database job ${jobId} for user ${request.userId} (${request.type})`);
 
+      console.log(`[DynamicContentGenerator] 🚀 DEBUGGING: Returning jobId: ${jobId}`);
       return { jobId };
       
     } catch (error: unknown) {
       // Type-safe error handling following existing patterns
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('[DynamicContentGenerator] Failed to enqueue content generation job:', {
+      console.error('[DynamicContentGenerator] ❌ DEBUGGING: Failed to enqueue content generation job:', {
         request: {
           userId: request.userId,
           type: request.type,
           // Don't log sensitive payload data
         },
         error: errorMessage,
+        stack: error instanceof Error ? error.stack : undefined,
       });
       
       // Preserve error chain for debugging

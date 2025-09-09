@@ -26,6 +26,8 @@ export class DatabaseJobQueueService implements IJobQueueService {
    * @returns {Promise<string>} A promise that resolves with the ID of the newly created job.
    */
   async enqueueJob(request: ContentRequest): Promise<string> {
+    console.log(`[DatabaseJobQueueService] 🚀 DEBUGGING: enqueueJob called with request:`, JSON.stringify(request, null, 2));
+    
     const jobData: Partial<AiGenerationJob> = {
       userId: request.userId,
       status: 'queued',
@@ -33,10 +35,28 @@ export class DatabaseJobQueueService implements IJobQueueService {
       payload: request,
     };
 
-    const insertedJob = await AiGenerationJobsModel.query().insertAndFetch(jobData);
-    this.logger.info('Job created in DB:', JSON.stringify(insertedJob, null, 2));
-    this.logger.info(`Job ${insertedJob.id} enqueued for user ${request.userId}`);
-    return insertedJob.id;
+    console.log(`[DatabaseJobQueueService] 🚀 DEBUGGING: Prepared jobData:`, JSON.stringify(jobData, null, 2));
+    console.log(`[DatabaseJobQueueService] 🚀 DEBUGGING: About to call AiGenerationJobsModel.query().insertAndFetch...`);
+
+    try {
+      const insertedJob = await AiGenerationJobsModel.query().insertAndFetch(jobData);
+      console.log(`[DatabaseJobQueueService] ✅ DEBUGGING: Job successfully inserted with ID: ${insertedJob.id}`);
+      console.log(`[DatabaseJobQueueService] ✅ DEBUGGING: Complete inserted job record:`, JSON.stringify(insertedJob, null, 2));
+      
+      this.logger.info('Job created in DB:', JSON.stringify(insertedJob, null, 2));
+      this.logger.info(`Job ${insertedJob.id} enqueued for user ${request.userId}`);
+      
+      // DEBUGGING: Double-check the job exists immediately after creation
+      console.log(`[DatabaseJobQueueService] 🔍 DEBUGGING: Double-checking job ${insertedJob.id} exists...`);
+      const verifyJob = await AiGenerationJobsModel.query().findById(insertedJob.id);
+      console.log(`[DatabaseJobQueueService] 🔍 DEBUGGING: Verification query result:`, JSON.stringify(verifyJob, null, 2));
+      
+      return insertedJob.id;
+    } catch (error) {
+      console.error(`[DatabaseJobQueueService] ❌ DEBUGGING: Error during job insertion:`, error);
+      console.error(`[DatabaseJobQueueService] ❌ DEBUGGING: Error stack:`, error instanceof Error ? error.stack : 'No stack available');
+      throw error;
+    }
   }
 
   /**
