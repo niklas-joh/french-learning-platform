@@ -17,8 +17,8 @@ const router = Router();
 
 router.get('/learning-paths/:pathId/user-view', protect, learningPathController.getLearningPathForUser);
 
-// TODO: Implement GET /lessons/:id to get specific lesson details
-// router.get('/lessons/:id', protect, learningPathController.getLesson);
+// Get specific lesson details
+router.get('/lessons/:id', protect, learningPathController.getLesson);
 
 // Lesson State Management
 router.post('/user/lessons/:lessonId/start', protect, learningPathController.startLesson);

@@ -26,7 +26,7 @@ export const AILessonSectionSchema = z.object({
   type: z.enum(['introduction', 'presentation', 'practice', 'wrap_up']),
   title: z.string().min(1, { message: "Section title cannot be empty." }),
   content: z.string().min(1, { message: "Section content cannot be empty." }),
-  duration: z.number().min(1, { message: "Section duration must be at least 1 minute." }),
+  duration: z.number().min(0.5, { message: "Section duration must be at least 30 seconds." }),
 });
 
 /**

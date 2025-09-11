@@ -1,7 +1,7 @@
 import Knex from 'knex';
 import type { Knex as KnexTypes } from 'knex';
 import { IJobQueueService, JobStatus } from './interfaces';
-import { ContentRequest, GeneratedContent } from '../../types/Content';
+import { ContentRequest, GeneratedContent, StructuredContent } from '../../types/Content';
 import { ILogger } from '../../types/ILogger';
 import { AiGenerationJob, AiGenerationJobsModel } from '../../models/AiGenerationJob';
 
@@ -220,9 +220,9 @@ export class DatabaseJobQueueService implements IJobQueueService {
   /**
    * Sets the result for a completed job.
    * @param jobId The ID of the job.
-   * @param result The generated content.
+   * @param result The structured content in frontend-compatible format.
    */
-  async setJobResult(jobId: string, result: GeneratedContent): Promise<void> {
+  async setJobResult(jobId: string, result: StructuredContent): Promise<void> {
     await AiGenerationJobsModel.query().patchAndFetchById(jobId, {
       result: JSON.stringify(result),
       status: 'completed',

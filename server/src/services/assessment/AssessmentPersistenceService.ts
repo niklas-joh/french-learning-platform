@@ -189,7 +189,7 @@ export class AssessmentPersistenceService {
         tokenUsage: result.metadata?.tokenUsage || 0,
         modelUsed: result.metadata?.aiModel || 'assessment-engine',
         usageCount: 1,
-        lastAccessedAt: new Date()
+        lastAccessedAt: new Date().toISOString()
       });
 
       // Update user progress asynchronously if enabled

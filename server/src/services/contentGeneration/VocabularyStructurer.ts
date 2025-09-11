@@ -139,7 +139,7 @@ export class VocabularyStructurer implements IContentStructurer<IStructuredVocab
       pronunciation: '', // AI doesn't provide this, default to empty
       ipa: '', // AI doesn't provide this, default to empty
       examples: [item.example.french], // Using the french example
-      difficulty: 'medium' as const, // Defaulting difficulty to medium
+      difficulty: 'A2' as const, // Defaulting difficulty to CEFR A2 level
     }));
 
     // Construct the complete IStructuredVocabularyDrill object

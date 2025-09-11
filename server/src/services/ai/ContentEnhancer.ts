@@ -134,7 +134,7 @@ export class ContentEnhancer implements IContentEnhancer {
 
       // Adjust difficulty based on user's weak areas
       if (context.weakAreas && context.weakAreas.includes('vocabulary')) {
-        item.difficulty = 'easy'; // Simplify if vocabulary is a weak area
+        item.difficulty = 'A1'; // Simplify to basic CEFR level if vocabulary is a weak area
       }
 
       return item;

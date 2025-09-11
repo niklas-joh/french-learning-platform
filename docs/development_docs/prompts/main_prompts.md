@@ -21,7 +21,7 @@ Make sure to use a tool in your request.
 
 ## Second review
 
- Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for the referenced file. Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS and Single Responsibility Principle (SRP), adhering to our @/docs/development_docs/development_principles.md.
+ Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for the referenced file. Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KIS, YAGNI, and Single Responsibility Principle (SRP), adhering to our @/docs/development_docs/development_principles.md.
 
 
 # AI Integration

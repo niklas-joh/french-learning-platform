@@ -47,6 +47,42 @@ export class LearningPathController {
   }
 
   /**
+   * @handler GET /api/lessons/:id
+   * Retrieves a specific lesson with its content and user progress.
+   */
+  public async getLesson(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const userId = req.user?.userId;
+
+      if (!userId) {
+        res.status(401).json({ message: 'User authentication required.' });
+        return;
+      }
+
+      if (!id || isNaN(parseInt(id, 10))) {
+        res.status(400).json({ message: 'Valid lesson ID parameter is required.' });
+        return;
+      }
+
+      const numericLessonId = parseInt(id, 10);
+      
+      // Get lesson details with user progress using existing service
+      const lesson = await learningPathService.getLessonDetails(numericLessonId, userId);
+
+      if (!lesson) {
+        res.status(404).json({ message: `Lesson with ID ${numericLessonId} not found.` });
+        return;
+      }
+
+      res.status(200).json(lesson);
+    } catch (error) {
+      console.error('Error in getLesson:', error);
+      next(error);
+    }
+  }
+
+  /**
    * @handler POST /api/user/lessons/:lessonId/start
    * Marks a lesson as 'in_progress' for the user.
    */

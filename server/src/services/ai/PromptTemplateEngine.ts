@@ -133,7 +133,7 @@ ${jsonStructure}
       "type": "introduction|presentation|practice|wrap_up",
       "title": "string - section title", 
       "content": "string - section content",
-      "duration": "number - minutes for this section",
+      "duration": "number - minutes for this section (can be as short as 0.5 for quick activities)",
       "exercises": ["array - optional exercises for this section"]
     }
   ],
@@ -143,7 +143,7 @@ ${jsonStructure}
       "definition": "string - English definition", 
       "pronunciation": "string - phonetic guide",
       "examples": ["array - example sentences in French"],
-      "difficulty": "easy|medium|hard"
+      "difficulty": "A1|A2|B1|B2|C1|C2"
     }
   ],
   "learningObjectives": [
@@ -154,27 +154,16 @@ ${jsonStructure}
 }`;
 
             case 'vocabulary_drill':
-                return `{
-  "type": "vocabulary_drill",
-  "title": "string",
-  "description": "string - minimum 20 characters",
-  "vocabulary": [
-    {
-      "word": "string - French word",
-      "definition": "string - English definition",
-      "pronunciation": "string - phonetic guide",
-      "examples": ["array - example sentences"],
-      "difficulty": "easy|medium|hard"
+                return `[
+  {
+    "word": "string - French word",
+    "translation": "string - English definition/translation",
+    "example": {
+      "french": "string - example sentence in French",
+      "english": "string - example sentence in English"
     }
-  ],
-  "exercises": [
-    {
-      "type": "exercise type",
-      "instruction": "string",
-      "items": ["array - exercise items"]
-    }
-  ]
-}`;
+  }
+]`;
 
             default:
                 return `{

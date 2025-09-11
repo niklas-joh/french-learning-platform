@@ -147,7 +147,7 @@ export class LessonStructurer implements IContentStructurer<IStructuredLesson> {
       pronunciation: '', // AI doesn't provide this, default to empty
       ipa: '', // AI doesn't provide this, default to empty
       examples: item.examples,
-      difficulty: 'medium' as const, // Defaulting difficulty to medium
+      difficulty: 'A2' as const, // ✅ KISS: Use CEFR level default since frontend expects CEFR format
     })) || [];
 
     // Construct the complete IStructuredLesson object

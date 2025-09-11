@@ -162,12 +162,139 @@ export async function completeUserLesson(
 }
 
 /**
+ * Gets detailed information for a specific lesson including content and user progress.
+ * @param lessonId - The ID of the lesson to retrieve.
+ * @param userId - The ID of the user for progress information.
+ * @returns A Promise resolving to lesson details with user progress or null if not found.
+ */
+export async function getLessonDetails(
+  lessonId: number,
+  userId: number
+): Promise<LessonWithUserProgress | null> {
+  const db = await import('../config/db.js');
+  
+  try {
+    // Get lesson details
+    const lessonRow = await db.default('lessons')
+      .where('id', lessonId)
+      .andWhere('isActive', true)
+      .first();
+
+    if (!lessonRow) {
+      return null;
+    }
+
+    // Get user progress for this lesson
+    const progressRecords = await getLessonProgressForUser(userId, [lessonId]);
+    const progress = progressRecords.length > 0 ? progressRecords[0] : null;
+
+    // Determine status
+    let status: LessonStatus = 'locked';
+    if (progress) {
+      status = progress.status;
+    } else {
+      // Check if this is the first lesson or if previous lesson is completed
+      const previousLesson = await db.default('lessons')
+        .where('learningUnitId', lessonRow.learningUnitId)
+        .andWhere('orderIndex', '<', lessonRow.orderIndex)
+        .orderBy('orderIndex', 'desc')
+        .first();
+
+      if (!previousLesson) {
+        // This is the first lesson, make it available
+        status = 'available';
+      } else {
+        // Check if previous lesson is completed
+        const previousProgress = await getLessonProgressForUser(userId, [previousLesson.id]);
+        status = (previousProgress.length > 0 && previousProgress[0].status === 'completed') 
+          ? 'available' 
+          : 'locked';
+      }
+    }
+
+    // Create lesson with progress
+    const lessonWithProgress: LessonWithUserProgress = {
+      id: lessonRow.id,
+      learningUnitId: lessonRow.learningUnitId,
+      title: lessonRow.title,
+      description: lessonRow.description,
+      type: lessonRow.type,
+      estimatedTime: lessonRow.estimatedTime,
+      orderIndex: lessonRow.orderIndex,
+      contentData: lessonRow.contentData,
+      isActive: lessonRow.isActive,
+      createdAt: lessonRow.createdAt,
+      updatedAt: lessonRow.updatedAt,
+      status: status,
+      score: progress?.score,
+      startedAt: progress?.startedAt,
+      completedAt: progress?.completedAt,
+    };
+
+    return lessonWithProgress;
+  } catch (error) {
+    console.error('Error getting lesson details:', error);
+    throw error;
+  }
+}
+
+/**
+ * Helper function to determine the appropriate lesson type for frontend compatibility.
+ * 
+ * Supports flexible content creation by detecting the most appropriate lesson type
+ * based on content structure, with support for both AI-generated and human-created content.
+ * 
+ * @param content - Parsed content data to analyze
+ * @param requestedType - Optional explicit type specification (for human-created content)
+ * @returns Compatible lesson type that frontend can validate and display
+ * 
+ * @example
+ * ```typescript
+ * const type = getCompatibleLessonType(aiContent); // Auto-detection
+ * const type = getCompatibleLessonType(content, 'vocabulary'); // Human override
+ * ```
+ */
+function getCompatibleLessonType(content: any, requestedType?: string): string {
+  // If human specifies type, validate and use it (supports mixed AI + human workflow)
+  const validTypes = ['vocabulary', 'grammar', 'conversation', 'quiz', 'practice'];
+  if (requestedType && validTypes.includes(requestedType)) {
+    return requestedType;
+  }
+  
+  // Smart detection for AI-generated content based on structure
+  if (content.vocabulary?.length > 0) {
+    return 'vocabulary';
+  }
+  
+  if (content.dialogue?.length > 0) {
+    return 'conversation';
+  }
+  
+  if (content.rule || content.explanation) {
+    return 'grammar';
+  }
+  
+  if (content.question && content.options?.length > 0) {
+    return 'quiz';
+  }
+  
+  if (content.question && content.answer) {
+    return 'practice';
+  }
+  
+  // Safe default - vocabulary lessons are most common and flexible
+  return 'vocabulary';
+}
+
+/**
  * Integrates AI-generated content into user's learning path following KISS principles.
  * 
+ * Enhanced to support flexible lesson types and mixed AI + human content creation.
  * This function bridges the gap between AI content generation and user accessibility by:
- * 1. Creating a lesson entry from generated content
- * 2. Adding the lesson to the user's active learning path
- * 3. Updating user progress to reflect new content availability
+ * 1. Smart lesson type detection based on content structure
+ * 2. Creating a lesson entry with frontend-compatible type
+ * 3. Adding the lesson to the user's active learning path
+ * 4. Updating user progress to reflect new content availability
  * 
  * Follows established transaction patterns and reuses existing infrastructure for
  * optimal performance and maintainability. Critical for making AI-generated content
@@ -177,21 +304,25 @@ export async function completeUserLesson(
  * @param contentId - Generated content identifier from aiGeneratedContent table
  * @param contentType - Type of generated content ('lesson' | 'exercise' | 'vocabulary')
  * @param transaction - Optional database transaction for atomic operations
+ * @param explicitType - Optional lesson type override for human-created content
  * @returns Promise resolving when integration is complete
  * @throws Error if content integration fails or user/content not found
  * 
  * @example
  * ```typescript
- * // Integrate lesson content after AI generation
- * const contentId = await saveGeneratedContent(structuredContent, userId);
+ * // AI content - automatic type detection
  * await integrateGeneratedContent(userId, contentId, 'lesson');
+ * 
+ * // Human content - explicit type specification
+ * await integrateGeneratedContent(userId, contentId, 'lesson', null, 'vocabulary');
  * ```
  */
 export async function integrateGeneratedContent(
   userId: number,
   contentId: string, // ✅ Fixed: UUID support (was: number)
   contentType: 'lesson' | 'exercise' | 'vocabulary',
-  transaction?: KnexTypes.Transaction
+  transaction?: KnexTypes.Transaction,
+  explicitType?: string
 ): Promise<void> {
   const db = await import('../config/db.js');
   const trx = transaction || await db.default.transaction();
@@ -215,15 +346,40 @@ export async function integrateGeneratedContent(
       throw new Error(`Generated content ${contentId} not found`);
     }
     
-    // 3. Create lesson entry from generated content (following existing lesson structure)
+    
+    // 3. Parse content and determine appropriate lesson type for frontend compatibility
+    let parsedContent;
+    try {
+      // ✅ Add null/undefined safety check before parsing
+      if (!generatedContent.generatedData) {
+        throw new Error(`No generated data found in content record ${contentId}`);
+      }
+      
+      parsedContent = typeof generatedContent.generatedData === 'string' 
+        ? JSON.parse(generatedContent.generatedData)
+        : generatedContent.generatedData;
+        
+      // ✅ Validate parsed content is not null/undefined
+      if (!parsedContent) {
+        throw new Error(`Parsed content is null/undefined for ${contentId}`);
+      }
+    } catch (error) {
+      console.error(`Failed to parse content for ${contentId}:`, error);
+      throw new Error(`Content integration failed - invalid content data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+    
+    // Use smart type detection with optional explicit type override
+    const detectedType = getCompatibleLessonType(parsedContent, explicitType);
+    
+    // 4. Create lesson entry with frontend-compatible type
     const [lessonId] = await trx('lessons').insert({
       learningUnitId: activePath.currentUnitId, // Use default unit
-      title: generatedContent.title || `AI Generated ${contentType}`,
-      description: `AI-generated ${contentType} content`,
-      type: contentType,
-      estimatedTime: 15, // Default 15 minutes for AI content
+      title: generatedContent.title || `AI Generated ${detectedType}`,
+      description: generatedContent.description || `AI-generated ${detectedType} content`,
+      type: detectedType, // ✅ Use smart detection instead of generic contentType
+      estimatedTime: parsedContent.estimatedTime || 15, // Use AI-suggested time if available
       orderIndex: await getNextLessonOrderIndex(trx, activePath.currentUnitId),
-      contentData: generatedContent.content,
+      contentData: generatedContent.generatedData,
       isActive: true,
       createdAt: new Date(),
       updatedAt: new Date()

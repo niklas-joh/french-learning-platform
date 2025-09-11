@@ -51,10 +51,10 @@ export class ContentGenerationJobHandler {
   /**
    * Processes a single content generation job.
    * @param job The AI generation job to process.
-   * @returns The generated content.
+   * @returns The structured content in frontend-compatible format.
    * @throws {AIGenerationError} If a non-recoverable error occurs during generation.
    */
-  public async handleJob(job: AiGenerationJob): Promise<GeneratedContent> {
+  public async handleJob(job: AiGenerationJob): Promise<StructuredContent> {
     const startTime = Date.now();
     
     // Parse the JSON payload if it's a string, otherwise use as-is
@@ -110,7 +110,10 @@ export class ContentGenerationJobHandler {
       this.metricsService.recordGenerationSuccess(request, Date.now() - startTime, validation.score);
       this.logger.info(`Successfully completed content generation job`, { jobId: job.id });
 
-      return generatedContent;
+      // ✅ FRONTEND COMPATIBILITY FIX: Return structured content directly for frontend consumption
+      // Frontend components expect content properties directly (e.g., vocabulary: [...])
+      // rather than wrapped in GeneratedContent format (content: { vocabulary: [...] })
+      return structuredContent;
     } catch (error) {
       const duration = Date.now() - startTime;
       const errorObj = error instanceof Error ? error : new Error(String(error));
