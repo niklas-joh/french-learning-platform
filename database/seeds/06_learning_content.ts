@@ -45,7 +45,7 @@ export async function seed(knex: Knex): Promise<void> {
 
   const [unit1Id, unit2Id, unit3Id, practiceUnitId] = unitIds.map(u => u.id);
 
-  // Seed Lessons for Unit 1
+  // Seed Lessons for Unit 1 - STANDARDIZED FORMAT
   await knex('lessons').insert([
     {
       learningUnitId: unit1Id,
@@ -55,9 +55,21 @@ export async function seed(knex: Knex): Promise<void> {
       estimatedTime: 10,
       orderIndex: 1,
       contentData: JSON.stringify({
-        items: [
-          { word: 'Bonjour', translation: 'Hello (formal)', exampleSentence: 'Bonjour Madame Dubois.' },
-          { word: 'Salut', translation: 'Hi (informal)', exampleSentence: 'Salut Paul!' },
+        vocabulary: [
+          { 
+            word: 'Bonjour', 
+            definition: 'Hello (formal)', 
+            examples: ['Bonjour Madame Dubois.', 'Bonjour, comment allez-vous?'],
+            pronunciation: 'bon-ZHOOR',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'Salut', 
+            definition: 'Hi (informal)', 
+            examples: ['Salut Paul!', 'Salut, ça va?'],
+            pronunciation: 'sah-LUU',
+            difficulty: 'A1'
+          },
         ]
       }),
       isActive: true,
@@ -73,8 +85,10 @@ export async function seed(knex: Knex): Promise<void> {
         title: 'Checking In',
         dialogue: [
           { speaker: "Alice", line: "Bonjour! Comment ça va?" },
-          { speaker: "Ben", line: "Ça va bien, merci. Et vous?" }
-        ]
+          { speaker: "Ben", line: "Ça va bien, merci. Et vous?" },
+          { speaker: "Alice", line: "Ça va très bien, merci beaucoup!" }
+        ],
+        keyPhrases: ["Comment ça va?", "Ça va bien", "Et vous?"]
       }),
       isActive: true,
     },
@@ -87,16 +101,34 @@ export async function seed(knex: Knex): Promise<void> {
       orderIndex: 3,
       contentData: JSON.stringify({
         vocabulary: [
-          { french: 'Au revoir', english: 'Goodbye', audioUrl: 'path/to/au_revoir.mp3' },
-          { french: 'À bientôt', english: 'See you soon', audioUrl: 'path/to/a_bientot.mp3' },
-          { french: 'À demain', english: 'See you tomorrow', audioUrl: 'path/to/a_demain.mp3' },
+          { 
+            word: 'Au revoir', 
+            definition: 'Goodbye', 
+            examples: ['Au revoir, à bientôt!', 'Au revoir Madame.'],
+            pronunciation: 'oh ruh-VWAR',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'À bientôt', 
+            definition: 'See you soon', 
+            examples: ['À bientôt!', 'Au revoir, à bientôt!'],
+            pronunciation: 'ah bee-ahn-TOH',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'À demain', 
+            definition: 'See you tomorrow', 
+            examples: ['À demain!', 'Bonne nuit, à demain!'],
+            pronunciation: 'ah duh-MAHN',
+            difficulty: 'A1'
+          },
         ]
       }),
       isActive: true,
     },
   ]);
 
-  // Seed Lessons for Unit 2
+  // Seed Lessons for Unit 2 - STANDARDIZED FORMAT
   await knex('lessons').insert([
     {
       learningUnitId: unit2Id,
@@ -107,10 +139,34 @@ export async function seed(knex: Knex): Promise<void> {
       orderIndex: 1,
       contentData: JSON.stringify({
         vocabulary: [
-          { french: 'un livre', english: 'a book' },
-          { french: 'un stylo', english: 'a pen' },
-          { french: 'une table', english: 'a table' },
-          { french: 'une chaise', english: 'a chair' },
+          { 
+            word: 'un livre', 
+            definition: 'a book', 
+            examples: ['J\'ai un livre.', 'Le livre est sur la table.'],
+            pronunciation: 'uhn LEE-vruh',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'un stylo', 
+            definition: 'a pen', 
+            examples: ['J\'écris avec un stylo.', 'Où est mon stylo?'],
+            pronunciation: 'uhn stee-LOH',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'une table', 
+            definition: 'a table', 
+            examples: ['La table est grande.', 'Mets le livre sur la table.'],
+            pronunciation: 'une TAH-bluh',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'une chaise', 
+            definition: 'a chair', 
+            examples: ['Je m\'assieds sur une chaise.', 'La chaise est confortable.'],
+            pronunciation: 'une SHEHZ',
+            difficulty: 'A1'
+          },
         ]
       }),
       isActive: true,
@@ -123,10 +179,28 @@ export async function seed(knex: Knex): Promise<void> {
       estimatedTime: 10,
       orderIndex: 2,
       contentData: JSON.stringify({
-        items: [
-          { word: 'Un', translation: 'One', exampleSentence: 'J\'ai un stylo.' },
-          { word: 'Deux', translation: 'Two', exampleSentence: 'Il a deux frères.' },
-          { word: 'Trois', translation: 'Three', exampleSentence: 'Nous avons trois chats.' },
+        vocabulary: [
+          { 
+            word: 'Un', 
+            definition: 'One', 
+            examples: ['J\'ai un stylo.', 'Un plus un égale deux.'],
+            pronunciation: 'uhn',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'Deux', 
+            definition: 'Two', 
+            examples: ['Il a deux frères.', 'Deux et deux font quatre.'],
+            pronunciation: 'duh',
+            difficulty: 'A1'
+          },
+          { 
+            word: 'Trois', 
+            definition: 'Three', 
+            examples: ['Nous avons trois chats.', 'Trois fois trois égale neuf.'],
+            pronunciation: 'twah',
+            difficulty: 'A1'
+          },
         ]
       }),
       isActive: true,
@@ -146,13 +220,15 @@ export async function seed(knex: Knex): Promise<void> {
           'La fille (the girl) - feminine singular',
           'L\'ami (the friend) - singular, starts with a vowel',
           'Les enfants (the children) - plural',
+          'Le livre est intéressant (The book is interesting)',
+          'La table est grande (The table is big)'
         ]
       }),
       isActive: true,
     },
   ]);
   
-  // Seed Lessons for Unit 3
+  // Seed Lessons for Unit 3 - STANDARDIZED FORMAT
   await knex('lessons').insert([
     {
       learningUnitId: unit3Id,
@@ -162,11 +238,20 @@ export async function seed(knex: Knex): Promise<void> {
       estimatedTime: 15,
       orderIndex: 1,
       contentData: JSON.stringify({
+        title: 'Name Introductions',
         dialogue: [
-          { speaker: "A", line: "Comment t''appelles-tu?" },
-          { speaker: "B", line: "Je m''appelle Sophie. Et toi?" }
+          { speaker: "Marie", line: "Comment tu t'appelles?" },
+          { speaker: "Jean", line: "Je m'appelle Jean. Et toi?" },
+          { speaker: "Marie", line: "Moi, c'est Marie. Enchanté!" },
+          { speaker: "Jean", line: "Enchanté aussi!" }
         ],
-        keyPhrases: ["Comment t'appelles-tu?", "Je m'appelle..."]
+        keyPhrases: [
+          "Comment tu t'appelles?", 
+          "Je m'appelle...", 
+          "Et toi?", 
+          "Moi, c'est...", 
+          "Enchanté!"
+        ]
       }),
       isActive: true,
     },

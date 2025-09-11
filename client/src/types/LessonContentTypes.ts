@@ -4,6 +4,8 @@ export enum LessonType {
   Vocabulary = 'vocabulary',
   Grammar = 'grammar',
   Conversation = 'conversation',
+  Quiz = 'quiz',
+  Practice = 'practice',
 }
 
 // CEFR Level type - aligned with existing server infrastructure
@@ -36,6 +38,26 @@ export interface ConversationLine {
 export interface ConversationContent {
   title: string;
   dialogue: ConversationLine[];
+  keyPhrases?: string[];
+}
+
+// For quiz/practice lessons - Interactive content
+export interface InteractiveFeedback {
+  correct: string;
+  incorrect: string;
+}
+export interface QuizContent {
+  question: string;
+  options?: string[];
+  answer: string;
+  feedback: InteractiveFeedback;
+  explanation?: string;
+}
+export interface PracticeContent {
+  question: string;
+  answer: string;
+  feedback: InteractiveFeedback;
+  explanation?: string;
 }
 
 /**
@@ -74,6 +96,27 @@ export const ConversationLineSchema = z.object({
 export const ConversationContentSchema = z.object({
   title: z.string().min(1, 'Conversation title cannot be empty'),
   dialogue: z.array(ConversationLineSchema).min(2, 'Conversation must have at least two lines'),
+  keyPhrases: z.array(z.string()).optional(),
+});
+
+export const InteractiveFeedbackSchema = z.object({
+  correct: z.string().min(1, 'Correct feedback cannot be empty'),
+  incorrect: z.string().min(1, 'Incorrect feedback cannot be empty'),
+});
+
+export const QuizContentSchema = z.object({
+  question: z.string().min(1, 'Quiz question cannot be empty'),
+  options: z.array(z.string().min(1)).optional(),
+  answer: z.string().min(1, 'Quiz answer cannot be empty'),
+  feedback: InteractiveFeedbackSchema,
+  explanation: z.string().optional(),
+});
+
+export const PracticeContentSchema = z.object({
+  question: z.string().min(1, 'Practice question cannot be empty'),
+  answer: z.string().min(1, 'Practice answer cannot be empty'),
+  feedback: InteractiveFeedbackSchema,
+  explanation: z.string().optional(),
 });
 
 // Map lesson types to their corresponding schemas
@@ -81,6 +124,8 @@ export const lessonContentSchemaMap = {
   [LessonType.Vocabulary]: VocabularyContentSchema,
   [LessonType.Grammar]: GrammarContentSchema,
   [LessonType.Conversation]: ConversationContentSchema,
+  [LessonType.Quiz]: QuizContentSchema,
+  [LessonType.Practice]: PracticeContentSchema,
 } as const;
 
 // Type for validation results
