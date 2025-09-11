@@ -6,13 +6,16 @@ export enum LessonType {
   Conversation = 'conversation',
 }
 
+// CEFR Level type - aligned with existing server infrastructure
+export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
+
 // For vocabulary lessons - Updated to match AI content generation format
 export interface VocabularyItem {
   word: string;
   definition: string;      // Changed from 'translation' to match AI format
   examples: string[];      // Changed from single 'example_sentence' to array
   pronunciation?: string;  // AI enhancement - optional
-  difficulty?: string;     // AI enhancement - optional
+  difficulty?: CEFRLevel;  // AI enhancement - using existing CEFR infrastructure
 }
 export interface VocabularyContent {
   vocabulary: VocabularyItem[];  // Changed from 'items' to match AI format
@@ -44,13 +47,13 @@ export interface LessonComponentProps<T> {
   content: T;
 }
 
-// Zod schemas for runtime validation - Updated to match AI format
+// Zod schemas for runtime validation - Updated to match AI format and existing CEFR patterns
 export const VocabularyItemSchema = z.object({
   word: z.string().min(1, 'Word cannot be empty'),
   definition: z.string().min(1, 'Definition cannot be empty'),
   examples: z.array(z.string().min(1, 'Example cannot be empty')).min(1, 'At least one example required'),
   pronunciation: z.string().optional(),
-  difficulty: z.string().optional(),
+  difficulty: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']).optional(), // Using existing CEFR validation pattern
 });
 
 export const VocabularyContentSchema = z.object({
