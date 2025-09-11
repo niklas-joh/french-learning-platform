@@ -102,18 +102,18 @@ router.post('/curriculum/daily-plan', aiController.generateDailyPlan);
 router.post('/curriculum/adapt-path', aiController.adaptLearningPath);
 
 /**
- * GET /api/ai/curriculum/daily-plan/:userId
+ * GET /api/ai/curriculum/daily-plan
  * Retrieve cached daily learning plan for fast access to previously generated
  * AI recommendations. Falls back to generation if cache is empty or expired.
  */
-router.get('/curriculum/daily-plan/:userId', aiController.getDailyPlan);
+router.get('/curriculum/daily-plan', aiController.getDailyPlan);
 
 /**
- * GET /api/ai/curriculum/recommendations/:userId?timeAvailable=20
+ * GET /api/ai/curriculum/recommendations?timeAvailable=20
  * Get learning recommendations tailored to available study time and current
  * progress. Integrates with existing progress tracking for contextual suggestions.
  */
-router.get('/curriculum/recommendations/:userId', aiController.getLearningRecommendations);
+router.get('/curriculum/recommendations', aiController.getLearningRecommendations);
 
 // =================================================================
 // LEGACY ENDPOINTS - Maintained for backward compatibility

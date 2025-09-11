@@ -84,7 +84,7 @@ interface ExtendedApiInstance {
     generateContent(request: ContentGenerationRequest): Promise<{ jobId: string }>;
     getJobStatus(jobId: string): Promise<AIGenerationJob>;
     getRecommendations(): Promise<ContentRecommendation[]>;
-    listJobs(options?: { status?: string; limit?: number; offset?: number }): Promise<AIGenerationJob[]>;
+    listJobs(options?: { status?: string; page?: number; pageSize?: number }): Promise<AIGenerationJob[]>;
     cancelJob(jobId: string): Promise<void>;
     getDashboardAnalytics(timeRange?: '7d' | '30d' | '90d'): Promise<any>;
     generateBatchContent(
@@ -153,16 +153,20 @@ function createAIDashboardService() {
         }
 
         // Transform client request to server payload format (inline transformation per KISS principle)
-        const serverPayload = {
+        const serverPayload: any = {
           contentType: request.contentType,                    // Direct mapping
           level: cefrLevel,                                    // Required server field (was missing)
           topics: Array.isArray(request.topic)                // Transform topic -> topics array
-            ? request.topic 
+            ? request.topic
             : [request.topic],
           duration: request.estimatedTime,                     // Optional field mapping
           focusAreas: request.focusAreas || [],                // Server expects array, provide default
           learningStyle: 'mixed' as const,                     // Server schema requires this field
         };
+
+        if (request.contentType === 'grammar_exercise') {
+          serverPayload.grammarFocus = request.grammarFocus || request.focusAreas?.[0] || request.topic;
+        }
 
         const response = await api.post('/ai/generate', serverPayload);
         return response.data;
@@ -220,19 +224,19 @@ function createAIDashboardService() {
      * @returns Promise<AIGenerationJob[]> - Array of user's jobs
      * @throws {Error} - When jobs list request fails
      */
-    listJobs: async (options?: { 
-      status?: string; 
-      limit?: number; 
-      offset?: number 
+    listJobs: async (options?: {
+      status?: string;
+      page?: number;
+      pageSize?: number;
     }): Promise<AIGenerationJob[]> => {
       try {
         const params = new URLSearchParams();
         if (options?.status) params.append('status', options.status);
-        if (options?.limit) params.append('limit', options.limit.toString());
-        if (options?.offset) params.append('offset', options.offset.toString());
+        if (options?.page) params.append('page', options.page.toString());
+        if (options?.pageSize) params.append('pageSize', options.pageSize.toString());
 
         const response = await api.get(`/ai/jobs${params.toString() ? `?${params.toString()}` : ''}`);
-        
+
         // Handle both direct array and wrapped response formats
         return Array.isArray(response.data) ? response.data : response.data.data || [];
       } catch (error) {
@@ -242,8 +246,8 @@ function createAIDashboardService() {
     },
 
     /**
-     * Cancel a pending or processing job
-     * 
+     * Cancel a queued or processing job
+     *
      * @param jobId - Unique job identifier to cancel
      * @returns Promise<void> - Resolves when job is successfully cancelled
      * @throws {Error} - When job cancellation fails

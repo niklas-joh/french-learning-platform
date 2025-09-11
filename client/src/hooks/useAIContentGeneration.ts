@@ -66,12 +66,11 @@ export function useAIContentGeneration(): UseAIContentGenerationReturn {
       // Create initial job status following established patterns
       const initialJob: AIGenerationJob = {
         jobId,
-        status: 'pending',
+        status: 'queued',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        jobType: request.contentType === 'vocabulary_drill' ? 'vocabulary' : 
-                 request.contentType === 'grammar_exercise' ? 'grammar' : 
-                 request.contentType === 'conversation_practice' ? 'lesson' : 'lesson'
+        jobType: request.contentType === 'vocabulary_drill' ? 'vocabulary' :
+                 request.contentType === 'grammar_exercise' ? 'grammar' : 'lesson'
       };
       
       setJobStatuses(prev => new Map(prev).set(jobId, initialJob));
@@ -146,7 +145,7 @@ export function useAIContentGeneration(): UseAIContentGenerationReturn {
         if (job) {
           updated.set(jobId, {
             ...job,
-            status: 'failed',
+            status: 'cancelled',
             error: 'Cancelled by user',
             updatedAt: new Date().toISOString()
           });
@@ -172,7 +171,7 @@ export function useAIContentGeneration(): UseAIContentGenerationReturn {
     setJobStatuses(prev => {
       const filtered = new Map();
       for (const [jobId, job] of prev) {
-        if (job.status === 'pending' || job.status === 'processing') {
+        if (job.status === 'queued' || job.status === 'processing') {
           filtered.set(jobId, job);
         }
       }
