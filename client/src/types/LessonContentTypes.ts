@@ -6,14 +6,16 @@ export enum LessonType {
   Conversation = 'conversation',
 }
 
-// For vocabulary lessons
+// For vocabulary lessons - Updated to match AI content generation format
 export interface VocabularyItem {
   word: string;
-  translation: string;
-  example_sentence: string;
+  definition: string;      // Changed from 'translation' to match AI format
+  examples: string[];      // Changed from single 'example_sentence' to array
+  pronunciation?: string;  // AI enhancement - optional
+  difficulty?: string;     // AI enhancement - optional
 }
 export interface VocabularyContent {
-  items: VocabularyItem[];
+  vocabulary: VocabularyItem[];  // Changed from 'items' to match AI format
 }
 
 // For grammar lessons
@@ -42,15 +44,17 @@ export interface LessonComponentProps<T> {
   content: T;
 }
 
-// Zod schemas for runtime validation
+// Zod schemas for runtime validation - Updated to match AI format
 export const VocabularyItemSchema = z.object({
   word: z.string().min(1, 'Word cannot be empty'),
-  translation: z.string().min(1, 'Translation cannot be empty'),
-  example_sentence: z.string().min(1, 'Example sentence cannot be empty'),
+  definition: z.string().min(1, 'Definition cannot be empty'),
+  examples: z.array(z.string().min(1, 'Example cannot be empty')).min(1, 'At least one example required'),
+  pronunciation: z.string().optional(),
+  difficulty: z.string().optional(),
 });
 
 export const VocabularyContentSchema = z.object({
-  items: z.array(VocabularyItemSchema).min(1, 'Vocabulary lesson must have at least one item'),
+  vocabulary: z.array(VocabularyItemSchema).min(1, 'Vocabulary lesson must have at least one item'),
 });
 
 export const GrammarContentSchema = z.object({
