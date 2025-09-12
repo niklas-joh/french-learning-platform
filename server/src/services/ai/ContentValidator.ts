@@ -55,8 +55,31 @@ export class ContentValidator implements IContentValidator {
     try {
       const startTime = Date.now();
       
+      // ✅ ENHANCED LOGGING: Log initial validation attempt
+      console.log('[CONTENT_VALIDATOR_DEBUG] Starting validation', {
+        userId: request.userId,
+        contentType: request.type,
+        requestLevel: request.level,
+        contentKeys: content && typeof content === 'object' ? Object.keys(content) : 'not_object',
+        contentType_actual: typeof content
+      });
+      
       // Ensure content has proper structure
       if (!this.hasValidStructure(content)) {
+        console.error('[CONTENT_VALIDATOR_DEBUG] Content structure validation failed', {
+          userId: request.userId,
+          contentType: request.type,
+          contentProvided: content,
+          contentType_actual: typeof content,
+          contentKeys: content && typeof content === 'object' ? Object.keys(content) : 'not_object',
+          requiredStructure: {
+            needsType: 'type property',
+            needsTitle: 'title property',
+            needsDescription: 'description property',
+            needsLearningObjectives: 'learningObjectives array'
+          }
+        });
+        
         return this.createFailedValidation(
           'Invalid content structure',
           ['Content must have valid structured format']
@@ -65,15 +88,63 @@ export class ContentValidator implements IContentValidator {
 
       const structuredContent = content as StructuredContent;
       
+      // ✅ ENHANCED LOGGING: Log structured content details
+      console.log('[CONTENT_VALIDATOR_DEBUG] Content structure validated, running rules', {
+        userId: request.userId,
+        contentType: request.type,
+        structuredContentType: structuredContent.type,
+        hasTitle: !!structuredContent.title,
+        titleLength: structuredContent.title?.length || 0,
+        hasDescription: !!structuredContent.description,
+        descriptionLength: structuredContent.description?.length || 0,
+        learningObjectivesCount: structuredContent.learningObjectives?.length || 0,
+        estimatedTime: structuredContent.estimatedTime,
+        additionalFields: Object.keys(structuredContent).filter(key => 
+          !['type', 'title', 'description', 'learningObjectives', 'estimatedTime'].includes(key)
+        )
+      });
+      
       // Get validation rules for content type
       const typeRules = this.validationRules.get(request.type) || [];
       const allRules = [...this.commonRules, ...typeRules];
 
+      // ✅ ENHANCED LOGGING: Log validation rules being applied
+      console.log('[CONTENT_VALIDATOR_DEBUG] Validation rules to apply', {
+        userId: request.userId,
+        contentType: request.type,
+        commonRulesCount: this.commonRules.length,
+        typeSpecificRulesCount: typeRules.length,
+        totalRules: allRules.length,
+        ruleNames: allRules.map(rule => rule.name),
+        ruleWeights: allRules.map(rule => ({ name: rule.name, weight: rule.weight }))
+      });
+
       // Run all validation rules
-      const results = allRules.map(rule => ({
-        rule,
-        result: rule.check(structuredContent, request)
-      }));
+      const results = allRules.map(rule => {
+        const ruleStartTime = Date.now();
+        const result = rule.check(structuredContent, request);
+        const ruleDuration = Date.now() - ruleStartTime;
+        
+        // ✅ ENHANCED LOGGING: Log each rule result
+        console.log('[CONTENT_VALIDATOR_DEBUG] Rule completed', {
+          userId: request.userId,
+          contentType: request.type,
+          ruleName: rule.name,
+          ruleWeight: rule.weight,
+          passed: result.passed,
+          score: result.score,
+          issuesCount: result.issues.length,
+          issues: result.issues,
+          suggestionsCount: result.suggestions.length,
+          suggestions: result.suggestions,
+          duration: ruleDuration
+        });
+        
+        return {
+          rule,
+          result
+        };
+      });
 
       // Calculate weighted score
       const totalWeight = allRules.reduce((sum, rule) => sum + rule.weight, 0);
@@ -93,6 +164,29 @@ export class ContentValidator implements IContentValidator {
 
       const validationTime = Date.now() - startTime;
 
+      // ✅ ENHANCED LOGGING: Log final validation result
+      console.log('[CONTENT_VALIDATOR_DEBUG] Validation completed', {
+        userId: request.userId,
+        contentType: request.type,
+        isValid,
+        weightedScore,
+        scoreThreshold: 0.7,
+        totalWeight,
+        allIssuesCount: allIssues.length,
+        allIssues,
+        allSuggestionsCount: allSuggestions.length,
+        allSuggestions,
+        confidence,
+        validationTime,
+        ruleResults: results.map(({ rule, result }) => ({
+          ruleName: rule.name,
+          passed: result.passed,
+          score: result.score,
+          weight: rule.weight,
+          weightedContribution: result.score * rule.weight
+        }))
+      });
+
       return {
         isValid,
         score: Math.round(weightedScore * 100) / 100, // Round to 2 decimal places
@@ -102,7 +196,14 @@ export class ContentValidator implements IContentValidator {
       };
 
     } catch (error) {
-      console.error('Error during content validation:', error);
+      console.error('[CONTENT_VALIDATOR_DEBUG] Validation exception occurred', {
+        userId: request.userId,
+        contentType: request.type,
+        error: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : undefined,
+        contentProvided: content
+      });
+      
       return this.createFailedValidation(
         'Validation error occurred',
         ['Internal validation error - content needs manual review']
@@ -268,21 +369,65 @@ export class ContentValidator implements IContentValidator {
         name: 'lesson_structure',
         weight: 0.3,
         check: (content: StructuredContent) => {
+          console.log('[CONTENT_VALIDATOR_DEBUG] Checking lesson structure', {
+            contentType: content.type,
+            isLessonTypeCheck: content.type === 'lesson',
+            hasIsLesson: isLesson(content),
+            availableFields: Object.keys(content)
+          });
+
           if (!isLesson(content)) {
-            return { passed: false, score: 0, issues: ['Invalid lesson structure'], suggestions: [] };
+            console.error('[CONTENT_VALIDATOR_DEBUG] isLesson() check failed', {
+              contentType: content.type,
+              contentStructure: Object.keys(content),
+              sections: 'sections' in content && (content as any).sections ? {
+                exists: true,
+                type: typeof (content as any).sections,
+                isArray: Array.isArray((content as any).sections),
+                length: Array.isArray((content as any).sections) ? (content as any).sections.length : 'not_array'
+              } : { exists: false },
+              vocabulary: 'vocabulary' in content && (content as any).vocabulary ? {
+                exists: true,
+                type: typeof (content as any).vocabulary,
+                isArray: Array.isArray((content as any).vocabulary),
+                length: Array.isArray((content as any).vocabulary) ? (content as any).vocabulary.length : 'not_array'
+              } : { exists: false }
+            });
+            return { passed: false, score: 0, issues: ['Invalid lesson structure - isLesson() check failed'], suggestions: ['Ensure content has proper lesson structure with sections and vocabulary arrays'] };
           }
 
           const issues: string[] = [];
           const suggestions: string[] = [];
 
-          if (!content.sections || content.sections.length === 0) {
+          // Enhanced sections checking with detailed logging - use type-safe access
+          const lessonContent = content; // Already verified as lesson by isLesson check above
+          if (!lessonContent.sections || lessonContent.sections.length === 0) {
+            console.warn('[CONTENT_VALIDATOR_DEBUG] Lesson sections missing or empty', {
+              hasSections: 'sections' in lessonContent,
+              sectionsValue: lessonContent.sections,
+              sectionsType: typeof lessonContent.sections,
+              isArray: Array.isArray(lessonContent.sections)
+            });
             issues.push('Lesson must have sections');
             suggestions.push('Add lesson sections (introduction, presentation, practice, wrap-up)');
           } else {
             // Check for recommended section types
-            const sectionTypes = content.sections.map(s => s.type);
+            const sectionTypes = lessonContent.sections.map(s => s.type);
             const recommendedTypes: ('introduction' | 'presentation' | 'practice')[] = ['introduction', 'presentation', 'practice'];
             const missingSections = recommendedTypes.filter(type => !sectionTypes.includes(type));
+            
+            console.log('[CONTENT_VALIDATOR_DEBUG] Lesson sections analysis', {
+              sectionsCount: lessonContent.sections.length,
+              sectionTypes,
+              recommendedTypes,
+              missingSections,
+              sectionsDetails: lessonContent.sections.map(s => ({
+                type: s.type,
+                hasTitle: !!s.title,
+                hasContent: !!s.content,
+                contentLength: s.content?.length || 0
+              }))
+            });
             
             if (missingSections.length > 0) {
               issues.push(`Missing recommended sections: ${missingSections.join(', ')}`);
@@ -290,17 +435,37 @@ export class ContentValidator implements IContentValidator {
             }
           }
 
-          if (!content.vocabulary || content.vocabulary.length === 0) {
+          // Enhanced vocabulary checking with detailed logging - use type-safe access
+          if (!lessonContent.vocabulary || lessonContent.vocabulary.length === 0) {
+            console.warn('[CONTENT_VALIDATOR_DEBUG] Lesson vocabulary missing or empty', {
+              hasVocabulary: 'vocabulary' in lessonContent,
+              vocabularyValue: lessonContent.vocabulary,
+              vocabularyType: typeof lessonContent.vocabulary,
+              isArray: Array.isArray(lessonContent.vocabulary)
+            });
             issues.push('Lesson should include vocabulary items');
             suggestions.push('Add relevant vocabulary items for the lesson');
+          } else {
+            console.log('[CONTENT_VALIDATOR_DEBUG] Lesson vocabulary analysis', {
+              vocabularyCount: lessonContent.vocabulary.length,
+              vocabularyItems: lessonContent.vocabulary.map(v => ({
+                hasWord: !!v.word,
+                hasDefinition: !!v.definition,
+                hasExamples: Array.isArray(v.examples) && v.examples.length > 0,
+                examplesCount: Array.isArray(v.examples) ? v.examples.length : 0
+              }))
+            });
           }
 
-          return {
+          const finalResult = {
             passed: issues.length === 0,
             score: Math.max(0, 1 - (issues.length * 0.25)),
             issues,
             suggestions
           };
+
+          console.log('[CONTENT_VALIDATOR_DEBUG] Lesson structure validation result', finalResult);
+          return finalResult;
         }
       }
     ]);
@@ -486,10 +651,28 @@ export class ContentValidator implements IContentValidator {
   private extractTextContent(content: StructuredContent): string {
     let text = `${content.title} ${content.description} ${content.learningObjectives.join(' ')}`;
     
-    // Add type-specific text extraction
+    // Add type-specific text extraction with proper type guards
     if (isLesson(content)) {
-      text += content.sections.map(s => `${s.title} ${s.content}`).join(' ');
-      text += content.vocabulary.map(v => `${v.word} ${v.definition} ${v.examples.join(' ')}`).join(' ');
+      // Now content is properly typed as IStructuredLesson
+      if (content.sections && Array.isArray(content.sections)) {
+        text += content.sections.map(s => `${s.title || ''} ${s.content || ''}`).join(' ');
+      }
+      if (content.vocabulary && Array.isArray(content.vocabulary)) {
+        text += content.vocabulary.map(v => `${v.word || ''} ${v.definition || ''} ${Array.isArray(v.examples) ? v.examples.join(' ') : ''}`).join(' ');
+      }
+    } else if (isVocabularyDrill(content)) {
+      // Handle vocabulary drill specific content
+      if (content.vocabulary && Array.isArray(content.vocabulary)) {
+        text += content.vocabulary.map(v => `${v.word || ''} ${v.definition || ''} ${Array.isArray(v.examples) ? v.examples.join(' ') : ''}`).join(' ');
+      }
+    } else if (isCulturalContent(content)) {
+      // Handle cultural content specific content
+      if (content.vocabulary && Array.isArray(content.vocabulary)) {
+        text += content.vocabulary.map(v => `${v.word || ''} ${v.definition || ''} ${Array.isArray(v.examples) ? v.examples.join(' ') : ''}`).join(' ');
+      }
+      if (content.keyPoints && Array.isArray(content.keyPoints)) {
+        text += content.keyPoints.join(' ');
+      }
     }
     
     return text;
