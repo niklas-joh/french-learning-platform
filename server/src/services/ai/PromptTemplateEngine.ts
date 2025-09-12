@@ -106,7 +106,14 @@ ${jsonStructure}
                 
 **Topic**: ${topics} 
 **Difficulty**: ${difficulty}
-**Focus**: Clear explanations with practice opportunities`;
+**Focus**: Clear explanations with practice opportunities
+
+**EXERCISE REQUIREMENTS:**
+- Each exercise must have a clear instruction (minimum 5 characters)
+- Each exercise must contain items array with at least 1 practice item
+- Use fill_in_blank type for sentence completion exercises
+- Provide helpful feedback for learners
+- Include practical examples and clear explanations`;
 
             default:
                 return `Generate ${type} content for ${level} level French learners. Topic: ${topics}. Difficulty: ${difficulty}.`;
@@ -189,8 +196,23 @@ ${jsonStructure}
   "examples": ["array - example sentences"],
   "exercises": [
     {
-      "prompt": "string - question or sentence to complete",
-      "answer": "string - correct answer"
+      "type": "fill_in_blank",
+      "instruction": "string - clear instruction for the exercise (minimum 5 characters)",
+      "items": [
+        {
+          "type": "fill_in_blank",
+          "sentence": "string - sentence with blank(s) to fill",
+          "blanks": [
+            {
+              "position": "number - character position in sentence",
+              "length": "number - expected answer length"
+            }
+          ],
+          "correctAnswers": ["string - correct answer(s)"],
+          "hints": ["string - optional hints"]
+        }
+      ],
+      "feedback": "string - feedback when exercise is completed"
     }
   ],
   "tips": ["string - helpful tip"],

@@ -75,10 +75,56 @@ export class ContentGenerationJobHandler {
       const rawContent = await this.generateRawContent(request, template, learningContext);
 
       const validator = this.validatorFactory.getValidator(request.type);
+      
+      // ✅ ENHANCED LOGGING: Log content being sent to validator
+      this.logger.info('[VALIDATION_DEBUG] Content being validated', {
+        jobId: job.id,
+        userId: request.userId,
+        contentType: request.type,
+        validatorType: validator.constructor.name,
+        contentKeys: rawContent && typeof rawContent === 'object' 
+          ? Object.keys(rawContent) 
+          : 'not_object',
+        contentStructure: this.getResponseStructureDescription(rawContent),
+        contentSample: JSON.stringify(rawContent, null, 2).substring(0, 500) + '...'
+      });
+
       const validation = await validator.validate(rawContent, request);
 
+      // ✅ ENHANCED LOGGING: Detailed validation results
+      this.logger.info('[VALIDATION_DEBUG] Validation completed', {
+        jobId: job.id,
+        userId: request.userId,
+        contentType: request.type,
+        isValid: validation.isValid,
+        score: validation.score,
+        confidence: validation.confidence,
+        issuesCount: validation.issues?.length || 0,
+        suggestionsCount: validation.suggestions?.length || 0,
+        validationDetails: {
+          issues: validation.issues || [],
+          suggestions: validation.suggestions || []
+        }
+      });
+
       if (!validation.isValid) {
-        this.logger.warn(`Content validation failed for job`, { jobId: job.id, issues: validation.issues });
+        this.logger.error('[VALIDATION_DEBUG] Content validation failed - detailed analysis', { 
+          jobId: job.id,
+          userId: request.userId,
+          contentType: request.type,
+          validationScore: validation.score,
+          failedIssues: validation.issues,
+          suggestions: validation.suggestions,
+          confidence: validation.confidence,
+          // Include the actual content that failed validation for debugging
+          failedContent: {
+            structure: this.getResponseStructureDescription(rawContent),
+            sample: JSON.stringify(rawContent, null, 2).substring(0, 1000) + '...',
+            requiredFields: this.getRequiredFieldsForType(request.type),
+            missingFields: this.identifyMissingFields(rawContent, request.type)
+          }
+        });
+        
         // In the job system, retry logic is handled by the worker,
         // so we throw an error to signal failure for this attempt.
         throw new AIGenerationError('Content validation failed', { validation, job });
@@ -143,19 +189,67 @@ export class ContentGenerationJobHandler {
         context,
       });
 
+      // Log the prompt being sent to AI for correlation
+      this.logger.info('[AI_DEBUG] Generated prompt for AI request', {
+        userId: request.userId,
+        type: request.type,
+        promptLength: prompt.length,
+        promptPreview: prompt.substring(0, 200) + (prompt.length > 200 ? '...' : ''),
+        template: template ? Object.keys(template) : 'null',
+        contextLevel: context.currentLevel
+      });
+
       const aiConfig = this.getAIConfigForType(request.type);
       const aiResponse = await this.executeAIRequestWithTimeout(request, prompt, aiConfig);
 
       if (!aiResponse.success) {
+        this.logger.error('[AI_DEBUG] AI generation failed - no success flag', {
+          userId: request.userId,
+          type: request.type,
+          error: aiResponse.error,
+          aiConfig: {
+            model: aiConfig.model,
+            maxTokens: aiConfig.maxTokens,
+            temperature: aiConfig.temperature
+          }
+        });
         throw new AIGenerationError(`AI generation failed: ${aiResponse.error}`, { request });
       }
+
+      // ✅ ENHANCED LOGGING: Log exact AI response structure for debugging
+      this.logger.info('[AI_DEBUG] Raw AI response received', {
+        userId: request.userId,
+        type: request.type,
+        responseType: typeof aiResponse.data,
+        responseKeys: aiResponse.data && typeof aiResponse.data === 'object' 
+          ? Object.keys(aiResponse.data) 
+          : 'not_object',
+        responseSize: JSON.stringify(aiResponse.data || {}).length,
+        tokenUsage: aiResponse.tokenUsage,
+        // Log first level structure for debugging
+        responseStructure: this.getResponseStructureDescription(aiResponse.data),
+        // Sample of actual content for inspection
+        responseSample: JSON.stringify(aiResponse.data, null, 2).substring(0, 500) + '...'
+      });
+
+      // Check if response is valid JSON structure
+      if (!aiResponse.data || typeof aiResponse.data !== 'object') {
+        this.logger.warn('[AI_DEBUG] AI returned non-object response', {
+          userId: request.userId,
+          type: request.type,
+          actualResponse: aiResponse.data,
+          responseType: typeof aiResponse.data
+        });
+      }
+
       return aiResponse.data;
     } catch (error) {
-      this.logger.error('Raw content generation failed', {
+      this.logger.error('[AI_DEBUG] Raw content generation failed with exception', {
         userId: request.userId,
         type: request.type,
         duration: Date.now() - startTime,
         error: error instanceof Error ? error.message : String(error),
+        errorStack: error instanceof Error ? error.stack : undefined,
       });
       throw new AIGenerationError('Failed to generate raw content', { originalError: error });
     }
@@ -198,16 +292,154 @@ export class ContentGenerationJobHandler {
    */
   private async structureContent(rawContent: string | object, contentType: ContentType): Promise<StructuredContent> {
     try {
+      // ✅ ENHANCED LOGGING: Log content before structuring
+      this.logger.info('[STRUCTURE_DEBUG] Content before structuring', {
+        contentType,
+        inputType: typeof rawContent,
+        inputKeys: rawContent && typeof rawContent === 'object' 
+          ? Object.keys(rawContent) 
+          : 'not_object',
+        inputSize: JSON.stringify(rawContent || {}).length,
+        inputStructure: this.getResponseStructureDescription(rawContent),
+        inputSample: typeof rawContent === 'string' 
+          ? rawContent.substring(0, 300) + (rawContent.length > 300 ? '...' : '')
+          : JSON.stringify(rawContent, null, 2).substring(0, 500) + '...'
+      });
+
       const structurer = this.structurerFactory.getStructurer(contentType);
-      return await structurer.structure(rawContent);
+      const structuredContent = await structurer.structure(rawContent);
+
+      // ✅ ENHANCED LOGGING: Log content after structuring and compare
+      this.logger.info('[STRUCTURE_DEBUG] Content after structuring', {
+        contentType,
+        outputType: typeof structuredContent,
+        outputKeys: structuredContent && typeof structuredContent === 'object' 
+          ? Object.keys(structuredContent) 
+          : 'not_object',
+        outputSize: JSON.stringify(structuredContent || {}).length,
+        outputStructure: this.getResponseStructureDescription(structuredContent),
+        // Key fields that often cause validation issues
+        hasTitle: 'title' in structuredContent,
+        hasDescription: 'description' in structuredContent,
+        hasLearningObjectives: 'learningObjectives' in structuredContent,
+        hasEstimatedTime: 'estimatedTime' in structuredContent,
+        hasType: 'type' in structuredContent,
+        actualType: structuredContent.type,
+        // Content type specific checks
+        contentTypeSpecificFields: this.getContentTypeSpecificFields(structuredContent, contentType)
+      });
+
+      return structuredContent;
     } catch (error) {
-      this.logger.error(`Structuring content of type '${contentType}' failed.`, {
+      this.logger.error('[STRUCTURE_DEBUG] Structuring content failed', {
+        contentType,
+        inputType: typeof rawContent,
         error: (error as Error).message,
-        contentType: typeof rawContent, // Log the actual input type for debugging
+        errorStack: (error as Error).stack,
+        rawContentSample: typeof rawContent === 'object' 
+          ? JSON.stringify(rawContent, null, 2).substring(0, 500)
+          : String(rawContent).substring(0, 500)
       });
       // Let the main error handler decide on fallback logic
       throw new AIGenerationError('Failed to structure content', { originalError: error });
     }
+  }
+
+  /**
+   * Helper method to check content-type specific fields for debugging
+   */
+  private getContentTypeSpecificFields(content: any, contentType: ContentType): any {
+    if (!content || typeof content !== 'object') {
+      return { error: 'content_not_object' };
+    }
+
+    switch (contentType) {
+      case 'lesson':
+        return {
+          hasSections: 'sections' in content,
+          sectionsType: Array.isArray(content.sections) ? 'array' : typeof content.sections,
+          sectionsLength: Array.isArray(content.sections) ? content.sections.length : 0,
+          hasVocabulary: 'vocabulary' in content,
+          vocabularyType: Array.isArray(content.vocabulary) ? 'array' : typeof content.vocabulary,
+          vocabularyLength: Array.isArray(content.vocabulary) ? content.vocabulary.length : 0
+        };
+      
+      case 'vocabulary_drill':
+        return {
+          hasVocabulary: 'vocabulary' in content,
+          vocabularyType: Array.isArray(content.vocabulary) ? 'array' : typeof content.vocabulary,
+          vocabularyLength: Array.isArray(content.vocabulary) ? content.vocabulary.length : 0,
+          firstVocabKeys: Array.isArray(content.vocabulary) && content.vocabulary.length > 0
+            ? Object.keys(content.vocabulary[0] || {})
+            : []
+        };
+      
+      case 'grammar_exercise':
+        return {
+          hasGrammarRule: 'grammarRule' in content,
+          hasExplanation: 'explanation' in content,
+          hasExamples: 'examples' in content,
+          examplesType: Array.isArray(content.examples) ? 'array' : typeof content.examples,
+          hasExercises: 'exercises' in content,
+          exercisesType: Array.isArray(content.exercises) ? 'array' : typeof content.exercises
+        };
+      
+      default:
+        return { contentType, availableFields: Object.keys(content) };
+    }
+  }
+
+  /**
+   * Helper method to identify required fields for each content type
+   */
+  private getRequiredFieldsForType(contentType: ContentType): string[] {
+    const commonRequiredFields = ['title', 'description', 'learningObjectives', 'estimatedTime', 'type'];
+    
+    switch (contentType) {
+      case 'lesson':
+        return [...commonRequiredFields, 'sections', 'vocabulary'];
+      case 'vocabulary_drill':
+        return [...commonRequiredFields, 'vocabulary'];
+      case 'grammar_exercise':
+        return [...commonRequiredFields, 'grammarRule', 'explanation', 'examples', 'exercises'];
+      case 'cultural_content':
+        return [...commonRequiredFields, 'topic', 'keyPoints', 'discussionQuestions'];
+      case 'personalized_exercise':
+        return [...commonRequiredFields, 'focusAreas', 'exercises'];
+      default:
+        return commonRequiredFields;
+    }
+  }
+
+  /**
+   * Helper method to identify which required fields are missing from content
+   */
+  private identifyMissingFields(content: any, contentType: ContentType): string[] {
+    if (!content || typeof content !== 'object') {
+      return ['content_not_object'];
+    }
+
+    const requiredFields = this.getRequiredFieldsForType(contentType);
+    const missingFields: string[] = [];
+    const contentKeys = Object.keys(content);
+
+    for (const field of requiredFields) {
+      if (!contentKeys.includes(field)) {
+        missingFields.push(field);
+      } else {
+        // Check if field is empty or invalid
+        const value = content[field];
+        if (value === null || value === undefined) {
+          missingFields.push(`${field}_null_or_undefined`);
+        } else if (typeof value === 'string' && value.trim().length === 0) {
+          missingFields.push(`${field}_empty_string`);
+        } else if (Array.isArray(value) && value.length === 0) {
+          missingFields.push(`${field}_empty_array`);
+        }
+      }
+    }
+
+    return missingFields;
   }
 
   private createGeneratedContent(
@@ -268,6 +500,42 @@ export class ContentGenerationJobHandler {
       conversation_practice: ['Practice speaking', 'Improve conversational skills']
     };
     return fallbackObjectives[content.type] || ['Practice French language skills'];
+  }
+
+  /**
+   * Helper method to analyze and describe the structure of AI response for debugging
+   */
+  private getResponseStructureDescription(data: any): any {
+    if (!data || typeof data !== 'object') {
+      return { type: typeof data, value: data };
+    }
+
+    const structure: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (Array.isArray(value)) {
+        structure[key] = {
+          type: 'array',
+          length: value.length,
+          firstItemType: value.length > 0 ? typeof value[0] : 'empty',
+          firstItemKeys: value.length > 0 && typeof value[0] === 'object' && value[0] !== null
+            ? Object.keys(value[0])
+            : 'not_object'
+        };
+      } else if (value && typeof value === 'object') {
+        structure[key] = {
+          type: 'object',
+          keys: Object.keys(value),
+          keyCount: Object.keys(value).length
+        };
+      } else {
+        structure[key] = {
+          type: typeof value,
+          length: typeof value === 'string' ? value.length : undefined,
+          value: typeof value === 'string' && value.length > 50 ? value.substring(0, 50) + '...' : value
+        };
+      }
+    }
+    return structure;
   }
 
   /**

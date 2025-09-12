@@ -63,8 +63,44 @@ const server = app.listen(PORT, () => {
   // Only log when not in test environment
   if (process.env.NODE_ENV !== 'test') {
     console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📡 Server listening and ready for connections`);
   }
 });
+
+// Add error handling to prevent uncaught exceptions from crashing the server
+process.on('uncaughtException', (error) => {
+  console.error('🚨 Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// Graceful shutdown handlers
+process.on('SIGTERM', () => {
+  console.log('📴 SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('📴 SIGINT received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
+});
+
+// Keep the process alive by ensuring the server stays active
+setInterval(() => {
+  // This interval ensures the event loop stays active
+  // It's a lightweight way to prevent the process from exiting
+}, 30000); // Check every 30 seconds
+
+// Debug: Log that server setup is complete
+console.log(`🔧 Server setup complete, event loop should stay active`);
 
 // Exporting the app and server allows the test suite to import and
 // gracefully shut down the server after running.

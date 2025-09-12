@@ -742,11 +742,14 @@ export class AIOrchestrator {
       }
 
       // ✅ REAL AI Integration - leveraging existing provider infrastructure
-      this.logger.info(`Generating ${contentType} content with AI using ${aiConfig.provider.primary}`, {
+      this.logger.info(`[AI_ORCHESTRATOR_DEBUG] Generating ${contentType} content with AI using ${aiConfig.provider.primary}`, {
         userId,
+        contentType,
         promptLength: options.prompt.length,
         model: options.model,
-        maxTokens: options.maxTokens
+        maxTokens: options.maxTokens,
+        temperature: options.temperature,
+        promptPreview: options.prompt.substring(0, 300) + '...'
       });
 
       // Initialize providers if needed (reuses existing SSL-safe initialization)
@@ -762,9 +765,50 @@ export class AIOrchestrator {
         systemPrompt: `You are an expert French language curriculum designer. Generate high-quality ${contentType} content following pedagogical best practices. Respond with valid JSON.`
       };
 
+      // Log the actual system prompt and configuration being used
+      this.logger.info(`[AI_ORCHESTRATOR_DEBUG] AI request configuration`, {
+        userId,
+        contentType,
+        taskConfig,
+        provider: aiConfig.provider.primary
+      });
+
       // Call real AI provider (reuses existing provider abstraction)
       const response = await this.callAIProvider(this.primaryProvider!, taskConfig, options.prompt);
-      const aiResult = JSON.parse(response.content || '{}');
+      
+      // Log raw AI response before parsing
+      this.logger.info(`[AI_ORCHESTRATOR_DEBUG] Raw AI response received`, {
+        userId,
+        contentType,
+        responseContentLength: response.content?.length || 0,
+        responseContent: response.content?.substring(0, 500) + '...',
+        tokenUsage: response.usage
+      });
+
+      let aiResult;
+      try {
+        aiResult = JSON.parse(response.content || '{}');
+        
+        // Log parsed result structure
+        this.logger.info(`[AI_ORCHESTRATOR_DEBUG] AI response parsed successfully`, {
+          userId,
+          contentType,
+          resultType: typeof aiResult,
+          resultKeys: aiResult && typeof aiResult === 'object' ? Object.keys(aiResult) : 'not_object',
+          resultStructure: this.describeObjectStructure(aiResult)
+        });
+        
+      } catch (parseError) {
+        this.logger.error(`[AI_ORCHESTRATOR_DEBUG] Failed to parse AI JSON response`, {
+          userId,
+          contentType,
+          parseError: parseError instanceof Error ? parseError.message : String(parseError),
+          rawContent: response.content,
+          contentLength: response.content?.length || 0
+        });
+        throw parseError;
+      }
+      
       const processingTime = Date.now() - startTime;
 
       // Track metrics if service is available
@@ -909,6 +953,37 @@ export class AIOrchestrator {
       hash = hash & hash; // Convert to 32-bit integer
     }
     return Math.abs(hash).toString(16);
+  }
+
+  /**
+   * Helper method to describe object structure for debugging
+   */
+  private describeObjectStructure(obj: any): any {
+    if (!obj || typeof obj !== 'object') {
+      return { type: typeof obj, value: obj };
+    }
+
+    const structure: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      if (Array.isArray(value)) {
+        structure[key] = {
+          type: 'array',
+          length: value.length,
+          firstItem: value.length > 0 ? (typeof value[0] === 'object' ? Object.keys(value[0] || {}) : typeof value[0]) : 'empty'
+        };
+      } else if (value && typeof value === 'object') {
+        structure[key] = {
+          type: 'object',
+          keys: Object.keys(value)
+        };
+      } else {
+        structure[key] = {
+          type: typeof value,
+          length: typeof value === 'string' ? value.length : undefined
+        };
+      }
+    }
+    return structure;
   }
 
   private generateCacheKey<T extends AITaskType>(task: T, payload: any): string {
