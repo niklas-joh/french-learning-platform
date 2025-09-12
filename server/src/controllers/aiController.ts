@@ -24,55 +24,9 @@ import {
   ValidatedAITask,
   validateAIPayload,
   formatValidationError,
-  validationSchemaMap,
 } from './ai.validators.js';
 import { AiGenerationJobsModel } from '../models/AiGenerationJob.js';
 import { paginationSchema } from './ai.validators.js';
-
-/**
- * Task handler map - Declarative mapping of AI tasks to their handlers
- * 
- * This approach is more scalable and maintainable than switch statements.
- * Each task type is mapped to its handler method and validation schema.
- */
-const taskHandlerMap = {
-  GENERATE_LESSON: {
-    handler: 'generateLesson' as const,
-    validator: validationSchemaMap.GENERATE_LESSON,
-  },
-  ASSESS_PRONUNCIATION: {
-    handler: 'assessPronunciation' as const,
-    validator: validationSchemaMap.ASSESS_PRONUNCIATION,
-  },
-  GRADE_RESPONSE: {
-    handler: 'gradeResponse' as const,
-    validator: validationSchemaMap.GRADE_RESPONSE,
-  },
-  /**
-   * Task 3.2.A.3: Curriculum Feature Task Mappings
-   * 
-   * These task mappings enable the curriculum API endpoints to use the established
-   * handleAIRequest pattern for maximum code reuse and consistency. Each mapping
-   * connects a curriculum task type to its validation schema and handler method.
-   */
-  GENERATE_DAILY_PLAN: {
-    handler: 'generateDailyPlan' as const,
-    validator: validationSchemaMap.GENERATE_DAILY_PLAN,
-  },
-  ADAPT_LEARNING_PATH: {
-    handler: 'adaptLearningPath' as const,
-    validator: validationSchemaMap.ADAPT_LEARNING_PATH,
-  },
-  GET_DAILY_PLAN: {
-    handler: 'getDailyPlan' as const,
-    validator: validationSchemaMap.GET_DAILY_PLAN,
-  },
-  GET_LEARNING_RECOMMENDATIONS: {
-    handler: 'getLearningRecommendations' as const,
-    validator: validationSchemaMap.GET_LEARNING_RECOMMENDATIONS,
-  },
-  // TODO: Add future task mappings as new AI features are implemented
-} as const;
 
 /**
  * Helper function to construct payload for GET requests
@@ -89,15 +43,15 @@ const taskHandlerMap = {
  * @throws Error for invalid GET task types
  * 
  * @example
- * // For GET /api/ai/curriculum/daily-plan/123
+ * // For GET /api/ai/curriculum/daily-plan
  * const payload = buildGETPayload('GET_DAILY_PLAN', req);
  * // Returns: { userId: 123 }
- * 
- * @example  
- * // For GET /api/ai/curriculum/recommendations/123?timeAvailable=30
+ *
+ * @example
+ * // For GET /api/ai/curriculum/recommendations?timeAvailable=30
  * const payload = buildGETPayload('GET_LEARNING_RECOMMENDATIONS', req);
  * // Returns: { userId: 123, timeAvailable: 30 }
- */
+*/
 function buildGETPayload(taskType: ValidatedAITask, req: Request): any {
   const userId = req.user!.userId; // Guaranteed by auth middleware, never use URL params for security
   
@@ -140,7 +94,7 @@ function buildGETPayload(taskType: ValidatedAITask, req: Request): any {
  * 
  * @example
  * // Usage in route definitions:
- * router.get('/curriculum/daily-plan/:userId', handleAIRequest('GET_DAILY_PLAN'));
+ * router.get('/curriculum/daily-plan', handleAIRequest('GET_DAILY_PLAN'));
  * router.post('/curriculum/daily-plan', handleAIRequest('GENERATE_DAILY_PLAN'));
  */
 function handleAIRequest(taskType: ValidatedAITask) {
@@ -440,13 +394,13 @@ export const getGenerationStatus = async (req: Request, res: Response) => {
       // Attempt to get from cache first for performance
       const cacheService = aiServiceFactory.getCacheService();
       const cachedResult = await cacheService.get(jobId);
-      
+
       if (cachedResult) {
-        res.status(200).json({ status: 'completed', data: cachedResult });
+        res.status(200).json({ status: 'completed', result: cachedResult });
         return;
       }
       // If not in cache, return from DB
-      res.status(200).json({ status: 'completed', data: JSON.parse(jobRecord.result!) });
+      res.status(200).json({ status: 'completed', result: JSON.parse(jobRecord.result!) });
       return;
     }
 
@@ -646,7 +600,7 @@ export const adaptLearningPath = handleAIRequest('ADAPT_LEARNING_PATH');
 
 /**
  * Controller for retrieving cached daily learning plans
- * GET /api/ai/curriculum/daily-plan/:userId
+ * GET /api/ai/curriculum/daily-plan
  * 
  * Task 3.2.A.3: Curriculum API Endpoints - Cached Daily Plan Access
  * 
@@ -656,7 +610,7 @@ export const adaptLearningPath = handleAIRequest('ADAPT_LEARNING_PATH');
  * while maintaining the same validation and error handling standards as other endpoints.
  * 
  * @example
- * GET /api/ai/curriculum/daily-plan/123
+ * GET /api/ai/curriculum/daily-plan
  * 
  * Response: {
  *   "status": "success",
@@ -674,7 +628,7 @@ export const getDailyPlan = handleAIRequest('GET_DAILY_PLAN');
 
 /**
  * Controller for learning recommendations based on available time
- * GET /api/ai/curriculum/recommendations/:userId?timeAvailable=20
+ * GET /api/ai/curriculum/recommendations?timeAvailable=20
  * 
  * Task 3.2.A.3: Curriculum API Endpoints - Learning Recommendations
  * 
@@ -685,7 +639,7 @@ export const getDailyPlan = handleAIRequest('GET_DAILY_PLAN');
  * consistency with all other AI endpoints.
  * 
  * @example
- * GET /api/ai/curriculum/recommendations/123?timeAvailable=30
+ * GET /api/ai/curriculum/recommendations?timeAvailable=30
  * 
  * Response: {
  *   "status": "success",

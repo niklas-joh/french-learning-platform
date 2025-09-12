@@ -154,16 +154,48 @@ ${jsonStructure}
 }`;
 
             case 'vocabulary_drill':
-                return `[
-  {
-    "word": "string - French word",
-    "translation": "string - English definition/translation",
-    "example": {
-      "french": "string - example sentence in French",
-      "english": "string - example sentence in English"
+                return `{
+  "type": "vocabulary_drill",
+  "title": "string - drill title",
+  "description": "string - description (minimum 20 characters)",
+  "learningObjectives": ["string - learning objective"],
+  "estimatedTime": "number - minutes to complete",
+  "context": "string - short situational context",
+  "vocabulary": [
+    {
+      "word": "string - French word",
+      "translation": "string - English definition/translation",
+      "pronunciation": "string - phonetic guide",
+      "examples": ["array - example sentences"],
+      "difficulty": "A1|A2|B1|B2|C1|C2"
     }
-  }
-]`;
+  ],
+  "exercises": [
+    {
+      "prompt": "string - question or task",
+      "answer": "string - correct answer"
+    }
+  ]
+}`;
+            case 'grammar_exercise':
+                return `{
+  "type": "grammar_exercise",
+  "title": "string - exercise title",
+  "description": "string - overview (minimum 20 characters)",
+  "learningObjectives": ["string - learning objective"],
+  "estimatedTime": "number - minutes to complete",
+  "grammarRule": "string - rule being practiced",
+  "explanation": "string - explanation of the rule",
+  "examples": ["array - example sentences"],
+  "exercises": [
+    {
+      "prompt": "string - question or sentence to complete",
+      "answer": "string - correct answer"
+    }
+  ],
+  "tips": ["string - helpful tip"],
+  "commonMistakes": ["string - typical error"]
+}`;
 
             default:
                 return `{

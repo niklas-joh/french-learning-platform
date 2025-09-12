@@ -65,7 +65,7 @@ export interface ContentRecommendation {
   /** Detailed description of the content */
   description: string;
   /** Type of learning content */
-  type: 'lesson' | 'vocabulary_drill' | 'grammar_exercise' | 'conversation_practice';
+  type: 'lesson' | 'vocabulary_drill' | 'grammar_exercise';
   /** CEFR difficulty level */
   difficulty: CEFRLevel;
   /** Estimated completion time in minutes */
@@ -88,7 +88,7 @@ export interface AIGenerationJob {
   /** Unique job identifier */
   jobId: string;
   /** Current job status */
-  status: 'pending' | 'processing' | 'completed' | 'failed' | 'cancelled';
+  status: 'queued' | 'processing' | 'completed' | 'failed' | 'cancelled';
   /** Progress percentage (0-100) */
   progress?: number;
   /** Generated content result when completed */
@@ -118,13 +118,15 @@ export interface ContentGenerationRequest {
   /** Topic or subject for content generation (automatically converted to topics array) */
   topic: string;
   /** Type of content to generate */
-  contentType: 'lesson' | 'vocabulary_drill' | 'grammar_exercise' | 'conversation_practice';
+  contentType: 'lesson' | 'vocabulary_drill' | 'grammar_exercise';
   /** Target CEFR difficulty level (optional - will auto-detect from preferences or use A2 default) */
   difficulty?: CEFRLevel;
   /** Desired completion time in minutes */
   estimatedTime?: number;
   /** Specific areas to focus on */
   focusAreas?: string[];
+  /** Specific grammar topic when requesting grammar exercises */
+  grammarFocus?: string;
   /** Additional context for AI generation */
   context?: {
     /** User's current progress level */
@@ -227,7 +229,7 @@ export interface EnhancedAIGenerationJob extends AIGenerationJob {
   retryCount?: number;
   /** Maximum retry attempts */
   maxRetries?: number;
-  /** Queue position for pending jobs */
+  /** Queue position for queued jobs */
   queuePosition?: number;
   /** Resource usage metrics */
   metrics?: {

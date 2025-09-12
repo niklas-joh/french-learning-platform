@@ -42,7 +42,7 @@ describe('useAIDashboard', () => {
       { id: 'rec-1', title: 'Test Recommendation' }
     ]);
     mockApi.aiDashboard.listJobs.mockResolvedValue([
-      { jobId: 'job-1', status: 'pending' }
+      { jobId: 'job-1', status: 'queued' }
     ]);
 
     const { result } = renderHook(() => useAIDashboard());

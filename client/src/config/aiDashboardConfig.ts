@@ -23,8 +23,7 @@ export const AI_DASHBOARD_CONFIG = {
   CONTENT_TYPES: [
     { value: 'lesson' as const, label: 'Interactive Lesson', icon: '📚', description: 'Structured learning content with exercises' },
     { value: 'vocabulary_drill' as const, label: 'Vocabulary Practice', icon: '🔤', description: 'Focused vocabulary exercises' },
-    { value: 'grammar_exercise' as const, label: 'Grammar Exercise', icon: '✏️', description: 'Grammar rules and practice' },
-    { value: 'conversation_practice' as const, label: 'Conversation', icon: '💬', description: 'Speaking and dialogue practice' }
+    { value: 'grammar_exercise' as const, label: 'Grammar Exercise', icon: '✏️', description: 'Grammar rules and practice' }
   ] as const,
   
   /**
@@ -98,14 +97,6 @@ export const AI_DASHBOARD_CONFIG = {
       icon: '🔤',
       contentType: 'vocabulary_drill' as const,
       estimatedTime: 10
-    },
-    {
-      id: 'speaking-practice',
-      title: 'Speaking',
-      description: 'Conversation practice',
-      icon: '🎤',
-      contentType: 'conversation_practice' as const,
-      estimatedTime: 8
     },
     {
       id: 'grammar-exercise',
