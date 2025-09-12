@@ -646,10 +646,48 @@ This document tracks architectural improvements, refactoring opportunities, and 
   - Better retention with interest-aligned learning
   - Adaptive content strategy optimization
 
+## Content Generation Architecture Improvements
+
+### 45. Refactor Existing Structurers to BaseStructurer Pattern
+- **Identified**: December 9, 2025 during grammar exercise structurer analysis
+- **Current State**: VocabularyStructurer (120 lines) and LessonStructurer (100 lines) with duplicated code
+- **Problem**: ~40 lines of identical parsing and validation logic violates DRY principle
+- **Proposed Solution**: Refactor existing structurers to extend BaseStructurer abstract class:
+  1. Migrate VocabularyStructurer to extend BaseStructurer (120→20 lines)
+  2. Migrate LessonStructurer to extend BaseStructurer (100→20 lines)
+  3. Eliminate duplicated parseContentEfficiently and validation logic
+  4. Maintain backward compatibility during transition
+- **Benefits**:
+  - 85% code reduction in existing structurers
+  - Single source of truth for parsing and validation logic
+  - Easier maintenance and bug fixes
+  - Consistent error handling across all content types
+- **Priority**: Medium (after grammar exercise structurer fix is complete)
+- **Estimated Effort**: 1 hour
+- **Dependencies**: Current grammar exercise fix following existing patterns first
+- **Note**: Original grammar exercise fix will follow existing direct implementation pattern to maintain consistency
+
+### 46. Grammar Exercise Content Enhancement Pipeline
+- **Identified**: December 9, 2025 during grammar exercise structurer fix analysis
+- **Current State**: Basic grammar exercise generation with simple fill-in-blank format
+- **Problem**: Limited exercise variety and no adaptive difficulty adjustment
+- **Proposed Solution**: Enhanced grammar exercise generation system:
+  1. Multiple exercise types (multiple choice, drag-drop, ordering)
+  2. Difficulty adaptation based on user performance
+  3. Grammar rule explanation generation
+  4. Cultural context integration for examples
+- **Benefits**:
+  - More engaging grammar practice experience
+  - Personalized difficulty progression
+  - Better pedagogical value through varied exercise formats
+- **Priority**: Low (after core grammar exercise generation is stable)
+- **Estimated Effort**: 3-4 hours
+- **Dependencies**: Stable grammar exercise generation pipeline
+
 ---
 
-**Last Updated**: September 11, 2025  
-**Document Status**: Updated with front-end learning system advanced features  
-**Total Items**: 44 total considerations (35 original + 9 front-end learning system specific)  
-**Recent Additions**: Tasks 36-44 for advanced interactive learning features  
-**Critical Priority**: Front-end learning system basic functionality must be implemented first
+**Last Updated**: December 9, 2025  
+**Document Status**: Updated with grammar exercise fix considerations  
+**Total Items**: 46 total considerations (44 original + 2 new)  
+**Recent Additions**: Tasks 45-46 for content generation architecture improvements  
+**Critical Priority**: Grammar exercise structurer fix must be completed first following existing patterns

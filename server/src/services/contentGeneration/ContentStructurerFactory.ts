@@ -1,7 +1,8 @@
-import { IContentStructurer, StructuredContent } from './IContentStructurer';
-import { VocabularyStructurer } from './VocabularyStructurer';
-import { LessonStructurer } from './LessonStructurer';
-import { ContentType } from '../../types/Content';
+import { IContentStructurer, StructuredContent } from './IContentStructurer.js';
+import { VocabularyStructurer } from './VocabularyStructurer.js';
+import { LessonStructurer } from './LessonStructurer.js';
+import { GrammarExerciseStructurer } from './GrammarExerciseStructurer.js';
+import { ContentType } from '../../types/Content.js';
 
 export class ContentStructurerFactory {
   private structurers: Map<ContentType, IContentStructurer<StructuredContent>>;
@@ -11,6 +12,7 @@ export class ContentStructurerFactory {
     // The system is now pluggable. Add new types by registering them here.
     this.structurers.set('vocabulary_drill', new VocabularyStructurer());
     this.structurers.set('lesson', new LessonStructurer());
+    this.structurers.set('grammar_exercise', new GrammarExerciseStructurer());
   }
 
   public getStructurer(contentType: ContentType): IContentStructurer<StructuredContent> {
