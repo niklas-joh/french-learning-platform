@@ -11,4 +11,6 @@ This document records the known issues identified in the AI content generation w
 7. **Unused batch generation API** – Client exposed a `generateBatchContent` method, but no server route existed for it.
 8. **Redundant or unused pieces** – `taskHandlerMap` in the controller was unused, and routes like `/curriculum/daily-plan/:userId` ignored the path parameter.
 
-Issues 1–6 and 8 have been addressed in the codebase.
+9. **Prompt template structure mismatch** – `PromptTemplateEngine` lacked structured JSON specs for `vocabulary_drill` and `grammar_exercise`, causing generated content to fail validation.
+
+Issues 1–6, 8, and 9 have been addressed in the codebase.
