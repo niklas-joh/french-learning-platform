@@ -274,4 +274,153 @@ erDiagram
     }
 
     users ||--o{ batchAssessmentResults : "submits_batches_for"
+
+    %% PHASE 4 DASHBOARD TRANSFORMATION - NEW TABLES
+    
+    dailyGoals {
+        string id PK "UUID format goal_YYYYMMDD_userId"
+        int userId FK
+        date date "YYYY-MM-DD"
+        int targetXp "default: 50"
+        int targetLessons "default: 3" 
+        int targetMinutes "default: 20"
+        int currentXp "default: 0"
+        int currentLessons "default: 0"
+        int currentMinutes "default: 0"
+        boolean completed "default: false"
+        datetime completedAt "nullable"
+        datetime createdAt
+        datetime updatedAt
+        %% unique userId, date
+    }
+
+    badges {
+        string id PK
+        string name "notNull"
+        text description "notNull"
+        string iconUrl "notNull" 
+        string category "streak|achievement|social|skill"
+        string rarity "common|rare|epic|legendary"
+        json criteria "notNull"
+        int xpReward "default: 10"
+        boolean isActive "default: true"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    userBadges {
+        int id PK
+        int userId FK
+        string badgeId FK
+        datetime unlockedAt "default: now"
+        json metadata "nullable"
+        %% unique userId, badgeId
+    }
+
+    oauthProfiles {
+        int id PK
+        int userId FK
+        string provider "google|facebook"
+        string providerId "notNull"
+        string email "notNull"
+        string displayName "nullable"
+        string firstName "nullable"
+        string lastName "nullable"
+        string profilePictureUrl "nullable"
+        string locale "nullable"
+        json rawProfile "nullable"
+        datetime createdAt
+        datetime updatedAt
+        %% unique provider, providerId
+        %% unique userId, provider
+    }
+
+    friendships {
+        int id PK
+        int userId FK
+        int friendId FK
+        string status "pending|accepted|blocked"
+        datetime createdAt
+        datetime acceptedAt "nullable"
+        %% unique userId, friendId
+    }
+
+    xpActivities {
+        int id PK
+        int userId FK
+        string activityType "notNull"
+        int xpAmount "notNull"
+        string sourceId "nullable"
+        json metadata "nullable"
+        datetime createdAt
+    }
+
+    weeklyLeaderboards {
+        int id PK
+        date weekStartDate "Monday of week"
+        int userId FK
+        int weeklyXp "notNull"
+        int rank "notNull"
+        datetime calculatedAt
+        %% unique weekStartDate, userId
+    }
+
+    studyGroups {
+        int id PK
+        string name "notNull"
+        text description "nullable"
+        int creatorId FK
+        boolean isPublic "default: true"
+        int maxMembers "default: 20"
+        int currentMembers "default: 0"
+        string language "default: french"
+        string targetLevel "notNull"
+        string activityLevel "low|medium|high"
+        json tags "nullable"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    studyGroupMembers {
+        int id PK
+        int groupId FK
+        int userId FK
+        string role "creator|admin|member"
+        datetime joinedAt
+        datetime lastActiveAt
+        int contributionScore "default: 0"
+        %% unique groupId, userId
+    }
+
+    groupChallenges {
+        int id PK
+        int groupId FK
+        int creatorId FK
+        string title "notNull"
+        text description "nullable"
+        string targetType "xp|lessons|streak|skill_improvement"
+        int targetValue "notNull"
+        date startDate "notNull"
+        date endDate "notNull"
+        int xpReward "default: 0"
+        string status "upcoming|active|completed"
+        int participantCount "default: 0"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    %% PHASE 4 RELATIONSHIPS
+    users ||--o{ dailyGoals : "sets"
+    users ||--o{ userBadges : "earns"
+    badges ||--o{ userBadges : "awarded_as"
+    users ||--o{ oauthProfiles : "links"
+    users ||--o{ friendships : "initiates"
+    users ||--o{ friendships : "receives"
+    users ||--o{ xpActivities : "generates"
+    users ||--o{ weeklyLeaderboards : "appears_on"
+    users ||--o{ studyGroups : "creates"
+    users ||--o{ studyGroupMembers : "joins"
+    studyGroups ||--o{ studyGroupMembers : "contains"
+    studyGroups ||--o{ groupChallenges : "hosts"
+    users ||--o{ groupChallenges : "creates"
 }
