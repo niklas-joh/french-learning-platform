@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import CustomThemeProvider from './ThemeProvider'; // Assuming theme is a default export
 import MainLayout from './components/layout/MainLayout';
 import HomePage from './pages/HomePage';
+import LandingPage from './pages/LandingPage';
 import LessonsPage from './pages/LessonsPage';
 import LessonPage from './pages/LessonPage';
 import PracticePage from './pages/PracticePage';
@@ -33,18 +34,21 @@ function App() {
       <Router>
         <AuthProvider>
           <Routes>
+            {/* Public landing page */}
+            <Route path="/" element={<LandingPage />} />
+            
             {/* Authentication routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
 
             {/* Protected main application routes */}
             <Route element={<ProtectedRoute />}>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/lessons" element={<LessonsPage />} />
-              <Route path="/lessons/:lessonId" element={<LessonPage />} />
-              <Route path="/practice" element={<PracticePage />} />
-              <Route path="/progress" element={<ProgressPage />} />
+              <Route element={<MainLayout />}>
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/lessons" element={<LessonsPage />} />
+                <Route path="/lessons/:lessonId" element={<LessonPage />} />
+                <Route path="/practice" element={<PracticePage />} />
+                <Route path="/progress" element={<ProgressPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
               </Route>
             </Route>
@@ -54,8 +58,8 @@ function App() {
               <Route index element={<AdminDashboardPage />} />
             </Route>
 
-            {/* Redirect old dashboard route */}
-            <Route path="/dashboard" element={<Navigate to="/" replace />} />
+            {/* Redirect old dashboard route to new home */}
+            <Route path="/dashboard" element={<Navigate to="/home" replace />} />
           </Routes>
         </AuthProvider>
       </Router>

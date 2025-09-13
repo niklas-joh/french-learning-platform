@@ -44,7 +44,7 @@ const RegisterPage: React.FC = () => {
       await login({ email, password });
 
       // Finally, navigate to the home page
-      navigate('/', { replace: true });
+      navigate('/home', { replace: true });
     } catch (apiError: any) {
       console.error('Registration failed:', apiError);
       setError(apiError.message || 'Registration failed. Please try again.');

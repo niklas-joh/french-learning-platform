@@ -25,8 +25,8 @@ const LoginPage: React.FC = () => {
       const normalizedEmail = email.trim().toLowerCase();
       await login({ email: normalizedEmail, password });
       // The AuthContext will handle setting the user and token.
-      // We just need to navigate to the new home page.
-      navigate('/', { replace: true });
+      // We just need to navigate to the home page.
+      navigate('/home', { replace: true });
     } catch (apiError: any) {
       console.error('Login failed raw error:', apiError);
       const errorMessage = apiError && apiError.message

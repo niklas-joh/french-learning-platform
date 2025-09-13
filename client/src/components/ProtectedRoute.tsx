@@ -29,9 +29,9 @@ const ProtectedRoute: React.FC = () => {
     );
   }
 
-  // If loading is finished and there's no user, redirect to the login page
+  // If loading is finished and there's no user, redirect to the landing page
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   // If the user is authenticated, render the nested routes

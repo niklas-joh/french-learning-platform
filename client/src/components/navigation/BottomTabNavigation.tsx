@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 
 const navigationItems = [
-  { label: 'Home', icon: <HomeIcon />, path: '/' },
+  { label: 'Home', icon: <HomeIcon />, path: '/home' },
   { label: 'Lessons', icon: <SchoolIcon />, path: '/lessons' },
   { label: 'Practice', icon: <PracticeIcon />, path: '/practice' },
   { label: 'Progress', icon: <ProgressIcon />, path: '/progress' },
