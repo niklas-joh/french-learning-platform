@@ -1,271 +1,301 @@
-# HomePage Lesson Grid Transformation - Design Mockup
+# HomePage Modern Lesson Grid Design Mockup
 
 ## Overview
-Complete visual mockup of the transformed `HomePage.tsx` showing the shift from AI content generation dashboard to state-of-the-art gamified lesson card dashboard, leveraging 95% of existing infrastructure.
+Complete transformation of the `HomePage.tsx` into a modern, professional lesson dashboard featuring clean white cards, contemporary typography, and intuitive color-coded difficulty system that aligns with modern language learning applications.
 
-## Current vs. Transformed Layout
+## Design Philosophy
 
-### **Current AI Dashboard Structure**
+### **Modern Card-Based Dashboard**
+- Clean white background with subtle shadows
+- Professional typography using system font stack
+- Color-coded difficulty indicators (Green/Blue/Orange)
+- Responsive 2-column mobile, 3-column tablet, 4-column desktop grid
+- Minimal, distraction-free interface that prioritizes content
+
+### **Transformed Layout Structure**
 ```typescript
-<AIDashboardLayout>
-  <AIEnhancedHeader />           // Existing gradient header
-  <AIContentRequest />           // AI form - TO BE REPLACED
-  <QuickActionsGrid />           // Existing quick actions
-  <AITutorCard />               // Existing tutor card
-</AIDashboardLayout>
-```
-
-### **Transformed Lesson Dashboard Structure**
-```typescript
-<AIDashboardLayout>
-  <AIEnhancedHeader />           // ENHANCED with gamification
-  <LessonCardGrid />            // TRANSFORMED QuickActionsGrid  
-  <GamificationSidebar />       // MINIMAL 50-line addition
-</AIDashboardLayout>
+<ModernDashboardLayout>
+  <ModernAIEnhancedHeader />        // Clean white header with stats
+  <LessonCardGrid />               // Professional lesson cards
+  <ModernGamificationSidebar />    // Clean white sidebar (desktop)
+</ModernDashboardLayout>
 ```
 
 ## Visual Design Specification
 
-### **1. Enhanced Header with Gamification**
+### **1. Modern Header Design**
 ```css
-/* Existing gradient header enhanced with overlays */
-.ai-enhanced-header {
-  background: var(--gradient-primary);  /* Existing */
-  border-radius: var(--border-radius-large);  /* Existing */
-  position: relative;
+.modern-dashboard-header {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   padding: 24px;
-  color: white;
+  margin-bottom: 24px;
 }
 
-/* New gamification overlays */
-.daily-goals-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--border-radius-small);
-  padding: 8px 12px;
-  font-size: 0.875rem;
-  backdrop-filter: blur(10px);
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
-.streak-counter {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: var(--border-radius-small);
-  padding: 6px 10px;
-  font-size: 0.75rem;
+.header-stats {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 ```
 
-**Header Content Example:**
-```
-┌─────────────────────────────────────────────────────┐
-│ [🎯 2/3 lessons]                    [🔥 7 day streak]│
-│                                                     │
-│  Bonjour! 🇫🇷                                       │
-│  7 day streak! Ready for your French lesson today? │
-│                                                     │
-│                                       [75% XP Ring] │
-└─────────────────────────────────────────────────────┘
-```
+### **2. Modern Lesson Card Grid**
 
-### **2. Lesson Card Grid (Enhanced QuickActionsGrid)**
-
-#### **Card Layout (16:9 Aspect Ratio)**
+#### **Clean Card Layout**
 ```css
 .lesson-card {
-  /* Existing QuickActionCard base styles */
-  background: var(--glass-bg);
-  border-radius: var(--border-radius-medium);
-  box-shadow: var(--shadow-light);
-  min-width: 200px;
-  aspect-ratio: 16/9;  /* New for lesson cards */
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
   position: relative;
-  overflow: hidden;
+  min-height: 160px;
 }
 
 .lesson-card:hover {
-  /* Existing hover effects */
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-medium);
-  transition: all var(--transition-normal);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.lesson-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
 }
 ```
 
-#### **Progress Ring Overlay**
+#### **Modern Progress Indicator**
 ```css
-.progress-ring {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+.progress-indicator {
   width: 48px;
   height: 48px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .progress-circle {
-  transform: rotate(-90deg);
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
-.progress-path {
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 3;
-  fill: none;
-}
-
-.progress-bar {
-  stroke: var(--french-blue);
-  stroke-width: 3;
-  fill: none;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1.5s ease-in-out;
+.progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  z-index: 1;
 }
 ```
 
-#### **AI Personalization Badges**
+#### **Difficulty Badge System**
 ```css
 .difficulty-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--french-blue);
-  border-radius: var(--border-radius-small);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.recommendation-reason {
-  position: absolute;
-  bottom: 48px;
-  left: 16px;
-  right: 16px;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  color: white;
-  font-size: 0.75rem;
-  padding: 8px;
-  border-radius: var(--border-radius-small);
+.difficulty-badge.beginner {
+  background: #d1fae5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.difficulty-badge.intermediate {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+.difficulty-badge.advanced {
+  background: #fed7aa;
+  color: #c2410c;
+  border: 1px solid #fdba74;
 }
 ```
 
-### **3. Lesson Card Grid Layout**
-```
-Mobile (2 columns):
-┌─────────────────┬─────────────────┐
-│   French Greet. │   Past Tense    │
-│   [●●●○○] 60%   │   [●●●●●] 100%  │
-│   📊 Normal     │   📊 Review     │
-│   "Perfect for  │   "Strengthen   │
-│    your level"  │    weak areas"  │
-│   ⏱️ 15min 50XP │   ⏱️ 25min 75XP│
-└─────────────────┴─────────────────┘
-│   Subjunctive   │   Conversation  │
-│   [○○○○○] 0%    │   [●●○○○] 40%   │
-│   📊 Challenge  │   📊 Practice   │
-│   "Ready for    │   "Boost your   │
-│    advanced?"   │    confidence"  │
-│   ⏱️ 30min 100XP│   ⏱️ 20min 60XP│
-└─────────────────┴─────────────────┘
-
-Tablet (3 columns) / Desktop (4 columns)
-```
-
-### **4. Gamification Sidebar (Minimal Addition)**
+### **3. Modern Grid Layout**
 ```css
-.gamification-sidebar {
-  width: 280px;
-  padding: 16px;
-  background: var(--glass-bg);
-  border-radius: var(--border-radius-medium);
-  box-shadow: var(--shadow-light);
-  position: sticky;
-  top: 16px;
+.lesson-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
-@media (max-width: 1024px) {
-  .gamification-sidebar {
-    display: none; /* Hide on tablet/mobile */
+/* Responsive breakpoints */
+@media (max-width: 640px) {
+  .lesson-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .lesson-card {
+    min-height: 140px;
+    padding: 16px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .lesson-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .lesson-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 ```
 
-**Sidebar Content Layout:**
+### **4. Layout Examples**
+
+#### **Mobile Layout (2 columns)**
 ```
-┌─── Daily Goals ──────────────┐
-│ XP: [████████░░] 150/200     │
-│ Lessons: [██████░░] 2/3      │
-│ Time: [█████████░] 45/60min  │
-│                              │
-│ ⭐ Complete 1 more lesson!   │
-└──────────────────────────────┘
-
-┌─── Leaderboard ──────────────┐
-│ 🥇 Marie L.     420 XP   👥  │
-│ 🥈 Thomas K.    380 XP       │
-│ 🥉 You          350 XP       │
-│ 4. Sophie M.    320 XP   👥  │
-│ 5. Alex R.      290 XP       │
-│                              │
-│ [View Full Leaderboard]      │
-└──────────────────────────────┘
-
-┌─── Your Stats ───────────────┐
-│ Total XP: 2,847              │
-│ Current Streak: 7 days 🔥    │
-│ Rank: Intermediate           │
-│ Weekly Rank: #3              │
-│                              │
-│ 🏆 Recent Badges:            │
-│ [🔥7] [📚] [🎯] [💬]         │
-└──────────────────────────────┘
+┌─────────────┬─────────────┐
+│ 👋 French   │ 📅 Past     │
+│ Greetings   │ Tense       │
+│             │             │
+│ ●●●○○ 60%  │ ●●●●● 100% │
+│ [Beginner]  │ [Review]    │
+│ 15min 50XP  │ 25min 75XP  │
+└─────────────┴─────────────┘
+│ 🤔 Subjun.  │ 💬 Conver.  │
+│ Practice    │ Practice    │
+│             │             │
+│ ○○○○○ 0%   │ ●●○○○ 40%  │
+│ [Advanced]  │ [Inter.]    │
+│ 30min 100XP │ 20min 60XP  │
+└─────────────┴─────────────┘
 ```
 
-## Placeholder Content Data
+#### **Desktop Layout (4 columns + Sidebar)**
+```
+┌──── Header ─────────────────────────────────────────┐
+│ Bonjour Sarah! 🇫🇷                    [Progress]    │
+│ You're doing great! Keep it up today.              │
+│ [📚 2/3] [⭐ 150/200] [🔥 7 days] [🏆 #3]         │
+└─────────────────────────────────────────────────────┘
 
-### **Lesson Cards Data Example**
+┌─── Lesson Grid ───────────────┐ ┌── Sidebar ──┐
+│ [Card1] [Card2] [Card3] [Card4]│ │ Daily Goals │
+│ [Card5] [Card6] [Card7] [Card8]│ │ Leaderboard │
+│                               │ │ Quick Stats │
+└───────────────────────────────┘ └─────────────┘
+```
+
+## Modern Card States
+
+### **Lesson Card Examples**
+
+#### **Beginner Lesson (Not Started)**
+```
+┌─────────────────────────────────┐
+│ 👋                    ○○○○○ 0% │
+│                                 │
+│ French Greetings                │
+│ Master common French greetings  │
+│                                 │
+│ [Beginner]          ⏱️ 15min   │
+│                     ⭐ 50 XP   │
+└─────────────────────────────────┘
+```
+
+#### **Intermediate Lesson (In Progress)**
+```
+┌─────────────────────────────────┐
+│ 📅                  ●●●○○ 75% │
+│                                 │
+│ Past Tense Mastery              │
+│ Learn passé composé usage       │
+│                                 │
+│ [Intermediate]      ⏱️ 25min   │
+│                     ⭐ 75 XP   │
+└─────────────────────────────────┘
+```
+
+#### **Advanced Lesson (Challenge)**
+```
+┌─────────────────────────────────┐
+│ 🤔                  ○○○○○ 0%  │
+│                                 │
+│ Subjunctive Practice            │
+│ Master advanced grammar         │
+│                                 │
+│ [Advanced]          ⏱️ 30min   │
+│                     ⭐ 100 XP  │
+└─────────────────────────────────┘
+```
+
+#### **Completed Lesson**
+```
+┌─────────────────────────────────┐
+│ 💬                  ●●●●● 100% │
+│                                 │
+│ Conversation Practice           │
+│ Real-world scenarios            │
+│                                 │
+│ [✅ Complete]       ⏱️ 20min   │
+│                     ⭐ 60 XP   │
+└─────────────────────────────────┘
+```
+
+## Lesson Data Structure
+
+### **Modern Lesson Cards Data Example**
 ```typescript
-const lessonCardsData = [
+const modernLessonCardsData = [
   {
     id: 'lesson-1',
     icon: '👋',
     title: 'French Greetings',
     description: 'Master common French greetings and introductions',
-    progress: 75,
+    progress: 0,
     estimatedTime: 15,
     xpReward: 50,
-    contentType: 'lesson' as ContentType,
-    aiPersonalization: {
-      difficultyAdjustment: 'normal' as const,
-      focusAreas: ['pronunciation', 'basic_vocab'],
-      recommendationReason: 'Perfect for your A1 level',
-      userSkillMatch: 0.85
-    },
-    completionStatus: 'in_progress' as const,
-    thumbnailUrl: undefined
+    difficulty: 'beginner' as const,
+    completionStatus: 'not_started' as const,
+    category: 'vocabulary',
+    tags: ['basics', 'conversation', 'pronunciation']
   },
   {
     id: 'lesson-2',
     icon: '📅',
     title: 'Past Tense Mastery',
     description: 'Learn passé composé and imparfait usage',
-    progress: 100,
+    progress: 75,
     estimatedTime: 25,
     xpReward: 75,
-    contentType: 'lesson' as ContentType,
-    aiPersonalization: {
-      difficultyAdjustment: 'easier' as const,
-      focusAreas: ['grammar_review', 'tense_clarity'],
-      recommendationReason: 'Review to strengthen weak areas',
-      userSkillMatch: 0.65
-    },
-    completionStatus: 'completed' as const,
-    thumbnailUrl: undefined
+    difficulty: 'intermediate' as const,
+    completionStatus: 'in_progress' as const,
+    category: 'grammar',
+    tags: ['tenses', 'verb_conjugation', 'past']
   },
   {
     id: 'lesson-3',
@@ -275,33 +305,23 @@ const lessonCardsData = [
     progress: 0,
     estimatedTime: 30,
     xpReward: 100,
-    contentType: 'lesson' as ContentType,
-    aiPersonalization: {
-      difficultyAdjustment: 'harder' as const,
-      focusAreas: ['advanced_grammar', 'mood_expressions'],
-      recommendationReason: 'Ready for this challenge?',
-      userSkillMatch: 0.45
-    },
+    difficulty: 'advanced' as const,
     completionStatus: 'not_started' as const,
-    thumbnailUrl: undefined
+    category: 'grammar',
+    tags: ['advanced', 'subjunctive', 'complex_grammar']
   },
   {
     id: 'lesson-4',
     icon: '💬',
     title: 'Conversation Practice',
     description: 'Real-world French conversation scenarios',
-    progress: 40,
+    progress: 100,
     estimatedTime: 20,
     xpReward: 60,
-    contentType: 'lesson' as ContentType,
-    aiPersonalization: {
-      difficultyAdjustment: 'normal' as const,
-      focusAreas: ['speaking_confidence', 'practical_phrases'],
-      recommendationReason: 'Boost your speaking confidence',
-      userSkillMatch: 0.75
-    },
-    completionStatus: 'in_progress' as const,
-    thumbnailUrl: undefined
+    difficulty: 'intermediate' as const,
+    completionStatus: 'completed' as const,
+    category: 'speaking',
+    tags: ['conversation', 'practical', 'speaking']
   }
 ];
 ```

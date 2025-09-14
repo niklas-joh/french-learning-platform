@@ -1,289 +1,301 @@
-# Lesson Card Component Design Mockup
+# Modern Lesson Card Component Design Mockup
 
 ## Overview
-Detailed visual mockup of enhanced `QuickActionCard` component transformed into state-of-the-art lesson cards with AI personalization, progress tracking, and gamification elements while maintaining 95% code reuse.
+Transformation of the `QuickActionCard` component into a clean, modern lesson card featuring professional typography, subtle shadows, and color-coded difficulty indicators that align with contemporary language learning applications.
 
 ## Component Architecture Strategy
 
-### **Enhancement Approach (Not Replacement)**
+### **Modern Enhancement Approach**
 ```typescript
-// EXTEND existing QuickActionCard, don't replace
-interface EnhancedQuickActionCardProps extends QuickActionCardProps {
-  // Existing props maintained 100%
-  renderMode?: 'quick-action' | 'lesson-card';  // NEW
-  progress?: number;                             // NEW
-  aiPersonalization?: AIPersonalizationData;    // NEW
-  completionStatus?: 'not_started' | 'in_progress' | 'completed';  // NEW
-  xpReward?: number;                            // NEW
-  showProgressRing?: boolean;                   // NEW
-}
-
-// 95% of existing code reused, conditional rendering added
-```
-
-## Visual Design Breakdown
-
-### **1. Base Card Structure (Existing Foundation)**
-```css
-/* Existing QuickActionCard styles maintained */
-.quick-action-card {
-  background: var(--glass-bg);           /* Existing */
-  border-radius: var(--border-radius-medium);  /* Existing */
-  box-shadow: var(--shadow-light);      /* Existing */
-  min-width: 200px;                     /* Existing */
-  cursor: pointer;                      /* Existing */
-  transition: all var(--transition-normal);  /* Existing */
-}
-
-/* Enhanced for lesson cards */
-.quick-action-card[data-render-mode="lesson-card"] {
-  aspect-ratio: 16/9;                   /* NEW for lesson cards */
-  position: relative;                   /* NEW for overlays */
-  overflow: hidden;                     /* NEW for progress effects */
-  min-height: 140px;                   /* NEW minimum height */
+interface ModernLessonCardProps extends QuickActionCardProps {
+  // Enhanced props for modern design
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  progress?: number;
+  estimatedTime?: number;
+  xpReward?: number;
+  completionStatus?: 'not_started' | 'in_progress' | 'completed';
+  category?: string;
+  tags?: string[];
 }
 ```
 
-### **2. Progress Ring Overlay (New Element)**
+## Visual Design Specification
+
+### **1. Clean Card Foundation**
 ```css
-.progress-ring-container {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+.modern-lesson-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modern-lesson-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.modern-lesson-card:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+```
+
+### **2. Card Header Layout**
+```css
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.lesson-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.progress-indicator {
   width: 48px;
   height: 48px;
-  z-index: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
+```
 
-.progress-ring {
+### **3. Modern Progress Circle**
+```css
+.progress-circle {
+  position: absolute;
   width: 100%;
   height: 100%;
-  transform: rotate(-90deg);  /* Start from top */
+  transform: rotate(-90deg);
 }
 
-.progress-background {
-  stroke: rgba(255, 255, 255, 0.3);
+.progress-track {
+  stroke: #f3f4f6;
   stroke-width: 3;
   fill: none;
 }
 
-.progress-foreground {
-  stroke: var(--french-blue);
+.progress-bar {
+  stroke: #3b82f6;
   stroke-width: 3;
   fill: none;
   stroke-linecap: round;
-  stroke-dasharray: 150.8;  /* 2π × 24px radius */
-  stroke-dashoffset: calc(150.8 - (150.8 * var(--progress, 0) / 100));
-  transition: stroke-dashoffset 1.5s ease-in-out;
+  transition: stroke-dashoffset 1s ease-in-out;
 }
 
-/* Completion state styling */
-.progress-foreground[data-completed="true"] {
-  stroke: #4caf50;  /* Success green */
+.progress-bar.completed {
+  stroke: #10b981;
 }
 
-.progress-foreground[data-completed="false"][data-progress="0"] {
-  stroke: rgba(255, 255, 255, 0.5);  /* Not started */
+.progress-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+  position: relative;
+  z-index: 1;
 }
 ```
 
-### **3. AI Personalization Badges (New Overlays)**
+### **4. Modern Difficulty Badge System**
 ```css
 .difficulty-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.95);
-  color: var(--french-blue);
-  border-radius: var(--border-radius-small);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 8px;
 }
 
-.difficulty-badge[data-difficulty="easier"] {
-  background: rgba(76, 175, 80, 0.9);  /* Green */
-  color: white;
+.difficulty-badge.beginner {
+  background: #d1fae5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
-.difficulty-badge[data-difficulty="harder"] {
-  background: rgba(255, 152, 0, 0.9);  /* Orange */
-  color: white;
+.difficulty-badge.intermediate {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
 }
 
-.difficulty-badge[data-difficulty="normal"] {
-  background: rgba(255, 255, 255, 0.95);  /* Default */
-  color: var(--french-blue);
+.difficulty-badge.advanced {
+  background: #fed7aa;
+  color: #c2410c;
+  border: 1px solid #fdba74;
 }
 ```
 
-### **4. XP Reward Badge (New Element)**
+## Modern Card State Examples
+
+### **State 1: Beginner Lesson (Not Started)**
+```
+┌─────────────────────────────────────────┐
+│ [Beginner]                    ○○○○○ 0% │
+│                                         │
+│ 👋                                      │
+│ French Greetings                        │
+│ Master common French greetings          │
+│                                         │
+│                                         │
+│ ⏱️ 15min                    ⭐ 50 XP   │
+└─────────────────────────────────────────┘
+```
+
+### **State 2: Intermediate Lesson (In Progress)**  
+```
+┌─────────────────────────────────────────┐
+│ [Intermediate]            ●●●○○ 75%     │
+│                                         │
+│ 📅                                      │
+│ Past Tense Mastery                      │
+│ Learn passé composé usage               │
+│                                         │
+│                                         │
+│ ⏱️ 25min                    ⭐ 75 XP   │
+└─────────────────────────────────────────┘
+```
+
+### **State 3: Advanced Lesson (Challenge)**
+```
+┌─────────────────────────────────────────┐
+│ [Advanced]                ○○○○○ 0%     │
+│                                         │
+│ 🤔                                      │
+│ Subjunctive Practice                    │
+│ Master advanced grammar                 │
+│                                         │
+│                                         │
+│ ⏱️ 30min                   ⭐ 100 XP   │
+└─────────────────────────────────────────┘
+```
+
+### **State 4: Completed Lesson**
+```
+┌─────────────────────────────────────────┐
+│ [✅ Complete]            ●●●●● 100%    │
+│                                         │
+│ 💬                                      │
+│ Conversation Practice                   │
+│ Real-world scenarios                    │
+│                                         │
+│                                         │
+│ ⏱️ 20min                    ⭐ 60 XP   │
+└─────────────────────────────────────────┘
+```
+
+## Modern Typography and Content Layout
+
+### **Typography System**
 ```css
-.xp-reward-badge {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background: linear-gradient(45deg, var(--french-blue), var(--french-purple));
-  color: white;
-  border-radius: var(--border-radius-small);
-  padding: 4px 8px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+.lesson-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.lesson-description {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #6b7280;
+  line-height: 1.4;
+  margin: 0 0 16px 0;
+  flex-grow: 1;
+}
+
+.lesson-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.time-estimate {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.xp-reward-badge::before {
-  content: "⭐";
-  font-size: 0.875rem;
+.xp-reward {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #3b82f6;
 }
 ```
 
-### **5. Recommendation Reason Overlay (New Element)**
+### **Interactive Hover Effects**
 ```css
-.recommendation-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, 
-    rgba(0, 0, 0, 0.8) 0%, 
-    rgba(0, 0, 0, 0.4) 50%, 
-    transparent 100%);
-  color: white;
-  padding: 16px 12px 36px 12px;  /* Space for XP badge */
-  font-size: 0.75rem;
-  line-height: 1.3;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
+.modern-lesson-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
-.quick-action-card:hover .recommendation-overlay {
-  opacity: 1;
-}
-```
-
-## Component States Visual Examples
-
-### **State 1: Not Started Lesson**
-```
-┌─────────────────────────────────────────────┐
-│ [📚 Normal]                      [○○○○○] 0% │
-│                                             │
-│           👋                               │
-│     French Greetings                       │
-│                                             │
-│   Master common French greetings           │
-│                                             │
-│                               [⭐ 50 XP]   │
-│ [Perfect for your A1 level────────────────] │
-└─────────────────────────────────────────────┘
-```
-
-### **State 2: In Progress Lesson**  
-```
-┌─────────────────────────────────────────────┐
-│ [📊 Normal]                    [●●●○○] 75% │
-│                                             │
-│           👋                               │
-│     French Greetings                       │
-│                                             │
-│   Master common French greetings           │
-│                                             │
-│                               [⭐ 50 XP]   │
-│ [Continue your progress───────────────────] │
-└─────────────────────────────────────────────┘
-```
-
-### **State 3: Completed Lesson**
-```
-┌─────────────────────────────────────────────┐
-│ [✅ Review]                  [●●●●●] 100% │
-│                                             │
-│           👋                               │
-│     French Greetings                       │
-│                                             │
-│   Master common French greetings           │
-│                                             │
-│                               [⭐ 50 XP]   │
-│ [Great job! Try the next lesson──────────] │
-└─────────────────────────────────────────────┘
-```
-
-### **State 4: Challenge Lesson**
-```
-┌─────────────────────────────────────────────┐
-│ [🔥 Challenge]                 [○○○○○] 0% │
-│                                             │
-│           🤔                               │
-│    Subjunctive Practice                     │
-│                                             │
-│   Master the French subjunctive mood       │
-│                                             │
-│                              [⭐ 100 XP]   │
-│ [Ready for this challenge?────────────────] │
-└─────────────────────────────────────────────┘
-```
-
-## Enhanced Hover Effects
-
-### **Base Hover (Existing + Enhanced)**
-```css
-.quick-action-card:hover {
-  /* Existing hover maintained */
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-medium);
-}
-
-/* New lesson card hover enhancements */
-.quick-action-card[data-render-mode="lesson-card"]:hover {
-  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
-}
-
-.quick-action-card:hover .progress-ring-container {
-  transform: scale(1.1);
-  transition: transform var(--transition-fast);
-}
-
-.quick-action-card:hover .difficulty-badge {
+.modern-lesson-card:hover .progress-indicator {
   transform: scale(1.05);
-  transition: transform var(--transition-fast);
+  transition: transform 0.2s ease-in-out;
+}
+
+.modern-lesson-card:hover .difficulty-badge {
+  transform: scale(1.02);
+  transition: transform 0.2s ease-in-out;
 }
 ```
 
-## Progress Ring Implementation
+## Modern Progress Ring Implementation
 
-### **SVG Structure**
+### **Clean Progress Circle**
 ```typescript
-const ProgressRing: React.FC<{ progress: number; completed: boolean }> = ({ 
+const ModernProgressRing: React.FC<{ progress: number; completed: boolean }> = ({ 
   progress, 
   completed 
 }) => {
-  const radius = 24;
+  const radius = 20;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="progress-ring-container">
-      <svg className="progress-ring" width="48" height="48">
-        {/* Background circle */}
+    <div className="progress-indicator">
+      <svg className="progress-circle" width="48" height="48">
+        {/* Background track */}
         <circle
-          className="progress-background"
-          stroke="rgba(255, 255, 255, 0.3)"
+          className="progress-track"
+          stroke="#f3f4f6"
           strokeWidth="3"
           fill="none"
           r={radius}
           cx="24"
           cy="24"
         />
-        {/* Progress circle */}
+        {/* Progress bar */}
         <circle
-          className="progress-foreground"
-          stroke={completed ? "#4caf50" : "var(--french-blue)"}
+          className={`progress-bar ${completed ? 'completed' : ''}`}
+          stroke={completed ? "#10b981" : "#3b82f6"}
           strokeWidth="3"
           fill="none"
           r={radius}
@@ -292,140 +304,144 @@ const ProgressRing: React.FC<{ progress: number; completed: boolean }> = ({
           style={{
             strokeDasharray: circumference,
             strokeDashoffset: strokeDashoffset,
-            transition: 'stroke-dashoffset 1.5s ease-in-out'
+            transition: 'stroke-dashoffset 1s ease-in-out'
           }}
         />
-        {/* Center text */}
-        <text
-          x="24"
-          y="24"
-          textAnchor="middle"
-          dy="0.35em"
-          fontSize="10"
-          fill="white"
-          fontWeight="600"
-        >
-          {progress}%
-        </text>
       </svg>
+      {/* Progress text */}
+      <span className="progress-text">
+        {progress}%
+      </span>
     </div>
   );
 };
 ```
 
-## AI Personalization Integration
+## Modern Difficulty Badge System
 
-### **Difficulty Adjustment Badges**
+### **Clean Difficulty Indicators**
 ```typescript
-const DifficultyBadge: React.FC<{ adjustment: string }> = ({ adjustment }) => {
-  const getBadgeConfig = (adj: string) => {
-    switch (adj) {
-      case 'easier':
-        return { icon: '📉', label: 'Review', color: 'success' };
-      case 'harder': 
-        return { icon: '🔥', label: 'Challenge', color: 'warning' };
-      case 'normal':
+const ModernDifficultyBadge: React.FC<{ difficulty: string }> = ({ difficulty }) => {
+  const getBadgeConfig = (level: string) => {
+    switch (level) {
+      case 'beginner':
+        return { label: 'Beginner', className: 'beginner' };
+      case 'intermediate':
+        return { label: 'Intermediate', className: 'intermediate' };
+      case 'advanced':
+        return { label: 'Advanced', className: 'advanced' };
       default:
-        return { icon: '📊', label: 'Normal', color: 'primary' };
+        return { label: 'Beginner', className: 'beginner' };
     }
   };
 
-  const config = getBadgeConfig(adjustment);
+  const config = getBadgeConfig(difficulty);
   
   return (
-    <div className={`difficulty-badge difficulty-${config.color}`}>
-      <span>{config.icon}</span>
+    <div className={`difficulty-badge ${config.className}`}>
       <span>{config.label}</span>
     </div>
   );
 };
 ```
 
-### **Recommendation Reasons**
+### **Completion Status Badge**
 ```typescript
-const recommendationMessages = {
-  perfect_level: "Perfect for your A1 level",
-  review_needed: "Review to strengthen weak areas", 
-  challenge_ready: "Ready for this challenge?",
-  skill_building: "Boost your speaking confidence",
-  grammar_focus: "Strengthen your grammar skills",
-  vocab_expansion: "Expand your vocabulary"
+const CompletionBadge: React.FC<{ status: string; progress: number }> = ({ 
+  status, 
+  progress 
+}) => {
+  if (status === 'completed') {
+    return (
+      <div className="difficulty-badge beginner">
+        <span>✅ Complete</span>
+      </div>
+    );
+  }
+  
+  if (status === 'in_progress' && progress > 0) {
+    return (
+      <div className="difficulty-badge intermediate">
+        <span>📊 In Progress</span>
+      </div>
+    );
+  }
+  
+  return null;
 };
 ```
 
-## Component Integration Strategy
+## Modern Component Implementation
 
-### **Enhanced QuickActionCard Implementation**
+### **Complete Modern Lesson Card**
 ```typescript
-export const QuickActionCard = React.memo<EnhancedQuickActionCardProps>((props) => {
+export const ModernLessonCard = React.memo<ModernLessonCardProps>((props) => {
   const {
-    // Existing props (maintained 100%)
-    icon, title, description, onClick, disabled,
-    // New lesson card props
-    renderMode = 'quick-action',
+    icon,
+    title,
+    description,
+    difficulty = 'beginner',
     progress = 0,
-    aiPersonalization,
     completionStatus = 'not_started',
-    xpReward,
-    showProgressRing = true,
-    ...existingProps
+    estimatedTime = 15,
+    xpReward = 50,
+    onClick,
+    disabled = false,
+    ...rest
   } = props;
 
-  // Existing component logic maintained (95% reuse)
   const handleClick = useCallback(() => {
     if (!disabled && onClick) onClick();
   }, [disabled, onClick]);
 
-  const isLessonCard = renderMode === 'lesson-card';
+  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleClick();
+    }
+  }, [handleClick]);
+
   const isCompleted = completionStatus === 'completed';
 
   return (
-    <Card
-      className={`quick-action-card ${isLessonCard ? 'lesson-card-mode' : ''}`}
-      data-render-mode={renderMode}
+    <div
+      className="modern-lesson-card"
       onClick={handleClick}
-      // ... existing props
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`${title} lesson, ${progress}% complete, ${estimatedTime} minutes, ${xpReward} XP`}
+      {...rest}
     >
-      {/* Existing CardContent maintained */}
-      <CardContent>
-        {/* AI Personalization Badge (NEW) */}
-        {isLessonCard && aiPersonalization && (
-          <DifficultyBadge adjustment={aiPersonalization.difficultyAdjustment} />
-        )}
-        
-        {/* Progress Ring (NEW) */}
-        {isLessonCard && showProgressRing && (
-          <ProgressRing progress={progress} completed={isCompleted} />
-        )}
+      {/* Card Header */}
+      <div className="card-header">
+        <div>
+          <span className="lesson-icon">{icon}</span>
+          {completionStatus === 'completed' ? (
+            <CompletionBadge status={completionStatus} progress={progress} />
+          ) : (
+            <ModernDifficultyBadge difficulty={difficulty} />
+          )}
+        </div>
+        <ModernProgressRing progress={progress} completed={isCompleted} />
+      </div>
 
-        {/* Existing Icon, Title, Description (MAINTAINED) */}
-        <Typography variant="h3" sx={{ fontSize: '2rem', mb: 1 }}>
-          {icon}
-        </Typography>
-        
-        <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 0.5 }}>
-          {title}
-        </Typography>
-        
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
+      {/* Card Content */}
+      <h3 className="lesson-title">{title}</h3>
+      <p className="lesson-description">{description}</p>
 
-        {/* XP Reward Badge (NEW) */}
-        {isLessonCard && xpReward && (
-          <div className="xp-reward-badge">
-            {xpReward} XP
-          </div>
-        )}
-
-        {/* Recommendation Overlay (NEW) */}
-        {isLessonCard && aiPersonalization && (
-          <div className="recommendation-overlay">
-            {aiPersonalization.recommendationReason}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      {/* Card Footer */}
+      <div className="lesson-meta">
+        <div className="time-estimate">
+          <span>⏱️</span>
+          <span>{estimatedTime}min</span>
+        </div>
+        <div className="xp-reward">
+          <span>⭐</span>
+          <span>{xpReward} XP</span>
+        </div>
+      </div>
+    </div>
   );
 });
 ```

@@ -1,237 +1,280 @@
-# Gamification Sidebar Design Mockup
+# Modern Gamification Sidebar Design Mockup
 
 ## Overview
-Minimal 50-line enhancement to existing `AIDashboardLayout.tsx` adding a compact gamification sidebar for desktop users, containing daily goals, leaderboard, and user stats while maintaining the clean, unobtrusive design philosophy.
+Clean, modern sidebar design for desktop users that enhances the learning experience with daily goals, leaderboards, and user stats using a professional white card-based design that aligns with contemporary language learning applications.
 
-## Integration Strategy
+## Design Philosophy
 
-### **Layout Enhancement (Not Replacement)**
+### **Modern Clean Card Approach**
+- Clean white backgrounds with subtle shadows
+- Professional spacing and typography
+- Color-coded progress indicators
+- Minimalist, distraction-free interface
+- Consistent with modern web applications
+
+### **Integration Strategy**
 ```typescript
-// EXTEND existing AIDashboardLayout, don't replace
-interface AIDashboardLayoutProps {
-  // Existing props maintained 100%
-  children: ReactNode;
-  showOfflineBanner?: boolean;
-  sx?: object;
-  // New optional props
-  showGamificationSidebar?: boolean;     // NEW
-  gamificationData?: GamificationData;   // NEW
+interface ModernAIDashboardLayoutProps extends AIDashboardLayoutProps {
+  showGamificationSidebar?: boolean;
+  gamificationData?: GamificationData;
 }
 ```
 
-### **Responsive Display Logic**
+### **Responsive Display Strategy**
 ```css
-.gamification-sidebar {
-  /* Only show on desktop/large tablet */
-  display: block;
+.modern-gamification-sidebar {
   width: 280px;
   flex-shrink: 0;
+  display: block;
 }
 
 @media (max-width: 1024px) {
-  .gamification-sidebar {
-    display: none; /* Hidden on tablet/mobile */
+  .modern-gamification-sidebar {
+    display: none; /* Hidden on tablet/mobile for clean mobile experience */
   }
 }
 ```
 
 ## Visual Design Specification
 
-### **1. Sidebar Container**
+### **1. Clean Sidebar Container**
 ```css
-.gamification-sidebar {
+.modern-gamification-sidebar {
   width: 280px;
-  padding: 16px;
-  margin-left: 16px;
-  background: var(--glass-bg);           /* Existing design token */
-  backdrop-filter: var(--backdrop-blur); /* Existing glassmorphism */
-  border-radius: var(--border-radius-medium); /* Existing */
-  box-shadow: var(--shadow-light);      /* Existing */
+  padding: 0;
+  margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   position: sticky;
-  top: 16px;
-  max-height: calc(100vh - 32px);
+  top: 24px;
+  max-height: calc(100vh - 48px);
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--french-blue) transparent;
+  scrollbar-color: #e5e7eb transparent;
 }
 
-.gamification-sidebar::-webkit-scrollbar {
+.modern-gamification-sidebar::-webkit-scrollbar {
   width: 4px;
 }
 
-.gamification-sidebar::-webkit-scrollbar-thumb {
-  background: var(--french-blue);
+.modern-gamification-sidebar::-webkit-scrollbar-thumb {
+  background: #e5e7eb;
   border-radius: 2px;
 }
 ```
 
-### **2. Panel Section Base Style**
+### **2. Modern Panel Base Style**
 ```css
-.gamification-panel {
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: var(--border-radius-small);
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.modern-sidebar-panel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  transition: box-shadow 0.2s ease-in-out;
 }
 
-.gamification-panel:last-child {
-  margin-bottom: 0;
+.modern-sidebar-panel:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .panel-header {
-  font-size: 0.875rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 16px;
   font-weight: 600;
-  color: var(--french-blue);
-  margin-bottom: 12px;
+  color: #111827;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.panel-header::before {
-  content: attr(data-icon);
-  font-size: 1rem;
+.panel-header-icon {
+  font-size: 18px;
 }
 ```
 
-## Component Layout Structure
+## Modern Sidebar Layout Structure
 
-### **Complete Sidebar Layout**
+### **Clean Desktop Sidebar (280px)**
 ```
-┌────── Desktop Sidebar (280px) ──────┐
+┌────── Modern Sidebar ───────────────┐
 │                                     │
 │ ┌─── 🎯 Daily Goals ─────────────┐ │
-│ │ XP: [████████░░] 150/200       │ │
-│ │ Lessons: [██████░░] 2/3         │ │
-│ │ Time: [█████████░] 45/60min    │ │
-│ │                                │ │
-│ │ ⭐ Complete 1 more lesson!     │ │
-│ └────────────────────────────────┘ │
+│ │                               │ │
+│ │ XP: [██████████] 150/200      │ │
+│ │ Lessons: [████████░░] 2/3     │ │
+│ │ Time: [███████░░░] 45/60min   │ │
+│ │                               │ │
+│ │ 🌟 Complete 1 more lesson!    │ │
+│ └───────────────────────────────┘ │
 │                                     │
-│ ┌─── 🏆 Leaderboard ─────────────┐ │
-│ │ 🥇 Marie L.     420 XP    👥  │ │
-│ │ 🥈 Thomas K.    380 XP         │ │  
-│ │ 🥉 You          350 XP         │ │
-│ │ 4. Sophie M.    320 XP    👥  │ │
-│ │ 5. Alex R.      290 XP         │ │
-│ │                                │ │
-│ │ [View Full Leaderboard]        │ │
-│ └────────────────────────────────┘ │
+│ ┌─── 🏆 Weekly Leaderboard ───────┐ │
+│ │                               │ │
+│ │ 🥇 Marie L.      420 XP       │ │
+│ │ 🥈 Thomas K.     380 XP       │ │
+│ │ 🥉 You           350 XP       │ │
+│ │ 4. Sophie M.     320 XP   👥  │ │
+│ │ 5. Alex R.       290 XP       │ │
+│ │                               │ │
+│ │ [View All →]                  │ │
+│ └───────────────────────────────┘ │
 │                                     │
-│ ┌─── 📊 Your Stats ──────────────┐ │
-│ │ Total XP: 2,847                │ │
-│ │ Current Streak: 7 days 🔥      │ │
-│ │ Rank: Intermediate             │ │
-│ │ Weekly Rank: #3                │ │
-│ │                                │ │
-│ │ 🏆 Recent Badges:              │ │
-│ │ [🔥7] [📚] [🎯] [💬]           │ │
-│ └────────────────────────────────┘ │
+│ ┌─── 📊 Quick Actions ──────────── │ │
+│ │                               │ │
+│ │ [🎧 Practice Listening]       │ │
+│ │ [💬 Start Conversation]       │ │
+│ │ [📖 Review Vocab]             │ │
+│ │ [🎯 Take Quiz]                │ │
+│ │                               │ │
+│ └───────────────────────────────┘ │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
 ## Daily Goals Panel Design
 
-### **Progress Bar Component**
+### **Modern Progress Bar Component**
 ```css
-.progress-bar-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  font-size: 0.75rem;
+.modern-progress-container {
+  margin-bottom: 12px;
 }
 
 .progress-label {
-  min-width: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--french-blue);
+  color: #374151;
 }
 
-.progress-bar {
-  flex: 1;
-  height: 6px;
-  background: rgba(102, 126, 234, 0.2);
-  border-radius: 3px;
-  margin: 0 8px;
+.progress-label-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.progress-label-right {
+  font-weight: 600;
+  color: #111827;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background: #f3f4f6;
+  border-radius: 4px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--french-blue), var(--french-purple));
-  border-radius: 3px;
+  border-radius: 4px;
   transition: width 1s ease-out;
 }
 
-.progress-value {
-  min-width: 50px;
-  text-align: right;
-  font-weight: 600;
-  color: #333;
+.progress-fill.xp {
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+}
+
+.progress-fill.lessons {
+  background: linear-gradient(90deg, #10b981, #047857);
+}
+
+.progress-fill.time {
+  background: linear-gradient(90deg, #f59e0b, #d97706);
 }
 ```
 
-### **Daily Goals Implementation**
+### **Modern Daily Goals Implementation**
 ```typescript
-const DailyGoalsPanel: React.FC<{ dailyGoals: DailyGoal }> = ({ dailyGoals }) => {
+const ModernDailyGoalsPanel: React.FC<{ dailyGoals: DailyGoal }> = ({ dailyGoals }) => {
   const xpProgress = (dailyGoals.currentXp / dailyGoals.targetXp) * 100;
   const lessonsProgress = (dailyGoals.currentLessons / dailyGoals.targetLessons) * 100;
   const timeProgress = (dailyGoals.currentMinutes / dailyGoals.targetMinutes) * 100;
 
   return (
-    <div className="gamification-panel">
-      <div className="panel-header" data-icon="🎯">
-        Daily Goals
+    <div className="modern-sidebar-panel">
+      <div className="panel-header">
+        <span className="panel-header-icon">🎯</span>
+        <span>Daily Goals</span>
       </div>
       
       {/* XP Progress */}
-      <div className="progress-bar-container">
-        <span className="progress-label">XP:</span>
-        <div className="progress-bar">
+      <div className="modern-progress-container">
+        <div className="progress-label">
+          <div className="progress-label-left">
+            <span>⭐</span>
+            <span>XP</span>
+          </div>
+          <span className="progress-label-right">
+            {dailyGoals.currentXp}/{dailyGoals.targetXp}
+          </span>
+        </div>
+        <div className="progress-track">
           <div 
-            className="progress-fill" 
+            className="progress-fill xp" 
             style={{ width: `${Math.min(xpProgress, 100)}%` }}
           />
         </div>
-        <span className="progress-value">
-          {dailyGoals.currentXp}/{dailyGoals.targetXp}
-        </span>
       </div>
 
       {/* Lessons Progress */}
-      <div className="progress-bar-container">
-        <span className="progress-label">Lessons:</span>
-        <div className="progress-bar">
+      <div className="modern-progress-container">
+        <div className="progress-label">
+          <div className="progress-label-left">
+            <span>📚</span>
+            <span>Lessons</span>
+          </div>
+          <span className="progress-label-right">
+            {dailyGoals.currentLessons}/{dailyGoals.targetLessons}
+          </span>
+        </div>
+        <div className="progress-track">
           <div 
-            className="progress-fill" 
+            className="progress-fill lessons" 
             style={{ width: `${Math.min(lessonsProgress, 100)}%` }}
           />
         </div>
-        <span className="progress-value">
-          {dailyGoals.currentLessons}/{dailyGoals.targetLessons}
-        </span>
       </div>
 
       {/* Time Progress */}
-      <div className="progress-bar-container">
-        <span className="progress-label">Time:</span>
-        <div className="progress-bar">
+      <div className="modern-progress-container">
+        <div className="progress-label">
+          <div className="progress-label-left">
+            <span>⏱️</span>
+            <span>Time</span>
+          </div>
+          <span className="progress-label-right">
+            {dailyGoals.currentMinutes}/{dailyGoals.targetMinutes}min
+          </span>
+        </div>
+        <div className="progress-track">
           <div 
-            className="progress-fill" 
+            className="progress-fill time" 
             style={{ width: `${Math.min(timeProgress, 100)}%` }}
           />
         </div>
-        <span className="progress-value">
-          {dailyGoals.currentMinutes}/{dailyGoals.targetMinutes}min
-        </span>
       </div>
 
       {/* Motivational Message */}
-      <div className="motivation-message">
-        {getMotivationMessage(dailyGoals)}
-      </div>
+      {dailyGoals.currentLessons < dailyGoals.targetLessons && (
+        <div className="motivation-message" style={{
+          marginTop: '16px',
+          padding: '12px',
+          background: '#fef3c7',
+          border: '1px solid #f59e0b',
+          borderRadius: '8px',
+          fontSize: '14px',
+          fontWeight: '500',
+          color: '#92400e'
+        }}>
+          🌟 Complete {dailyGoals.targetLessons - dailyGoals.currentLessons} more lesson{dailyGoals.targetLessons - dailyGoals.currentLessons === 1 ? '' : 's'}!
+        </div>
+      )}
     </div>
   );
 };

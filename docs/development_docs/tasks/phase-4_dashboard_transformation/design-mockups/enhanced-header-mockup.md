@@ -1,187 +1,166 @@
-# Enhanced Header with Gamification Design Mockup
+# Enhanced Header with Modern Gamification Design Mockup
 
 ## Overview
-Minimal 30-line enhancement to existing `AIEnhancedHeader` component, adding gamification overlays while maintaining the beautiful existing gradient design and all current functionality.
+Modern, clean header design that transforms the dashboard with professional gamification elements, featuring clean white cards, modern typography, and subtle accent colors that align with contemporary language learning applications.
 
-## Enhancement Strategy
+## Design Philosophy
 
-### **Overlay Approach (Not Replacement)**
+### **Modern Card-Based Approach**
+- Clean white background with subtle shadows
+- Professional typography using system font stack
+- Color-coded elements with semantic meaning
+- Minimal, distraction-free interface
+- Consistent with modern language learning apps
+
+### **Component Enhancement Strategy**
 ```typescript
-// EXTEND existing AIEnhancedHeader, don't replace
-interface AIEnhancedHeaderProps {
-  // Existing props maintained 100%
+interface ModernAIEnhancedHeaderProps {
   userName?: string;
   progressPercentage?: number;
   currentStreak?: number;
+  dailyGoals?: DailyGoal;
+  userStats?: UserStats;
   sx?: object;
-  // New optional props
-  dailyGoals?: DailyGoal;                // NEW
-  showGamificationBadges?: boolean;      // NEW
-  userStats?: Pick<UserStats, 'totalXp' | 'weeklyRank'>; // NEW
 }
 ```
 
-## Visual Design Enhancement
+## Visual Design Specification
 
-### **1. Base Header (Existing - 100% Maintained)**
+### **1. Clean Header Container**
 ```css
-/* Existing beautiful gradient header - NO CHANGES */
-.ai-enhanced-header {
-  background: var(--gradient-primary);  /* Maintained */
-  color: white;                         /* Maintained */
-  padding: 24px;                       /* Maintained */
-  border-radius: var(--border-radius-large); /* Maintained */
-  position: relative;                   /* Maintained */
-  overflow: hidden;                     /* Maintained */
+.modern-header {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
 }
 
-/* Existing gradient overlay - NO CHANGES */
-.ai-enhanced-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-  pointer-events: none;
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.header-left {
+  flex: 1;
+  min-width: 280px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 ```
 
-### **2. New Gamification Overlays**
+### **2. Modern Typography System**
 ```css
-/* Daily Goals Badge - Top Left Overlay */
-.daily-goals-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--border-radius-small);
-  padding: 6px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: all var(--transition-fast);
-}
-
-.daily-goals-badge:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-}
-
-/* Enhanced Streak Counter - Top Right */
-.streak-counter {
-  position: absolute;
-  top: 16px;
-  right: 80px; /* Adjusted to not overlap existing progress ring */
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--border-radius-small);
-  padding: 6px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: all var(--transition-fast);
-}
-
-.streak-counter:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-}
-
-/* Weekly Rank Badge - Bottom Left */
-.weekly-rank-badge {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-  z-index: 2;
-  background: linear-gradient(45deg, rgba(255, 215, 0, 0.9), rgba(255, 193, 7, 0.9));
-  color: #333;
-  border-radius: var(--border-radius-small);
-  padding: 4px 8px;
-  font-size: 0.75rem;
+.header-greeting {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 28px;
   font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.4;
+}
+```
+
+### **3. Gamification Stats Bar**
+```css
+.stats-bar {
   display: flex;
   align-items: center;
-  gap: 4px;
-  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
-  transition: all var(--transition-fast);
+  gap: 12px;
+  margin-top: 16px;
 }
 
-.weekly-rank-badge:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.stat-item.streak {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.stat-item.rank {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  color: #1e40af;
 }
 ```
 
-## Enhanced Header States
+## Header Layout Examples
 
-### **State 1: Default User (No Streak)**
+### **State 1: New User**
 ```
-┌─────────────────────────────────────────────────────┐
-│ [🎯 1/3 lessons]                                    │
-│                                                     │
-│  Bonjour! 🇫🇷                                       │
-│  Ready for your French lesson today?               │
-│                                                     │
-│                                       [75% XP Ring] │
-│ [🏆 Rank #5]                                       │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│  Bonjour! 🇫🇷                          [Progress Ring]   │
+│  Ready for your French lesson today?                    │
+│                                                          │
+│  [📚 0/3 lessons] [⭐ 0/200 XP] [🎯 Start journey]      │
+└──────────────────────────────────────────────────────────┘
 ```
 
-### **State 2: Active Streak User**
+### **State 2: Active Learner** 
 ```
-┌─────────────────────────────────────────────────────┐
-│ [🎯 2/3 lessons]                    [🔥 7 day streak]│
-│                                                     │
-│  Bonjour! 🇫🇷                                       │
-│  7 day streak! Ready for your French lesson today? │
-│                                                     │
-│                                       [85% XP Ring] │
-│ [🏆 Rank #3]                                       │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│  Bonjour Sarah! 🇫🇷                    [Progress Ring]   │
+│  You're doing great! Keep it up today.                  │
+│                                                          │
+│  [📚 2/3 lessons] [⭐ 150/200 XP] [🔥 7 day streak]     │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ### **State 3: High Achiever**
 ```
-┌─────────────────────────────────────────────────────┐
-│ [🎯 3/3 lessons ✓]                [🔥 14 day streak]│
-│                                                     │
-│  Bonjour! 🇫🇷                                       │
-│  Amazing streak! You're on fire today!             │
-│                                                     │
-│                                      [100% XP Ring] │
-│ [🏆 Rank #1]                                       │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│  Bonjour Marie! 🇫🇷                    [Progress Ring]   │
+│  Amazing! You've completed today's goals!               │
+│                                                          │
+│  [✅ 3/3 lessons] [⭐ 200/200 XP] [🏆 Rank #1]         │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ## Component Implementation
 
-### **Enhanced Header Component (+30 lines)**
+### **Modern Header Component**
 ```typescript
-export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo((props) => {
+export const ModernAIEnhancedHeader: React.FC<ModernAIEnhancedHeaderProps> = React.memo((props) => {
   const {
     userName,
     progressPercentage = 75,
     currentStreak = 0,
-    // New props
     dailyGoals,
-    showGamificationBadges = true,
     userStats,
     sx
   } = props;
 
-  // Existing greeting logic - NO CHANGES
-  const getGreetingMessage = (): string => {
+  const getGreeting = (): string => {
     const hour = new Date().getHours();
     let timeGreeting: string;
     
@@ -190,91 +169,116 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo((pro
     else timeGreeting = 'Good evening';
     
     if (userName) {
-      return `${timeGreeting}, ${userName}!`;
+      return `Bonjour ${userName}! 🇫🇷`;
     }
-    return timeGreeting + '!';
+    return 'Bonjour! 🇫🇷';
   };
 
-  // Enhanced subtitle with gamification context
   const getSubtitle = (): string => {
     if (dailyGoals?.completed) {
-      return "🎉 Daily goals completed! Ready for bonus practice?";
+      return "Amazing! You've completed today's goals!";
     }
     
     if (currentStreak >= 7) {
-      return `${currentStreak} day streak! You're on fire today!`;
+      return "You're doing great! Keep it up today.";
     } else if (currentStreak > 0) {
-      return `${currentStreak} day streak! Ready for your French lesson today?`;
+      return "You're making excellent progress!";
     }
     
-    if (progressPercentage >= 80) {
-      return "You're making excellent progress! Ready for an advanced lesson?";
-    } else if (progressPercentage >= 50) {
-      return "Great progress! Ready to continue your French journey?";
-    } else {
-      return "Ready for your French lesson today?";
-    }
+    return "Ready for your French lesson today?";
   };
 
   return (
-    <AIComponentErrorBoundary componentName="AIEnhancedHeader">
-      <Box
-        className="glass-card ai-enhanced-header"
-        sx={{
-          /* All existing styles maintained */
-          background: 'var(--gradient-primary)',
-          color: 'white',
-          p: 3,
-          borderRadius: 'var(--border-radius-large)',
-          position: 'relative',
-          overflow: 'hidden',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-            pointerEvents: 'none'
-          },
-          ...sx
-        }}
-      >
-        {/* NEW: Daily Goals Badge */}
-        {showGamificationBadges && dailyGoals && (
-          <DailyGoalsBadge dailyGoals={dailyGoals} />
-        )}
-
-        {/* ENHANCED: Streak Counter */}
-        {showGamificationBadges && currentStreak > 0 && (
-          <StreakCounter streak={currentStreak} />
-        )}
-
-        {/* Existing Main Content - NO CHANGES */}
-        <Box sx={{ position: 'relative', zIndex: 1 }}>
-          <h1 id="dashboard-greeting" style={{ margin: 0, marginBottom: 8 }}>
-            <Box component="span" sx={{ fontSize: { xs: '1.75rem', sm: '2.125rem' } }}>
-              Bonjour! 🇫🇷
-            </Box>
-          </h1>
+    <Box
+      className="modern-header"
+      sx={{
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+        p: 3,
+        mb: 3,
+        position: 'relative',
+        ...sx
+      }}
+    >
+      <Box className="header-content">
+        <Box className="header-left">
+          <Typography
+            className="header-greeting"
+            variant="h1"
+            sx={{
+              fontSize: { xs: '24px', sm: '28px' },
+              fontWeight: 700,
+              color: '#111827',
+              mb: 1,
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}
+          >
+            {getGreeting()}
+          </Typography>
           
-          <Box sx={{ fontSize: { xs: '0.875rem', sm: '1rem' }, opacity: 0.9 }}>
+          <Typography
+            className="header-subtitle"
+            sx={{
+              fontSize: '16px',
+              fontWeight: 400,
+              color: '#6b7280',
+              mb: 2,
+              fontFamily: 'system-ui, -apple-system, sans-serif'
+            }}
+          >
             {getSubtitle()}
+          </Typography>
+
+          <Box className="stats-bar">
+            <Box className="stat-item">
+              <span>📚</span>
+              <span>
+                {dailyGoals?.completed ? '✅' : dailyGoals?.currentLessons || 0}/
+                {dailyGoals?.targetLessons || 3} lessons
+              </span>
+            </Box>
+            
+            <Box className="stat-item">
+              <span>⭐</span>
+              <span>
+                {dailyGoals?.currentXp || 0}/{dailyGoals?.targetXp || 200} XP
+              </span>
+            </Box>
+            
+            {currentStreak > 0 && (
+              <Box className="stat-item streak">
+                <span>🔥</span>
+                <span>{currentStreak} day streak</span>
+              </Box>
+            )}
+            
+            {userStats?.weeklyRank && (
+              <Box className="stat-item rank">
+                <span>🏆</span>
+                <span>Rank #{userStats.weeklyRank}</span>
+              </Box>
+            )}
           </Box>
         </Box>
-        
-        {/* Existing Progress Ring - NO CHANGES */}
-        <Box sx={{ position: 'absolute', right: { xs: 16, sm: 20 }, top: '50%' }}>
-          {progressPercentage}%
-        </Box>
 
-        {/* NEW: Weekly Rank Badge */}
-        {showGamificationBadges && userStats?.weeklyRank && (
-          <WeeklyRankBadge rank={userStats.weeklyRank} />
-        )}
+        <Box className="header-right">
+          <CircularProgress 
+            variant="determinate" 
+            value={progressPercentage}
+            size={64}
+            thickness={4}
+            sx={{
+              color: '#3b82f6',
+              '& .MuiCircularProgress-circle': {
+                strokeLinecap: 'round',
+              }
+            }}
+          />
+        </Box>
       </Box>
-    </AIComponentErrorBoundary>
+    </Box>
   );
 });
 ```

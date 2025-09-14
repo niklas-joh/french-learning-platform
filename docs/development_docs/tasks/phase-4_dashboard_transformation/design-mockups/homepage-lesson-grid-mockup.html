@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>French Learning Dashboard - Modern Design</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Welcome Header */
+        .welcome-header {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.125rem;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        .progress-circle-container {
+            position: absolute;
+            top: 2.5rem;
+            right: 2.5rem;
+            width: 80px;
+            height: 80px;
+        }
+
+        .progress-circle {
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-percent {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #3b82f6;
+            line-height: 1;
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        /* Lessons Section */
+        .lessons-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 2rem;
+        }
+
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Lesson Cards */
+        .lesson-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .lesson-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transform: translateY(-2px);
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-duration {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .lesson-difficulty {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .lesson-difficulty.beginner {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+
+        .lesson-difficulty.intermediate {
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+        }
+
+        .lesson-difficulty.advanced {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .lesson-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-description {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .lesson-progress {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-label-text {
+            font-size: 0.875rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .progress-percentage {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+
+        .lesson-action {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .continue-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .continue-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .sidebar-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        /* Daily Goal */
+        .goal-progress {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .goal-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #3b82f6;
+            line-height: 1;
+        }
+
+        .goal-description {
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quick-action-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .quick-action-btn:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+
+        .quick-action-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: #1e293b;
+        }
+
+        .quick-action-desc {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Leaderboard */
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-rank {
+            width: 24px;
+            height: 24px;
+            background: #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-right: 0.75rem;
+        }
+
+        .leaderboard-rank.top-3 {
+            background: #fbbf24;
+            color: white;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-name {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .leaderboard-xp {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .leaderboard-item.current-user {
+            background: rgba(59, 130, 246, 0.05);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            z-index: 1000;
+        }
+
+        .demo-title {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .demo-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .demo-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .sidebar-cards-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-circle-container {
+                width: 60px;
+                height: 60px;
+            }
+
+            .progress-circle {
+                width: 60px;
+                height: 60px;
+            }
+
+            .welcome-header, .lessons-section {
+                padding: 1.5rem;
+            }
+
+            .demo-controls {
+                position: static;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-controls">
+        <div class="demo-title">✨ Interactive Demo</div>
+        <button class="demo-btn" onclick="animateProgress()">Animate Progress</button>
+        <button class="demo-btn" onclick="animateCards()">Animate Cards</button>
+        <button class="demo-btn" onclick="resetDemo()">Reset</button>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="dashboard-layout">
+            <main class="main-content">
+                <!-- Welcome Header -->
+                <section class="welcome-header">
+                    <div class="welcome-text">
+                        <h1 class="welcome-title">Welcome back, Alex!</h1>
+                        <p class="welcome-subtitle">Ready to continue your French journey?</p>
+                    </div>
+                    
+                    <div class="progress-circle-container">
+                        <svg class="progress-circle">
+                            <circle cx="40" cy="40" r="34" stroke="#e2e8f0" stroke-width="6" fill="none"></circle>
+                            <circle cx="40" cy="40" r="34" stroke="#3b82f6" stroke-width="6" fill="none" 
+                                    stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="132.4"
+                                    style="transition: stroke-dashoffset 1s ease-in-out;"></circle>
+                        </svg>
+                        <div class="progress-text">
+                            <div class="progress-percent">38%</div>
+                            <div class="progress-label">Complete</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Today's Lessons -->
+                <section class="lessons-section">
+                    <h2 class="section-title">Today's Lessons</h2>
+                    
+                    <div class="lessons-grid" id="lessons-grid">
+                        <!-- Lesson Card 1: Completed -->
+                        <div class="lesson-card" data-progress="100">
+                            <div class="lesson-meta">
+                                <span class="lesson-duration">15 min</span>
+                                <span class="lesson-difficulty beginner">Beginner</span>
+                            </div>
+                            <h3 class="lesson-title">Basic Greetings</h3>
+                            <p class="lesson-description">Learn essential greetings and introductions</p>
+                            <div class="lesson-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label-text">Progress</span>
+                                    <span class="progress-percentage">100%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            <div class="lesson-action">
+                                <button class="continue-btn">Continue</button>
+                            </div>
+                        </div>
+
+                        <!-- Lesson Card 2: In Progress -->
+                        <div class="lesson-card" data-progress="75">
+                            <div class="lesson-meta">
+                                <span class="lesson-duration">25 min</span>
+                                <span class="lesson-difficulty intermediate">Intermediate</span>
+                            </div>
+                            <h3 class="lesson-title">Present Tense Verbs</h3>
+                            <p class="lesson-description">Master regular and irregular present tense verbs</p>
+                            <div class="lesson-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label-text">Progress</span>
+                                    <span class="progress-percentage">75%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="lesson-action">
+                                <button class="continue-btn">Continue</button>
+                            </div>
+                        </div>
+
+                        <!-- Lesson Card 3: Partial Progress -->
+                        <div class="lesson-card" data-progress="30">
+                            <div class="lesson-meta">
+                                <span class="lesson-duration">20 min</span>
+                                <span class="lesson-difficulty intermediate">Intermediate</span>
+                            </div>
+                            <h3 class="lesson-title">Restaurant Conversations</h3>
+                            <p class="lesson-description">Practice ordering food and drinks</p>
+                            <div class="lesson-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label-text">Progress</span>
+                                    <span class="progress-percentage">30%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 30%"></div>
+                                </div>
+                            </div>
+                            <div class="lesson-action">
+                                <button class="continue-btn">Continue</button>
+                            </div>
+                        </div>
+
+                        <!-- Lesson Card 4: Not Started -->
+                        <div class="lesson-card" data-progress="0">
+                            <div class="lesson-meta">
+                                <span class="lesson-duration">30 min</span>
+                                <span class="lesson-difficulty advanced">Advanced</span>
+                            </div>
+                            <h3 class="lesson-title">Advanced Listening</h3>
+                            <p class="lesson-description">Improve comprehension with native speakers</p>
+                            <div class="lesson-progress">
+                                <div class="progress-header">
+                                    <span class="progress-label-text">Progress</span>
+                                    <span class="progress-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="lesson-action">
+                                <button class="continue-btn">Start Lesson</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-cards-grid">
+                    <!-- Daily Goal -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">Daily Goal</h3>
+                        <div class="goal-progress">
+                            <div class="goal-percentage" id="goal-percent">70%</div>
+                            <p class="goal-description">7/10 lessons completed</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">Quick Actions</h3>
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-btn">
+                                <div class="quick-action-title">Daily Review</div>
+                                <div class="quick-action-desc">Review yesterday's lessons</div>
+                            </button>
+                            <button class="quick-action-btn">
+                                <div class="quick-action-title">Voice Practice</div>
+                                <div class="quick-action-desc">Practice pronunciation</div>
+                            </button>
+                            <button class="quick-action-btn">
+                                <div class="quick-action-title">Grammar Quiz</div>
+                                <div class="quick-action-desc">Test your knowledge</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Leaderboard -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">Weekly Leaderboard</h3>
+                        <ul class="leaderboard-list">
+                            <li class="leaderboard-item">
+                                <div class="leaderboard-rank top-3">1</div>
+                                <div class="leaderboard-info">
+                                    <div class="leaderboard-name">Maria</div>
+                                    <div class="leaderboard-xp">2450 XP</div>
+                                </div>
+                            </li>
+                            <li class="leaderboard-item current-user">
+                                <div class="leaderboard-rank">2</div>
+                                <div class="leaderboard-info">
+                                    <div class="leaderboard-name">You</div>
+                                    <div class="leaderboard-xp">2380 XP</div>
+                                </div>
+                            </li>
+                            <li class="leaderboard-item">
+                                <div class="leaderboard-rank">3</div>
+                                <div class="leaderboard-info">
+                                    <div class="leaderboard-name">John</div>
+                                    <div class="leaderboard-xp">2290 XP</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        function animateProgress() {
+            // Animate main progress circle
+            const mainProgress = document.querySelector('.progress-circle circle:last-child');
+            if (mainProgress) {
+                mainProgress.style.strokeDashoffset = '213.6';
+                setTimeout(() => {
+                    mainProgress.style.strokeDashoffset = '132.4';
+                }, 100);
+            }
+
+            // Animate lesson progress bars
+            const progressBars = document.querySelectorAll('.progress-bar-fill');
+            progressBars.forEach((bar, index) => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 300 + index * 200);
+            });
+
+            // Animate daily goal
+            const goalPercent = document.getElementById('goal-percent');
+            if (goalPercent) {
+                let currentPercent = 0;
+                const targetPercent = 70;
+                const increment = targetPercent / 50;
+                const timer = setInterval(() => {
+                    currentPercent += increment;
+                    if (currentPercent >= targetPercent) {
+                        currentPercent = targetPercent;
+                        clearInterval(timer);
+                    }
+                    goalPercent.textContent = Math.round(currentPercent) + '%';
+                }, 20);
+            }
+        }
+
+        function animateCards() {
+            const cards = document.querySelectorAll('.lesson-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease-out';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }
+
+        function resetDemo() {
+            // Reset cards
+            const cards = document.querySelectorAll('.lesson-card');
+            cards.forEach(card => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+                card.style.transition = 'all 0.3s ease-in-out';
+            });
+
+            // Reset progress bars to their original states
+            setTimeout(animateProgress, 500);
+        }
+
+        // Add hover effects to lesson cards
+        document.querySelectorAll('.lesson-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+        });
+
+        // Initial animation
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                animateCards();
+                setTimeout(animateProgress, 800);
+            }, 300);
+        });
+    </script>
+</body>
+</html>

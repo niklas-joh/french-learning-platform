@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Card Component - Design Mockup</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <style>
+        body {
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 20px;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+        
+        .mockup-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .mockup-title {
+            text-align: center;
+            color: var(--french-blue);
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+        
+        .demo-section {
+            margin-bottom: 50px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--french-blue);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--french-blue);
+        }
+        
+        .cards-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .mobile-demo {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+        
+        .tablet-demo {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .card-comparison {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius-medium);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .card-comparison h4 {
+            margin-top: 0;
+            color: var(--french-blue);
+            text-align: center;
+        }
+        
+        .state-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .state-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid var(--french-blue);
+            color: var(--french-blue);
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .state-btn:hover,
+        .state-btn.active {
+            background: var(--french-blue);
+            color: white;
+        }
+        
+        .interactive-demo {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius-medium);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .demo-btn {
+            padding: 10px 20px;
+            margin: 0 10px 10px 0;
+            background: var(--gradient-secondary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-small);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-weight: 600;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .features-section {
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius-medium);
+            box-shadow: var(--shadow-light);
+            border-left: 4px solid var(--french-blue);
+        }
+        
+        .feature-card h4 {
+            margin-top: 0;
+            color: var(--french-blue);
+        }
+        
+        .feature-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-card li {
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .feature-card li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            top: 4px;
+        }
+        
+        /* Card state variations */
+        .lesson-card[data-demo-state="not_started"] {
+            opacity: 0.85;
+        }
+        
+        .lesson-card[data-demo-state="completed"] {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(255, 255, 255, 0.15));
+        }
+        
+        .lesson-card[data-demo-state="challenge"] {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 255, 255, 0.15));
+        }
+        
+        /* Responsive demo styles */
+        .responsive-demo {
+            margin: 40px 0;
+        }
+        
+        .device-frame {
+            border: 3px solid #ccc;
+            border-radius: 15px;
+            padding: 20px;
+            background: white;
+            box-shadow: var(--shadow-medium);
+            margin: 20px auto;
+        }
+        
+        .mobile-frame {
+            max-width: 375px;
+            border-radius: 25px;
+            padding: 30px 15px;
+        }
+        
+        .tablet-frame {
+            max-width: 768px;
+            border-radius: 20px;
+            padding: 25px;
+        }
+        
+        .desktop-frame {
+            max-width: 100%;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mockup-container">
+        <h1 class="mockup-title">Lesson Card Component States</h1>
+        
+        <div class="interactive-demo">
+            <p style="color: var(--french-blue); font-weight: 500; margin-bottom: 15px;">
+                🎮 Interactive Demonstrations:
+            </p>
+            <button class="demo-btn" id="animate-progress">Animate Progress</button>
+            <button class="demo-btn" id="animate-hover">Hover Effects</button>
+            <button class="demo-btn" id="animate-entrance">Card Entrance</button>
+            <button class="demo-btn" id="reset-demo">Reset All</button>
+        </div>
+        
+        <!-- Card States Demo -->
+        <div class="demo-section">
+            <h2 class="section-title">📊 Component States</h2>
+            
+            <div class="cards-demo-grid" id="main-demo">
+                <!-- Not Started Card -->
+                <div class="lesson-card" data-demo-state="not_started" data-completion="not_started">
+                    <div class="difficulty-badge" data-difficulty="normal">
+                        📊 Normal
+                    </div>
+                    
+                    <div class="card-progress-ring">
+                        <svg class="card-progress-circle" width="48" height="48">
+                            <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"></circle>
+                            <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.5)" stroke-width="3" fill="none" 
+                                    style="stroke-dasharray: 125.66; stroke-dashoffset: 125.66;" stroke-linecap="round"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 600; color: white;">0%</div>
+                    </div>
+                    
+                    <div class="lesson-card-content">
+                        <div class="lesson-card-icon">📚</div>
+                        <div class="lesson-card-title">French Vocabulary</div>
+                        <div class="lesson-card-description">Learn essential French vocabulary words</div>
+                    </div>
+                    
+                    <div class="xp-reward-badge">50 XP</div>
+                    
+                    <div class="recommendation-overlay">
+                        Perfect starting point for beginners
+                    </div>
+                </div>
+                
+                <!-- In Progress Card -->
+                <div class="lesson-card" data-demo-state="in_progress" data-completion="in_progress">
+                    <div class="difficulty-badge" data-difficulty="normal">
+                        📊 Normal
+                    </div>
+                    
+                    <div class="card-progress-ring">
+                        <svg class="card-progress-circle" width="48" height="48">
+                            <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"></circle>
+                            <circle cx="24" cy="24" r="20" stroke="var(--french-blue)" stroke-width="3" fill="none" 
+                                    style="stroke-dasharray: 125.66; stroke-dashoffset: 62.83;" stroke-linecap="round"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 600; color: white;">50%</div>
+                    </div>
+                    
+                    <div class="lesson-card-content">
+                        <div class="lesson-card-icon">👋</div>
+                        <div class="lesson-card-title">French Greetings</div>
+                        <div class="lesson-card-description">Master common French greetings</div>
+                    </div>
+                    
+                    <div class="xp-reward-badge">50 XP</div>
+                    
+                    <div class="recommendation-overlay">
+                        Keep going! You're halfway there
+                    </div>
+                </div>
+                
+                <!-- Completed Card -->
+                <div class="lesson-card" data-demo-state="completed" data-completion="completed">
+                    <div class="difficulty-badge" data-difficulty="easier">
+                        📉 Review
+                    </div>
+                    
+                    <div class="card-progress-ring">
+                        <svg class="card-progress-circle" width="48" height="48">
+                            <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"></circle>
+                            <circle cx="24" cy="24" r="20" stroke="#4caf50" stroke-width="3" fill="none" 
+                                    style="stroke-dasharray: 125.66; stroke-dashoffset: 0;" stroke-linecap="round"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 600; color: white;">100%</div>
+                    </div>
+                    
+                    <div class="lesson-card-content">
+                        <div class="lesson-card-icon">📅</div>
+                        <div class="lesson-card-title">Past Tense</div>
+                        <div class="lesson-card-description">Mastered French past tense usage</div>
+                    </div>
+                    
+                    <div class="xp-reward-badge">75 XP</div>
+                    
+                    <div class="recommendation-overlay">
+                        Great job! Try reviewing to strengthen
+                    </div>
+                </div>
+                
+                <!-- Challenge Card -->
+                <div class="lesson-card" data-demo-state="challenge" data-completion="not_started">
+                    <div class="difficulty-badge" data-difficulty="harder">
+                        🔥 Challenge
+                    </div>
+                    
+                    <div class="card-progress-ring">
+                        <svg class="card-progress-circle" width="48" height="48">
+                            <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"></circle>
+                            <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.5)" stroke-width="3" fill="none" 
+                                    style="stroke-dasharray: 125.66; stroke-dashoffset: 125.66;" stroke-linecap="round"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 600; color: white;">0%</div>
+                    </div>
+                    
+                    <div class="lesson-card-content">
+                        <div class="lesson-card-icon">🤔</div>
+                        <div class="lesson-card-title">Subjunctive Mood</div>
+                        <div class="lesson-card-description">Advanced French subjunctive forms</div>
+                    </div>
+                    
+                    <div class="xp-reward-badge">100 XP</div>
+                    
+                    <div class="recommendation-overlay">
+                        Ready for this challenge?
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Responsive Behavior Demo -->
+        <div class="demo-section responsive-demo">
+            <h2 class="section-title">📱 Responsive Behavior</h2>
+            
+            <div class="state-controls">
+                <button class="state-btn active" data-device="desktop">Desktop (4 columns)</button>
+                <button class="state-btn" data-device="tablet">Tablet (2 columns)</button>
+                <button class="state-btn" data-device="mobile">Mobile (1 column)</button>
+            </div>
+            
+            <div id="responsive-demo-container">
+                <!-- Desktop View (Default) -->
+                <div class="device-frame desktop-frame" id="desktop-demo">
+                    <div class="cards-demo-grid">
+                        <div class="lesson-card" data-completion="in_progress">
+                            <div class="difficulty-badge" data-difficulty="normal">📊 Normal</div>
+                            <div class="card-progress-ring">
+                                <svg class="card-progress-circle" width="48" height="48">
+                                    <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"></circle>
+                                    <circle cx="24" cy="24" r="20" stroke="var(--french-blue)" stroke-width="3" fill="none" 
+                                            style="stroke-dasharray: 125.66; stroke-dashoffset: 31.42;" stroke-linecap="round"></circle>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 600; color: white;">75%</div>
+                            </div>
+                            <div class="lesson-card-content">
+                                <div class="lesson-card-icon">💬</div>
+                                <div class="lesson-card-title">Conversation</div>
+                                <div class="lesson-card-description">Practice French conversations</div>
+                            </div>
+                            <div class="xp-reward-badge">60 XP</div>
+                            <div class="recommendation-overlay">Perfect for your level</div>
+                        </div>
+                        
+                        <div class="lesson-card" data-completion="completed">
+                            <div class="difficulty-badge" data-difficulty="easier">📉 Review</div>
+                            <div class="card-progress-ring">
+                                <svg class="card-progress-circle" width="48" height="48">
+                                    <circle cx="24" cy="24" r="20" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"></circle>
+                                    <circle cx="24" cy="24" r="20" stroke="#4caf50" stroke-width="3" fill="none" 
+                                            style="stroke-dasharray: 125.66; stroke-dashoffset: 0;" stroke-linecap="round"></circle>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; font-weight: 600; color: white;">100%</div>
+                            </div>
+                            <div class="lesson-card-content">
+                                <div class="lesson-card-icon">🎯</div>
+                                <div class="lesson-card-title">Numbers</div>
+                                <div class="lesson-card-description">French numbers 1-100</div>
+                            </div>
+                            <div class="xp-reward-badge">40 XP</div>
+                            <div class="recommendation-overlay">Excellent work!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI Personalization Demo -->
+        <div class="demo-section">
+            <h2 class="section-title">🤖 AI Personalization Features</h2>
+            
+            <div class="cards-demo-grid">
+                <div class="card-comparison">
+                    <h4>Beginner Level</h4>
+                    <div class="lesson-card" style="margin-bottom: 15px;">
+                        <div class="difficulty-badge" data-difficulty="easier">📉 Easy</div>
+                        <div class="lesson-card-content" style="padding: 15px;">
+                            <div class="lesson-card-icon">🌟</div>
+                            <div class="lesson-card-title">Basic Phrases</div>
+                            <div class="lesson-card-description">Start with simple French phrases</div>
+                        </div>
+                        <div class="xp-reward-badge">25 XP</div>
+                        <div class="recommendation-overlay">Perfect for beginners</div>
+                    </div>
+                </div>
+                
+                <div class="card-comparison">
+                    <h4>Intermediate Level</h4>
+                    <div class="lesson-card" style="margin-bottom: 15px;">
+                        <div class="difficulty-badge" data-difficulty="normal">📊 Normal</div>
+                        <div class="lesson-card-content" style="padding: 15px;">
+                            <div class="lesson-card-icon">📖</div>
+                            <div class="lesson-card-title">Grammar Rules</div>
+                            <div class="lesson-card-description">Learn intermediate grammar concepts</div>
+                        </div>
+                        <div class="xp-reward-badge">50 XP</div>
+                        <div class="recommendation-overlay">Great for your level</div>
+                    </div>
+                </div>
+                
+                <div class="card-comparison">
+                    <h4>Advanced Level</h4>
+                    <div class="lesson-card" style="margin-bottom: 15px;">
+                        <div class="difficulty-badge" data-difficulty="harder">🔥 Challenge</div>
+                        <div class="lesson-card-content" style="padding: 15px;">
+                            <div class="lesson-card-icon">🎓</div>
+                            <div class="lesson-card-title">Literature</div>
+                            <div class="lesson-card-description">Analyze French literary works</div>
+                        </div>
+                        <div class="xp-reward-badge">100 XP</div>
+                        <div class="recommendation-overlay">Advanced challenge</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <div class="feature-card">
+                <h4>📊 Progress Visualization</h4>
+                <ul>
+                    <li>Animated SVG progress rings</li>
+                    <li>Color-coded completion states</li>
+                    <li>Percentage display in ring center</li>
+                    <li>Smooth 1.5s animation timing</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎯 AI Difficulty Badges</h4>
+                <ul>
+                    <li>Easier/Review (green background)</li>
+                    <li>Normal (white background)</li>
+                    <li>Challenge/Harder (orange background)</li>
+                    <li>Contextual icon and label</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>⭐ XP Reward System</h4>
+                <ul>
+                    <li>Variable XP based on difficulty</li>
+                    <li>Visual star icon indicator</li>
+                    <li>Gradient background styling</li>
+                    <li>Positioned bottom-right</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>💡 Recommendation Overlay</h4>
+                <ul>
+                    <li>Contextual AI-generated text</li>
+                    <li>Appears on hover interaction</li>
+                    <li>Gradient overlay background</li>
+                    <li>Encourages user engagement</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>🎨 Code Reuse Strategy</h4>
+                <ul>
+                    <li>95% QuickActionCard base reused</li>
+                    <li>Conditional rendering by mode</li>
+                    <li>Enhanced with overlay elements</li>
+                    <li>Maintains existing interactions</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card">
+                <h4>📱 Responsive Grid</h4>
+                <ul>
+                    <li>4 columns on desktop (>1024px)</li>
+                    <li>2 columns on tablet (768-1024px)</li>
+                    <li>1 column on mobile (<768px)</li>
+                    <li>16:9 aspect ratio maintained</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deviceButtons = document.querySelectorAll('.state-btn[data-device]');
+            const responsiveDemoContainer = document.getElementById('responsive-demo-container');
+            const desktopDemo = document.getElementById('desktop-demo');
+            
+            const animateProgressBtn = document.getElementById('animate-progress');
+            const animateHoverBtn = document.getElementById('animate-hover');
+            const animateEntranceBtn = document.getElementById('animate-entrance');
+            const resetDemoBtn = document.getElementById('reset-demo');
+            
+            // Device switching functionality
+            function switchDevice(device) {
+                const existingFrames = responsiveDemoContainer.querySelectorAll('.device-frame');
+                existingFrames.forEach(frame => frame.remove());
+                
+                if (device === 'mobile') {
+                    const mobileFrame = createMobileDemo();
+                    responsiveDemoContainer.appendChild(mobileFrame);
+                } else if (device === 'tablet') {
+                    const tabletFrame = createTabletDemo();
+                    responsiveDemoContainer.appendChild(tabletFrame);
+                } else {
+                    responsiveDemoContainer.appendChild(desktopDemo);
+                }
+                
+                deviceButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.device === device) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+            
+            function createMobileDemo() {
+                const frame = document.createElement('div');
+                frame.className = 'device-frame mobile-frame';
+                frame.innerHTML = `
+                    <div class="mobile-demo">
+                        <div class="lesson-card" data-completion="in_progress">
+                            <div class="difficulty-badge" data-difficulty="normal">📊 Normal</div>
+                            <div class="card-progress-ring">
+                                <svg class="card-progress-circle" width="40" height="40">
+                                    <circle cx="20" cy="20" r="16" stroke="rgba(255,255,255,0.3)" stroke-width="2" fill="none"></circle>
+                                    <circle cx="20" cy="20" r="16" stroke="var(--french-blue)" stroke-width="2" fill="none" 
+                                            style="stroke-dasharray: 100.53; stroke-dashoffset: 25.13;" stroke-linecap="round"></circle>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.6rem; font-weight: 600; color: white;">75%</div>
+                            </div>
+                            <div class="lesson-card-content">
+                                <div class="lesson-card-icon">📱</div>
+                                <div class="lesson-card-title">Mobile Lesson</div>
+                                <div class="lesson-card-description">Optimized for mobile learning</div>
+                            </div>
+                            <div class="xp-reward-badge" style="font-size: 0.625rem; padding: 3px 6px;">60 XP</div>
+                            <div class="recommendation-overlay">Perfect for on-the-go learning</div>
+                        </div>
+                    </div>
+                `;
+                return frame;
+            }
+            
+            function createTabletDemo() {
+                const frame = document.createElement('div');
+                frame.className = 'device-frame tablet-frame';
+                frame.innerHTML = `
+                    <div class="tablet-demo">
+                        <div class="lesson-card" data-completion="in_progress">
+                            <div class="difficulty-badge" data-difficulty="normal">📊 Normal</div>
+                            <div class="card-progress-ring">
+                                <svg class="card-progress-circle" width="44" height="44">
+                                    <circle cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" fill="none"></circle>
+                                    <circle cx="22" cy="22" r="18" stroke="var(--french-blue)" stroke-width="2.5" fill="none" 
+                                            style="stroke-dasharray: 113.1; stroke-dashoffset: 28.27;" stroke-linecap="round"></circle>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.7rem; font-weight: 600; color: white;">75%</div>
+                            </div>
+                            <div class="lesson-card-content">
+                                <div class="lesson-card-icon">💻</div>
+                                <div class="lesson-card-title">Tablet Experience</div>
+                                <div class="lesson-card-description">Balanced tablet interface</div>
+                            </div>
+                            <div class="xp-reward-badge" style="font-size: 0.675rem; padding: 3px 7px;">60 XP</div>
+                            <div class="recommendation-overlay">Great tablet experience</div>
+                        </div>
+                        
+                        <div class="lesson-card" data-completion="completed">
+                            <div class="difficulty-badge" data-difficulty="easier">📉 Review</div>
+                            <div class="card-progress-ring">
+                                <svg class="card-progress-circle" width="44" height="44">
+                                    <circle cx="22" cy="22" r="18" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" fill="none"></circle>
+                                    <circle cx="22" cy="22" r="18" stroke="#4caf50" stroke-width="2.5" fill="none" 
+                                            style="stroke-dasharray: 113.1; stroke-dashoffset: 0;" stroke-linecap="round"></circle>
+                                </svg>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.7rem; font-weight: 600; color: white;">100%</div>
+                            </div>
+                            <div class="lesson-card-content">
+                                <div class="lesson-card-icon">✅</div>
+                                <div class="lesson-card-title">Completed</div>
+                                <div class="lesson-card-description">Well done!</div>
+                            </div>
+                            <div class="xp-reward-badge" style="font-size: 0.675rem; padding: 3px 7px;">50 XP</div>
+                            <div class="recommendation-overlay">Excellent work!</div>
+                        </div>
+                    </div>
+                `;
+                return frame;
+            }
+            
+            deviceButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    switchDevice(this.dataset.device);
+                });
+            });
+            
+            // Animation functions
+            function animateProgress() {
+                const rings = document.querySelectorAll('.card-progress-circle circle:last-child');
+                rings.forEach((ring, index) => {
+                    const originalOffset = ring.style.strokeDashoffset;
+                    ring.style.transition = 'none';
+                    ring.style.strokeDashoffset = ring.getAttribute('stroke-dasharray');
+                    
+                    setTimeout(() => {
+                        ring.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+                        ring.style.strokeDashoffset = originalOffset;
+                    }, 100 + index * 200);
+                });
+            }
+            
+            function animateHover() {
+                const cards = document.querySelectorAll('.lesson-card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        // Simulate hover effect
+                        card.style.transform = 'translateY(-8px)';
+                        card.style.boxShadow = 'var(--shadow-medium)';
+                        
+                        const progressRing = card.querySelector('.card-progress-ring');
+                        if (progressRing) {
+                            progressRing.style.transform = 'scale(1.1)';
+                        }
+                        
+                        // Reset after 1 second
+                        setTimeout(() => {
+                            card.style.transform = 'translateY(-4px)';
+                            card.style.boxShadow = 'var(--shadow-light)';
+                            if (progressRing) {
+                                progressRing.style.transform = 'scale(1)';
+                            }
+                        }, 1000);
+                    }, index * 300);
+                });
+            }
+            
+            function animateEntrance() {
+                const cards = document.querySelectorAll('.lesson-card');
+                cards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px) scale(0.9)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.6s ease-out';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0) scale(1)';
+                    }, index * 150);
+                });
+            }
+            
+            function resetDemo() {
+                const cards = document.querySelectorAll('.lesson-card');
+                cards.forEach(card => {
+                    card.style.transition = 'all var(--transition-normal)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0) scale(1)';
+                    card.style.boxShadow = 'var(--shadow-light)';
+                    
+                    const progressRing = card.querySelector('.card-progress-ring');
+                    if (progressRing) {
+                        progressRing.style.transform = 'scale(1)';
+                    }
+                });
+                
+                // Reset progress rings
+                const rings = document.querySelectorAll('.card-progress-circle circle:last-child');
+                rings.forEach(ring => {
+                    ring.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+                });
+            }
+            
+            // Event listeners for demo buttons
+            animateProgressBtn.addEventListener('click', function() {
+                this.textContent = 'Animating...';
+                animateProgress();
+                setTimeout(() => {
+                    this.textContent = 'Animate Progress';
+                }, 2000);
+            });
+            
+            animateHoverBtn.addEventListener('click', function() {
+                this.textContent = 'Animating...';
+                animateHover();
+                setTimeout(() => {
+                    this.textContent = 'Hover Effects';
+                }, 3000);
+            });
+            
+            animateEntranceBtn.addEventListener('click', function() {
+                this.textContent = 'Animating...';
+                animateEntrance();
+                setTimeout(() => {
+                    this.textContent = 'Card Entrance';
+                }, 2500);
+            });
+            
+            resetDemoBtn.addEventListener('click', function() {
+                this.textContent = 'Resetting...';
+                resetDemo();
+                setTimeout(() => {
+                    this.textContent = 'Reset All';
+                }, 1000);
+            });
+            
+            // Card hover effects
+            const allCards = document.querySelectorAll('.lesson-card');
+            allCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                    const progressRing = this.querySelector('.card-progress-ring');
+                    if (progressRing) {
+                        progressRing.style.transform = 'scale(1.1)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-4px)';
+                    const progressRing = this.querySelector('.card-progress-ring');
+                    if (progressRing) {
+                        progressRing.style.transform = 'scale(1)';
+                    }
+                });
+            });
+            
+            // Initial entrance animation on load
+            setTimeout(() => {
+                animateEntrance();
+                setTimeout(animateProgress, 1000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
