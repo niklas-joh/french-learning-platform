@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Articles - Individual Lesson</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <style>
+        body {
+            background: #f9fafb;
+            margin: 0;
+        }
+
+        .lesson-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .lesson-header {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .lesson-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            text-align: center;
+            margin: 0;
+        }
+
+        .menu-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .progress-section {
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            width: 50%;
+            transition: width 0.8s ease-out;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .lesson-goals {
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .goals-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #1e40af;
+        }
+
+        .content-card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .content-text {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: #374151;
+            margin-bottom: 1.5rem;
+        }
+
+        .audio-section {
+            background: #f0f9ff;
+            border: 2px solid #e0f2fe;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .audio-button {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .audio-button:hover {
+            background: #0284c7;
+            transform: scale(1.05);
+        }
+
+        .exercise-section {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .exercise-question {
+            font-size: 1.125rem;
+            color: #374151;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .option-button {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            background: #ffffff;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 60px;
+        }
+
+        .option-button:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .option-button.selected {
+            border-color: #3b82f6;
+            background: #3b82f6;
+            color: white;
+        }
+
+        .option-button.correct {
+            border-color: #10b981;
+            background: #10b981;
+            color: white;
+        }
+
+        .option-button.incorrect {
+            border-color: #ef4444;
+            background: #ef4444;
+            color: white;
+        }
+
+        .exercise-progress {
+            display: flex;
+            justify-content: center;
+            gap: 0.25rem;
+            margin: 1rem 0;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d5db;
+            transition: background 0.3s ease;
+        }
+
+        .progress-dot.completed {
+            background: #10b981;
+        }
+
+        .feedback-section {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            display: none;
+        }
+
+        .feedback-section.show {
+            display: block;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .feedback-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feedback-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-list {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .feedback-list li {
+            padding: 0.5rem 0;
+            color: #15803d;
+            font-weight: 500;
+        }
+
+        .xp-reward {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            color: #92400e;
+            font-weight: 600;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .btn-secondary {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary {
+            padding: 0.75rem 1.5rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-check {
+            padding: 0.75rem 2rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 1rem auto;
+            display: block;
+        }
+
+        .btn-check:hover {
+            background: #059669;
+        }
+
+        .section-counter {
+            background: #f3f4f6;
+            color: #6b7280;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .path-context {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .path-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #3b82f6;
+        }
+
+        .path-progress {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .path-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            width: 80%;
+            transition: width 0.8s ease-out;
+        }
+
+        @media (max-width: 640px) {
+            .lesson-container {
+                padding: 0.5rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .navigation-buttons {
+                flex-direction: column;
+            }
+
+            .header-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .goals-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-container">
+        <!-- Lesson Header -->
+        <div class="lesson-header">
+            <div class="header-nav">
+                <a href="#" class="back-button">← Back to Paths</a>
+                <h1 class="lesson-title">Les Articles (the, a, an)</h1>
+                <button class="menu-button">⋮</button>
+            </div>
+            
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">50% Complete (5/10 sections)</div>
+            </div>
+            
+            <div class="lesson-goals">
+                <div class="goals-content">
+                    <div class="goal-item">
+                        <span>🎯</span>
+                        <span>Learning Goal: Master French articles (le, la, les, un, une, des)</span>
+                    </div>
+                    <div class="goal-item">
+                        <span>⏱️</span>
+                        <span>15 minutes remaining</span>
+                    </div>
+                    <div class="goal-item">
+                        <span>💎</span>
+                        <span>50 XP available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Path Context -->
+        <div class="path-context">
+            <div>🎯 You're on the <strong>Beginner French Foundation</strong> path</div>
+            <div class="path-navigation">
+                <span>← Previous: Numbers 1-20</span>
+                <span>Next: Common Adjectives →</span>
+            </div>
+            <div class="path-progress">
+                <div class="path-progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Introduction Section -->
+        <div class="content-card" id="introSection">
+            <div class="section-header">
+                <div class="section-icon">📖</div>
+                <h2 class="section-title">Introduction</h2>
+            </div>
+            
+            <div class="content-text">
+                French articles are essential words that come before nouns to indicate gender and number. There are two types: <strong>definite articles</strong> (le, la, les) and <strong>indefinite articles</strong> (un, une, des).
+            </div>
+            
+            <div class="audio-section">
+                <button class="audio-button" onclick="playAudio()">🔊</button>
+                <div>Listen to the pronunciation examples...</div>
+            </div>
+            
+            <div class="navigation-buttons">
+                <div class="section-counter">2/10</div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-secondary" onclick="skipSection()">Skip</button>
+                    <button class="btn-primary" onclick="nextSection()">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Section -->
+        <div class="content-card hidden" id="exerciseSection">
+            <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <h2 class="section-title">Practice Exercise</h2>
+            </div>
+            
+            <div class="exercise-section">
+                <div class="exercise-question">Choose the correct article for each noun:</div>
+                
+                <div class="question-group">
+                    <div class="question-text">_____ maison (house)</div>
+                    <div class="options-grid">
+                        <button class="option-button" onclick="selectOption(this, 'q1', 'le')">le</button>
+                        <button class="option-button" onclick="selectOption(this, 'q1', 'la')">la</button>
+                        <button class="option-button" onclick="selectOption(this, 'q1', 'les')">les</button>
+                    </div>
+                </div>
+                
+                <div class="question-group">
+                    <div class="question-text">_____ voitures (cars)</div>
+                    <div class="options-grid">
+                        <button class="option-button" onclick="selectOption(this, 'q2', 'le')">le</button>
+                        <button class="option-button" onclick="selectOption(this, 'q2', 'la')">la</button>
+                        <button class="option-button" onclick="selectOption(this, 'q2', 'les')">les</button>
+                    </div>
+                </div>
+                
+                <div class="question-group">
+                    <div class="question-text">_____ homme (man)</div>
+                    <div class="options-grid">
+                        <button class="option-button" onclick="selectOption(this, 'q3', 'le')">le</button>
+                        <button class="option-button" onclick="selectOption(this, 'q3', 'la')">la</button>
+                        <button class="option-button" onclick="selectOption(this, 'q3', 'les')">les</button>
+                    </div>
+                </div>
+                
+                <div class="exercise-progress">
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot completed"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                    <div class="progress-dot"></div>
+                </div>
+                <div style="text-align: center; color: #6b7280; font-size: 0.875rem;">Progress: 7/10</div>
+                
+                <button class="btn-check" onclick="checkAnswers()">Check Answers</button>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="feedback-section" id="feedbackSection">
+            <div class="feedback-icon">✅</div>
+            <h3 class="feedback-title">Great Work!</h3>
+            
+            <ul class="feedback-list">
+                <li>✓ la maison - Correct! 'Maison' is feminine</li>
+                <li>✓ les voitures - Perfect! Plural nouns use 'les'</li>
+                <li>✓ l'homme - Excellent! 'Homme' is masculine</li>
+            </ul>
+            
+            <div class="xp-reward">
+                🎉 You earned 15 XP! Your streak continues: 7 days
+            </div>
+            
+            <div class="navigation-buttons">
+                <div class="section-counter">8/10</div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-secondary" onclick="reviewSection()">Review</button>
+                    <button class="btn-primary" onclick="nextSection()">Next Section</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSection = 'intro';
+        let userAnswers = {};
+        const correctAnswers = {
+            q1: 'la',
+            q2: 'les', 
+            q3: 'le'
+        };
+
+        function playAudio() {
+            // Simulate audio playing
+            const button = document.querySelector('.audio-button');
+            button.innerHTML = '⏸️';
+            setTimeout(() => {
+                button.innerHTML = '🔊';
+            }, 3000);
+        }
+
+        function selectOption(button, questionId, answer) {
+            // Clear previous selections for this question
+            const questionGroup = button.closest('.question-group');
+            questionGroup.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Select current option
+            button.classList.add('selected');
+            userAnswers[questionId] = answer;
+            
+            // Enable check button if all questions answered
+            const answeredQuestions = Object.keys(userAnswers).length;
+            const checkButton = document.querySelector('.btn-check');
+            if (answeredQuestions === 3) {
+                checkButton.style.opacity = '1';
+                checkButton.disabled = false;
+            }
+        }
+
+        function checkAnswers() {
+            let allCorrect = true;
+            
+            // Check each answer and update button styles
+            Object.keys(correctAnswers).forEach(questionId => {
+                const questionGroup = document.querySelector(`[data-question="${questionId}"]`) || 
+                    document.querySelectorAll('.question-group')[questionId === 'q1' ? 0 : questionId === 'q2' ? 1 : 2];
+                const buttons = questionGroup.querySelectorAll('.option-button');
+                
+                buttons.forEach(button => {
+                    const buttonAnswer = button.textContent;
+                    if (buttonAnswer === correctAnswers[questionId]) {
+                        button.classList.add('correct');
+                        button.classList.remove('selected');
+                    } else if (button.classList.contains('selected')) {
+                        button.classList.add('incorrect');
+                        if (userAnswers[questionId] !== correctAnswers[questionId]) {
+                            allCorrect = false;
+                        }
+                    }
+                });
+            });
+
+            // Show feedback
+            setTimeout(() => {
+                document.getElementById('exerciseSection').classList.add('hidden');
+                document.getElementById('feedbackSection').classList.add('show');
+                
+                // Update progress bar
+                const progressFill = document.querySelector('.progress-fill');
+                progressFill.style.width = '80%';
+                document.querySelector('.progress-text').textContent = '80% Complete (8/10 sections)';
+            }, 1500);
+        }
+
+        function nextSection() {
+            if (currentSection === 'intro') {
+                document.getElementById('introSection').classList.add('hidden');
+                document.getElementById('exerciseSection').classList.remove('hidden');
+                currentSection = 'exercise';
+                
+                // Update progress
+                const progressFill = document.querySelector('.progress-fill');
+                progressFill.style.width = '60%';
+                document.querySelector('.progress-text').textContent = '60% Complete (6/10 sections)';
+                
+            } else if (currentSection === 'feedback') {
+                alert('🎉 Moving to next section: Common Adjectives!');
+            }
+        }
+
+        function skipSection() {
+            nextSection();
+        }
+
+        function reviewSection() {
+            document.getElementById('feedbackSection').classList.remove('show');
+            document.getElementById('exerciseSection').classList.remove('hidden');
+            
+            // Reset exercise state
+            document.querySelectorAll('.option-button').forEach(button => {
+                button.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            userAnswers = {};
+            currentSection = 'exercise';
+        }
+
+        // Initialize progress animation
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const progressFill = document.querySelector('.progress-fill');
+                progressFill.style.width = '50%';
+            }, 500);
+        });
+    </script>
+</body>
+</html>

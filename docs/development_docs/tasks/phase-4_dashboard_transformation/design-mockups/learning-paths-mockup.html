@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Paths - French Learning Platform</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <style>
+        .paths-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .paths-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .paths-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .paths-subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .paths-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            min-width: 200px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .filter-button {
+            padding: 0.75rem 1rem;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .paths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .path-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .path-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .path-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .path-icon {
+            font-size: 1.5rem;
+            margin-top: 0.1rem;
+        }
+
+        .path-info {
+            flex: 1;
+        }
+
+        .path-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .path-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .path-progress {
+            margin: 1.5rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .path-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.75rem;
+            color: #6b7280;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .path-next {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin: 1rem 0;
+        }
+
+        .next-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .next-lesson {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .path-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: white;
+            color: #3b82f6;
+            border: 2px solid #3b82f6;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .locked-path {
+            opacity: 0.7;
+            position: relative;
+        }
+
+        .locked-path::before {
+            content: '🔒';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .level-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .level-a1 { background: #d1fae5; color: #047857; }
+        .level-a2 { background: #dbeafe; color: #1d4ed8; }
+        .level-b1 { background: #fef3c7; color: #b45309; }
+        .level-b2 { background: #ede9fe; color: #7c3aed; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .lesson-status {
+            width: 20px;
+            text-align: center;
+        }
+
+        .lesson-title {
+            flex: 1;
+            font-size: 0.875rem;
+        }
+
+        .completed { color: #10b981; }
+        .current { color: #3b82f6; }
+        .locked { color: #9ca3af; }
+
+        @media (max-width: 640px) {
+            .paths-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-input,
+            .filter-button {
+                width: 100%;
+            }
+
+            .paths-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .path-actions {
+                flex-direction: column;
+            }
+
+            .meta-item {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="paths-container">
+        <div class="paths-header">
+            <h1 class="paths-title">📚 Learning Paths</h1>
+            <p class="paths-subtitle">Structured learning journeys designed for your level</p>
+            
+            <div class="paths-controls">
+                <input type="text" class="search-input" placeholder="Search paths..." id="searchInput">
+                <button class="filter-button" onclick="filterPaths('all')">All Levels ▼</button>
+                <button class="filter-button" onclick="sortPaths('recommended')">Sort: Recommended ▼</button>
+            </div>
+        </div>
+
+        <div class="paths-grid" id="pathsGrid">
+            <!-- Path 1: Beginner Foundation -->
+            <div class="path-card" data-level="A1" onclick="showPathDetail('beginner')">
+                <div class="path-header">
+                    <div class="path-icon">🌱</div>
+                    <div class="path-info">
+                        <h3 class="path-title">Beginner French Foundation</h3>
+                        <p class="path-description">Master the basics of French language</p>
+                    </div>
+                    <div class="level-badge level-a1">A1 Level</div>
+                </div>
+                
+                <div class="path-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%;"></div>
+                    </div>
+                    <div class="progress-text">80% Complete (8/10 lessons)</div>
+                </div>
+                
+                <div class="path-meta">
+                    <div class="meta-item">⏱️ 15min avg</div>
+                    <div class="meta-item">🎯 A1 Level</div>
+                    <div class="meta-item">⭐ 450 XP earned</div>
+                </div>
+                
+                <div class="path-next">
+                    <div class="next-label">Next:</div>
+                    <div class="next-lesson">Les Articles (the, a, an)</div>
+                </div>
+                
+                <div class="path-actions">
+                    <button class="btn-primary" onclick="event.stopPropagation(); startLesson()">Continue Learning</button>
+                    <button class="btn-secondary" onclick="event.stopPropagation(); showPathDetail('beginner')">Preview Path</button>
+                </div>
+            </div>
+
+            <!-- Path 2: Intermediate Conversation -->
+            <div class="path-card locked-path" data-level="B1">
+                <div class="path-header">
+                    <div class="path-icon">🔥</div>
+                    <div class="path-info">
+                        <h3 class="path-title">Intermediate Conversation</h3>
+                        <p class="path-description">Build confidence in real conversations</p>
+                    </div>
+                    <div class="level-badge level-b1">B1 Level</div>
+                </div>
+                
+                <div class="path-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text">0% Complete (0/12 lessons)</div>
+                </div>
+                
+                <div class="path-meta">
+                    <div class="meta-item">⏱️ 20min avg</div>
+                    <div class="meta-item">🎯 B1 Level</div>
+                    <div class="meta-item">🔒 Unlock: Complete A2</div>
+                </div>
+                
+                <div class="path-next">
+                    <div class="next-label">First:</div>
+                    <div class="next-lesson">Common Conversation Starters</div>
+                </div>
+                
+                <div class="path-actions">
+                    <button class="btn-primary" onclick="event.stopPropagation(); showUnlockMessage()">Start Path</button>
+                    <button class="btn-secondary" onclick="event.stopPropagation(); showPathDetail('intermediate')">Preview Path</button>
+                </div>
+            </div>
+
+            <!-- Path 3: Business French -->
+            <div class="path-card locked-path" data-level="B2">
+                <div class="path-header">
+                    <div class="path-icon">💼</div>
+                    <div class="path-info">
+                        <h3 class="path-title">Business French</h3>
+                        <p class="path-description">Professional French for work environments</p>
+                    </div>
+                    <div class="level-badge level-b2">B2 Level</div>
+                </div>
+                
+                <div class="path-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text">0% Complete (0/15 lessons)</div>
+                </div>
+                
+                <div class="path-meta">
+                    <div class="meta-item">⏱️ 25min avg</div>
+                    <div class="meta-item">🎯 B2 Level</div>
+                    <div class="meta-item">🔒 Unlock: Complete B1</div>
+                </div>
+                
+                <div class="path-next">
+                    <div class="next-label">First:</div>
+                    <div class="next-lesson">Business Email Etiquette</div>
+                </div>
+                
+                <div class="path-actions">
+                    <button class="btn-primary" onclick="event.stopPropagation(); showUnlockMessage()">Start Path</button>
+                    <button class="btn-secondary" onclick="event.stopPropagation(); showPathDetail('business')">Preview Path</button>
+                </div>
+            </div>
+
+            <!-- Path 4: Travel French -->
+            <div class="path-card" data-level="A2">
+                <div class="path-header">
+                    <div class="path-icon">✈️</div>
+                    <div class="path-info">
+                        <h3 class="path-title">Travel French</h3>
+                        <p class="path-description">Essential phrases for your French adventures</p>
+                    </div>
+                    <div class="level-badge level-a2">A2 Level</div>
+                </div>
+                
+                <div class="path-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%;"></div>
+                    </div>
+                    <div class="progress-text">25% Complete (3/12 lessons)</div>
+                </div>
+                
+                <div class="path-meta">
+                    <div class="meta-item">⏱️ 18min avg</div>
+                    <div class="meta-item">🎯 A2 Level</div>
+                    <div class="meta-item">⭐ 125 XP earned</div>
+                </div>
+                
+                <div class="path-next">
+                    <div class="next-label">Next:</div>
+                    <div class="next-lesson">At the Restaurant</div>
+                </div>
+                
+                <div class="path-actions">
+                    <button class="btn-primary" onclick="event.stopPropagation(); startLesson()">Continue Learning</button>
+                    <button class="btn-secondary" onclick="event.stopPropagation(); showPathDetail('travel')">Preview Path</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Path Preview -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modalContent">
+                <!-- Content will be dynamically inserted -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPathDetail(pathId) {
+            const modal = document.getElementById('modalOverlay');
+            const content = document.getElementById('modalContent');
+            
+            const pathDetails = {
+                beginner: {
+                    icon: '🌱',
+                    title: 'Beginner French Foundation',
+                    description: 'Master the basics of French language',
+                    stats: ['10 lessons total', '3-4 hours estimated', 'A1 certification', '600 XP rewards'],
+                    lessons: [
+                        { title: 'French Alphabet & Pronunciation', status: 'completed' },
+                        { title: 'Basic Greetings', status: 'completed' },
+                        { title: 'Numbers 1-20', status: 'completed' },
+                        { title: 'Les Articles (the, a, an)', status: 'current' },
+                        { title: 'Common Adjectives', status: 'locked' },
+                        { title: 'Present Tense Verbs', status: 'locked' },
+                        { title: 'Family Members', status: 'locked' },
+                        { title: 'Daily Routines', status: 'locked' },
+                        { title: 'Food & Drinks', status: 'locked' },
+                        { title: 'Time & Dates', status: 'locked' }
+                    ]
+                },
+                intermediate: {
+                    icon: '🔥',
+                    title: 'Intermediate Conversation',
+                    description: 'Build confidence in real conversations',
+                    stats: ['12 lessons total', '5-6 hours estimated', 'B1 certification', '900 XP rewards'],
+                    lessons: [
+                        { title: 'Common Conversation Starters', status: 'locked' },
+                        { title: 'Expressing Opinions', status: 'locked' },
+                        { title: 'Making Plans', status: 'locked' },
+                        { title: 'Phone Conversations', status: 'locked' },
+                        { title: 'Discussing Hobbies', status: 'locked' }
+                    ]
+                },
+                business: {
+                    icon: '💼',
+                    title: 'Business French',
+                    description: 'Professional French for work environments',
+                    stats: ['15 lessons total', '7-8 hours estimated', 'B2 certification', '1200 XP rewards'],
+                    lessons: [
+                        { title: 'Business Email Etiquette', status: 'locked' },
+                        { title: 'Meeting Vocabulary', status: 'locked' },
+                        { title: 'Presentations', status: 'locked' },
+                        { title: 'Negotiating', status: 'locked' },
+                        { title: 'Customer Service', status: 'locked' }
+                    ]
+                },
+                travel: {
+                    icon: '✈️',
+                    title: 'Travel French',
+                    description: 'Essential phrases for your French adventures',
+                    stats: ['12 lessons total', '4-5 hours estimated', 'A2 level boost', '750 XP rewards'],
+                    lessons: [
+                        { title: 'At the Airport', status: 'completed' },
+                        { title: 'Hotel Check-in', status: 'completed' },
+                        { title: 'Asking for Directions', status: 'completed' },
+                        { title: 'At the Restaurant', status: 'current' },
+                        { title: 'Shopping', status: 'locked' },
+                        { title: 'Transportation', status: 'locked' }
+                    ]
+                }
+            };
+            
+            const path = pathDetails[pathId];
+            if (!path) return;
+            
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">${path.icon}</div>
+                    <h2 style="margin-bottom: 0.5rem; color: #1f2937;">${path.title}</h2>
+                    <p style="color: #6b7280;">${path.description}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #374151; margin-bottom: 1rem;">📊 Path Overview:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        ${path.stats.map(stat => `<li style="padding: 0.25rem 0; color: #6b7280;">• ${stat}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #374151; margin-bottom: 1rem;">📚 Lesson Sequence:</h3>
+                    <div>
+                        ${path.lessons.map((lesson, index) => `
+                            <div class="lesson-item">
+                                <div class="lesson-status ${lesson.status}">
+                                    ${lesson.status === 'completed' ? '✅' : lesson.status === 'current' ? '▶️' : '🔒'}
+                                </div>
+                                <div class="lesson-title">${index + 1}. ${lesson.title}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-primary" onclick="startLesson()">
+                        ${pathId === 'beginner' || pathId === 'travel' ? 'Continue Path' : 'Start Path'}
+                    </button>
+                    <button class="btn-secondary" onclick="closeModal()">Back to Paths</button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+        
+        function startLesson() {
+            alert('🚀 Redirecting to lesson... This would navigate to the individual lesson page!');
+        }
+        
+        function showUnlockMessage() {
+            alert('🔒 Complete the previous level to unlock this path!');
+        }
+        
+        function filterPaths(level) {
+            // Placeholder for filtering functionality
+            console.log('Filtering by:', level);
+        }
+        
+        function sortPaths(criteria) {
+            // Placeholder for sorting functionality
+            console.log('Sorting by:', criteria);
+        }
+        
+        // Add search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const pathCards = document.querySelectorAll('.path-card');
+            
+            pathCards.forEach(card => {
+                const title = card.querySelector('.path-title').textContent.toLowerCase();
+                const description = card.querySelector('.path-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Animate progress bars on load
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

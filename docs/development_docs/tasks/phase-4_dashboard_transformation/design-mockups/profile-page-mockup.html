@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - French Learning Platform</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <style>
+        body {
+            background: #f9fafb;
+            margin: 0;
+        }
+
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .profile-header {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            position: relative;
+        }
+
+        .photo-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-subtitle {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-stats {
+            color: #3b82f6;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-joined {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-profile {
+            padding: 0.75rem 1rem;
+            border: 2px solid #3b82f6;
+            background: #ffffff;
+            color: #3b82f6;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-profile:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .profile-section {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .setting-label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .setting-value {
+            color: #6b7280;
+            margin-right: 1rem;
+        }
+
+        .btn-change {
+            padding: 0.5rem 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .preference-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 24px;
+            background: #d1d5db;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #10b981;
+        }
+
+        .toggle-knob {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-knob {
+            transform: translateX(24px);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .badge-item.recent {
+            background: #fef3c7;
+            border-color: #fbbf24;
+        }
+
+        .badge-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .badge-time {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .rank-medal {
+            font-size: 1.5rem;
+        }
+
+        .leader-info {
+            flex: 1;
+        }
+
+        .leader-name {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .leader-xp {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-actions {
+                justify-content: center;
+            }
+
+            .setting-item,
+            .preference-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-photo">
+                M
+                <div class="photo-edit">✎</div>
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name">Marie Dubois</h1>
+                <p class="profile-subtitle">French Language Learner</p>
+                <p class="profile-stats">🇫🇷 A2 Level • 1,247 XP • 23 day streak</p>
+                <p class="profile-joined">Joined March 2024</p>
+            </div>
+            <div class="profile-actions">
+                <button class="btn-profile" onclick="editProfile()">Edit Profile</button>
+                <button class="btn-profile" onclick="shareProfile()">Share Profile</button>
+                <button class="btn-profile" onclick="accountSettings()">Account Settings</button>
+            </div>
+        </div>
+
+        <!-- Account Settings -->
+        <div class="profile-section">
+            <div class="section-header">
+                <span>⚙️</span>
+                <h2 class="section-title">Account Settings</h2>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">Email</div>
+                <div style="display: flex; align-items: center;">
+                    <span class="setting-value">marie.dubois@email.com</span>
+                    <button class="btn-change">Change</button>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">Password</div>
+                <div style="display: flex; align-items: center;">
+                    <span class="setting-value">••••••••••••••••••••••</span>
+                    <button class="btn-change">Change</button>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">Language Interface</div>
+                <div style="display: flex; align-items: center;">
+                    <span class="setting-value">English</span>
+                    <button class="btn-change">Change</button>
+                </div>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-label">Timezone</div>
+                <div style="display: flex; align-items: center;">
+                    <span class="setting-value">Europe/Paris</span>
+                    <button class="btn-change">Change</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Preferences -->
+        <div class="profile-section">
+            <div class="section-header">
+                <span>📚</span>
+                <h2 class="section-title">Learning Preferences</h2>
+            </div>
+            
+            <div class="preference-item">
+                <div class="setting-label">Daily Goal</div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span class="setting-value">30 minutes</span>
+                    <div style="display: flex; gap: 0.25rem;">
+                        <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 50%;"></div>
+                        <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 50%;"></div>
+                        <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 50%;"></div>
+                        <div style="width: 8px; height: 8px; background: #d1d5db; border-radius: 50%;"></div>
+                        <div style="width: 8px; height: 8px; background: #d1d5db; border-radius: 50%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preference-item">
+                <div class="setting-label">Daily Reminders</div>
+                <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div class="preference-item">
+                <div class="setting-label">Streak Alerts</div>
+                <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div class="preference-item">
+                <div class="setting-label">Achievement Alerts</div>
+                <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            
+            <div class="preference-item">
+                <div class="setting-label">Friend Activity</div>
+                <div class="toggle-switch" onclick="toggleSwitch(this)">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Gallery -->
+        <div class="profile-section">
+            <div class="section-header">
+                <span>🏆</span>
+                <h2 class="section-title">Achievement Gallery</h2>
+            </div>
+            
+            <p style="color: #6b7280; margin-bottom: 1rem;">Recent Badges (5 of 23 total):</p>
+            
+            <div class="badges-grid">
+                <div class="badge-item recent">
+                    <div class="badge-icon">🔥</div>
+                    <div class="badge-name">Week Warrior</div>
+                    <div class="badge-time">7 days ago</div>
+                </div>
+                <div class="badge-item recent">
+                    <div class="badge-icon">📚</div>
+                    <div class="badge-name">Lesson Master</div>
+                    <div class="badge-time">5 days ago</div>
+                </div>
+                <div class="badge-item recent">
+                    <div class="badge-icon">⭐</div>
+                    <div class="badge-name">XP Champion</div>
+                    <div class="badge-time">3 days ago</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">🎯</div>
+                    <div class="badge-name">Grammar Pro</div>
+                    <div class="badge-time">2 weeks ago</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">💬</div>
+                    <div class="badge-name">Conversation</div>
+                    <div class="badge-time">1 month ago</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn-profile" onclick="viewAllAchievements()">View All Achievements</button>
+                <button class="btn-profile" onclick="shareGallery()">Share Gallery</button>
+            </div>
+        </div>
+
+        <!-- Social Learning -->
+        <div class="profile-section">
+            <div class="section-header">
+                <span>👥</span>
+                <h2 class="section-title">Social Learning</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #3b82f6;">12</div>
+                    <div style="color: #6b7280;">Friends</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #3b82f6;">8</div>
+                    <div style="color: #6b7280;">Following</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; font-weight: 700; color: #3b82f6;">15</div>
+                    <div style="color: #6b7280;">Followers</div>
+                </div>
+            </div>
+            
+            <h3 style="color: #374151; margin-bottom: 1rem;">This Week's Leaderboard:</h3>
+            
+            <div class="leaderboard-item">
+                <div class="rank-medal">🥇</div>
+                <div class="leader-info">
+                    <div class="leader-name">Thomas K.</div>
+                    <div class="leader-xp">420 XP</div>
+                </div>
+            </div>
+            
+            <div class="leaderboard-item">
+                <div class="rank-medal">🥈</div>
+                <div class="leader-info">
+                    <div class="leader-name">You</div>
+                    <div class="leader-xp">385 XP</div>
+                </div>
+            </div>
+            
+            <div class="leaderboard-item">
+                <div class="rank-medal">🥉</div>
+                <div class="leader-info">
+                    <div class="leader-name">Sarah M.</div>
+                    <div class="leader-xp">360 XP</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn-profile" onclick="joinStudyGroup()">Join Study Group</button>
+                <button class="btn-profile" onclick="challengeFriends()">Challenge Friends</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function editProfile() {
+            alert('📝 Opening profile editor...');
+        }
+
+        function shareProfile() {
+            alert('📤 Sharing profile...');
+        }
+
+        function accountSettings() {
+            alert('⚙️ Opening account settings...');
+        }
+
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+        }
+
+        function viewAllAchievements() {
+            alert('🏆 Viewing all achievements...');
+        }
+
+        function shareGallery() {
+            alert('📤 Sharing achievement gallery...');
+        }
+
+        function joinStudyGroup() {
+            alert('👥 Joining study group...');
+        }
+
+        function challengeFriends() {
+            alert('🎯 Challenging friends...');
+        }
+    </script>
+</body>
+</html>

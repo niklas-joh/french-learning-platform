@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Overview - French Learning Platform</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <style>
+        body {
+            background: #f9fafb;
+            margin: 0;
+        }
+
+        .progress-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .progress-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .progress-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .time-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .time-button {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            background: #ffffff;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .time-button:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .time-button.active:hover {
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            background: #ffffff;
+            border: 2px solid #3b82f6;
+            color: #3b82f6;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .metrics-dashboard {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #3b82f6;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .goal-progress {
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .goal-bar {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .goal-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            width: 74%;
+            transition: width 1s ease-out;
+        }
+
+        .goal-text {
+            font-size: 0.875rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .chart-placeholder {
+            height: 120px;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .activity-dots {
+            display: flex;
+            gap: 0.25rem;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d1d5db;
+        }
+
+        .day-dot.active {
+            background: #10b981;
+        }
+
+        .accuracy-display {
+            text-align: center;
+        }
+
+        .accuracy-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .paths-section {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .path-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .path-icon {
+            font-size: 1.5rem;
+        }
+
+        .path-info {
+            flex: 1;
+        }
+
+        .path-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .path-next {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .path-progress {
+            width: 200px;
+            margin-right: 1rem;
+        }
+
+        .path-bar {
+            width: 100%;
+            height: 6px;
+            background: #f3f4f6;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .path-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            transition: width 1s ease-out;
+        }
+
+        .path-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .path-xp {
+            font-size: 0.875rem;
+            color: #f59e0b;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .skills-section {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-weight: 500;
+            color: #1f2937;
+            width: 120px;
+        }
+
+        .skill-bar {
+            flex: 1;
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            transition: width 1s ease-out;
+        }
+
+        .skill-strong { background: linear-gradient(90deg, #10b981, #34d399); }
+        .skill-good { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .skill-needs-work { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+        .skill-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            width: 100px;
+            text-align: right;
+        }
+
+        .skill-recommendation {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        .achievements-section {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .badge-item.recent {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .badge-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-name {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .badge-time {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .activity-section {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-description {
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .load-more {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn-load {
+            padding: 0.75rem 1.5rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-load:hover {
+            background: #2563eb;
+        }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .path-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .path-progress {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .skill-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .skill-name {
+                width: auto;
+            }
+
+            .skill-label {
+                width: auto;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <!-- Page Header -->
+        <div class="progress-header">
+            <h1 class="progress-title">📊 Progress Overview</h1>
+            <p class="progress-subtitle">Track your French learning journey and achievements</p>
+            
+            <div class="time-controls">
+                <button class="time-button active" onclick="changeTimeframe('week')">Week</button>
+                <button class="time-button" onclick="changeTimeframe('month')">Month</button>
+                <button class="time-button" onclick="changeTimeframe('all')">All Time</button>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-action" onclick="exportData()">📊 Export Data</button>
+                <button class="btn-action" onclick="shareProgress()">📤 Share Progress</button>
+            </div>
+        </div>
+
+        <!-- Key Metrics Dashboard -->
+        <div class="metrics-dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-icon">📈</div>
+                <h2 class="dashboard-title">This Week</h2>
+            </div>
+            
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <span class="metric-value">185</span>
+                    <span class="metric-label">XP Earned</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">7</span>
+                    <span class="metric-label">Days Streak</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">3</span>
+                    <span class="metric-label">Levels Gained</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-value">12</span>
+                    <span class="metric-label">Lessons Completed</span>
+                </div>
+            </div>
+            
+            <div class="goal-progress">
+                <div class="goal-bar">
+                    <div class="goal-fill"></div>
+                </div>
+                <div class="goal-text">74% towards weekly goal (200 XP)</div>
+            </div>
+        </div>
+
+        <!-- Progress Charts -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span>📊</span>
+                    <h3 class="chart-title">XP Trend</h3>
+                </div>
+                <div class="chart-placeholder">
+                    📈 Interactive XP chart would go here
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span>📅</span>
+                    <h3 class="chart-title">Daily Activity</h3>
+                </div>
+                <div style="text-align: center; margin: 1rem 0;">
+                    <div style="font-size: 0.875rem; color: #6b7280; margin-bottom: 1rem;">M T W T F S S</div>
+                    <div class="activity-dots">
+                        <div class="day-dot active"></div>
+                        <div class="day-dot active"></div>
+                        <div class="day-dot active"></div>
+                        <div class="day-dot"></div>
+                        <div class="day-dot active"></div>
+                        <div class="day-dot active"></div>
+                        <div class="day-dot active"></div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Active: 6/7 days</div>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-header">
+                    <span>🎯</span>
+                    <h3 class="chart-title">Accuracy</h3>
+                </div>
+                <div class="accuracy-display">
+                    <div class="accuracy-value">92%</div>
+                    <div style="font-size: 0.875rem; color: #6b7280;">Average This Week</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Paths Progress -->
+        <div class="paths-section">
+            <div class="section-header">
+                <span>🛤️</span>
+                <h2 class="section-title">Learning Paths</h2>
+            </div>
+            
+            <div class="path-item">
+                <div class="path-icon">🌱</div>
+                <div class="path-info">
+                    <div class="path-name">Beginner Foundation</div>
+                    <div class="path-next">Next: Common Adjectives</div>
+                </div>
+                <div class="path-progress">
+                    <div class="path-bar">
+                        <div class="path-fill" style="width: 80%;"></div>
+                    </div>
+                    <div class="path-stats">
+                        <span>80% (8/10)</span>
+                    </div>
+                </div>
+                <div class="path-xp">
+                    <span>⭐</span>
+                    <span>450 XP earned</span>
+                </div>
+            </div>
+            
+            <div class="path-item">
+                <div class="path-icon">✈️</div>
+                <div class="path-info">
+                    <div class="path-name">Travel French</div>
+                    <div class="path-next">Next: At the Restaurant</div>
+                </div>
+                <div class="path-progress">
+                    <div class="path-bar">
+                        <div class="path-fill" style="width: 40%;"></div>
+                    </div>
+                    <div class="path-stats">
+                        <span>40% (5/12)</span>
+                    </div>
+                </div>
+                <div class="path-xp">
+                    <span>⭐</span>
+                    <span>200 XP earned</span>
+                </div>
+            </div>
+            
+            <div class="path-item">
+                <div class="path-icon">🔥</div>
+                <div class="path-info">
+                    <div class="path-name">Conversation Practice</div>
+                    <div class="path-next">🔒 Unlock at A2 level</div>
+                </div>
+                <div class="path-progress">
+                    <div class="path-bar">
+                        <div class="path-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="path-stats">
+                        <span>0% (0/15)</span>
+                    </div>
+                </div>
+                <div class="path-xp">
+                    <span>⭐</span>
+                    <span>0 XP available</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Analysis -->
+        <div class="skills-section">
+            <div class="section-header">
+                <span>🎯</span>
+                <h2 class="section-title">Skills Analysis</h2>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">Vocabulary</div>
+                <div class="skill-bar">
+                    <div class="skill-fill skill-strong" style="width: 85%;"></div>
+                </div>
+                <div class="skill-label">85% Strong</div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">Grammar</div>
+                <div class="skill-bar">
+                    <div class="skill-fill skill-good" style="width: 65%;"></div>
+                </div>
+                <div class="skill-label">65% Good</div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">Pronunciation</div>
+                <div class="skill-bar">
+                    <div class="skill-fill skill-needs-work" style="width: 45%;"></div>
+                </div>
+                <div class="skill-label">45% Needs Work</div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">Listening</div>
+                <div class="skill-bar">
+                    <div class="skill-fill skill-good" style="width: 72%;"></div>
+                </div>
+                <div class="skill-label">72% Good</div>
+            </div>
+            
+            <div class="skill-item">
+                <div class="skill-name">Writing</div>
+                <div class="skill-bar">
+                    <div class="skill-fill skill-needs-work" style="width: 48%;"></div>
+                </div>
+                <div class="skill-label">48% Needs Work</div>
+            </div>
+            
+            <div class="skill-recommendation">
+                💡 Focus on pronunciation and writing this week!
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="achievements-section">
+            <div class="section-header">
+                <span>🏆</span>
+                <h2 class="section-title">Achievements</h2>
+            </div>
+            
+            <div class="badges-grid">
+                <div class="badge-item recent">
+                    <div class="badge-icon">🔥</div>
+                    <div class="badge-name">7-Day Streak</div>
+                    <div class="badge-time">Just earned!</div>
+                </div>
+                
+                <div class="badge-item">
+                    <div class="badge-icon">📚</div>
+                    <div class="badge-name">First Lesson</div>
+                    <div class="badge-time">Completed</div>
+                </div>
+                
+                <div class="badge-item">
+                    <div class="badge-icon">⭐</div>
+                    <div class="badge-name">100 XP</div>
+                    <div class="badge-time">Milestone</div>
+                </div>
+                
+                <div class="badge-item">
+                    <div class="badge-icon">🎯</div>
+                    <div class="badge-name">Grammar Pro</div>
+                    <div class="badge-time">3 days ago</div>
+                </div>
+                
+                <div class="badge-item">
+                    <div class="badge-icon">💬</div>
+                    <div class="badge-name">Conversational</div>
+                    <div class="badge-time">1 week ago</div>
+                </div>
+                
+                <div class="badge-item">
+                    <div class="badge-icon">🌟</div>
+                    <div class="badge-name">Rising Star</div>
+                    <div class="badge-time">2 weeks ago</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn-action" onclick="viewAllBadges()">View All Badges (12 earned, 8 available)</button>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <div class="section-header">
+                <span>📝</span>
+                <h2 class="section-title">Recent Activity</h2>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-time">Today, 2:30 PM</div>
+                <div class="activity-description">✅ Completed "Les Articles" lesson (+15 XP)</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-time">Today, 10:45 AM</div>
+                <div class="activity-description">🎯 Practiced pronunciation exercises (+10 XP)</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-time">Yesterday, 7:20 PM</div>
+                <div class="activity-description">🏆 Earned "Grammar Master" badge (+50 XP)</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-time">Yesterday, 6:30 PM</div>
+                <div class="activity-description">✅ Finished "Travel French" lesson 3 (+20 XP)</div>
+            </div>
+            
+            <div class="load-more">
+                <button class="btn-load" onclick="loadMoreActivity()">Load More Activity</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function changeTimeframe(period) {
+            // Update active button
+            document.querySelectorAll('.time-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Simulate data update
+            console.log('Changing timeframe to:', period);
+        }
+
+        function exportData() {
+            alert('📊 Exporting your learning data...');
+        }
+
+        function shareProgress() {
+            alert('📤 Opening share dialog...');
+        }
+
+        function viewAllBadges() {
+            alert('🏆 Viewing all achievements...');
+        }
+
+        function loadMoreActivity() {
+            alert('📝 Loading more activity...');
+        }
+
+        // Animate progress bars on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                // Animate goal progress
+                const goalFill = document.querySelector('.goal-fill');
+                goalFill.style.width = '74%';
+                
+                // Animate path progress bars
+                const pathFills = document.querySelectorAll('.path-fill');
+                pathFills.forEach(fill => {
+                    const targetWidth = fill.style.width;
+                    fill.style.width = '0%';
+                    setTimeout(() => {
+                        fill.style.width = targetWidth;
+                    }, 200);
+                });
+                
+                // Animate skill bars
+                const skillFills = document.querySelectorAll('.skill-fill');
+                skillFills.forEach(fill => {
+                    const targetWidth = fill.style.width;
+                    fill.style.width = '0%';
+                    setTimeout(() => {
+                        fill.style.width = targetWidth;
+                    }, 300);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
