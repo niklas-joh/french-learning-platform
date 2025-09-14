@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice Page - French Learning Platform</title>
+    <link rel="stylesheet" href="shared-styles.css">
+    <style>
+        .practice-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .practice-tabs {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .practice-tab {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .practice-tab:hover,
+        .practice-tab.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .daily-goal {
+            margin-top: 1rem;
+        }
+
+        .goal-progress {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .goal-progress-fill {
+            background: #10b981;
+            height: 100%;
+            width: 80%;
+            transition: width 0.3s ease;
+        }
+
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .exercise-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .exercise-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .exercise-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .exercise-count {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        .exercise-button:hover {
+            background: #2563eb;
+        }
+
+        .active-exercise {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .active-exercise.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exercise-question {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .exercise-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-button {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .option-button:hover {
+            background: #f3f4f6;
+            border-color: #3b82f6;
+        }
+
+        .option-button.selected {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+        }
+
+        .option-button.correct {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #047857;
+        }
+
+        .option-button.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+
+        .exercise-hint {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .exercise-progress {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .progress-bar {
+            background: #f3f4f6;
+            height: 8px;
+            border-radius: 4px;
+            flex-grow: 1;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #3b82f6;
+            height: 100%;
+            width: 32%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .submit-button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .submit-button:hover {
+            background: #059669;
+        }
+
+        .submit-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .exercise-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .practice-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Practice Header -->
+        <div class="practice-header">
+            <h1>🎯 Daily Practice</h1>
+            <p>Strengthen your French skills with targeted exercises</p>
+            
+            <div class="practice-tabs">
+                <div class="practice-tab active">Review</div>
+                <div class="practice-tab">Learn New</div>
+                <div class="practice-tab">Mixed Practice</div>
+                <div class="practice-tab">Weak Areas</div>
+            </div>
+            
+            <div class="daily-goal">
+                <div>Today's Goal: 15 minutes</div>
+                <div class="goal-progress">
+                    <div class="goal-progress-fill"></div>
+                </div>
+                <small>12/15 minutes completed</small>
+            </div>
+        </div>
+
+        <!-- Exercise Types Grid -->
+        <div class="exercise-grid">
+            <div class="exercise-card" onclick="startExercise('vocabulary')">
+                <span class="exercise-icon">📝</span>
+                <div class="exercise-title">Vocabulary</div>
+                <div class="exercise-count">25 cards due</div>
+                <button class="exercise-button">Practice</button>
+            </div>
+
+            <div class="exercise-card" onclick="startExercise('listening')">
+                <span class="exercise-icon">🎵</span>
+                <div class="exercise-title">Listening</div>
+                <div class="exercise-count">12 exercises</div>
+                <button class="exercise-button">Practice</button>
+            </div>
+
+            <div class="exercise-card" onclick="startExercise('speaking')">
+                <span class="exercise-icon">🗣️</span>
+                <div class="exercise-title">Speaking</div>
+                <div class="exercise-count">8 phrases</div>
+                <button class="exercise-button">Practice</button>
+            </div>
+
+            <div class="exercise-card" onclick="startExercise('grammar')">
+                <span class="exercise-icon">📚</span>
+                <div class="exercise-title">Grammar</div>
+                <div class="exercise-count">18 concepts</div>
+                <button class="exercise-button">Practice</button>
+            </div>
+
+            <div class="exercise-card" onclick="startExercise('writing')">
+                <span class="exercise-icon">✍️</span>
+                <div class="exercise-title">Writing</div>
+                <div class="exercise-count">5 prompts</div>
+                <button class="exercise-button">Practice</button>
+            </div>
+
+            <div class="exercise-card" onclick="startExercise('translation')">
+                <span class="exercise-icon">🔄</span>
+                <div class="exercise-title">Translation</div>
+                <div class="exercise-count">20 sentences</div>
+                <button class="exercise-button">Practice</button>
+            </div>
+        </div>
+
+        <!-- Active Exercise Interface -->
+        <div class="active-exercise" id="active-exercise">
+            <h2 style="text-align: center; color: #3b82f6; margin-bottom: 2rem;">🎯 Vocabulary Practice</h2>
+            
+            <div class="exercise-question">
+                What does "bibliothèque" mean in English?
+            </div>
+
+            <div class="exercise-options">
+                <button class="option-button" onclick="selectOption(this, false)">Bank</button>
+                <button class="option-button" onclick="selectOption(this, true)">Library</button>
+                <button class="option-button" onclick="selectOption(this, false)">Restaurant</button>
+                <button class="option-button" onclick="selectOption(this, false)">Hospital</button>
+            </div>
+
+            <div class="exercise-hint">
+                💡 Hint: It's a place where you find books
+            </div>
+
+            <div class="exercise-progress">
+                <span>Progress: 8/25</span>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <button class="submit-button" id="submit-button" onclick="submitAnswer()" disabled>
+                    Submit Answer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedOption = null;
+        let currentExerciseType = null;
+
+        function startExercise(type) {
+            currentExerciseType = type;
+            const activeExercise = document.getElementById('active-exercise');
+            activeExercise.classList.add('show');
+            activeExercise.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectOption(button, isCorrect) {
+            // Clear previous selections
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Mark current selection
+            button.classList.add('selected');
+            selectedOption = { button, isCorrect };
+            
+            // Enable submit button
+            document.getElementById('submit-button').disabled = false;
+        }
+
+        function submitAnswer() {
+            if (!selectedOption) return;
+
+            const buttons = document.querySelectorAll('.option-button');
+            
+            // Show correct/incorrect states
+            buttons.forEach(btn => {
+                if (btn === selectedOption.button) {
+                    btn.classList.add(selectedOption.isCorrect ? 'correct' : 'incorrect');
+                } else if (btn.textContent === 'Library') {
+                    btn.classList.add('correct');
+                }
+                btn.style.cursor = 'default';
+            });
+
+            // Update submit button
+            const submitBtn = document.getElementById('submit-button');
+            submitBtn.textContent = selectedOption.isCorrect ? '✓ Correct! Next Question' : '✗ Try Again';
+            submitBtn.style.background = selectedOption.isCorrect ? '#10b981' : '#ef4444';
+
+            // Simulate progress update
+            setTimeout(() => {
+                if (selectedOption.isCorrect) {
+                    // Move to next question (simplified)
+                    resetQuestion();
+                    updateProgress();
+                }
+            }, 2000);
+        }
+
+        function resetQuestion() {
+            // Reset all option buttons
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('selected', 'correct', 'incorrect');
+                btn.style.cursor = 'pointer';
+            });
+
+            // Reset submit button
+            const submitBtn = document.getElementById('submit-button');
+            submitBtn.textContent = 'Submit Answer';
+            submitBtn.style.background = '#10b981';
+            submitBtn.disabled = true;
+
+            selectedOption = null;
+        }
+
+        function updateProgress() {
+            const progressFill = document.querySelector('.progress-fill');
+            const currentWidth = parseInt(progressFill.style.width) || 32;
+            const newWidth = Math.min(currentWidth + 4, 100);
+            progressFill.style.width = newWidth + '%';
+
+            // Update daily goal progress too
+            const goalFill = document.querySelector('.goal-progress-fill');
+            const goalWidth = parseInt(goalFill.style.width) || 80;
+            const newGoalWidth = Math.min(goalWidth + 2, 100);
+            goalFill.style.width = newGoalWidth + '%';
+        }
+
+        // Tab functionality
+        document.querySelectorAll('.practice-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.practice-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

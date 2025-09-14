@@ -48,31 +48,56 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
         
-        .mockup-card h3 {
+        .card-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
             margin-top: 0;
             margin-bottom: 15px;
             font-size: 1.5rem;
             color: white;
+            text-align: center;
         }
         
-        .mockup-card p {
+        .card-description {
             margin-bottom: 20px;
             opacity: 0.9;
             line-height: 1.6;
+            text-align: center;
         }
         
-        .view-mockup-btn {
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary, .btn-secondary {
             display: inline-block;
             padding: 12px 24px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
             text-decoration: none;
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
-        .view-mockup-btn:hover {
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-primary:hover, .btn-secondary:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
@@ -109,60 +134,146 @@
             left: 0;
             top: 8px;
         }
+
+        .section-divider {
+            text-align: center;
+            margin: 60px 0 40px;
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 <body>
     <div class="mockup-index">
         <h1>Phase 4 Dashboard Transformation</h1>
         <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px; opacity: 0.9;">
-            Interactive Design Mockups - Click to view each component
+            Complete Design System - Interactive Mockups for Modern Learning Experience
         </p>
         
         <div class="overview-section">
             <h2>Overview</h2>
-            <p>These interactive mockups demonstrate the enhanced dashboard components with gamification features, maintaining 95% code reuse from existing infrastructure.</p>
+            <p>These interactive mockups demonstrate the complete dashboard transformation with modern, clean design, maintaining 95% infrastructure reuse while delivering a state-of-the-art learning experience.</p>
             <ul>
-                <li>Enhanced header with gamification overlays</li>
-                <li>Desktop gamification sidebar with progress tracking</li>
-                <li>Transformed lesson card grid with AI personalization</li>
-                <li>Interactive lesson cards with progress rings and badges</li>
+                <li>Learning paths with structured progression</li>
+                <li>Individual lesson interface with interactive exercises</li>
+                <li>Comprehensive progress tracking and analytics</li>
+                <li>User profile with social learning features</li>
+                <li>Practice page with adaptive exercises</li>
+                <li>Enhanced dashboard components with gamification</li>
             </ul>
         </div>
         
+        <div class="section-divider">🎯 Core Learning Experience</div>
+        
         <div class="mockup-grid">
             <div class="mockup-card">
-                <h3>🎯 Enhanced Header</h3>
-                <p>Minimal 30-line enhancement adding gamification overlays to the existing gradient header while maintaining all current functionality.</p>
-                <a href="enhanced-header-mockup.html" class="view-mockup-btn">View Mockup</a>
+                <div class="card-icon">�</div>
+                <h3 class="card-title">Homepage Dashboard</h3>
+                <p class="card-description">Modern lesson card grid with AI curation and gamification elements</p>
+                <div class="card-actions">
+                    <a href="homepage-lesson-grid-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="homepage-lesson-grid-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
             </div>
-            
+
             <div class="mockup-card">
-                <h3>📊 Gamification Sidebar</h3>
-                <p>Desktop-only sidebar with daily goals, leaderboard, and user stats. Hidden on mobile/tablet using responsive design.</p>
-                <a href="gamification-sidebar-mockup.html" class="view-mockup-btn">View Mockup</a>
+                <div class="card-icon">🛤️</div>
+                <h3 class="card-title">Learning Paths</h3>
+                <p class="card-description">Structured learning journeys with dependency management and progress tracking</p>
+                <div class="card-actions">
+                    <a href="learning-paths-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="learning-paths-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
             </div>
-            
+
             <div class="mockup-card">
-                <h3>📚 Lesson Grid Layout</h3>
-                <p>Complete homepage transformation showing the gamified lesson card dashboard with enhanced header and sidebar integration.</p>
-                <a href="homepage-lesson-grid-mockup.html" class="view-mockup-btn">View Mockup</a>
+                <div class="card-icon">📖</div>
+                <h3 class="card-title">Individual Lesson</h3>
+                <p class="card-description">Immersive lesson interface with interactive exercises and progress feedback</p>
+                <div class="card-actions">
+                    <a href="individual-lesson-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="individual-lesson-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
             </div>
-            
+
             <div class="mockup-card">
-                <h3>📖 Lesson Card Component</h3>
-                <p>Enhanced QuickActionCard with progress rings, AI personalization badges, and gamification elements while maintaining 95% code reuse.</p>
-                <a href="lesson-card-component-mockup.html" class="view-mockup-btn">View Mockup</a>
+                <div class="card-icon">🎯</div>
+                <h3 class="card-title">Practice Page</h3>
+                <p class="card-description">Adaptive practice exercises with spaced repetition and skill targeting</p>
+                <div class="card-actions">
+                    <a href="practice-page-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="practice-page-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider">📊 Progress & Profile</div>
+        
+        <div class="mockup-grid">
+            <div class="mockup-card">
+                <div class="card-icon">📊</div>
+                <h3 class="card-title">Progress Overview</h3>
+                <p class="card-description">Comprehensive learning analytics with achievement tracking and goal setting</p>
+                <div class="card-actions">
+                    <a href="progress-page-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="progress-page-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
+            </div>
+
+            <div class="mockup-card">
+                <div class="card-icon">👤</div>
+                <h3 class="card-title">User Profile</h3>
+                <p class="card-description">Account management, learning preferences, and social learning features</p>
+                <div class="card-actions">
+                    <a href="profile-page-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="profile-page-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider">🧩 Component Library</div>
+        
+        <div class="mockup-grid">
+            <div class="mockup-card">
+                <div class="card-icon">🎴</div>
+                <h3 class="card-title">Lesson Cards</h3>
+                <p class="card-description">Interactive lesson card component with progress indicators and AI personalization</p>
+                <div class="card-actions">
+                    <a href="lesson-card-component-mockup.html" class="btn-primary">View Demo</a>
+                    <a href="lesson-card-component-mockup.md" class="btn-secondary">Read Docs</a>
+                </div>
+            </div>
+
+            <div class="mockup-card">
+                <div class="card-icon">📋</div>
+                <h3 class="card-title">Enhanced Header</h3>
+                <p class="card-description">Clean header design with gamification overlays and streak indicators</p>
+                <div class="card-actions">
+                    <a href="enhanced-header-mockup.md" class="btn-primary">View Design</a>
+                </div>
+            </div>
+
+            <div class="mockup-card">
+                <div class="card-icon">🎮</div>
+                <h3 class="card-title">Gamification Sidebar</h3>
+                <p class="card-description">Desktop sidebar with daily goals, leaderboard, and user statistics</p>
+                <div class="card-actions">
+                    <a href="gamification-sidebar-mockup.md" class="btn-primary">View Design</a>
+                </div>
             </div>
         </div>
         
         <div class="overview-section">
             <h2>Implementation Strategy</h2>
-            <p>All components leverage existing infrastructure with minimal additions:</p>
+            <p>All components leverage existing infrastructure with strategic enhancements:</p>
             <ul>
-                <li>Enhanced Header: +30 lines to existing component</li>
-                <li>Gamification Sidebar: +50 lines as layout addition</li>
-                <li>Lesson Cards: +40 lines to existing QuickActionCard</li>
-                <li>Total: ~120 lines across existing components</li>
+                <li>95% code reuse from existing dashboard infrastructure</li>
+                <li>Modern, clean design system with consistent styling</li>
+                <li>Responsive layouts optimized for all device sizes</li>
+                <li>Comprehensive accessibility features (WCAG 2.1 AA)</li>
+                <li>Performance-optimized with smooth animations</li>
+                <li>Gamification elements seamlessly integrated</li>
+                <li>Total additions: ~400 lines across existing components</li>
             </ul>
         </div>
     </div>
