@@ -14,7 +14,9 @@
     "db:reset": "rimraf database/french_learning.db database/test.sqlite3",
     "db:seed": "npm --prefix server run db:seed",
     "db:setup": "run-s db:rebuild migrate db:seed db:status",
-    "db:rebuild": "run-s db:reset"
+    "db:rebuild": "run-s db:reset",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "keywords": [],
   "author": "",
@@ -37,15 +39,27 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@chromatic-com/storybook": "^4.1.1",
+    "@storybook/addon-a11y": "^9.1.6",
+    "@storybook/addon-docs": "^9.1.6",
+    "@storybook/addon-vitest": "^9.1.6",
+    "@storybook/react-vite": "^9.1.6",
     "@types/bcryptjs": "^3.0.0",
     "@types/uuid": "^10.0.0",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "knex": "^3.1.0",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.55.0",
     "postcss": "^8.5.5",
+    "prop-types": "^15.8.1",
     "rimraf": "^6.0.1",
+    "storybook": "^9.1.6",
     "tailwindcss": "^4.1.10",
-    "tsx": "^4.20.5"
+    "tsx": "^4.20.5",
+    "vitest": "^3.2.4"
   }
 }

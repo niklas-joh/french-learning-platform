@@ -74,3 +74,5 @@ memory/bank/
 
 # Git directory (uncomment if you want to ignore the .git directory, but usually not recommended)
 .git/
+*storybook.log
+storybook-static
