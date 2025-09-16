@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Box } from '@mui/material';
+import { Button, Box, useTheme } from '@mui/material';
+import { getDifficultyColor, getFeatureCategoryColor } from '../../utils/designSystemHelpers';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
@@ -23,84 +24,92 @@ const AtomicButton = ({
   onClick?: () => void;
   sx?: object;
 }) => {
+  const theme = useTheme();
+  
   const getButtonProps = () => {
     switch (variant) {
       case 'primary':
         return {
           sx: {
-            background: '#3b82f6',
-            color: 'white',
+            background: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
             border: 'none',
-            borderRadius: '8px',
-            padding: size === 'small' ? '8px 16px' : size === 'large' ? '16px 32px' : '12px 24px',
+            borderRadius: theme.shape.borderRadius,
+            padding: size === 'small' ? theme.spacing(1, 2) : size === 'large' ? theme.spacing(2, 4) : theme.spacing(1.5, 3),
             fontSize: size === 'small' ? '0.875rem' : size === 'large' ? '1.125rem' : '1rem',
             fontWeight: 600,
             cursor: disabled ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s ease',
+            transition: theme.transitions.create(['background-color', 'transform', 'box-shadow']),
             opacity: disabled ? 0.6 : 1,
             '&:hover': disabled ? {} : {
-              background: '#2563eb',
+              background: theme.palette.primary.dark,
               transform: 'translateY(-1px)',
+              boxShadow: theme.shadows[2],
             },
           }
         };
       case 'secondary':
         return {
           sx: {
-            background: 'white',
-            color: '#3b82f6',
-            border: '2px solid #3b82f6',
-            borderRadius: '8px',
-            padding: size === 'small' ? '8px 16px' : size === 'large' ? '16px 32px' : '12px 24px',
+            background: theme.palette.background.paper,
+            color: theme.palette.primary.main,
+            border: `2px solid ${theme.palette.primary.main}`,
+            borderRadius: theme.shape.borderRadius,
+            padding: size === 'small' ? theme.spacing(1, 2) : size === 'large' ? theme.spacing(2, 4) : theme.spacing(1.5, 3),
             fontSize: size === 'small' ? '0.875rem' : size === 'large' ? '1.125rem' : '1rem',
-            fontWeight: 500,
+            fontWeight: theme.typography.fontWeightMedium || 500,
             cursor: disabled ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s ease',
+            transition: theme.transitions.create(['background-color', 'color']),
             opacity: disabled ? 0.6 : 1,
             '&:hover': disabled ? {} : {
-              background: '#3b82f6',
-              color: 'white',
+              background: theme.palette.primary.main,
+              color: theme.palette.primary.contrastText,
             },
           }
         };
-      case 'action':
+      case 'action': {
+        const actionColors = getDifficultyColor('beginner', theme);
         return {
           sx: {
-            background: '#10b981',
-            color: 'white',
+            background: actionColors.main,
+            color: theme.palette.common.white,
             border: 'none',
-            borderRadius: '8px',
-            padding: size === 'small' ? '8px 16px' : size === 'large' ? '16px 32px' : '12px 24px',
+            borderRadius: theme.shape.borderRadius,
+            padding: size === 'small' ? theme.spacing(1, 2) : size === 'large' ? theme.spacing(2, 4) : theme.spacing(1.5, 3),
             fontSize: size === 'small' ? '0.875rem' : size === 'large' ? '1.125rem' : '1rem',
             fontWeight: 600,
             cursor: disabled ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s ease',
+            transition: theme.transitions.create(['background-color', 'transform']),
             opacity: disabled ? 0.6 : 1,
             '&:hover': disabled ? {} : {
-              background: '#059669',
+              background: theme.palette.success.dark,
+              transform: 'translateY(-1px)',
             },
           }
         };
-      case 'lesson':
+      }
+      case 'lesson': {
+        const lessonColors = getFeatureCategoryColor('ai', theme);
         return {
           sx: {
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
+            background: `linear-gradient(135deg, ${lessonColors.main} 0%, ${lessonColors.palette?.dark || theme.palette.primary.dark} 100%)`,
+            color: theme.palette.common.white,
             border: 'none',
-            borderRadius: '12px',
-            padding: size === 'small' ? '8px 16px' : size === 'large' ? '16px 32px' : '12px 24px',
+            borderRadius: theme.spacing(1.5),
+            padding: size === 'small' ? theme.spacing(1, 2) : size === 'large' ? theme.spacing(2, 4) : theme.spacing(1.5, 3),
             fontSize: size === 'small' ? '0.875rem' : size === 'large' ? '1.125rem' : '1rem',
             fontWeight: 600,
             cursor: disabled ? 'not-allowed' : 'pointer',
-            transition: 'all 0.2s ease',
+            transition: theme.transitions.create(['transform', 'box-shadow']),
             opacity: disabled ? 0.6 : 1,
-            boxShadow: '0 2px 10px rgba(102, 126, 234, 0.3)',
+            boxShadow: `0 2px 10px ${lessonColors.light}`,
             '&:hover': disabled ? {} : {
               transform: 'translateY(-2px)',
-              boxShadow: '0 4px 20px rgba(102, 126, 234, 0.4)',
+              boxShadow: `0 4px 20px ${lessonColors.light}`,
             },
           }
         };
+      }
       default:
         return {};
     }

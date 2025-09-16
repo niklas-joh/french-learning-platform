@@ -1,54 +1,61 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import React from 'react';
+import { getDifficultyColor, getFeatureCategoryColor } from '../../utils/designSystemHelpers';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
 
 // Atomic components (simplified versions for this story)
 const AtomicBadge = ({ variant, children, icon }: any) => {
+  const theme = useTheme();
+  
   const getStyles = () => {
     switch (variant) {
       case 'daily-goal':
         return {
           background: 'rgba(255, 255, 255, 0.2)',
           border: '1px solid rgba(255, 255, 255, 0.3)',
-          color: 'white',
+          color: theme.palette.common.white,
           backdropFilter: 'blur(10px)',
-          borderRadius: '8px',
-          padding: '6px 10px',
+          borderRadius: theme.shape.borderRadius,
+          padding: theme.spacing(0.75, 1.25),
           fontSize: '0.75rem',
           fontWeight: 600,
           display: 'flex',
           alignItems: 'center',
-          gap: '4px'
+          gap: theme.spacing(0.5)
         };
-      case 'streak':
+      case 'streak': {
+        const grammarColors = getFeatureCategoryColor('grammar', theme);
         return {
-          background: '#fef3c7',
-          border: '1px solid #f59e0b',
-          color: '#92400e',
-          borderRadius: '8px',
-          padding: '4px 8px',
+          background: grammarColors.bg,
+          border: `1px solid ${grammarColors.main}`,
+          color: grammarColors.main,
+          borderRadius: theme.shape.borderRadius,
+          padding: theme.spacing(0.5, 1),
           fontSize: '0.75rem',
           fontWeight: 600,
           display: 'flex',
           alignItems: 'center',
-          gap: '4px'
+          gap: theme.spacing(0.5)
         };
-      case 'rank':
+      }
+      case 'rank': {
+        const grammarColors = getFeatureCategoryColor('grammar', theme);
         return {
-          background: 'linear-gradient(45deg, rgba(255, 215, 0, 0.9), rgba(255, 193, 7, 0.9))',
-          color: '#333',
-          borderRadius: '8px',
-          padding: '4px 8px',
+          background: `linear-gradient(45deg, ${grammarColors.light}, ${grammarColors.main})`,
+          color: theme.palette.text.primary,
+          borderRadius: theme.shape.borderRadius,
+          padding: theme.spacing(0.5, 1),
           fontSize: '0.75rem',
           fontWeight: 700,
           display: 'flex',
           alignItems: 'center',
-          gap: '4px',
-          boxShadow: '0 2px 8px rgba(255, 193, 7, 0.3)'
+          gap: theme.spacing(0.5),
+          boxShadow: `0 2px 8px ${grammarColors.light}`
         };
+      }
       default:
         return {};
     }
@@ -130,6 +137,7 @@ const EnhancedHeaderOrganism = ({
   };
   variant?: 'default' | 'compact' | 'detailed';
 }) => {
+  const theme = useTheme();
   const getGreeting = (): string => {
     const hour = new Date().getHours();
     let timeGreeting: string;
@@ -158,13 +166,15 @@ const EnhancedHeaderOrganism = ({
     return "Ready for your French lesson today?";
   };
 
+  const aiColors = getFeatureCategoryColor('ai', theme);
+  
   return (
     <Box
       sx={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        padding: variant === 'compact' ? 2 : variant === 'detailed' ? 4 : 3,
-        borderRadius: '16px',
+        background: `linear-gradient(135deg, ${aiColors.main} 0%, ${aiColors.light} 100%)`,
+        color: theme.palette.common.white,
+        padding: variant === 'compact' ? theme.spacing(2) : variant === 'detailed' ? theme.spacing(4) : theme.spacing(3),
+        borderRadius: theme.spacing(2),
         position: 'relative',
         overflow: 'hidden',
         minHeight: variant === 'compact' ? '120px' : variant === 'detailed' ? '200px' : '160px',
@@ -535,7 +545,7 @@ export const ResponsiveDemo: Story = {
   render: () => (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
       <Box sx={{ width: '100%', maxWidth: '800px' }}>
-        <Typography variant="h6" sx={{ mb: 1, color: '#6b7280', textAlign: 'center' }}>
+        <Typography variant="h6" sx={{ mb: 1, color: (theme) => theme.palette.text.secondary, textAlign: 'center' }}>
           Desktop View
         </Typography>
         <EnhancedHeaderOrganism
@@ -555,7 +565,7 @@ export const ResponsiveDemo: Story = {
       </Box>
       
       <Box sx={{ width: '100%', maxWidth: '500px' }}>
-        <Typography variant="h6" sx={{ mb: 1, color: '#6b7280', textAlign: 'center' }}>
+        <Typography variant="h6" sx={{ mb: 1, color: (theme) => theme.palette.text.secondary, textAlign: 'center' }}>
           Tablet View
         </Typography>
         <EnhancedHeaderOrganism
@@ -575,7 +585,7 @@ export const ResponsiveDemo: Story = {
       </Box>
       
       <Box sx={{ width: '100%', maxWidth: '350px' }}>
-        <Typography variant="h6" sx={{ mb: 1, color: '#6b7280', textAlign: 'center' }}>
+        <Typography variant="h6" sx={{ mb: 1, color: (theme) => theme.palette.text.secondary, textAlign: 'center' }}>
           Mobile View
         </Typography>
         <EnhancedHeaderOrganism

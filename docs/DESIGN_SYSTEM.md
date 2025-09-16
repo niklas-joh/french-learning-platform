@@ -25,42 +25,62 @@ This document outlines the comprehensive design system for the French learning p
 
 ### Brand Colors
 
-#### Primary Palette
+#### Primary Palette - Subtle & Clean
 ```css
-/* French Blue - Primary Brand Color */
---primary-blue: #6366F1;
---primary-blue-light: #818CF8;
---primary-blue-dark: #4F46E5;
+/* Neutral Foundation - Primary Background Colors */
+--background-primary: #FFFFFF;
+--background-secondary: #FAFBFC;
+--background-tertiary: #F4F5F7;
 
-/* Purple Accent - Secondary Brand Color */  
---purple-accent: #8B5CF6;
---purple-accent-light: #A78BFA;
---purple-accent-dark: #7C3AED;
-
-/* Neutral Grays */
---gray-50: #F9FAFB;
---gray-100: #F3F4F6;
---gray-200: #E5E7EB;
---gray-300: #D1D5DB;
---gray-400: #9CA3AF;
+/* Subtle Grays - Main Interface Colors */
+--gray-50: #FAFBFC;
+--gray-100: #F4F5F7;
+--gray-200: #E7E8EA;
+--gray-300: #D3D5D9;
+--gray-400: #9AA0A6;
 --gray-500: #6B7280;
---gray-600: #4B5563;
---gray-700: #374151;
---gray-800: #1F2937;
---gray-900: #111827;
+--gray-600: #4E5563;
+--gray-700: #394150;
+--gray-800: #252A33;
+--gray-900: #1A1F26;
+
+/* Colorful Accents - Strategic Use Only */
+--accent-green: #16A34A;        /* Beginner level */
+--accent-green-light: #22C55E;
+--accent-green-bg: #F0FDF4;
+
+--accent-amber: #D97706;        /* Intermediate level */
+--accent-amber-light: #F59E0B;
+--accent-amber-bg: #FFFBEB;
+
+--accent-red: #DC2626;          /* Advanced level */
+--accent-red-light: #EF4444;
+--accent-red-bg: #FEF2F2;
+
+--accent-blue: #2563EB;         /* Interactive elements */
+--accent-blue-light: #3B82F6;
+--accent-blue-bg: #EFF6FF;
+
+--accent-purple: #7C3AED;       /* AI features */
+--accent-purple-light: #8B5CF6;
+--accent-purple-bg: #F5F3FF;
+
+--accent-orange: #EA580C;       /* Grammar/Practice */
+--accent-orange-light: #F97316;
+--accent-orange-bg: #FFF7ED;
 
 /* Semantic Colors */
---success-green: #10B981;
---warning-amber: #F59E0B;
---error-red: #EF4444;
---info-blue: #3B82F6;
+--success: #16A34A;
+--warning: #D97706;
+--error: #DC2626;
+--info: #2563EB;
 ```
 
 #### Usage Guidelines
-- **French Blue (#6366F1)**: Primary actions, navigation, progress indicators
-- **Purple Accent (#8B5CF6)**: Secondary actions, gamification elements, AI features
-- **White (#FFFFFF)**: Card backgrounds, content areas
-- **Gray Palette**: Text hierarchy, borders, subtle backgrounds
+- **Background Colors**: Clean white and very light grey foundations
+- **Colorful Accents**: Used sparingly for badges, difficulty levels, and feature categorization
+- **Text Colors**: Primarily grey scale with occasional colorful accents for emphasis
+- **Interactive Elements**: Subtle hover states with minimal color changes
 
 ### Typography
 
@@ -117,45 +137,116 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 
 #### Base Card Style
 ```css
 .card-base {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: #FFFFFF;
+  border: 1px solid #E7E8EA;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease-in-out;
 }
 
 .card-base:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-color: #D3D5D9;
 }
 ```
 
 #### Card Variations
-- **Standard Card**: Basic content containers with subtle shadows
-- **Interactive Card**: Hover effects with transform and enhanced shadows
-- **Glassmorphism Card**: Backdrop blur effects for overlay content
-- **Gradient Card**: AI-focused cards with subtle gradient backgrounds
+- **Standard Card**: Clean white background with minimal borders and shadows
+- **Lesson Card**: Subtle background with colorful accent borders based on difficulty
+- **Progress Card**: Light grey background (#F4F5F7) for dashboard sections
+- **Feature Card**: Clean white with strategic colorful icons or accents
 
 ### Button System
 
 #### Button Hierarchy
-1. **Primary**: French blue background, white text - main actions
-2. **Secondary**: White background, French blue border and text - secondary actions
-3. **Text**: No background, French blue text - tertiary actions
-4. **Icon**: Icon-only buttons with consistent sizing
+1. **Primary**: Dark grey background (#252A33), white text - main actions like "Continue"
+2. **Secondary**: White background, subtle border (#E7E8EA), grey text - secondary actions
+3. **Text**: No background, grey text (#4E5563) - tertiary actions
+4. **Icon**: Icon-only buttons with subtle grey backgrounds
+
+#### Button Styles
+```css
+/* Primary Button */
+.btn-primary {
+  background: #252A33;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #394150;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: #FFFFFF;
+  color: #4E5563;
+  border: 1px solid #E7E8EA;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-secondary:hover {
+  border-color: #D3D5D9;
+  background: #FAFBFC;
+}
+```
 
 #### Button Sizes
 - **Large**: 48px height - hero sections, primary CTAs
-- **Medium**: 40px height - standard forms, cards
+- **Medium**: 40px height - standard forms, cards  
 - **Small**: 32px height - compact interfaces, inline actions
 
 ### Badge and Status System
 
-#### Badge Types
-- **XP Badge**: Gamification progress with purple accent
-- **Level Badge**: User progression with gradient backgrounds
-- **Status Badge**: Success/warning/error states with semantic colors
-- **Difficulty Badge**: Content difficulty with color-coded system
+#### Badge Types and Colors
+- **Difficulty Badges**: Strategic use of accent colors
+  - **Beginner**: Green accent (#16A34A) with light background (#F0FDF4)
+  - **Intermediate**: Amber accent (#D97706) with light background (#FFFBEB)
+  - **Advanced**: Red accent (#DC2626) with light background (#FEF2F2)
+- **Feature Category Badges**:
+  - **Grammar/Practice**: Orange accent (#EA580C) with light background (#FFF7ED)
+  - **AI Features**: Purple accent (#7C3AED) with light background (#F5F3FF)
+  - **Interactive Elements**: Blue accent (#2563EB) with light background (#EFF6FF)
+- **Progress Badges**: XP counters with subtle grey backgrounds and colorful text accents
+- **Status Badges**: Success/warning/error states with corresponding semantic colors
+
+#### Badge Styling
+```css
+.badge-base {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* Difficulty Badges */
+.badge-beginner {
+  background: #F0FDF4;
+  color: #16A34A;
+  border: 1px solid #BBF7D0;
+}
+
+.badge-intermediate {
+  background: #FFFBEB;
+  color: #D97706;
+  border: 1px solid #FED7AA;
+}
+
+.badge-advanced {
+  background: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+}
+```
 
 ### Animation Guidelines
 
@@ -372,14 +463,45 @@ const aiCardStyle = {
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#6366F1',
-      light: '#818CF8',
-      dark: '#4F46E5',
+      main: '#252A33',      // Dark grey for primary buttons
+      light: '#394150',     // Hover state
+      dark: '#1A1F26',     // Pressed state
     },
     secondary: {
-      main: '#8B5CF6',
-      light: '#A78BFA',
-      dark: '#7C3AED',
+      main: '#4E5563',      // Secondary text/buttons
+      light: '#6B7280',     // Lighter grey
+      dark: '#394150',     // Darker grey
+    },
+    background: {
+      default: '#FAFBFC',   // Page background
+      paper: '#FFFFFF',     // Card background
+    },
+    text: {
+      primary: '#252A33',   // Primary text
+      secondary: '#4E5563', // Secondary text
+      disabled: '#9AA0A6',  // Disabled text
+    },
+    divider: '#E7E8EA',     // Border colors
+    // Accent colors for specific use cases
+    success: {
+      main: '#16A34A',
+      light: '#22C55E',
+      dark: '#15803D',
+    },
+    warning: {
+      main: '#D97706',
+      light: '#F59E0B',
+      dark: '#B45309',
+    },
+    error: {
+      main: '#DC2626',
+      light: '#EF4444',
+      dark: '#B91C1C',
+    },
+    info: {
+      main: '#2563EB',
+      light: '#3B82F6',
+      dark: '#1D4ED8',
     }
   },
   typography: {
@@ -392,26 +514,68 @@ const theme = createTheme({
       'Arial',
       'sans-serif'
     ].join(','),
+    h1: { fontWeight: 600, color: '#252A33' },
+    h2: { fontWeight: 600, color: '#252A33' },
+    h3: { fontWeight: 600, color: '#252A33' },
+    h4: { fontWeight: 500, color: '#252A33' },
+    h5: { fontWeight: 500, color: '#252A33' },
+    h6: { fontWeight: 500, color: '#252A33' },
+    body1: { color: '#4E5563' },
+    body2: { color: '#6B7280' },
   },
   shape: {
-    borderRadius: 12,
-  }
+    borderRadius: 16,  // Increased for more modern look
+  },
+  shadows: [
+    'none',
+    '0 1px 2px rgba(0, 0, 0, 0.04)',
+    '0 2px 8px rgba(0, 0, 0, 0.08)',
+    '0 4px 12px rgba(0, 0, 0, 0.12)',
+    // ... extend as needed with subtle shadows
+  ] as any,
 });
 ```
 
 ### Styling Patterns
 ```typescript
-// Consistent sx prop patterns
+// Consistent sx prop patterns for the new subtle design
 const cardStyles = {
-  background: '#ffffff',
-  border: '1px solid #e5e7eb',
-  borderRadius: '12px',
-  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+  background: '#FFFFFF',
+  border: '1px solid #E7E8EA',
+  borderRadius: '16px',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
   transition: 'all 0.2s ease-in-out',
   '&:hover': {
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-    transform: 'translateY(-2px)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+    borderColor: '#D3D5D9',
   }
+};
+
+// Lesson card with difficulty accent
+const lessonCardStyles = {
+  ...cardStyles,
+  position: 'relative',
+  '&.beginner': {
+    borderTopColor: '#16A34A',
+    borderTopWidth: '3px',
+  },
+  '&.intermediate': {
+    borderTopColor: '#D97706',
+    borderTopWidth: '3px',
+  },
+  '&.advanced': {
+    borderTopColor: '#DC2626',
+    borderTopWidth: '3px',
+  }
+};
+
+// Progress/Dashboard card with subtle background
+const dashboardCardStyles = {
+  background: '#F4F5F7',
+  border: '1px solid #E7E8EA',
+  borderRadius: '16px',
+  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+  transition: 'all 0.2s ease-in-out',
 };
 ```
 
@@ -519,10 +683,16 @@ export default React.memo(Component);
 
 ## Quick Reference
 
-### Color Palette
-- Primary: #6366F1 (French Blue)
-- Secondary: #8B5CF6 (Purple Accent)
-- Success: #10B981, Warning: #F59E0B, Error: #EF4444
+### Updated Color Palette - Subtle & Clean
+**Primary Greys:**
+- Background: #FFFFFF (primary), #FAFBFC (secondary), #F4F5F7 (tertiary)
+- Text: #252A33 (primary), #4E5563 (secondary), #6B7280 (tertiary)
+- Borders: #E7E8EA (primary), #D3D5D9 (secondary)
+
+**Colorful Accents (Strategic Use Only):**
+- Beginner: #16A34A (green), Intermediate: #D97706 (amber), Advanced: #DC2626 (red)
+- AI Features: #7C3AED (purple), Grammar: #EA580C (orange), Interactive: #2563EB (blue)
+- Semantic: Success #16A34A, Warning #D97706, Error #DC2626, Info #2563EB
 
 ### Spacing Scale
 4px, 8px, 12px, 16px, 20px, 24px, 32px, 40px, 48px, 64px, 80px

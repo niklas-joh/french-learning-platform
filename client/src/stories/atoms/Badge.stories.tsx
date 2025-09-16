@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, useTheme } from '@mui/material';
+import { getBadgeStyles, getDifficultyColor, getFeatureCategoryColor } from '../../utils/designSystemHelpers';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
 
-// Atomic Badge Component based on design mockups
+// Atomic Badge Component using Design System Theme
 const AtomicBadge = ({ 
   variant = 'difficulty',
   type = 'beginner',
@@ -21,14 +22,18 @@ const AtomicBadge = ({
   size?: 'small' | 'medium' | 'large';
   onClick?: () => void;
 }) => {
+  const theme = useTheme();
+
   const getBadgeProps = () => {
     const baseProps = {
       size: (size === 'large' ? 'medium' : 'small') as 'small' | 'medium',
       sx: {
         fontSize: size === 'small' ? '0.625rem' : size === 'large' ? '0.875rem' : '0.75rem',
-        fontWeight: 600,
+        fontWeight: 500, // Using design system font weight
         borderRadius: variant === 'streak' || variant === 'rank' ? '8px' : '6px',
-        transition: 'all 0.2s ease',
+        textTransform: 'uppercase',
+        letterSpacing: '0.025em',
+        transition: 'all 0.2s ease-in-out', // Design system timing
         cursor: onClick ? 'pointer' : 'default',
         '&:hover': onClick ? { transform: 'scale(1.05)' } : {},
       }
@@ -36,104 +41,92 @@ const AtomicBadge = ({
 
     switch (variant) {
       case 'difficulty':
-        switch (type) {
-          case 'beginner':
-            return {
-              ...baseProps,
-              sx: {
-                ...baseProps.sx,
-                background: '#d1fae5',
-                color: '#047857',
-                border: '1px solid #a7f3d0',
-              }
-            };
-          case 'intermediate':
-            return {
-              ...baseProps,
-              sx: {
-                ...baseProps.sx,
-                background: '#dbeafe',
-                color: '#1e40af',
-                border: '1px solid #93c5fd',
-              }
-            };
-          case 'advanced':
-            return {
-              ...baseProps,
-              sx: {
-                ...baseProps.sx,
-                background: '#fed7aa',
-                color: '#c2410c',
-                border: '1px solid #fdba74',
-              }
-            };
-        }
-        break;
-
-      case 'xp':
+        // Use our design system difficulty colors
+        const difficultyColors = getDifficultyColor(type as 'beginner' | 'intermediate' | 'advanced', theme);
         return {
           ...baseProps,
           sx: {
             ...baseProps.sx,
-            background: 'linear-gradient(45deg, #667eea, #764ba2)',
+            backgroundColor: difficultyColors.bg,
+            color: difficultyColors.main,
+            border: `1px solid ${difficultyColors.light}`,
+          }
+        };
+
+      case 'xp':
+        // Use purple accent for AI/XP features
+        const purpleColors = getFeatureCategoryColor('ai', theme);
+        return {
+          ...baseProps,
+          sx: {
+            ...baseProps.sx,
+            background: `linear-gradient(45deg, ${purpleColors.main}, ${purpleColors.light})`,
             color: 'white',
-            boxShadow: '0 2px 8px rgba(102, 126, 234, 0.3)',
+            boxShadow: `0 2px 8px ${purpleColors.main}40`, // 40 = 25% opacity
           }
         };
 
       case 'streak':
+        // Use amber for streaks (intermediate-like)
+        const amberColors = getDifficultyColor('intermediate', theme);
         return {
           ...baseProps,
           sx: {
             ...baseProps.sx,
-            background: '#fef3c7',
-            color: '#92400e',
-            border: '1px solid #f59e0b',
+            backgroundColor: amberColors.bg,
+            color: amberColors.main,
+            border: `1px solid ${amberColors.light}`,
           }
         };
 
       case 'rank':
+        // Use amber gradient for ranking
+        const rankColors = getDifficultyColor('intermediate', theme);
         return {
           ...baseProps,
           sx: {
             ...baseProps.sx,
-            background: 'linear-gradient(45deg, rgba(255, 215, 0, 0.9), rgba(255, 193, 7, 0.9))',
-            color: '#333',
-            boxShadow: '0 2px 8px rgba(255, 193, 7, 0.3)',
+            background: `linear-gradient(45deg, ${rankColors.main}, ${rankColors.light})`,
+            color: 'white',
+            boxShadow: `0 2px 8px ${rankColors.main}40`,
           }
         };
 
       case 'achievement':
+        // Use green for achievements
+        const achievementColors = getDifficultyColor('beginner', theme);
         return {
           ...baseProps,
           sx: {
             ...baseProps.sx,
-            background: '#f0fdf4',
-            color: '#166534',
-            border: '1px solid #bbf7d0',
+            backgroundColor: achievementColors.bg,
+            color: achievementColors.main,
+            border: `1px solid ${achievementColors.light}`,
           }
         };
 
       case 'status':
         switch (type) {
           case 'completed':
+            const completedColors = getDifficultyColor('beginner', theme);
             return {
               ...baseProps,
               sx: {
                 ...baseProps.sx,
-                background: '#d1fae5',
-                color: '#047857',
-                border: '1px solid #10b981',
+                backgroundColor: completedColors.bg,
+                color: completedColors.main,
+                border: `1px solid ${completedColors.main}`,
               }
             };
           case 'in-progress':
+            const progressColors = getFeatureCategoryColor('interactive', theme);
             return {
               ...baseProps,
               sx: {
                 ...baseProps.sx,
-                background: '#dbeafe',
-                color: '#1e40af',
-                border: '1px solid #3b82f6',
+                backgroundColor: progressColors.bg,
+                color: progressColors.main,
+                border: `1px solid ${progressColors.main}`,
               }
             };
           case 'not-started':
@@ -141,9 +134,9 @@ const AtomicBadge = ({
               ...baseProps,
               sx: {
                 ...baseProps.sx,
-                background: '#f3f4f6',
-                color: '#6b7280',
-                border: '1px solid #d1d5db',
+                backgroundColor: theme.palette.background.default,
+                color: theme.palette.text.disabled,
+                border: `1px solid ${theme.palette.divider}`,
               }
             };
         }

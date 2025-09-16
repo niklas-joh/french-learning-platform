@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, LinearProgress, CircularProgress } from '@mui/material';
+import { Box, LinearProgress, CircularProgress, useTheme } from '@mui/material';
+import { getDifficultyColor, getFeatureCategoryColor } from '../../utils/designSystemHelpers';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
@@ -33,14 +34,16 @@ const AtomicProgressIndicator = ({
     }
   };
 
+  const theme = useTheme();
+  
   const getColor = () => {
     switch (color) {
-      case 'primary': return '#3b82f6';
-      case 'success': return '#10b981';
-      case 'warning': return '#f59e0b';
-      case 'error': return '#ef4444';
-      case 'lesson': return '#667eea';
-      default: return '#3b82f6';
+      case 'primary': return theme.palette.primary.main;
+      case 'success': return getDifficultyColor('beginner', theme).main;
+      case 'warning': return getFeatureCategoryColor('grammar', theme).main;
+      case 'error': return getDifficultyColor('advanced', theme).main;
+      case 'lesson': return getFeatureCategoryColor('ai', theme).main;
+      default: return theme.palette.primary.main;
     }
   };
 
@@ -69,7 +72,7 @@ const AtomicProgressIndicator = ({
             cx={diameter / 2}
             cy={diameter / 2}
             r={radius}
-            stroke="#f3f4f6"
+            stroke={theme.palette.background.default}
             strokeWidth={thickness}
             fill="transparent"
           />
@@ -102,7 +105,7 @@ const AtomicProgressIndicator = ({
               justifyContent: 'center',
               fontSize: size === 'small' ? '0.75rem' : size === 'large' ? '1rem' : '0.875rem',
               fontWeight: 600,
-              color: '#374151'
+              color: theme.palette.text.primary
             }}
           >
             {variant === 'determinate' ? `${value}%` : '...'}
@@ -119,7 +122,7 @@ const AtomicProgressIndicator = ({
               mt: 0.5,
               fontSize: '0.75rem',
               fontWeight: 500,
-              color: '#6b7280'
+              color: theme.palette.text.secondary
             }}
           >
             {variant === 'determinate' ? `${value}%` : 'Loading...'}
@@ -139,11 +142,11 @@ const AtomicProgressIndicator = ({
         value={value}
         sx={{
           ...linearSize,
-          borderRadius: 4,
-          backgroundColor: '#f3f4f6',
+          borderRadius: (theme.shape.borderRadius as number) / 2 || 4,
+          backgroundColor: theme.palette.background.default,
           '& .MuiLinearProgress-bar': {
             backgroundColor: colorValue,
-            borderRadius: 4,
+            borderRadius: (theme.shape.borderRadius as number) / 2 || 4,
             transition: 'transform 1s ease-in-out'
           }
         }}
@@ -160,7 +163,7 @@ const AtomicProgressIndicator = ({
             textAlign: labelPosition === 'right' ? 'left' : 'right',
             fontSize: '0.75rem',
             fontWeight: 500,
-            color: '#6b7280'
+            color: theme.palette.text.secondary
           }}
         >
           {variant === 'determinate' ? `${value}%` : 'Loading...'}

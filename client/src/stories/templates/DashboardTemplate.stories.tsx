@@ -1,19 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Container } from '@mui/material';
+import { Box, Container, useTheme } from '@mui/material';
 import React from 'react';
+import { getDifficultyColor, getFeatureCategoryColor } from '../../utils/designSystemHelpers';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
 
 // Import simplified versions of our components for the template
 const EnhancedHeader = ({ userName, progressPercentage, currentStreak, dailyGoals, userStats, variant }: any) => {
+  const theme = useTheme();
+  const aiColors = getFeatureCategoryColor('ai', theme);
+  
   return (
     <Box
       sx={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        padding: variant === 'compact' ? 2 : 3,
-        borderRadius: '16px',
+        background: `linear-gradient(135deg, ${aiColors.main} 0%, ${aiColors.light} 100%)`,
+        color: theme.palette.common.white,
+        padding: variant === 'compact' ? theme.spacing(2) : theme.spacing(3),
+        borderRadius: theme.spacing(2),
         position: 'relative',
         overflow: 'hidden',
         minHeight: variant === 'compact' ? '120px' : '160px',
@@ -47,7 +51,7 @@ const EnhancedHeader = ({ userName, progressPercentage, currentStreak, dailyGoal
             cx="30" 
             cy="30" 
             r="26" 
-            stroke="white" 
+            stroke={theme.palette.common.white} 
             strokeWidth="4" 
             fill="none"
             strokeLinecap="round"
@@ -61,7 +65,7 @@ const EnhancedHeader = ({ userName, progressPercentage, currentStreak, dailyGoal
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          color: 'white',
+          color: theme.palette.common.white,
           fontSize: '0.875rem',
           fontWeight: 600,
           textAlign: 'center'
@@ -74,13 +78,17 @@ const EnhancedHeader = ({ userName, progressPercentage, currentStreak, dailyGoal
 };
 
 const LessonCard = ({ icon, title, description, difficulty, progress, estimatedTime, xpReward }: any) => {
+  const theme = useTheme();
+  const difficultyColors = getDifficultyColor(difficulty, theme);
+  const aiColors = getFeatureCategoryColor('ai', theme);
+
   return (
     <Box
       sx={{
-        background: '#ffffff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+        background: theme.palette.background.paper,
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: theme.spacing(1.5),
+        boxShadow: theme.shadows[1],
         p: 2.5,
         cursor: 'pointer',
         transition: 'all 0.2s ease-in-out',
@@ -89,7 +97,7 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
         flexDirection: 'column',
         '&:hover': {
           transform: 'translateY(-2px)',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06)',
+          boxShadow: theme.shadows[2],
         },
       }}
     >
@@ -97,12 +105,12 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ fontSize: '1.75rem' }}>{icon}</Box>
           <Box sx={{
-            background: difficulty === 'beginner' ? '#d1fae5' : difficulty === 'intermediate' ? '#dbeafe' : '#fed7aa',
-            color: difficulty === 'beginner' ? '#047857' : difficulty === 'intermediate' ? '#1e40af' : '#c2410c',
+            background: difficultyColors.light,
+            color: difficultyColors.main,
             fontSize: '0.75rem',
             fontWeight: 600,
             padding: '4px 8px',
-            borderRadius: '6px'
+            borderRadius: theme.spacing(0.75)
           }}>
             {difficulty === 'beginner' ? 'Beginner' : difficulty === 'intermediate' ? 'Intermediate' : 'Advanced'}
           </Box>
@@ -110,12 +118,12 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
         
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
           <svg width="40" height="40" style={{ transform: 'rotate(-90deg)' }}>
-            <circle cx="20" cy="20" r="16" stroke="#f3f4f6" strokeWidth="3" fill="none" />
+            <circle cx="20" cy="20" r="16" stroke={theme.palette.grey[200]} strokeWidth="3" fill="none" />
             <circle 
               cx="20" 
               cy="20" 
               r="16" 
-              stroke="#3b82f6" 
+              stroke={theme.palette.primary.main} 
               strokeWidth="3" 
               fill="none"
               strokeLinecap="round"
@@ -132,7 +140,7 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
               transform: 'translate(-50%, -50%)',
               fontSize: '0.75rem',
               fontWeight: 600,
-              color: '#374151'
+              color: theme.palette.text.primary
             }}>
               {progress}%
             </Box>
@@ -140,11 +148,11 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
         </Box>
       </Box>
 
-      <Box sx={{ fontSize: '1.125rem', fontWeight: 600, color: '#1f2937', mb: 0.5 }}>
+      <Box sx={{ fontSize: '1.125rem', fontWeight: 600, color: theme.palette.text.primary, mb: 0.5 }}>
         {title}
       </Box>
       
-      <Box sx={{ color: '#6b7280', fontSize: '0.875rem', mb: 'auto', flexGrow: 1 }}>
+      <Box sx={{ color: theme.palette.text.secondary, fontSize: '0.875rem', mb: 'auto', flexGrow: 1 }}>
         {description}
       </Box>
 
@@ -154,22 +162,22 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
         alignItems: 'center',
         mt: 2,
         pt: 1,
-        borderTop: '1px solid #f3f4f6'
+        borderTop: `1px solid ${theme.palette.divider}`
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <span style={{ fontSize: '0.75rem' }}>⏱️</span>
-          <Box sx={{ color: '#6b7280', fontSize: '0.75rem' }}>
+          <Box sx={{ color: theme.palette.text.secondary, fontSize: '0.75rem' }}>
             {estimatedTime}min
           </Box>
         </Box>
         
         <Box sx={{
-          background: 'linear-gradient(45deg, #667eea, #764ba2)',
-          color: 'white',
+          background: `linear-gradient(45deg, ${aiColors.main}, ${aiColors.light})`,
+          color: theme.palette.common.white,
           fontSize: '0.75rem',
           fontWeight: 600,
           padding: '4px 8px',
-          borderRadius: '6px'
+          borderRadius: theme.spacing(0.75)
         }}>
           ⭐ {xpReward} XP
         </Box>
@@ -179,6 +187,9 @@ const LessonCard = ({ icon, title, description, difficulty, progress, estimatedT
 };
 
 const GamificationSidebar = ({ dailyGoals, leaderboard, userStats }: any) => {
+  const theme = useTheme();
+  const beginnerColors = getDifficultyColor('beginner', theme);
+
   return (
     <Box sx={{ 
       width: '280px', 
@@ -192,33 +203,33 @@ const GamificationSidebar = ({ dailyGoals, leaderboard, userStats }: any) => {
       {/* Daily Goals Panel */}
       <Box
         sx={{
-          background: 'white',
-          border: '1px solid #e5e7eb',
-          borderRadius: '12px',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          background: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: theme.spacing(1.5),
+          boxShadow: theme.shadows[1],
           p: 2
         }}
       >
-        <Box sx={{ fontSize: '1.125rem', fontWeight: 600, color: '#1f2937', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ fontSize: '1.125rem', fontWeight: 600, color: theme.palette.text.primary, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
           <span>🎯</span>
           <span>Daily Goals</span>
         </Box>
         
         <Box sx={{ mb: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, fontSize: '0.875rem' }}>
-            <span style={{ color: '#6b7280' }}>⭐ XP</span>
-            <span style={{ fontWeight: 600 }}>{dailyGoals?.currentXp}/{dailyGoals?.targetXp}</span>
+            <span style={{ color: theme.palette.text.secondary }}>⭐ XP</span>
+            <span style={{ fontWeight: 600, color: theme.palette.text.primary }}>{dailyGoals?.currentXp}/{dailyGoals?.targetXp}</span>
           </Box>
           <Box sx={{ 
             width: '100%', 
             height: '8px', 
-            background: '#f3f4f6', 
-            borderRadius: '4px', 
+            background: theme.palette.grey[200], 
+            borderRadius: theme.spacing(0.5), 
             overflow: 'hidden' 
           }}>
             <Box sx={{ 
               height: '100%', 
-              background: 'linear-gradient(90deg, #3b82f6, #60a5fa)', 
+              background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`, 
               width: `${(dailyGoals?.currentXp / dailyGoals?.targetXp) * 100}%`,
               transition: 'width 1s ease-out'
             }} />
@@ -227,19 +238,19 @@ const GamificationSidebar = ({ dailyGoals, leaderboard, userStats }: any) => {
         
         <Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5, fontSize: '0.875rem' }}>
-            <span style={{ color: '#6b7280' }}>📚 Lessons</span>
-            <span style={{ fontWeight: 600 }}>{dailyGoals?.currentLessons}/{dailyGoals?.targetLessons}</span>
+            <span style={{ color: theme.palette.text.secondary }}>📚 Lessons</span>
+            <span style={{ fontWeight: 600, color: theme.palette.text.primary }}>{dailyGoals?.currentLessons}/{dailyGoals?.targetLessons}</span>
           </Box>
           <Box sx={{ 
             width: '100%', 
             height: '8px', 
-            background: '#f3f4f6', 
-            borderRadius: '4px', 
+            background: theme.palette.grey[200], 
+            borderRadius: theme.spacing(0.5), 
             overflow: 'hidden' 
           }}>
             <Box sx={{ 
               height: '100%', 
-              background: 'linear-gradient(90deg, #10b981, #34d399)', 
+              background: `linear-gradient(90deg, ${beginnerColors.main}, ${beginnerColors.light})`, 
               width: `${(dailyGoals?.currentLessons / dailyGoals?.targetLessons) * 100}%`,
               transition: 'width 1s ease-out'
             }} />
@@ -250,14 +261,14 @@ const GamificationSidebar = ({ dailyGoals, leaderboard, userStats }: any) => {
       {/* Leaderboard Panel */}
       <Box
         sx={{
-          background: 'white',
-          border: '1px solid #e5e7eb',
-          borderRadius: '12px',
-          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          background: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: theme.spacing(1.5),
+          boxShadow: theme.shadows[1],
           p: 2
         }}
       >
-        <Box sx={{ fontSize: '1.125rem', fontWeight: 600, color: '#1f2937', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ fontSize: '1.125rem', fontWeight: 600, color: theme.palette.text.primary, mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
           <span>🏆</span>
           <span>Weekly Leaderboard</span>
         </Box>
@@ -268,15 +279,15 @@ const GamificationSidebar = ({ dailyGoals, leaderboard, userStats }: any) => {
             alignItems: 'center', 
             gap: 1, 
             py: 0.75,
-            borderBottom: index < 4 ? '1px solid #f3f4f6' : 'none'
+            borderBottom: index < 4 ? `1px solid ${theme.palette.divider}` : 'none'
           }}>
             <Box sx={{ width: '20px', fontSize: '0.875rem' }}>
               {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`}
             </Box>
-            <Box sx={{ flex: 1, fontWeight: entry.isYou ? 600 : 500, color: entry.isYou ? '#3b82f6' : '#1f2937' }}>
+            <Box sx={{ flex: 1, fontWeight: entry.isYou ? 600 : 500, color: entry.isYou ? theme.palette.primary.main : theme.palette.text.primary }}>
               {entry.name}
             </Box>
-            <Box sx={{ fontSize: '0.75rem', color: '#6b7280' }}>
+            <Box sx={{ fontSize: '0.75rem', color: theme.palette.text.secondary }}>
               {entry.xp} XP
             </Box>
           </Box>
@@ -349,11 +360,12 @@ const DashboardTemplate = ({
   ];
 
   const lessonData = lessons.length > 0 ? lessons : defaultLessons;
+  const theme = useTheme();
 
   return (
     <Box
       sx={{
-        background: '#f9fafb',
+        background: theme.palette.background.default,
         minHeight: '100vh',
         p: { xs: 2, sm: 3 }
       }}
@@ -375,15 +387,15 @@ const DashboardTemplate = ({
 
             {/* Lessons Section */}
             <Box>
-              <Box sx={{ 
-                fontSize: '1.875rem', 
-                fontWeight: 600, 
-                color: '#1f2937', 
-                mb: 3,
-                textAlign: { xs: 'center', sm: 'left' }
-              }}>
-                Today's Lessons
-              </Box>
+            <Box sx={{ 
+              fontSize: '1.875rem', 
+              fontWeight: 600, 
+              color: theme.palette.text.primary, 
+              mb: 3,
+              textAlign: { xs: 'center', sm: 'left' }
+            }}>
+              Today's Lessons
+            </Box>
               
               <Box sx={{ 
                 display: 'grid',
@@ -671,44 +683,48 @@ export const HighAchiever: Story = {
 
 // Responsive Demo
 export const ResponsiveDemo: Story = {
-  render: () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <Box>
-        <Box sx={{ textAlign: 'center', mb: 2, fontSize: '1.25rem', fontWeight: 600, color: '#6b7280' }}>
-          Desktop View (with sidebar)
+  render: () => {
+    const theme = useTheme();
+    
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <Box>
+          <Box sx={{ textAlign: 'center', mb: 2, fontSize: '1.25rem', fontWeight: 600, color: theme.palette.text.secondary }}>
+            Desktop View (with sidebar)
+          </Box>
+          <Box sx={{ transform: 'scale(0.7)', transformOrigin: 'center top' }}>
+            <DashboardTemplate
+              userName="Sarah"
+              progressPercentage={75}
+              currentStreak={7}
+              showSidebar={true}
+              dailyGoals={{
+                currentXp: 150,
+                targetXp: 200,
+                currentLessons: 2,
+                targetLessons: 3
+              }}
+            />
+          </Box>
         </Box>
-        <Box sx={{ transform: 'scale(0.7)', transformOrigin: 'center top' }}>
-          <DashboardTemplate
-            userName="Sarah"
-            progressPercentage={75}
-            currentStreak={7}
-            showSidebar={true}
-            dailyGoals={{
-              currentXp: 150,
-              targetXp: 200,
-              currentLessons: 2,
-              targetLessons: 3
-            }}
-          />
+        
+        <Box>
+          <Box sx={{ textAlign: 'center', mb: 2, fontSize: '1.25rem', fontWeight: 600, color: theme.palette.text.secondary }}>
+            Tablet View (no sidebar)
+          </Box>
+          <Box sx={{ transform: 'scale(0.7)', transformOrigin: 'center top' }}>
+            <DashboardTemplate
+              userName="Sarah"
+              progressPercentage={75}
+              currentStreak={7}
+              showSidebar={false}
+              variant="tablet"
+            />
+          </Box>
         </Box>
       </Box>
-      
-      <Box>
-        <Box sx={{ textAlign: 'center', mb: 2, fontSize: '1.25rem', fontWeight: 600, color: '#6b7280' }}>
-          Tablet View (no sidebar)
-        </Box>
-        <Box sx={{ transform: 'scale(0.7)', transformOrigin: 'center top' }}>
-          <DashboardTemplate
-            userName="Sarah"
-            progressPercentage={75}
-            currentStreak={7}
-            showSidebar={false}
-            variant="tablet"
-          />
-        </Box>
-      </Box>
-    </Box>
-  ),
+    );
+  },
   parameters: {
     docs: {
       description: {

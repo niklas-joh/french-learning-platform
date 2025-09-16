@@ -1,26 +1,42 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
 import React from 'react';
 
 // Import our atomic components
 import { Chip } from '@mui/material';
+import { getDifficultyColor, getFeatureCategoryColor } from '../../utils/designSystemHelpers';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
 
 // Atomic components (simplified versions for this story)
 const AtomicBadge = ({ variant, type, children, icon, size = 'small' }: any) => {
+  const theme = useTheme();
+  
   const getProps = () => {
     const baseProps = { size: size === 'large' ? 'medium' : 'small' as 'small' | 'medium' };
     switch (variant) {
       case 'difficulty':
-        switch (type) {
-          case 'beginner': return { ...baseProps, sx: { background: '#d1fae5', color: '#047857', fontSize: '0.75rem' } };
-          case 'intermediate': return { ...baseProps, sx: { background: '#dbeafe', color: '#1e40af', fontSize: '0.75rem' } };
-          case 'advanced': return { ...baseProps, sx: { background: '#fed7aa', color: '#c2410c', fontSize: '0.75rem' } };
-        }
-        break;
-      case 'xp': return { ...baseProps, sx: { background: 'linear-gradient(45deg, #667eea, #764ba2)', color: 'white', fontSize: '0.75rem' } };
+        const difficultyColors = getDifficultyColor(type, theme);
+        return { 
+          ...baseProps, 
+          sx: { 
+            backgroundColor: difficultyColors.bg, 
+            color: difficultyColors.main, 
+            fontSize: '0.75rem' 
+          } 
+        };
+      case 'xp': {
+        const aiColors = getFeatureCategoryColor('ai', theme);
+        return { 
+          ...baseProps, 
+          sx: { 
+            background: `linear-gradient(45deg, ${aiColors.main}, ${aiColors.palette?.dark || theme.palette.primary.dark})`, 
+            color: theme.palette.common.white, 
+            fontSize: '0.75rem' 
+          } 
+        };
+      }
     }
     return baseProps;
   };
@@ -29,6 +45,8 @@ const AtomicBadge = ({ variant, type, children, icon, size = 'small' }: any) => 
 };
 
 const AtomicProgressIndicator = ({ type, value, size, showLabel }: any) => {
+  const theme = useTheme();
+  
   if (type === 'circular') {
     const diameter = size === 'small' ? 40 : size === 'large' ? 60 : 48;
     const radius = (diameter - 4) / 2;
@@ -38,12 +56,12 @@ const AtomicProgressIndicator = ({ type, value, size, showLabel }: any) => {
     return (
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
         <svg width={diameter} height={diameter} style={{ transform: 'rotate(-90deg)' }}>
-          <circle cx={diameter / 2} cy={diameter / 2} r={radius} stroke="#f3f4f6" strokeWidth="3" fill="transparent" />
+          <circle cx={diameter / 2} cy={diameter / 2} r={radius} stroke={theme.palette.background.default} strokeWidth="3" fill="transparent" />
           <circle 
             cx={diameter / 2} 
             cy={diameter / 2} 
             r={radius} 
-            stroke="#3b82f6" 
+            stroke={theme.palette.primary.main} 
             strokeWidth="3" 
             fill="transparent"
             strokeLinecap="round"
@@ -60,7 +78,7 @@ const AtomicProgressIndicator = ({ type, value, size, showLabel }: any) => {
             transform: 'translate(-50%, -50%)',
             fontSize: '0.75rem',
             fontWeight: 600,
-            color: '#374151'
+            color: theme.palette.text.primary
           }}>
             {value}%
           </Box>
@@ -96,27 +114,30 @@ const MolecularLessonCard = ({
   onClick?: () => void;
   variant?: 'default' | 'compact' | 'detailed';
 }) => {
+  const theme = useTheme();
+  
   const getCardProps = () => {
     const baseProps = {
       sx: {
-        background: '#ffffff',
-        border: '1px solid #e5e7eb',
-        borderRadius: '12px',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06)',
+        background: theme.palette.background.paper,
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: theme.spacing(1.5),
+        boxShadow: theme.shadows[1],
         cursor: 'pointer',
-        transition: 'all 0.2s ease-in-out',
+        transition: theme.transitions.create(['transform', 'box-shadow']),
         position: 'relative',
         minHeight: variant === 'compact' ? '120px' : variant === 'detailed' ? '200px' : '160px',
         '&:hover': {
           transform: 'translateY(-2px)',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06)',
+          boxShadow: theme.shadows[2],
         },
       }
     };
 
     if (completionStatus === 'completed') {
-      baseProps.sx.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(255, 255, 255, 0.15))';
-      baseProps.sx.border = '1px solid #10b981';
+      const successColors = getDifficultyColor('beginner', theme);
+      baseProps.sx.background = `linear-gradient(135deg, ${successColors.light}, ${theme.palette.background.paper})`;
+      baseProps.sx.border = `1px solid ${successColors.main}`;
     }
 
     return baseProps;
@@ -161,7 +182,7 @@ const MolecularLessonCard = ({
           sx={{
             fontSize: '1.125rem',
             fontWeight: 600,
-            color: '#1f2937',
+            color: theme.palette.text.primary,
             mb: 0.5,
             lineHeight: 1.2
           }}
@@ -172,7 +193,7 @@ const MolecularLessonCard = ({
         <Typography
           variant="body2"
           sx={{
-            color: '#6b7280',
+            color: theme.palette.text.secondary,
             fontSize: '0.875rem',
             lineHeight: 1.4,
             mb: 'auto',
@@ -189,12 +210,12 @@ const MolecularLessonCard = ({
           alignItems: 'center',
           mt: 2,
           pt: 1,
-          borderTop: '1px solid #f3f4f6'
+          borderTop: `1px solid ${theme.palette.divider}`
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <span style={{ fontSize: '0.75rem' }}>⏱️</span>
-              <Typography variant="caption" sx={{ color: '#6b7280', fontSize: '0.75rem' }}>
+              <Typography variant="caption" sx={{ color: theme.palette.text.secondary, fontSize: '0.75rem' }}>
                 {estimatedTime}min
               </Typography>
             </Box>
@@ -211,8 +232,8 @@ const MolecularLessonCard = ({
             position: 'absolute',
             top: 8,
             right: 8,
-            background: '#10b981',
-            color: 'white',
+            background: getDifficultyColor('beginner', theme).main,
+            color: theme.palette.common.white,
             borderRadius: '50%',
             width: 24,
             height: 24,
@@ -455,7 +476,7 @@ export const InteractiveStatesDemo: Story = {
   render: () => (
     <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
       <Box sx={{ textAlign: 'center', minWidth: '280px' }}>
-        <Typography variant="h6" sx={{ mb: 1, fontSize: '0.875rem', color: '#6b7280' }}>
+        <Typography variant="h6" sx={{ mb: 1, fontSize: '0.875rem', color: (theme) => theme.palette.text.secondary }}>
           Not Started
         </Typography>
         <MolecularLessonCard
@@ -471,7 +492,7 @@ export const InteractiveStatesDemo: Story = {
       </Box>
       
       <Box sx={{ textAlign: 'center', minWidth: '280px' }}>
-        <Typography variant="h6" sx={{ mb: 1, fontSize: '0.875rem', color: '#6b7280' }}>
+        <Typography variant="h6" sx={{ mb: 1, fontSize: '0.875rem', color: (theme) => theme.palette.text.secondary }}>
           In Progress
         </Typography>
         <MolecularLessonCard
@@ -487,7 +508,7 @@ export const InteractiveStatesDemo: Story = {
       </Box>
       
       <Box sx={{ textAlign: 'center', minWidth: '280px' }}>
-        <Typography variant="h6" sx={{ mb: 1, fontSize: '0.875rem', color: '#6b7280' }}>
+        <Typography variant="h6" sx={{ mb: 1, fontSize: '0.875rem', color: (theme) => theme.palette.text.secondary }}>
           Completed
         </Typography>
         <MolecularLessonCard
