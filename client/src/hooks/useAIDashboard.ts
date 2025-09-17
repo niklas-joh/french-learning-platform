@@ -1,6 +1,6 @@
 import { useReducer, useEffect, useCallback, useMemo } from 'react';
 import { AIDashboardState, AIDashboardAction, AIGenerationJob } from '../types/AIDashboard.js';
-import api from '../services/api.js';
+import api from '../services/api';
 
 /**
  * Initial state for the AI Dashboard hook
