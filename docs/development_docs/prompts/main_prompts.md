@@ -1,9 +1,9 @@
 ## First review
-Can you identify the next immediate task to work on based on the @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md and @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md files?
+Can you identify the next immediate task to work on based on the @/docs/development_docs/tasks/phase-4_dashboard_transformation/dashboard-transformation-tracking.md  and @/docs/development_docs/tasks/phase-4_dashboard_transformation/implementation-plan.md ?
 
-Conduct a detailed analysis of your approach, impacted files, dependencies, and create detailed subtasks for larger changes. Follow or update the tasks outlined in the @/docs/development_docs/tasks/phase-3_AI_integration/ folder.
+Conduct a detailed analysis of your approach, impacted files, dependencies, and create detailed subtasks for larger changes. Follow or update the tasks outlined in the @/docs/development_docs/tasks/phase-4_dashboard_transformation/subtasks/  folder.
 
-Make sure it is future-proof, following best coding standards, and reuses existing content whenever possible. Follow KISS.
+Make sure it is future-proof, following best coding standards, reuses existing content whenever possible, follows KISS, YAGNI and Single Responsibility Principle (SRP). Avoid scope creep and keep to the existing task request.
 
 # AI Integration Phase 3: AI Orchestration
 Can you conduct a detailed analysis of the approach, impacted files, dependencies, and coding suggestions for the referenced file . Adhere to @/docs/development_docs/tasks/phase-3_AI_integration/phase3_complete_summary.md 
@@ -31,7 +31,7 @@ If the task require larger changes, break down the tasks into subtasks, updating
 
 ## Third and final review
 
-Can you criticise the approach in the current task or specified files, identifying flaws or inefficiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md . When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
+Can you criticise the approach in the current task or specified files, identifying flaws or inefficiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md . When you find a better coding option, implement this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs\development_docs\tasks\phase-4_dashboard_transformation\dashboard-transformation-tracking.md   and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
 
 Now criticise your approach, identifying flaws or inefficiencies, validate that you are reusing existing logic, follow best coding practices, and think of performance and efficient functionalities, and follow our @/docs\development_docs\development_principles.md. When you find a better coding option, suggest this in the code instead. If the change is too large to do under this scope, add it as a subtask in @/docs/development_docs/tasks/phase-3_AI_integration/phase3_master_tracking.md  and capture it as a TODO within the code with clear explanations. If outside current scope, add it as a future implementation in @/docs\development_docs\future_implementation_considerations.md
 
