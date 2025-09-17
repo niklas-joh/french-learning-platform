@@ -6,6 +6,47 @@
 **Status**: ✅ CORRECTED PLAN - Infrastructure-First Approach  
 **Estimated Duration**: 3-4 days (CORRECTED from 20-25 days)
 
+## 📋 Master Task Tracking Table
+
+| Task ID | Task Name | Status | Priority | Files Affected | Duration | Dependencies | Notes |
+|---------|-----------|--------|----------|----------------|----------|--------------|-------|
+| **1.0** | **Phase 1: UI Transformation** | 📋 Not Started | Critical | HomePage.tsx, progressService.ts | 1-2 days | None | Infrastructure-first approach |
+| 1.1 | Transform AIContentRequest to lesson cards | 📋 Not Started | Critical | HomePage.tsx | 4-6 hours | None | Use existing data structures |
+| 1.2 | Extend QuickActionsGrid to lesson grid | 📋 Not Started | Critical | QuickActionCard.tsx | 2-3 hours | 1.1 | Add progress visualization |
+| 1.3 | Complete gamification placeholders | 📋 Not Started | High | progressService.ts | 2-3 hours | None | ~30 lines of code |
+| 1.4 | Add OAuth extension | 📋 Not Started | Medium | authServiceFactory.ts | 1-2 hours | None | ~40 lines of code |
+| 1.5 | Add lesson card rendering mode | 📋 Not Started | High | QuickActionCard.tsx | 2-3 hours | 1.1, 1.2 | ~50 lines of code |
+| **2.0** | **Phase 2: Conditional Database** | 📋 Conditional | Low | Migration files | 0-1 days | 1.0 | Only if Phase 1 requires |
+| 2.1 | Assess database needs | 📋 Not Started | Medium | None | 1 hour | 1.0 | Evaluate localStorage vs DB |
+| 2.2 | Create userBadges table (conditional) | 📋 Not Started | Low | Migration file | 2 hours | 2.1 | Only if needed |
+| 2.3 | Create oauthProfiles table (conditional) | 📋 Not Started | Low | Migration file | 2 hours | 1.4, 2.1 | Only if OAuth implemented |
+| **3.0** | **Phase 3: Progressive Enhancement** | 📋 Not Started | Medium | Various services | 1-2 days | 1.0 | Enhancement phase |
+| 3.1 | Add social features | 📋 Not Started | Medium | progressService.ts | 3-4 hours | 1.0 | Use existing user infrastructure |
+| 3.2 | Enhance analytics | 📋 Not Started | Medium | progressService.ts | 2-3 hours | 1.0 | Leverage existing AI functions |
+| 3.3 | Implement leaderboard | 📋 Not Started | Medium | progressService.ts | 2-3 hours | 3.1 | Use existing progress data |
+| 3.4 | Add friend system | 📋 Not Started | Low | progressService.ts | 3-4 hours | 3.1 | Via metadata approach |
+| **4.0** | **Testing & Validation** | 📋 Not Started | High | Test files | 0.5 days | 1.0 | Quality assurance |
+| 4.1 | Extend existing unit tests | 📋 Not Started | High | Test files | 2-3 hours | 1.0 | Modify vs create new |
+| 4.2 | Integration testing | 📋 Not Started | High | None | 2-3 hours | 1.0, 3.0 | Verify infrastructure integration |
+| 4.3 | User experience validation | 📋 Not Started | Critical | None | 1-2 hours | All phases | End-to-end testing |
+
+### 📊 Progress Summary
+- **Total Tasks**: 15
+- **Completed**: 0 (0%)
+- **In Progress**: 0 (0%)
+- **Not Started**: 15 (100%)
+- **Critical Priority**: 4 tasks
+- **High Priority**: 4 tasks
+- **Medium Priority**: 5 tasks
+- **Low Priority**: 2 tasks
+
+### 🔄 Task Status Legend
+- 📋 **Not Started**: Ready to begin
+- 🔄 **In Progress**: Currently being worked on
+- ✅ **Completed**: Finished and validated
+- ⛔ **Blocked**: Waiting on dependencies
+- ⏭️ **Skipped**: Determined unnecessary
+
 ## Executive Summary
 
 Transform the existing AI-powered French learning platform into a state-of-the-art gamified learning dashboard by leveraging 95% of existing infrastructure through strategic service extensions and component transformation.
@@ -28,17 +69,18 @@ Transform the existing AI-powered French learning platform into a state-of-the-a
 
 ## CORRECTED Implementation Phases
 
-### Phase 1: UI Transformation Using Existing Infrastructure
+### Task 1.0: Phase 1 - UI Transformation Using Existing Infrastructure
 **Status**: 📋 Ready to Start  
 **Duration**: 1-2 days  
 **Priority**: CRITICAL  
+**Dependencies**: None
 
-#### **Deliverables**:
-- [x] Transform `AIContentRequest` component to lesson card selection interface
-- [x] Extend `QuickActionsGrid` to lesson card grid with progress visualization
-- [x] Complete existing gamification placeholders in `progressService.ts`
-- [x] Add simple OAuth extension to `authServiceFactory.ts`
-- [x] Minimal component extension for lesson card rendering mode
+#### **Task Breakdown**:
+- **Task 1.1**: Transform `AIContentRequest` component to lesson card selection interface
+- **Task 1.2**: Extend `QuickActionsGrid` to lesson card grid with progress visualization
+- **Task 1.3**: Complete existing gamification placeholders in `progressService.ts`
+- **Task 1.4**: Add simple OAuth extension to `authServiceFactory.ts`
+- **Task 1.5**: Minimal component extension for lesson card rendering mode
 
 #### **Key Changes**:
 ```typescript
@@ -63,10 +105,16 @@ Transform the existing AI-powered French learning platform into a state-of-the-a
 - [ ] Zero new services created
 - [ ] <150 lines new code total
 
-### Phase 2: Minimal Database Schema (CONDITIONAL)
+### Task 2.0: Phase 2 - Minimal Database Schema (CONDITIONAL)
 **Status**: 📋 Conditional - Only if Phase 1 requires  
 **Duration**: 0-1 days  
 **Priority**: CONDITIONAL  
+**Dependencies**: Task 1.0
+
+#### **Task Breakdown**:
+- **Task 2.1**: Assess database needs (localStorage vs database evaluation)
+- **Task 2.2**: Create userBadges table (conditional - only if Task 2.1 determines necessity)
+- **Task 2.3**: Create oauthProfiles table (conditional - only if Task 1.4 OAuth implemented)
 
 #### **Assessment**: **LIKELY UNNECESSARY**
 Most features can use existing infrastructure:
@@ -74,12 +122,12 @@ Most features can use existing infrastructure:
 - **Badges**: Existing `userProgress` metadata JSON field  
 - **Social Features**: Existing `users` table + `userProgress` metadata
 
-#### **Conditional Tables (Maximum 2)**:
+#### **Conditional Implementation**:
 ```sql
--- ONLY create if localStorage insufficient for daily goals
+-- Task 2.2: ONLY create if localStorage insufficient for daily goals
 CREATE TABLE userBadges IF absolutely_needed;
 
--- ONLY create if OAuth UI actually implemented
+-- Task 2.3: ONLY create if OAuth UI actually implemented
 CREATE TABLE oauthProfiles IF oauth_implemented;
 ```
 
@@ -89,16 +137,17 @@ CREATE TABLE oauthProfiles IF oauth_implemented;
 - [ ] Migration time < 10 seconds
 - [ ] Zero performance impact
 
-### Phase 3: Progressive Enhancement
+### Task 3.0: Phase 3 - Progressive Enhancement
 **Status**: 📋 Ready after Phase 1  
 **Duration**: 1-2 days  
 **Priority**: ENHANCEMENT  
+**Dependencies**: Task 1.0
 
-#### **Deliverables**:
-- [x] Social features using existing user infrastructure
-- [x] Analytics using existing AI assessment functions
-- [x] Enhanced leaderboard using existing progress data
-- [x] Simple friend system via existing user table + metadata
+#### **Task Breakdown**:
+- **Task 3.1**: Add social features using existing user infrastructure
+- **Task 3.2**: Enhance analytics using existing AI assessment functions
+- **Task 3.3**: Implement leaderboard using existing progress data
+- **Task 3.4**: Add simple friend system via existing user table + metadata
 
 #### **Key Extensions**:
 ```typescript
@@ -248,10 +297,12 @@ npm run test
 Transform AI dashboard → Lesson card dashboard through strategic extension of existing services (~150 lines) rather than creating new services (~1,500 lines). Follow UI-first implementation, then minimal database changes, achieving 95% infrastructure reuse and strict adherence to development principles.
 
 **Next Steps**: 
-1. Begin Phase 1 UI transformation using existing infrastructure
-2. Complete gamification placeholders in existing `progressService.ts`
-3. Extend `authServiceFactory.ts` with minimal OAuth patterns
-4. Transform `HomePage.tsx` to lesson card interface using existing components
+1. **Task 1.1**: Begin UI transformation - Transform AIContentRequest to lesson cards
+2. **Task 1.3**: Complete gamification placeholders in existing `progressService.ts`
+3. **Task 1.4**: Extend `authServiceFactory.ts` with minimal OAuth patterns
+4. **Task 1.2 & 1.5**: Transform `HomePage.tsx` to lesson card interface using existing components
+5. **Task 2.1**: Assess if any database changes are needed (likely none)
+6. **Task 4.3**: Validate complete user experience before proceeding to Phase 3
 
 **Reference Documents**:
 - [Main Implementation Plan](./implementation-plan.md)
