@@ -35,13 +35,19 @@ const BottomTabNavigation: React.FC = () => {
         left: 0, 
         right: 0, 
         zIndex: 1000,
-        maxWidth: '430px',
+        // Responsive max width that scales with parent container
+        maxWidth: {
+          xs: 'var(--layout-max-width-mobile)',      // 430px on mobile
+          sm: 'var(--layout-max-width-tablet)',       // 100% on small tablets (640px+)
+          md: 'var(--layout-max-width-tablet)',       // 100% on tablets (768px+)
+          lg: 'var(--layout-max-width-desktop)',      // 100% on laptops (1024px+)
+          xl: 'var(--layout-max-width-large-desktop)' // 100% on desktops (1280px+)
+        },
         margin: '0 auto',
-        borderRadius: '20px 20px 0 0',
+        borderRadius: 'var(--border-radius-large) var(--border-radius-large) 0 0',
         background: 'var(--glass-bg)',
-        backdropFilter: 'var(--backdrop-blur)',
         borderTop: '1px solid var(--glass-border)',
-        boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.1)'
+        boxShadow: 'var(--shadow-medium)'
       }} 
       elevation={0}
     >

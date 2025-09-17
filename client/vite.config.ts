@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,7 +10,7 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to the backend server
       '/api': {
-        target: 'http://localhost:5001', // The address of your backend server
+        target: 'http://localhost:3001', // FIXED: Match actual server port
         changeOrigin: true,
         secure: false,
       },
@@ -19,4 +19,4 @@ export default defineConfig({
   build: {
     outDir: 'build', // Output directory for build files
   },
-})
+});

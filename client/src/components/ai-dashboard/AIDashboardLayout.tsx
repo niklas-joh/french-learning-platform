@@ -96,16 +96,26 @@ export const AIDashboardLayout: React.FC<AIDashboardLayoutProps> = React.memo(({
     >
       <Box
         sx={{
-          p: 2,
+          p: {
+            xs: 'var(--spacing-6)',  // 24px on mobile
+            sm: 'var(--spacing-8)',  // 32px on tablet+
+          },
           pb: 10, // Following existing HomePage pattern for bottom navigation clearance
           display: 'flex',
           flexDirection: 'column',
-          gap: 2, // Consistent spacing between components
+          gap: {
+            xs: 'var(--spacing-6)',  // 24px gap on mobile
+            sm: 'var(--spacing-8)',  // 32px gap on tablet+
+          },
           minHeight: '100vh', // Ensure full viewport height
-          // Responsive adjustments
-          '@media (max-width: 600px)': {
-            p: 1.5,
-            gap: 1.5
+          // Responsive width management using design system
+          width: '100%',
+          maxWidth: '100%',
+          flex: 1,
+          // Responsive padding adjustments using design system breakpoints
+          '@media (max-width: 640px)': {
+            p: 'var(--spacing-6)', // 24px
+            gap: 'var(--spacing-6)' // 24px
           },
           ...sx
         }}

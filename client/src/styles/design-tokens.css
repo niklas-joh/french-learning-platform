@@ -1,29 +1,161 @@
 :root {
-  /* French-themed color palette */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --french-blue: #667eea;
-  --french-purple: #764ba2;
-  --french-accent: #ff6b6b;
+  /* Design System Color Palette - Subtle & Clean */
+  /* Neutral Foundation - Primary Background Colors */
+  --background-primary: #FFFFFF;
+  --background-secondary: #FAFBFC;
+  --background-tertiary: #F4F5F7;
+
+  /* Subtle Grays - Main Interface Colors */
+  --gray-50: #FAFBFC;
+  --gray-100: #F4F5F7;
+  --gray-200: #E7E8EA;
+  --gray-300: #D3D5D9;
+  --gray-400: #9AA0A6;
+  --gray-500: #6B7280;
+  --gray-600: #4E5563;
+  --gray-700: #394150;
+  --gray-800: #252A33;
+  --gray-900: #1A1F26;
+
+  /* Colorful Accents - Strategic Use Only */
+  --accent-green: #16A34A;        /* Beginner level */
+  --accent-green-light: #22C55E;
+  --accent-green-bg: #F0FDF4;
+
+  --accent-amber: #D97706;        /* Intermediate level */
+  --accent-amber-light: #F59E0B;
+  --accent-amber-bg: #FFFBEB;
+
+  --accent-red: #DC2626;          /* Advanced level */
+  --accent-red-light: #EF4444;
+  --accent-red-bg: #FEF2F2;
+
+  --accent-blue: #2563EB;         /* Interactive elements */
+  --accent-blue-light: #3B82F6;
+  --accent-blue-bg: #EFF6FF;
+
+  --accent-purple: #7C3AED;       /* AI features */
+  --accent-purple-light: #8B5CF6;
+  --accent-purple-bg: #F5F3FF;
+
+  --accent-orange: #EA580C;       /* Grammar/Practice */
+  --accent-orange-light: #F97316;
+  --accent-orange-bg: #FFF7ED;
+
+  /* Semantic Colors */
+  --success: #16A34A;
+  --warning: #D97706;
+  --error: #DC2626;
+  --info: #2563EB;
   
-  /* Glassmorphism effects */
-  --glass-bg: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --backdrop-blur: blur(20px);
+  /* Legacy color mappings for backward compatibility */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
   
-  /* Rounded design */
-  --border-radius-small: 12px;
-  --border-radius-medium: 20px;
-  --border-radius-large: 30px;
+  /* Background color mappings */
+  --bg-primary: var(--background-primary);
+  --bg-secondary: var(--background-secondary);
+  --bg-tertiary: var(--background-tertiary);
+  --bg-elevated: var(--background-primary);
   
-  /* Modern shadows */
-  --shadow-light: 0 8px 25px rgba(0, 0, 0, 0.1);
-  --shadow-medium: 0 15px 40px rgba(0, 0, 0, 0.15);
-  --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.3);
+  /* Border color mappings */
+  --border-light: var(--gray-200);
+  --border-medium: var(--gray-300);
+  --border-strong: var(--gray-400);
   
-  /* Animation timings */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
-  --transition-slow: 0.6s ease;
+  /* Text color mappings */
+  --text-primary: var(--gray-800);
+  --text-secondary: var(--gray-600);
+  --text-tertiary: var(--gray-500);
+  --text-inverse: var(--background-primary);
+  
+  /* Difficulty level colors using design system accents */
+  --difficulty-beginner-bg: var(--accent-green-bg);
+  --difficulty-beginner-text: var(--accent-green);
+  --difficulty-beginner-border: var(--accent-green-light);
+  
+  --difficulty-intermediate-bg: var(--accent-amber-bg);
+  --difficulty-intermediate-text: var(--accent-amber);
+  --difficulty-intermediate-border: var(--accent-amber-light);
+  
+  --difficulty-advanced-bg: var(--accent-red-bg);
+  --difficulty-advanced-text: var(--accent-red);
+  --difficulty-advanced-border: var(--accent-red-light);
+  
+  /* Status colors using semantic colors */
+  --status-not-started: var(--success);
+  --status-in-progress: var(--warning);
+  --status-completed: var(--info);
+  --status-locked: var(--gray-400);
+  --status-review: var(--accent-purple);
+  
+  /* Legacy French-themed colors for gradients */
+  --french-blue: var(--accent-blue);
+  --french-purple: var(--accent-purple);
+  --gradient-primary: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+  
+  /* Card styling using design system colors */
+  --glass-bg: var(--background-primary);
+  --glass-border: var(--gray-200);
+  
+  /* Design System Spacing Scale */
+  --spacing-1: 0.25rem;  /* 4px */
+  --spacing-2: 0.5rem;   /* 8px */
+  --spacing-3: 0.75rem;  /* 12px */
+  --spacing-4: 1rem;     /* 16px */
+  --spacing-5: 1.25rem;  /* 20px */
+  --spacing-6: 1.5rem;   /* 24px */
+  --spacing-8: 2rem;     /* 32px */
+  --spacing-10: 2.5rem;  /* 40px */
+  --spacing-12: 3rem;    /* 48px */
+  --spacing-16: 4rem;    /* 64px */
+  --spacing-20: 5rem;    /* 80px */
+  
+  /* Legacy spacing mappings for backward compatibility */
+  --spacing-xs: var(--spacing-1);
+  --spacing-sm: var(--spacing-2);
+  --spacing-md: var(--spacing-4);
+  --spacing-lg: var(--spacing-6);
+  --spacing-xl: var(--spacing-8);
+  --spacing-xxl: var(--spacing-12);
+  
+  /* Design System Breakpoints */
+  --breakpoint-sm: 640px;   /* Small tablets */
+  --breakpoint-md: 768px;   /* Tablets */
+  --breakpoint-lg: 1024px;  /* Laptops */
+  --breakpoint-xl: 1280px;  /* Desktops */
+  --breakpoint-2xl: 1536px; /* Large desktops */
+  
+  /* Responsive Layout Constraints */
+  --layout-max-width-mobile: 430px;        /* Mobile-first constraint */
+  --layout-max-width-tablet: 100%;         /* Full width on tablet+ */
+  --layout-max-width-desktop: 100%;        /* Full width on desktop+ */
+  --layout-max-width-large-desktop: 100%;  /* Full width on large screens */
+  
+  /* Border Radius - Design System Specification */
+  --border-radius-small: 8px;   /* Small radius */
+  --border-radius-medium: 12px; /* Standard radius */
+  --border-radius-large: 16px;  /* Large radius */
+  
+  /* Shadows - Design System Specification */
+  --shadow-light: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-heavy: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.08);
+  
+  /* Animation timings - Design System Specification */
+  --transition-fast: 0.15s ease-out;
+  --transition-base: 0.2s ease-in-out;
+  --transition-normal: var(--transition-base);
+  --transition-slow: 0.3s ease-in-out;
+  
+  /* Legacy layout variables for backward compatibility */
+  --content-max-width: 1200px;
+  --card-min-width: 280px;
+  --card-min-height: 200px;
 }
 
 /* Global glassmorphism utilities */
