@@ -152,6 +152,40 @@
   --transition-normal: var(--transition-base);
   --transition-slow: 0.3s ease-in-out;
   
+  /* Typography - Design System Specification (from DESIGN_SYSTEM.md) */
+  --font-size-h1: 2.5rem;    /* 40px */
+  --font-size-h2: 2rem;      /* 32px */
+  --font-size-h3: 1.5rem;    /* 24px */
+  --font-size-h4: 1.25rem;   /* 20px */
+  --font-size-h5: 1.125rem;  /* 18px */
+  --font-size-h6: 1rem;      /* 16px */
+  
+  /* Body Text */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-xs: 0.75rem;   /* 12px */
+  
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Overlays (alpha whites) for gradient cards and chips */
+  --overlay-white-10: rgba(255, 255, 255, 0.10);
+  --overlay-white-20: rgba(255, 255, 255, 0.20);
+  --overlay-white-30: rgba(255, 255, 255, 0.30);
+  --overlay-white-50: rgba(255, 255, 255, 0.50);
+  --overlay-white-70: rgba(255, 255, 255, 0.70);
+  
+  /* Additional gradients */
+  --gradient-muted: linear-gradient(135deg, var(--gray-600) 0%, var(--gray-400) 100%);
+  
+  /* Focus ring */
+  --focus-ring-color: var(--accent-blue);
+  
   /* Legacy layout variables for backward compatibility */
   --content-max-width: 1200px;
   --card-min-width: 280px;

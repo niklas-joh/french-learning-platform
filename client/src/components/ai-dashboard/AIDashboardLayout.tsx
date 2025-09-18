@@ -100,7 +100,7 @@ export const AIDashboardLayout: React.FC<AIDashboardLayoutProps> = React.memo(({
             xs: 'var(--spacing-6)',  // 24px on mobile
             sm: 'var(--spacing-8)',  // 32px on tablet+
           },
-          pb: 10, // Following existing HomePage pattern for bottom navigation clearance
+          pb: 'var(--spacing-10)', // Following design tokens for bottom navigation clearance
           display: 'flex',
           flexDirection: 'column',
           gap: {
@@ -208,7 +208,7 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
         sx={{
           backgroundColor: 'var(--bg-primary)',
           color: 'var(--text-primary)',
-          p: 2,
+          p: 'var(--spacing-2)',
           borderRadius: 'var(--border-radius-medium)',
           border: '1px solid var(--border-light)',
           position: 'relative',
@@ -221,12 +221,12 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
       >
         {/* Main Content */}
         <Box>
-          <h1 id="dashboard-greeting" style={{ margin: 0, marginBottom: 4 }}>
+          <h1 id="dashboard-greeting" style={{ margin: 0, marginBottom: 'var(--spacing-1)' }}>
             <Box
               component="span"
               sx={{ 
-                fontSize: { xs: '1.25rem', sm: '1.5rem' },
-                fontWeight: 500,
+                fontSize: { xs: 'var(--font-size-h4)', sm: 'var(--font-size-h3)' },
+                fontWeight: 'var(--font-weight-medium)',
                 lineHeight: 1.2,
                 display: 'block',
                 color: 'var(--text-primary)'
@@ -238,7 +238,7 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
           
           <Box
             sx={{ 
-              fontSize: { xs: '0.875rem', sm: '0.875rem' },
+              fontSize: { xs: 'var(--font-size-sm)', sm: 'var(--font-size-sm)' },
               lineHeight: 1.4,
               color: 'var(--text-secondary)'
             }}
@@ -252,11 +252,11 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
           <Box
             sx={{
               position: 'absolute',
-              top: 16,
-              right: 16,
+              top: 'var(--spacing-4)',
+              right: 'var(--spacing-4)',
               color: 'var(--text-tertiary)',
-              fontSize: '0.75rem',
-              fontWeight: 500
+              fontSize: 'var(--font-size-xs)',
+              fontWeight: 'var(--font-weight-medium)'
             }}
             role="status"
             aria-label={`${currentStreak} day learning streak`}

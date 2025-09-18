@@ -152,10 +152,10 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
       className="glass-card"
       sx={{
         background: isOffline ? 
-          'linear-gradient(135deg, #757575 0%, #9e9e9e 100%)' : 
+          'var(--gradient-muted)' : 
           'var(--gradient-primary)',
-        color: 'white',
-        p: 2,
+        color: 'var(--text-inverse)',
+        p: 'var(--spacing-2)',
         transition: 'all var(--transition-normal)',
         // Subtle animation for online status
         ...(isOffline ? {} : {
@@ -178,9 +178,9 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
             size="small"
             label={isOffline ? 'Offline' : 'Online'}
             sx={{
-              backgroundColor: isOffline ? 'error.dark' : 'success.dark',
-              color: 'white',
-              fontSize: '0.75rem'
+              backgroundColor: isOffline ? 'var(--error)' : 'var(--success)',
+              color: 'var(--text-inverse)',
+              fontSize: 'var(--font-size-xs)'
             }}
             aria-label={`Tutor status: ${isOffline ? 'offline' : 'online'}`}
           />
@@ -190,18 +190,18 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
           <Box
             sx={{
-              width: 50,
-              height: 50,
+              width: 'var(--spacing-12)',
+              height: 'var(--spacing-12)',
               borderRadius: '50%',
               background: isOffline ? 
-                'rgba(255, 255, 255, 0.1)' : 
-                'rgba(255, 255, 255, 0.2)',
+                'var(--overlay-white-10)' : 
+                'var(--overlay-white-20)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               mr: 2,
-              fontSize: '20px',
-              border: isOffline ? '2px solid rgba(255, 255, 255, 0.3)' : 'none'
+              fontSize: 'var(--font-size-h6)',
+              border: isOffline ? '2px solid var(--overlay-white-30)' : 'none'
             }}
             role="img"
             aria-label={`${tutorName} avatar`}
@@ -213,7 +213,7 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
             <Typography 
               variant="h6" 
               sx={{ 
-                fontWeight: 600,
+                fontWeight: 'var(--font-weight-semibold)',
                 mb: 0.5
               }}
               component="h3"
@@ -225,7 +225,7 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
               variant="body2" 
               sx={{ 
                 opacity: 0.8,
-                fontSize: '0.875rem'
+                fontSize: 'var(--font-size-sm)'
               }}
               id="tutor-status"
             >
@@ -240,12 +240,12 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
                 width: 60,
                 height: 60,
                 borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.2)',
+                background: 'var(--overlay-white-20)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '14px',
-                fontWeight: 700,
+                fontSize: 'var(--font-size-sm)',
+                fontWeight: 'var(--font-weight-bold)',
                 position: 'relative'
               }}
               role="progressbar"
@@ -264,9 +264,9 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
           <Typography 
             variant="h6" 
             sx={{ 
-              fontWeight: 600, 
+              fontWeight: 'var(--font-weight-semibold)', 
               mb: 1,
-              fontSize: '1.1rem'
+              fontSize: 'var(--font-size-h5)'
             }}
           >
             {generateGreeting()}{userName ? `, ${userName}` : ''}! 👋
@@ -276,7 +276,7 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
             variant="body1"
             sx={{ 
               lineHeight: 1.5,
-              fontSize: '0.95rem'
+              fontSize: 'var(--font-size-base)'
             }}
           >
             {contextualMessage}
@@ -291,18 +291,18 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
           disabled={isOffline}
           sx={{
             py: 1.5,
-            fontWeight: 600,
+            fontWeight: 'var(--font-weight-semibold)',
             textTransform: 'none',
-            backgroundColor: isOffline ? 'transparent' : 'rgba(255, 255, 255, 0.2)',
-            borderColor: 'rgba(255, 255, 255, 0.5)',
-            color: 'white',
+            backgroundColor: isOffline ? 'transparent' : 'var(--overlay-white-20)',
+            borderColor: 'var(--overlay-white-50)',
+            color: 'var(--text-inverse)',
             '&:hover': isOffline ? undefined : {
-              backgroundColor: 'rgba(255, 255, 255, 0.3)',
-              borderColor: 'rgba(255, 255, 255, 0.7)'
+              backgroundColor: 'var(--overlay-white-30)',
+              borderColor: 'var(--overlay-white-70)'
             },
             '&:disabled': {
-              color: 'rgba(255, 255, 255, 0.5)',
-              borderColor: 'rgba(255, 255, 255, 0.3)'
+              color: 'var(--overlay-white-50)',
+              borderColor: 'var(--overlay-white-30)'
             }
           }}
           aria-describedby="interaction-help"
@@ -318,7 +318,7 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
             textAlign: 'center', 
             mt: 1,
             opacity: 0.7,
-            fontSize: '0.75rem'
+            fontSize: 'var(--font-size-xs)'
           }}
         >
           {isOffline ? 

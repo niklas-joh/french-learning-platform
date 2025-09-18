@@ -95,7 +95,7 @@ export const LoadingCard = React.memo<LoadingCardProps>(({
             <Typography 
               variant="body1" 
               color="text.secondary"
-              sx={{ fontSize: '0.9rem' }}
+              sx={{ fontSize: 'var(--font-size-base)' }}
             >
               {message}
             </Typography>
@@ -353,7 +353,7 @@ export const InlineLoader = React.memo<InlineLoaderProps>(({
         <Typography 
           variant="caption" 
           color="text.secondary"
-          sx={{ fontSize: '0.75rem' }}
+          sx={{ fontSize: 'var(--font-size-xs)' }}
         >
           {message}
         </Typography>

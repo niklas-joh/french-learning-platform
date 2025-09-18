@@ -225,16 +225,16 @@ const ProgressRing: React.FC<{
         />
       </svg>
       {/* Progress text */}
-      <Typography
-        variant="caption"
-        sx={{
-          fontSize: '10px',
-          fontWeight: 600,
-          color: '#374151',
-          zIndex: 1
-        }}
-      >
-        {Math.round(progress)}%
+  <Typography
+    variant="caption"
+    sx={{
+      fontSize: 'var(--font-size-xs)',
+      fontWeight: 'var(--font-weight-semibold)',
+      color: '#374151',
+      zIndex: 1
+    }}
+  >
+    {Math.round(progress)}%
       </Typography>
     </Box>
   );
@@ -375,7 +375,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
         
         // Focus states for accessibility using design tokens
         '&:focus-visible': {
-          outline: '2px solid var(--french-blue)',
+          outline: '2px solid var(--focus-ring-color)',
           outlineOffset: '2px'
         },
         
@@ -441,11 +441,11 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             variant="h6"
             component="h3"
             sx={{
-              fontWeight: 600,
+              fontWeight: 'var(--font-weight-semibold)',
               mb: 1,
               color: disabled ? 'text.disabled' : 'text.primary',
               lineHeight: 1.2,
-              fontSize: '1.1rem'
+              fontSize: 'var(--font-size-h5)'
             }}
           >
             {title}
@@ -456,7 +456,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             variant="body2"
             color={disabled ? 'text.disabled' : 'text.secondary'}
             sx={{
-              fontSize: '0.875rem',
+              fontSize: 'var(--font-size-sm)',
               lineHeight: 1.4,
               mb: 1.5,
               minHeight: '2.4em' // Ensure consistent spacing
@@ -481,7 +481,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 backgroundColor: difficultyConfig.backgroundColor,
                 color: difficultyConfig.color,
                 border: `1px solid ${difficultyConfig.borderColor}`,
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-size-xs)',
                 height: 24,
                 fontWeight: 500,
                 '& .MuiChip-label': {
@@ -498,7 +498,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 label={`${estimatedTime} min`}
                 variant="outlined"
                 sx={{
-                  fontSize: '0.75rem',
+                  fontSize: 'var(--font-size-xs)',
                   height: 24,
                   '& .MuiChip-label': {
                     px: 0.5
@@ -515,7 +515,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 label={`${xpReward} XP`}
                 variant="outlined"
                 sx={{
-                  fontSize: '0.75rem',
+                  fontSize: 'var(--font-size-xs)',
                   height: 24,
                   color: '#f59e0b',
                   borderColor: '#f59e0b',
@@ -558,7 +558,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 fontStyle: 'italic',
                 color: 'text.secondary',
                 mb: 1.5,
-                fontSize: '0.75rem',
+                fontSize: 'var(--font-size-xs)',
                 lineHeight: 1.3
               }}
             >
@@ -582,7 +582,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 color: status === 'completed' ? 'primary.main' : 'primary.contrastText',
                 border: status === 'completed' ? '1px solid' : 'none',
                 borderColor: status === 'completed' ? 'primary.main' : 'transparent',
-                fontSize: '0.875rem',
+                fontSize: 'var(--font-size-sm)',
                 fontWeight: 600,
                 textTransform: 'none',
                 minWidth: 80,
@@ -620,7 +620,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             variant="h3"
             sx={{
               mb: 1,
-              fontSize: '2rem', // Consistent sizing following critique
+              fontSize: 'var(--font-size-h2)', // tokenized size
               lineHeight: 1,
               transition: 'transform var(--transition-fast)',
               // Icon animation on hover
@@ -638,7 +638,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             variant="h6"
             component="h3" // Proper semantic structure
             sx={{
-              fontWeight: 600,
+              fontWeight: 'var(--font-weight-semibold)',
               mb: 0.5,
               color: disabled ? 'text.disabled' : 'text.primary',
               // Prevent title from wrapping awkwardly
@@ -654,7 +654,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
               variant="body2"
               color={disabled ? 'text.disabled' : 'text.secondary'}
               sx={{
-                fontSize: '0.875rem',
+                fontSize: 'var(--font-size-sm)',
                 textAlign: 'center',
                 lineHeight: 1.4
               }}
@@ -673,7 +673,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                   borderRadius: 'var(--border-radius-small)',
                   backgroundColor: disabled ? 'action.disabledBackground' : 'primary.main',
                   color: disabled ? 'text.disabled' : 'primary.contrastText',
-                  fontSize: '0.75rem',
+                  fontSize: 'var(--font-size-xs)',
                   fontWeight: 500,
                   opacity: 0.9
                 }}
@@ -859,3 +859,6 @@ export const QuickActionsGrid = React.memo<QuickActionsGridProps>(({
 });
 
 QuickActionsGrid.displayName = 'QuickActionsGrid';
+
+
+
