@@ -190,50 +190,28 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
     else timeGreeting = 'Good evening';
     
     if (userName) {
-      return `${timeGreeting}, ${userName}!`;
+      return `${timeGreeting}, ${userName}`;
     }
-    return timeGreeting + '!';
+    return timeGreeting;
   };
 
   /**
-   * Generate encouraging subtitle based on progress
+   * Generate simple subtitle
    */
   const getSubtitle = (): string => {
-    if (currentStreak > 0) {
-      return `${currentStreak} day streak! Ready for your French lesson today?`;
-    }
-    
-    if (progressPercentage >= 80) {
-      return "You're making excellent progress! Ready for an advanced lesson?";
-    } else if (progressPercentage >= 50) {
-      return "Great progress! Ready to continue your French journey?";
-    } else {
-      return "Ready for your French lesson today?";
-    }
+    return "Continue your French learning journey";
   };
 
   return (
     <AIComponentErrorBoundary componentName="AIEnhancedHeader">
       <Box
-        className="glass-card"
         sx={{
-          background: 'var(--gradient-primary)',
-          color: 'white',
-          p: 3,
-          borderRadius: 'var(--border-radius-large)',
+          backgroundColor: 'var(--bg-primary)',
+          color: 'var(--text-primary)',
+          p: 2,
+          borderRadius: 'var(--border-radius-medium)',
+          border: '1px solid var(--border-light)',
           position: 'relative',
-          overflow: 'hidden',
-          // Enhanced visual effects
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%)',
-            pointerEvents: 'none'
-          },
           ...sx
         }}
         component="header"
@@ -242,89 +220,48 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
         data-testid="ai-enhanced-header"
       >
         {/* Main Content */}
-        <Box sx={{ position: 'relative', zIndex: 1 }}>
-          <h1 id="dashboard-greeting" style={{ margin: 0, marginBottom: 8 }}>
+        <Box>
+          <h1 id="dashboard-greeting" style={{ margin: 0, marginBottom: 4 }}>
             <Box
               component="span"
               sx={{ 
-                fontSize: { xs: '1.75rem', sm: '2.125rem' },
-                fontWeight: 700,
+                fontSize: { xs: '1.25rem', sm: '1.5rem' },
+                fontWeight: 500,
                 lineHeight: 1.2,
-                display: 'block'
+                display: 'block',
+                color: 'var(--text-primary)'
               }}
             >
-              Bonjour! 🇫🇷
+              {getGreetingMessage()}
             </Box>
           </h1>
           
           <Box
             sx={{ 
-              fontSize: { xs: '0.875rem', sm: '1rem' },
-              opacity: 0.9,
+              fontSize: { xs: '0.875rem', sm: '0.875rem' },
               lineHeight: 1.4,
-              maxWidth: { xs: '100%', sm: '70%' }
+              color: 'var(--text-secondary)'
             }}
-            aria-describedby="progress-indicator"
           >
             {getSubtitle()}
           </Box>
         </Box>
         
-        {/* Progress Ring */}
-        <Box
-          sx={{
-            position: 'absolute',
-            right: { xs: 16, sm: 20 },
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: { xs: 50, sm: 60 },
-            height: { xs: 50, sm: 60 },
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: { xs: '12px', sm: '14px' },
-            fontWeight: 700,
-            border: '2px solid rgba(255, 255, 255, 0.3)',
-            // Subtle animation
-            animation: 'rotate 20s linear infinite',
-            '@keyframes rotate': {
-              '0%': { transform: 'translateY(-50%) rotate(0deg)' },
-              '100%': { transform: 'translateY(-50%) rotate(360deg)' }
-            }
-          }}
-          role="progressbar"
-          aria-valuenow={progressPercentage}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label={`Learning progress: ${progressPercentage} percent`}
-          id="progress-indicator"
-        >
-          {progressPercentage}%
-        </Box>
-
-        {/* Streak Indicator */}
+        {/* Simple Progress Indicator */}
         {currentStreak > 0 && (
           <Box
             sx={{
               position: 'absolute',
               top: 16,
               right: 16,
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: 'var(--border-radius-small)',
-              px: 1,
-              py: 0.5,
+              color: 'var(--text-tertiary)',
               fontSize: '0.75rem',
-              fontWeight: 600,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 0.5
+              fontWeight: 500
             }}
             role="status"
             aria-label={`${currentStreak} day learning streak`}
           >
-            🔥 {currentStreak}
+            {currentStreak} day streak
           </Box>
         )}
       </Box>

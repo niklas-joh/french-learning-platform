@@ -19,7 +19,10 @@
  */
 
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
-import { Box, Alert, Snackbar, Typography, Card, CardContent } from '@mui/material';
+import { 
+  Box, Alert, Snackbar, Typography, Card, CardContent, Button, 
+  CircularProgress, Stack, Chip, ButtonGroup
+} from '@mui/material';
 import { AIDashboardLayout, AIEnhancedHeader } from '../components/ai-dashboard/AIDashboardLayout.js';
 import { QuickActionsGrid } from '../components/ai-dashboard/QuickActionCard.js';
 import type { DifficultyLevel, LessonStatus } from '../components/ai-dashboard/QuickActionCard.js';
@@ -32,17 +35,17 @@ import '../styles/design-tokens.css';
 
 /**
  * Enhanced lesson card data structure
- * Maps lesson content types to appropriate icons and metadata
+ * Maps lesson content types to appropriate neutral icons and metadata
  */
 const LESSON_CONTENT_MAPPING = {
-  vocabulary: { icon: '📝', baseXp: 25, baseDifficulty: 'beginner' as DifficultyLevel },
-  grammar: { icon: '📚', baseXp: 35, baseDifficulty: 'intermediate' as DifficultyLevel },
-  conversation: { icon: '💬', baseXp: 45, baseDifficulty: 'advanced' as DifficultyLevel },
-  pronunciation: { icon: '🗣️', baseXp: 30, baseDifficulty: 'beginner' as DifficultyLevel },
-  exercise: { icon: '✏️', baseXp: 40, baseDifficulty: 'intermediate' as DifficultyLevel },
-  lesson: { icon: '👋', baseXp: 50, baseDifficulty: 'beginner' as DifficultyLevel },
-  reading: { icon: '📖', baseXp: 35, baseDifficulty: 'intermediate' as DifficultyLevel },
-  listening: { icon: '🎧', baseXp: 40, baseDifficulty: 'intermediate' as DifficultyLevel }
+  vocabulary: { icon: 'vocabulary', baseXp: 25, baseDifficulty: 'beginner' as DifficultyLevel },
+  grammar: { icon: 'book', baseXp: 35, baseDifficulty: 'intermediate' as DifficultyLevel },
+  conversation: { icon: 'message', baseXp: 45, baseDifficulty: 'advanced' as DifficultyLevel },
+  pronunciation: { icon: 'volume', baseXp: 30, baseDifficulty: 'beginner' as DifficultyLevel },
+  exercise: { icon: 'edit', baseXp: 40, baseDifficulty: 'intermediate' as DifficultyLevel },
+  lesson: { icon: 'star', baseXp: 50, baseDifficulty: 'beginner' as DifficultyLevel },
+  reading: { icon: 'book-open', baseXp: 35, baseDifficulty: 'intermediate' as DifficultyLevel },
+  listening: { icon: 'headphones', baseXp: 40, baseDifficulty: 'intermediate' as DifficultyLevel }
 } as const;
 
 /**
@@ -347,6 +350,175 @@ const HomePage: React.FC = () => {
     return <DashboardSkeleton />;
   }
 
+  // Sidebar Components
+  const DailyGoalCard = () => (
+    <Card className="glass-card" sx={{ mb: 3 }}>
+      <CardContent>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'var(--text-primary)' }}>
+          Daily Goal
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+          <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+            <CircularProgress
+              variant="determinate"
+              value={userData.dailyGoalProgress.percentage}
+              size={80}
+              thickness={4}
+              sx={{
+                color: 'var(--gray-600)',
+                '& .MuiCircularProgress-circle': {
+                  strokeLinecap: 'round',
+                },
+              }}
+            />
+            <Box sx={{
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              position: 'absolute',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Typography variant="body2" sx={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                {userData.dailyGoalProgress.current}/{userData.dailyGoalProgress.target}
+              </Typography>
+            </Box>
+          </Box>
+          <Stack spacing={1} sx={{ width: '100%' }}>
+            <Typography variant="body2" sx={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
+              {userData.dailyGoalProgress.percentage}% Complete
+            </Typography>
+            <Typography variant="caption" sx={{ textAlign: 'center', color: 'var(--text-tertiary)' }}>
+              Keep it up! You're doing great today.
+            </Typography>
+          </Stack>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+
+  const QuickActionsCard = () => (
+    <Card className="glass-card" sx={{ mb: 3 }}>
+      <CardContent>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'var(--text-primary)' }}>
+          Quick Actions
+        </Typography>
+        <Stack spacing={1.5}>
+          <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+              justifyContent: 'flex-start',
+              borderColor: 'var(--border-medium)',
+              color: 'var(--text-primary)',
+              '&:hover': {
+                borderColor: 'var(--gray-400)',
+                backgroundColor: 'var(--gray-100)',
+              }
+            }}
+          >
+            Browse All Lessons
+          </Button>
+          <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+              justifyContent: 'flex-start',
+              borderColor: 'var(--border-medium)',
+              color: 'var(--text-primary)',
+              '&:hover': {
+                borderColor: 'var(--gray-400)',
+                backgroundColor: 'var(--gray-100)',
+              }
+            }}
+          >
+            Practice Mode
+          </Button>
+          <Button
+            variant="outlined"
+            fullWidth
+            sx={{
+              justifyContent: 'flex-start',
+              borderColor: 'var(--border-medium)',
+              color: 'var(--text-primary)',
+              '&:hover': {
+                borderColor: 'var(--gray-400)',
+                backgroundColor: 'var(--gray-100)',
+              }
+            }}
+          >
+            View Progress
+          </Button>
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+
+  const LeaderboardCard = () => (
+    <Card className="glass-card">
+      <CardContent>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'var(--text-primary)' }}>
+          Weekly Leaders
+        </Typography>
+        {leaderboard.length > 0 ? (
+          <Stack spacing={1.5}>
+            {leaderboard.map((entry) => (
+              <Box 
+                key={entry.rank} 
+                sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  p: 1.5,
+                  backgroundColor: entry.rank <= 3 ? 'var(--accent-blue-bg)' : 'var(--bg-tertiary)',
+                  borderRadius: 'var(--border-radius-small)',
+                  border: '1px solid var(--border-light)',
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <Chip 
+                    label={`#${entry.rank}`}
+                    size="small"
+                    sx={{
+                      backgroundColor: entry.rank <= 3 ? 'var(--accent-blue)' : 'var(--gray-400)',
+                      color: 'white',
+                      fontWeight: 600,
+                      minWidth: 32
+                    }}
+                  />
+                  <Typography variant="body2" sx={{ fontWeight: 500, color: 'var(--text-primary)' }}>
+                    {entry.displayName}
+                  </Typography>
+                </Box>
+                <Typography variant="body2" sx={{ color: 'var(--accent-blue)', fontWeight: 600 }}>
+                  {entry.weeklyXp} XP
+                </Typography>
+              </Box>
+            ))}
+          </Stack>
+        ) : (
+          <Box sx={{ textAlign: 'center', py: 2 }}>
+            <Typography variant="body2" sx={{ color: 'var(--text-secondary)', mb: 1 }}>
+              No leaderboard data yet
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'var(--text-tertiary)' }}>
+              Start learning to appear on the leaderboard!
+            </Typography>
+          </Box>
+        )}
+        
+        {/* Debug info for development */}
+        {process.env.NODE_ENV === 'development' && (
+          <Typography variant="caption" sx={{ color: 'var(--text-tertiary)', mt: 1, display: 'block', fontSize: '0.7rem' }}>
+            Debug: Leaderboard entries = {leaderboard.length}
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <AIDashboardLayout>
       {/* REUSE: Existing enhanced header with dynamic content */}
@@ -356,145 +528,86 @@ const HomePage: React.FC = () => {
         currentStreak={userData.currentStreak}
       />
 
-      {/* MODERN TRANSFORMATION: Sophisticated lesson card grid with gamification */}
-      <Box sx={{ p: 2 }}>
-        {/* Enhanced header with daily progress context */}
-        <Box sx={{ mb: 3 }}>
-          <Typography variant="h4" sx={{ fontWeight: 600, color: 'text.primary', mb: 1 }}>
-            Today's Learning Path
-          </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
-            Continue your French journey with personalized lessons
-          </Typography>
-          
-          {/* Daily progress indicator */}
-          {userData.dailyGoalProgress && (
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: 'var(--spacing-lg)', 
-              p: 'var(--spacing-lg)', 
-              backgroundColor: 'var(--bg-secondary)',
-              borderRadius: 'var(--border-radius-small)',
-              border: '1px solid var(--border-light)'
-            }}>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                📈 Daily Progress: {userData.dailyGoalProgress.current}/{userData.dailyGoalProgress.target} lessons
-              </Typography>
-              <Box sx={{ 
-                flex: 1, 
-                height: 6, 
-                backgroundColor: 'var(--border-light)', 
-                borderRadius: 'var(--border-radius-small)',
-                overflow: 'hidden'
-              }}>
-                <Box sx={{ 
-                  width: `${userData.dailyGoalProgress.percentage}%`,
-                  height: '100%',
-                  backgroundColor: 'var(--color-success)',
-                  transition: 'width var(--transition-normal)'
-                }} />
-              </Box>
-              <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
-                {userData.dailyGoalProgress.percentage}%
-              </Typography>
+      {/* RESPONSIVE GRID LAYOUT: Main content + Sidebar */}
+      <Box sx={{ p: 2, maxWidth: '1427px', margin: '0 auto' }}>
+        <Box sx={{ 
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+          gap: 3,
+          width: '100%'
+        }}>
+          {/* MAIN CONTENT AREA (2/3 width on desktop) */}
+          <Box sx={{ 
+            flex: { xs: '1', lg: '2' },
+            minWidth: 0 // Prevents flex item from overflowing
+          }}>
+            {/* Welcome Section */}
+            <Card className="glass-card" sx={{ mb: 3 }}>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 600, color: 'var(--text-primary)', mb: 1 }}>
+                  Today's Learning Path
+                </Typography>
+                <Typography variant="body1" sx={{ color: 'var(--text-secondary)' }}>
+                  Continue your French journey with personalized lessons
+                </Typography>
+              </CardContent>
+            </Card>
+            
+            {/* Lesson Cards Grid */}
+            <Box sx={{ mb: 3 }}>
+              <QuickActionsGrid
+                actions={sophisticatedLessonCards}
+                onActionClick={handleLessonNavigation}
+                disabled={isOffline}
+                renderMode="lesson-card"
+                showProgress={true}
+                sx={{
+                  display: 'grid',
+                  gap: 3,
+                  width: '100%',
+                  // 2 columns for cleaner layout
+                  gridTemplateColumns: 'repeat(2, 1fr)',
+                  '@media (max-width: 900px)': {
+                    gridTemplateColumns: '1fr',
+                  },
+                  '& > *': {
+                    minHeight: '200px'
+                  }
+                }}
+              />
             </Box>
-          )}
-        </Box>
-        
-        {/* Always show lesson cards now that we have fallback data */}
-        {(
-          <QuickActionsGrid
-            actions={sophisticatedLessonCards}
-            onActionClick={handleLessonNavigation}
-            disabled={isOffline}
-            renderMode="lesson-card"      // ENHANCED: Use sophisticated lesson card mode
-            showProgress={true}           // ENABLE: Progress ring indicators
-            sx={{
-              // Enhanced responsive grid with larger, more prominent cards
-              display: 'grid',
-              gap: 3, // Increased spacing between cards
-              width: '100%',
-              // Desktop: 3 columns for better card size
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              '@media (max-width: 1200px)': {
-                gridTemplateColumns: 'repeat(2, 1fr)', // 2 columns on smaller desktop/tablet
-              },
-              '@media (max-width: 768px)': {
-                gridTemplateColumns: '1fr', // Single column on mobile for full-width cards
-                gap: 2
-              },
-              // Ensure cards have minimum height for consistent appearance
-              '& > *': {
-                minHeight: '200px' // Taller cards for better visual prominence
-              }
-            }}
-          />
-        )}
-        
-        {/* Debug information for development */}
-        {process.env.NODE_ENV === 'development' && (
-          <Box sx={{ mt: 2, p: 2, backgroundColor: '#f0f0f0', borderRadius: 1, fontSize: '0.8rem' }}>
-            <Typography variant="caption">
-              Debug: Using {recommendations.length > 0 ? 'API' : 'fallback'} lesson data. 
-              Cards loaded: {sophisticatedLessonCards.length}
-            </Typography>
+
+            {/* AI Tutor Card in main content */}
+            <AITutorCard
+              userName={userData.userName}
+              progressPercentage={userData.progressPercentage}
+              onInteractionStart={handleTutorInteraction}
+              isOffline={isOffline}
+            />
+
+            {/* Debug information for development */}
+            {process.env.NODE_ENV === 'development' && (
+              <Box sx={{ mt: 2, p: 2, backgroundColor: '#f0f0f0', borderRadius: 1, fontSize: '0.8rem' }}>
+                <Typography variant="caption">
+                  Debug: Using {recommendations.length > 0 ? 'API' : 'fallback'} lesson data. 
+                  Cards loaded: {sophisticatedLessonCards.length}
+                </Typography>
+              </Box>
+            )}
           </Box>
-        )}
-      </Box>
 
-      {/* ENHANCED: AI Tutor Card with context awareness */}
-      <Box sx={{ px: 2, pb: 2 }}>
-        <AITutorCard
-          userName={userData.userName}
-          progressPercentage={userData.progressPercentage}
-          onInteractionStart={handleTutorInteraction}
-          isOffline={isOffline}
-        />
-      </Box>
-
-      {/* PHASE 4.3.1: Simple leaderboard display using existing Material-UI patterns */}
-      {showLeaderboard && (
-        <Box sx={{ px: 2, pb: 2 }}>
-          <Card className="glass-card">
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                🏆 Weekly Leaders
-              </Typography>
-              {leaderboard.length > 0 ? (
-                leaderboard.map((entry) => (
-                  <Box key={entry.rank} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Typography variant="body2" sx={{ fontWeight: 600, minWidth: '24px' }}>
-                        #{entry.rank}
-                      </Typography>
-                      <Typography variant="body2">
-                        {entry.displayName}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body2" sx={{ color: 'primary.main', fontWeight: 500 }}>
-                      {entry.weeklyXp} XP
-                    </Typography>
-                  </Box>
-                ))
-              ) : (
-                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-                  🎯 No leaderboard data yet. Start learning to appear on the leaderboard!
-                </Typography>
-              )}
-              <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1, display: 'block' }}>
-                💪 Keep learning to climb the leaderboard!
-              </Typography>
-              {/* Debug info */}
-              {process.env.NODE_ENV === 'development' && (
-                <Typography variant="caption" sx={{ color: 'grey.500', mt: 1, display: 'block', fontSize: '0.7rem' }}>
-                  Debug: Leaderboard array length = {leaderboard.length}
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
+          {/* SIDEBAR (1/3 width on desktop, full width on mobile) */}
+          <Box sx={{ 
+            flex: { xs: '1', lg: '1' },
+            maxWidth: { lg: '350px' }, // Constraint sidebar width
+            minWidth: 0
+          }}>
+            <DailyGoalCard />
+            <QuickActionsCard />
+            {showLeaderboard && <LeaderboardCard />}
+          </Box>
         </Box>
-      )}
+      </Box>
 
       {/* REUSE: Existing error handling snackbar */}
       <Snackbar
