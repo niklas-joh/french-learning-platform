@@ -31,7 +31,6 @@ import { DashboardSkeleton } from '../components/ai-dashboard/LoadingStates.js';
 import { useOfflineDetection } from '../hooks/useOfflineDetection.js';
 import { useAIDashboard } from '../hooks/useAIDashboard.js';
 import api from '../services/api.js';
-import '../styles/design-tokens.css';
 
 /**
  * Enhanced lesson card data structure
@@ -354,7 +353,7 @@ const HomePage: React.FC = () => {
   const DailyGoalCard = () => (
     <Card className="glass-card" sx={{ mb: 3 }}>
       <CardContent>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'var(--text-primary)' }}>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
           Daily Goal
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
@@ -381,7 +380,7 @@ const HomePage: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <Typography variant="body2" sx={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+              <Typography variant="body2" sx={{ fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
                 {userData.dailyGoalProgress.current}/{userData.dailyGoalProgress.target}
               </Typography>
             </Box>
@@ -402,7 +401,7 @@ const HomePage: React.FC = () => {
   const QuickActionsCard = () => (
     <Card className="glass-card" sx={{ mb: 3 }}>
       <CardContent>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'var(--text-primary)' }}>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
           Quick Actions
         </Typography>
         <Stack spacing={1.5}>
@@ -459,7 +458,7 @@ const HomePage: React.FC = () => {
   const LeaderboardCard = () => (
     <Card className="glass-card">
       <CardContent>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'var(--text-primary)' }}>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
           Weekly Leaders
         </Typography>
         {leaderboard.length > 0 ? (
@@ -484,15 +483,15 @@ const HomePage: React.FC = () => {
                     sx={{
                       backgroundColor: entry.rank <= 3 ? 'var(--accent-blue)' : 'var(--gray-400)',
                       color: 'white',
-                      fontWeight: 600,
+                      fontWeight: 'var(--font-weight-semibold)',
                       minWidth: 32
                     }}
                   />
-                  <Typography variant="body2" sx={{ fontWeight: 500, color: 'var(--text-primary)' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'var(--font-weight-medium)', color: 'var(--text-primary)' }}>
                     {entry.displayName}
                   </Typography>
                 </Box>
-                <Typography variant="body2" sx={{ color: 'var(--accent-blue)', fontWeight: 600 }}>
+                <Typography variant="body2" sx={{ color: 'var(--accent-blue)', fontWeight: 'var(--font-weight-semibold)' }}>
                   {entry.weeklyXp} XP
                 </Typography>
               </Box>
@@ -511,7 +510,7 @@ const HomePage: React.FC = () => {
         
         {/* Debug info for development */}
         {process.env.NODE_ENV === 'development' && (
-          <Typography variant="caption" sx={{ color: 'var(--text-tertiary)', mt: 1, display: 'block', fontSize: '0.7rem' }}>
+          <Typography variant="caption" sx={{ color: 'var(--text-tertiary)', mt: 1, display: 'block', fontSize: 'var(--font-size-xs)' }}>
             Debug: Leaderboard entries = {leaderboard.length}
           </Typography>
         )}
@@ -529,7 +528,7 @@ const HomePage: React.FC = () => {
       />
 
       {/* RESPONSIVE GRID LAYOUT: Main content + Sidebar */}
-      <Box sx={{ p: 2, maxWidth: '1427px', margin: '0 auto' }}>
+      <Box sx={{ p: 2, maxWidth: '1200px', margin: '0 auto' }}>
         <Box sx={{ 
           display: 'flex',
           flexDirection: { xs: 'column', lg: 'row' },
@@ -544,7 +543,7 @@ const HomePage: React.FC = () => {
             {/* Welcome Section */}
             <Card className="glass-card" sx={{ mb: 3 }}>
               <CardContent>
-                <Typography variant="h4" sx={{ fontWeight: 600, color: 'var(--text-primary)', mb: 1 }}>
+                <Typography variant="h4" sx={{ fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)', mb: 1 }}>
                   Today's Learning Path
                 </Typography>
                 <Typography variant="body1" sx={{ color: 'var(--text-secondary)' }}>
@@ -565,10 +564,13 @@ const HomePage: React.FC = () => {
                   display: 'grid',
                   gap: 3,
                   width: '100%',
-                  // 2 columns for cleaner layout
-                  gridTemplateColumns: 'repeat(2, 1fr)',
-                  '@media (max-width: 900px)': {
-                    gridTemplateColumns: '1fr',
+                  // 3 columns desktop, 2 tablet, 1 mobile
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  '@media (max-width: 1024px)': {
+                    gridTemplateColumns: 'repeat(2, 1fr)'
+                  },
+                  '@media (max-width: 640px)': {
+                    gridTemplateColumns: '1fr'
                   },
                   '& > *': {
                     minHeight: '200px'
@@ -587,7 +589,7 @@ const HomePage: React.FC = () => {
 
             {/* Debug information for development */}
             {process.env.NODE_ENV === 'development' && (
-              <Box sx={{ mt: 2, p: 2, backgroundColor: '#f0f0f0', borderRadius: 1, fontSize: '0.8rem' }}>
+              <Box sx={{ mt: 2, p: 2, backgroundColor: 'var(--bg-tertiary)', borderRadius: 'var(--border-radius-small)', fontSize: 'var(--font-size-sm)' }}>
                 <Typography variant="caption">
                   Debug: Using {recommendations.length > 0 ? 'API' : 'fallback'} lesson data. 
                   Cards loaded: {sophisticatedLessonCards.length}

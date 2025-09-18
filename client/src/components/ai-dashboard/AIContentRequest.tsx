@@ -270,7 +270,7 @@ export const AIContentRequest = React.memo<AIContentRequestProps>(({
           variant="h6" 
           component="h2"
           sx={{ 
-            fontWeight: 600, 
+            fontWeight: 'var(--font-weight-semibold)', 
             mb: 2,
             color: 'text.primary'
           }}
@@ -356,7 +356,7 @@ export const AIContentRequest = React.memo<AIContentRequestProps>(({
             disabled={!isFormValid}
             sx={{
               py: 1.5,
-              fontWeight: 600,
+              fontWeight: 'var(--font-weight-semibold)',
               textTransform: 'none',
               background: 'var(--gradient-primary)',
               '&:hover': {

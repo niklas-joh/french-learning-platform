@@ -19,7 +19,6 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { TwentyFirstToolbar } from '@21st-extension/toolbar-react';
 import { ReactPlugin } from '@21st-extension/react';
-import './styles/design-tokens.css';
 
 // Main application component
 function App() {

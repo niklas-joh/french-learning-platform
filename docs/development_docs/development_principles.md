@@ -399,6 +399,17 @@ Designing elaborate architectures for simple requirements.
 
 **MANDATORY**: Before writing any code, complete this checklist:
 
+## 9. Styling Source of Truth
+
+To keep styling simple, consistent, and maintainable, follow these rules:
+
+- Tokens first: add or adjust only in `client/src/styles/design-tokens.css`. This file defines colors, typography, spacing, radii, shadows, overlays, and gradients.
+- Theme consumes tokens: never hardcode hex values or px sizes in `ThemeProvider` — reference tokens with `var(--...)` in the MUI theme (palette, typography, component overrides).
+- Components: prefer MUI theme keys where available (e.g., `color="text.primary"`, `background.paper`) since these already map to tokens.
+- If a value lacks a theme counterpart (e.g., overlays, special gradients), use CSS variables directly via `var(--...)`.
+- Avoid raw px/rem for font sizes/weights in component `sx`; use token variables (e.g., `fontSize: 'var(--font-size-sm)'`, `fontWeight: 'var(--font-weight-semibold)'`).
+- If you need tinted variants, add explicit tokens rather than computing with `lighten/darken` — runtime color functions don’t operate reliably on CSS variables.
+
 - [ ] **Existing Infrastructure Research**: What services, patterns, and utilities can be leveraged?
 - [ ] **Code Reuse Analysis**: What percentage of existing code can be reused?
 - [ ] **Pattern Compliance Check**: Does this follow established factory, service, and import patterns?

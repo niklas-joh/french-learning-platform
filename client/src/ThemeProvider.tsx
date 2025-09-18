@@ -23,60 +23,104 @@ interface Props {
 const createDesignSystemTheme = (mode: ThemeMode) => {
   const isLight = mode === 'light';
   
+  // Extract actual color values from design tokens
+  const colors = {
+    light: {
+      accentBlue: '#2563EB',
+      accentBlueLight: '#3B82F6',
+      accentGreen: '#16A34A',
+      accentGreenLight: '#22C55E',
+      accentAmber: '#D97706',
+      accentAmberLight: '#F59E0B',
+      accentRed: '#DC2626',
+      accentRedLight: '#EF4444',
+      gray700: '#394150',
+      gray600: '#4E5563',
+      gray800: '#252A33',
+      backgroundPrimary: '#FFFFFF',
+      backgroundSecondary: '#FAFBFC',
+      textPrimary: '#252A33',
+      textSecondary: '#4E5563',
+      textTertiary: '#6B7280',
+      borderLight: '#E7E8EA',
+    },
+    dark: {
+      accentBlue: '#3B82F6',
+      accentBlueLight: '#60A5FA',
+      accentGreen: '#22C55E',
+      accentGreenLight: '#4ADE80',
+      accentAmber: '#F59E0B',
+      accentAmberLight: '#FBBF24',
+      accentRed: '#EF4444',
+      accentRedLight: '#F87171',
+      gray700: '#6B7280',
+      gray600: '#9AA0A6',
+      gray800: '#374151',
+      backgroundPrimary: '#252A33',
+      backgroundSecondary: '#1A1F26',
+      textPrimary: '#FFFFFF',
+      textSecondary: '#9AA0A6',
+      textTertiary: '#6B7280',
+      borderLight: '#394150',
+    },
+  };
+  
+  const currentColors = isLight ? colors.light : colors.dark;
+  
   return createTheme({
     palette: {
       mode,
-      // Primary palette - now using design system greys
+      // Align MUI palette to design token values
       primary: {
-        main: '#252A33',      // Dark grey for primary buttons
-        light: '#394150',     // Hover state
-        dark: '#1A1F26',     // Pressed state
-        contrastText: '#FFFFFF',
+        main: currentColors.accentBlue,
+        light: currentColors.accentBlueLight,
+        dark: currentColors.accentBlue,
+        contrastText: currentColors.backgroundPrimary,
       },
       secondary: {
-        main: '#4E5563',      // Secondary text/buttons
-        light: '#6B7280',     // Lighter grey
-        dark: '#394150',     // Darker grey
-        contrastText: '#FFFFFF',
+        main: currentColors.gray700,
+        light: currentColors.gray600,
+        dark: currentColors.gray800,
+        contrastText: currentColors.backgroundPrimary,
       },
       background: {
-        default: isLight ? '#FAFBFC' : '#1A1F26',   // Page background
-        paper: isLight ? '#FFFFFF' : '#252A33',     // Card background
+        default: currentColors.backgroundSecondary,   // Page background
+        paper: currentColors.backgroundPrimary,       // Card background
       },
       text: {
-        primary: isLight ? '#252A33' : '#FFFFFF',   // Primary text
-        secondary: isLight ? '#4E5563' : '#9AA0A6', // Secondary text
-        disabled: '#9AA0A6',  // Disabled text
+        primary: currentColors.textPrimary,
+        secondary: currentColors.textSecondary,
+        disabled: currentColors.textTertiary,
       },
-      divider: isLight ? '#E7E8EA' : '#394150',     // Border colors
+      divider: currentColors.borderLight,
       
-      // Accent colors for strategic use
+      // Semantic colors using actual values
       success: {
-        main: '#16A34A',      // Beginner level
-        light: '#22C55E',
-        dark: '#15803D',
-        contrastText: '#FFFFFF',
+        main: currentColors.accentGreen,
+        light: currentColors.accentGreenLight,
+        dark: currentColors.accentGreen,
+        contrastText: currentColors.backgroundPrimary,
       },
       warning: {
-        main: '#D97706',      // Intermediate level
-        light: '#F59E0B',
-        dark: '#B45309',
-        contrastText: '#FFFFFF',
+        main: currentColors.accentAmber,
+        light: currentColors.accentAmberLight,
+        dark: currentColors.accentAmber,
+        contrastText: currentColors.backgroundPrimary,
       },
       error: {
-        main: '#DC2626',      // Advanced level
-        light: '#EF4444',
-        dark: '#B91C1C',
-        contrastText: '#FFFFFF',
+        main: currentColors.accentRed,
+        light: currentColors.accentRedLight,
+        dark: currentColors.accentRed,
+        contrastText: currentColors.backgroundPrimary,
       },
       info: {
-        main: '#2563EB',      // Interactive elements
-        light: '#3B82F6',
-        dark: '#1D4ED8',
-        contrastText: '#FFFFFF',
+        main: currentColors.accentBlue,
+        light: currentColors.accentBlueLight,
+        dark: currentColors.accentBlue,
+        contrastText: currentColors.backgroundPrimary,
       },
       
-      // Custom colors for our design system
+      // Custom greys reference tokens for consistency
       grey: {
         50: '#FAFBFC',
         100: '#F4F5F7',
@@ -102,29 +146,29 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
         'sans-serif'
       ].join(','),
       
-      // Typography scale from design system
+      // Typography scale using actual values
       h1: { 
         fontSize: '2.5rem',    // 40px
         fontWeight: 600, 
-        color: isLight ? '#252A33' : '#FFFFFF',
+        color: currentColors.textPrimary,
         lineHeight: 1.2,
       },
       h2: { 
         fontSize: '2rem',      // 32px
         fontWeight: 600, 
-        color: isLight ? '#252A33' : '#FFFFFF',
+        color: currentColors.textPrimary,
         lineHeight: 1.3,
       },
       h3: { 
         fontSize: '1.5rem',    // 24px
         fontWeight: 600, 
-        color: isLight ? '#252A33' : '#FFFFFF',
+        color: currentColors.textPrimary,
         lineHeight: 1.4,
       },
       h4: { 
         fontSize: '1.25rem',   // 20px
         fontWeight: 500, 
-        color: isLight ? '#252A33' : '#FFFFFF',
+        color: currentColors.textPrimary,
         lineHeight: 1.4,
       },
       h5: { 
@@ -221,8 +265,8 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: 6,
-            fontSize: '0.75rem',
+            borderRadius: 8,    // --border-radius-small
+            fontSize: '0.75rem', // --font-size-xs (12px)
             fontWeight: 500,
             textTransform: 'uppercase',
             letterSpacing: '0.025em',
@@ -234,7 +278,7 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: 16,
+            borderRadius: 16,   // --border-radius-large
           },
         },
       },

@@ -225,7 +225,7 @@ export const AIEnhancedHeader: React.FC<AIEnhancedHeaderProps> = React.memo(({
             <Box
               component="span"
               sx={{ 
-                fontSize: { xs: 'var(--font-size-h4)', sm: 'var(--font-size-h3)' },
+                fontSize: { xs: 'var(--font-size-h4)', sm: 'var(--font-size-h2)' },
                 fontWeight: 'var(--font-weight-medium)',
                 lineHeight: 1.2,
                 display: 'block',

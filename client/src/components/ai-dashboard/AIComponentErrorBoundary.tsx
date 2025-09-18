@@ -242,7 +242,7 @@ export class AIComponentErrorBoundary extends Component<
             {this.state.errorInfo && (
               <Typography variant="caption" component="div" sx={{ fontFamily: 'monospace', mt: 1 }}>
                 <strong>Component Stack:</strong>
-                <pre style={{ whiteSpace: 'pre-wrap', fontSize: '10px' }}>
+                <pre style={{ whiteSpace: 'pre-wrap', fontSize: 'var(--font-size-xs)' }}>
                   {this.state.errorInfo.componentStack}
                 </pre>
               </Typography>

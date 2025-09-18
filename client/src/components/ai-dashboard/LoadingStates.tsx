@@ -157,7 +157,7 @@ export const ContentGenerationLoader = React.memo<ContentGenerationLoaderProps>(
       className="glass-card" 
       sx={{ 
         p: 3,
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        background: 'var(--bg-primary)',
         borderRadius: 'var(--border-radius-medium)'
       }}
       role="status"
@@ -191,14 +191,14 @@ export const ContentGenerationLoader = React.memo<ContentGenerationLoaderProps>(
               justifyContent: 'center'
             }}
           >
-            <Typography 
-              variant="caption" 
-              component="div" 
-              color="text.secondary"
-              sx={{ fontSize: '0.75rem', fontWeight: 600 }}
-            >
-              {`${Math.round(progress)}%`}
-            </Typography>
+          <Typography 
+            variant="caption" 
+            component="div" 
+            color="text.secondary"
+            sx={{ fontSize: 'var(--font-size-xs)', fontWeight: 'var(--font-weight-semibold)' }}
+          >
+            {`${Math.round(progress)}%`}
+          </Typography>
           </Box>
         </Box>
 
@@ -206,10 +206,10 @@ export const ContentGenerationLoader = React.memo<ContentGenerationLoaderProps>(
         <Typography 
           variant="h6" 
           sx={{ 
-            fontWeight: 600, 
+            fontWeight: 'var(--font-weight-semibold)', 
             mb: 1,
             color: 'text.primary',
-            fontSize: '1rem'
+            fontSize: 'var(--font-size-h6)'
           }}
         >
           {getProgressMessage()}
@@ -220,7 +220,7 @@ export const ContentGenerationLoader = React.memo<ContentGenerationLoaderProps>(
           <Typography 
             variant="body2" 
             color="text.secondary"
-            sx={{ fontSize: '0.85rem' }}
+            sx={{ fontSize: 'var(--font-size-sm)' }}
           >
             Estimated time remaining: {formatTime(estimatedTime)}
           </Typography>

@@ -170,7 +170,7 @@ const ProgressRing: React.FC<{
   size?: number;
   strokeWidth?: number;
   color?: string;
-}> = ({ progress, size = 48, strokeWidth = 4, color = '#4caf50' }) => {
+}> = ({ progress, size = 48, strokeWidth = 4, color = 'var(--accent-blue)' }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const strokeDasharray = circumference;
@@ -202,7 +202,7 @@ const ProgressRing: React.FC<{
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="#e5e7eb"
+          stroke="var(--gray-200)"
           strokeWidth={strokeWidth}
           fill="transparent"
         />
@@ -358,15 +358,15 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
         // Lesson card styling using design tokens
         ...(renderMode === 'lesson-card' && {
           background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-light)',
-          borderRadius: 'var(--border-radius-small)',
-          boxShadow: 'var(--shadow-card)',
+          border: '1px solid var(--border-medium)',
+          borderRadius: 'var(--border-radius-large)',
+          boxShadow: 'var(--shadow-medium)',
         }),
         
         // Enhanced hover effects using design tokens
         '&:hover': !disabled ? {
           transform: renderMode === 'lesson-card' ? 'translateY(-4px)' : 'translateY(-2px)',
-          boxShadow: renderMode === 'lesson-card' ? 'var(--shadow-card-hover)' : 'var(--shadow-medium)',
+          boxShadow: renderMode === 'lesson-card' ? 'var(--shadow-heavy)' : 'var(--shadow-medium)',
           '& .progress-ring': renderMode === 'lesson-card' ? {
             transform: 'scale(1.05)',
             transition: 'transform var(--transition-fast)'
@@ -412,7 +412,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             <Typography
               variant="h3"
               sx={{
-                fontSize: '32px',
+                fontSize: 'var(--font-size-h3)',
                 lineHeight: 1,
                 mb: 0
               }}
@@ -494,7 +494,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             {estimatedTime && (
               <Chip
                 size="small"
-                icon={<span style={{ fontSize: '12px' }}>⏱️</span>}
+                icon={<span style={{ fontSize: 'var(--font-size-xs)' }}>⏱️</span>}
                 label={`${estimatedTime} min`}
                 variant="outlined"
                 sx={{
@@ -511,14 +511,14 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             {xpReward && (
               <Chip
                 size="small"
-                icon={<span style={{ fontSize: '12px' }}>⭐</span>}
+                icon={<span style={{ fontSize: 'var(--font-size-xs)' }}>⭐</span>}
                 label={`${xpReward} XP`}
                 variant="outlined"
                 sx={{
                   fontSize: 'var(--font-size-xs)',
                   height: 24,
-                  color: '#f59e0b',
-                  borderColor: '#f59e0b',
+                  color: 'var(--accent-amber)',
+                  borderColor: 'var(--accent-amber)',
                   '& .MuiChip-label': {
                     px: 0.5
                   }
@@ -536,7 +536,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 sx={{
                   height: 6,
                   borderRadius: 3,
-                  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                  backgroundColor: 'var(--gray-200)',
                   '& .MuiLinearProgress-bar': {
                     borderRadius: 3,
                     backgroundColor: statusConfig.progressColor
@@ -583,7 +583,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 border: status === 'completed' ? '1px solid' : 'none',
                 borderColor: status === 'completed' ? 'primary.main' : 'transparent',
                 fontSize: 'var(--font-size-sm)',
-                fontWeight: 600,
+                fontWeight: 'var(--font-weight-semibold)',
                 textTransform: 'none',
                 minWidth: 80,
                 textAlign: 'center',
@@ -594,7 +594,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 gap: 0.5
               }}
             >
-              <span style={{ fontSize: '14px' }}>{statusConfig.icon}</span>
+              <span style={{ fontSize: 'var(--font-size-sm)' }}>{statusConfig.icon}</span>
               {statusConfig.buttonText}
             </Typography>
           </Box>
