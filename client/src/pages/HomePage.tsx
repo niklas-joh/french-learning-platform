@@ -18,8 +18,8 @@
  * @author French Learning Platform Team
  */
 
-import React, { useCallback, useMemo } from 'react';
-import { Box, Alert, Snackbar, Typography } from '@mui/material';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import { Box, Alert, Snackbar, Typography, Card, CardContent } from '@mui/material';
 import { AIDashboardLayout, AIEnhancedHeader } from '../components/ai-dashboard/AIDashboardLayout.js';
 import { QuickActionsGrid } from '../components/ai-dashboard/QuickActionCard.js';
 import type { DifficultyLevel, LessonStatus } from '../components/ai-dashboard/QuickActionCard.js';
@@ -27,6 +27,7 @@ import { AITutorCard } from '../components/ai-dashboard/AITutorCard.js';
 import { DashboardSkeleton } from '../components/ai-dashboard/LoadingStates.js';
 import { useOfflineDetection } from '../hooks/useOfflineDetection.js';
 import { useAIDashboard } from '../hooks/useAIDashboard.js';
+import api from '../services/api.js';
 import '../styles/design-tokens.css';
 
 /**
@@ -148,6 +149,10 @@ const HomePage: React.FC = () => {
       percentage: 67
     }
   }), []);
+
+  // PHASE 4.3.1: Simple leaderboard state management
+  const [leaderboard, setLeaderboard] = useState<any[]>([]);
+  const [showLeaderboard, setShowLeaderboard] = useState(true);
 
   // Show loading skeleton during initial dashboard load
   const showSkeleton = dashboardLoading && !recommendations.length;
@@ -278,6 +283,34 @@ const HomePage: React.FC = () => {
       };
     });
   }, [recommendations, isOffline, determineLessonStatus, calculateLessonProgress, generatePersonalization]);
+
+  /**
+   * PHASE 4.3.1: Load leaderboard data using existing API patterns
+   * 
+   * Simple leaderboard loading function that uses existing API infrastructure
+   * and error handling patterns. Gracefully handles failures by setting empty array.
+   * 
+   * @returns Promise resolving when leaderboard data is loaded or failed
+   */
+  const loadLeaderboard = useCallback(async () => {
+    try {
+      const response = await api.get('/users/me/social/leaderboard?limit=5');
+      setLeaderboard(response.data.leaderboard || []);
+    } catch (error) {
+      console.error('[HomePage] Error loading leaderboard:', error);
+      setLeaderboard([]);
+    }
+  }, []);
+
+  /**
+   * PHASE 4.3.1: Load leaderboard on component mount
+   * 
+   * Uses existing useEffect pattern to load leaderboard data when component mounts.
+   * Follows established patterns from other data loading in the component.
+   */
+  useEffect(() => {
+    loadLeaderboard();
+  }, [loadLeaderboard]);
 
   /**
    * Enhanced AI tutor interaction with context awareness
@@ -419,6 +452,49 @@ const HomePage: React.FC = () => {
           isOffline={isOffline}
         />
       </Box>
+
+      {/* PHASE 4.3.1: Simple leaderboard display using existing Material-UI patterns */}
+      {showLeaderboard && (
+        <Box sx={{ px: 2, pb: 2 }}>
+          <Card className="glass-card">
+            <CardContent>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                🏆 Weekly Leaders
+              </Typography>
+              {leaderboard.length > 0 ? (
+                leaderboard.map((entry) => (
+                  <Box key={entry.rank} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 600, minWidth: '24px' }}>
+                        #{entry.rank}
+                      </Typography>
+                      <Typography variant="body2">
+                        {entry.displayName}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" sx={{ color: 'primary.main', fontWeight: 500 }}>
+                      {entry.weeklyXp} XP
+                    </Typography>
+                  </Box>
+                ))
+              ) : (
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                  🎯 No leaderboard data yet. Start learning to appear on the leaderboard!
+                </Typography>
+              )}
+              <Typography variant="caption" sx={{ color: 'text.secondary', mt: 1, display: 'block' }}>
+                💪 Keep learning to climb the leaderboard!
+              </Typography>
+              {/* Debug info */}
+              {process.env.NODE_ENV === 'development' && (
+                <Typography variant="caption" sx={{ color: 'grey.500', mt: 1, display: 'block', fontSize: '0.7rem' }}>
+                  Debug: Leaderboard array length = {leaderboard.length}
+                </Typography>
+              )}
+            </CardContent>
+          </Card>
+        </Box>
+      )}
 
       {/* REUSE: Existing error handling snackbar */}
       <Snackbar

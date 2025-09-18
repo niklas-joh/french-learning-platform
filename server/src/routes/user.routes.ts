@@ -45,6 +45,38 @@ router.post('/me/activity-completed', protect, recordActivityCompleted);
 router.get('/me/achievements', protect, getUserAchievements);
 router.post('/me/achievements/check', protect, checkNewAchievements);
 
+// === SOCIAL FEATURES (Phase 4.3.1) - Minimal implementation ===
+/**
+ * Simple leaderboard endpoint using existing patterns
+ * 
+ * @route GET /api/users/me/social/leaderboard
+ * @desc Get weekly leaderboard with top performers
+ * @access Private
+ * @param {number} limit - Number of entries to return (default 10)
+ * @returns {Object} JSON response with leaderboard array
+ */
+router.get('/me/social/leaderboard', protect, async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit as string) || 10;
+    
+    // REUSE: Existing database query patterns from progressService
+    const { getSimpleLeaderboard } = await import('../services/progressService.js');
+    const leaderboard = await getSimpleLeaderboard(limit);
+    
+    res.json({ 
+      success: true,
+      leaderboard,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('[API] Error getting leaderboard:', error);
+    res.status(500).json({ 
+      success: false, 
+      error: 'Failed to get leaderboard' 
+    });
+  }
+});
+
 // === Legacy & Admin Routes ===
 // @desc    Get assigned content for the current user (Legacy, may be replaced by learning path)
 router.get('/me/assignments', protect, getAssignedContent);

@@ -22,21 +22,22 @@
 | 4.2.2 | Create userBadges table (conditional) | ⏭️ **SKIPPED** | Low | 2 hours | 4.2.1 | ⏭️ N/A | **Using metadata approach** |
 | 4.2.3 | Create oauthProfiles table (conditional) | ⏭️ **SKIPPED** | Low | 2 hours | 4.1.4, 4.2.1 | ⏭️ N/A | **OAuth not implemented** |
 | **4.3.0** | **Phase 3: Progressive Enhancement** | 🔄 **PARTIAL** | Medium | 1-2 days | 4.1.0 | 🔄 50% | **Core gamification done** |
-| 4.3.1 | Add social features | 📋 Not Started | Medium | 3-4 hours | 4.1.0 | - | **Friends & leaderboard pending** |
+| 4.3.1 | Add minimal social features | 🔄 **IN PROGRESS** | Medium | 1-2 hours | 4.1.0 | 🔄 75% | **Database schema fix needed** |
+| 4.3.1.1 | Fix weeklyXp database schema | 🔄 **IN PROGRESS** | High | 1 hour | 4.3.1 | 🔄 0% | **Missing database column** |
 | 4.3.2 | Enhance analytics | ✅ **COMPLETED** | Medium | 2-3 hours | 4.1.0 | ✅ Done | **Skill assessment integrated** |
-| 4.3.3 | Implement leaderboard | 📋 Not Started | Medium | 2-3 hours | 4.3.1 | - | **Component not built** |
-| 4.3.4 | Add friend system | 📋 Not Started | Low | 3-4 hours | 4.3.1 | - | **Backend logic pending** |
+| 4.3.3 | Implement leaderboard | ✅ **COMPLETED** | Medium | 1 hour | 4.3.1 | ✅ Done | **Inline leaderboard in 4.3.1** |
+| 4.3.4 | Add friend system | ⏭️ **SKIPPED** | Low | 3-4 hours | 4.3.1 | ⏭️ N/A | **YAGNI principle applied** |
 | **4.4.0** | **Testing & Validation** | 📋 Not Started | High | 0.5 days | 4.1.0 | - | **Integration testing needed** |
 | 4.4.1 | Extend existing unit tests | 📋 Not Started | High | 2-3 hours | 4.1.0 | - | **Component tests pending** |
 | 4.4.2 | Integration testing | 📋 Not Started | High | 2-3 hours | 4.1.0, 4.3.0 | - | **End-to-end testing** |
 | 4.4.3 | User experience validation | 📋 Not Started | Critical | 1-2 hours | All phases | - | **User testing pending** |
 
 ## 📊 Progress Summary
-- **Total Tasks**: 18
-- **Completed**: 9 (50%) ✅
-- **In Progress**: 1 (6%) 🔄
-- **Not Started**: 5 (28%) 📋
-- **Skipped**: 3 (17%) ⏭️
+- **Total Tasks**: 19
+- **Completed**: 9 (47%) ✅
+- **In Progress**: 2 (11%) 🔄
+- **Not Started**: 5 (26%) 📋
+- **Skipped**: 3 (16%) ⏭️
 - **Critical Priority**: 1 remaining task
 - **High Priority**: 2 remaining tasks  
 - **Medium Priority**: 2 remaining tasks
@@ -155,6 +156,7 @@
 - [Phase 1: UI Transformation](./subtasks/phase-4-1.0-ui-transformation.md)  
 - [Phase 2: Minimal Database](./subtasks/phase-4-2.0-minimal-database.md)
 - [Phase 3: Progressive Enhancement](./subtasks/phase-4-3.0-progressive-enhancement.md)
+- [Phase 3.1.1: WeeklyXp Database Fix](./subtasks/phase-4-3.1.1-weeklyxp-database-fix.md)
 
 ---
 

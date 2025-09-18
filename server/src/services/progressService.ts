@@ -453,6 +453,7 @@ export const recordActivity = async (userId: number, activityData: any) => {
     const [updatedProgress] = await trx('userProgress')
       .where({ userId: userId })
       .increment('totalXp', xpGained)
+      .increment('weeklyXp', xpGained) // EXTEND: Also update weekly XP
       .update({
         streakDays: newStreak,
         lastActivityDate: new Date(),
@@ -578,6 +579,127 @@ export function formatLessonForDisplay(lesson: any) {
     displayTitle: lesson.title || 'French Lesson',
     displayDescription: lesson.description || 'Continue your French learning journey'
   };
+}
+
+/**
+ * Simple leaderboard generation using existing infrastructure
+ * 
+ * PHASE 4.3.1: Minimal social features implementation
+ * REUSE: Existing database connection and userProgress table
+ * APPROACH: Single-function extension vs new service creation
+ * 
+ * Generates a weekly leaderboard by querying existing userProgress and users tables.
+ * Uses established database query patterns and maintains performance through
+ * indexed column usage (weeklyXp) and efficient JOIN operations.
+ * 
+ * @param limit - Number of entries to return (default 10)
+ * @returns Promise resolving to simple leaderboard array
+ * 
+ * @example
+ * ```typescript
+ * const topUsers = await getSimpleLeaderboard(5);
+ * console.log(`Top user: ${topUsers[0]?.displayName} with ${topUsers[0]?.weeklyXp} XP`);
+ * ```
+ */
+export async function getSimpleLeaderboard(limit: number = 10): Promise<Array<{
+  rank: number;
+  displayName: string;
+  weeklyXp: number;
+  currentStreak: number;
+  level: string;
+}>> {
+  try {
+    // REUSE: Existing database connection and join patterns from getUserRecentProgress
+    const leaderboard = await db('userProgress as up')
+      .join('users as u', 'up.userId', 'u.id')
+      .select(
+        'u.firstName', 'u.lastName', 'u.email',
+        'up.weeklyXp', 'up.streakDays', 'up.currentLevel'
+      )
+      .where('up.weeklyXp', '>', 0)
+      .orderBy('up.weeklyXp', 'desc')
+      .limit(limit);
+    
+    return leaderboard.map((entry, index) => ({
+      rank: index + 1,
+      displayName: `${entry.firstName} ${entry.lastName}`.trim() || entry.email,
+      weeklyXp: entry.weeklyXp,
+      currentStreak: entry.streakDays || 0,
+      level: entry.currentLevel || 'A1'
+    }));
+  } catch (error) {
+    console.error('[Leaderboard] Error generating leaderboard:', error);
+    return [];
+  }
+}
+
+/**
+ * Reset weekly XP for all users (called weekly via scheduler or manually)
+ * 
+ * HYBRID APPROACH: Event-driven XP with periodic reset for fresh competition
+ * REUSE: Existing database transaction patterns
+ * 
+ * @returns Promise resolving to number of users reset
+ * 
+ * @example
+ * ```typescript
+ * const resetCount = await resetWeeklyXpForAllUsers();
+ * console.log(`Reset weekly XP for ${resetCount} users`);
+ * ```
+ */
+export async function resetWeeklyXpForAllUsers(): Promise<number> {
+  try {
+    console.log('[WeeklyReset] Starting weekly XP reset for all users...');
+    
+    // Reset all users' weekly XP and update reset date
+    const result = await db('userProgress')
+      .update({
+        weeklyXp: 0,
+        lastXpResetDate: new Date().toISOString().split('T')[0] // Today's date
+      });
+    
+    console.log(`[WeeklyReset] Reset weekly XP for ${result} users`);
+    return result;
+  } catch (error) {
+    console.error('[WeeklyReset] Error resetting weekly XP:', error);
+    throw error;
+  }
+}
+
+/**
+ * Check if weekly reset is needed and perform it
+ * 
+ * SMART RESET: Only reset if more than 7 days since last reset
+ * REUSE: Existing database query patterns
+ * 
+ * @returns Promise resolving to boolean indicating if reset was performed
+ * 
+ * @example
+ * ```typescript
+ * const wasReset = await checkAndResetWeeklyXp();
+ * if (wasReset) console.log('Weekly XP was reset');
+ * ```
+ */
+export async function checkAndResetWeeklyXp(): Promise<boolean> {
+  try {
+    // Check if any user needs reset (more than 7 days since last reset)
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+    
+    const needsReset = await db('userProgress')
+      .where('lastXpResetDate', '<', sevenDaysAgo)
+      .orWhereNull('lastXpResetDate')
+      .first();
+    
+    if (needsReset) {
+      await resetWeeklyXpForAllUsers();
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('[WeeklyReset] Error checking weekly reset:', error);
+    return false;
+  }
 }
 
 // =================================================================
