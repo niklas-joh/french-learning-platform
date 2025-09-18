@@ -1,6 +1,6 @@
 :root {
   /* Design System Color Palette - Subtle & Clean */
-  /* Neutral Foundation - Primary Background Colors */
+  /* Light Mode - Default Colors */
   --background-primary: #FFFFFF;
   --background-secondary: #FAFBFC;
   --background-tertiary: #F4F5F7;
@@ -16,6 +16,17 @@
   --gray-700: #394150;
   --gray-800: #252A33;
   --gray-900: #1A1F26;
+
+  /* Text colors for light mode */
+  --text-primary: #252A33;
+  --text-secondary: #4E5563;
+  --text-tertiary: #6B7280;
+  --text-inverse: #FFFFFF;
+
+  /* Border colors for light mode */
+  --border-light: #E7E8EA;
+  --border-medium: #D3D5D9;
+  --border-strong: #9AA0A6;
 
   /* Colorful Accents - Strategic Use Only */
   --accent-green: #16A34A;        /* Beginner level */
@@ -60,16 +71,6 @@
   --bg-tertiary: var(--background-tertiary);
   --bg-elevated: var(--background-primary);
   
-  /* Border color mappings */
-  --border-light: var(--gray-200);
-  --border-medium: var(--gray-300);
-  --border-strong: var(--gray-400);
-  
-  /* Text color mappings */
-  --text-primary: var(--gray-800);
-  --text-secondary: var(--gray-600);
-  --text-tertiary: var(--gray-500);
-  --text-inverse: var(--background-primary);
   
   /* Difficulty level colors using design system accents */
   --difficulty-beginner-bg: var(--accent-green-bg);
@@ -208,6 +209,29 @@
 .glass-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-medium);
+}
+
+/* Dark Mode Theme Support */
+[data-theme="dark"] {
+  /* Dark Mode Background Colors */
+  --background-primary: #252A33;
+  --background-secondary: #1A1F26;
+  --background-tertiary: #394150;
+
+  /* Dark Mode Text Colors */
+  --text-primary: #FFFFFF;
+  --text-secondary: #9AA0A6;
+  --text-tertiary: #6B7280;
+  --text-inverse: #252A33;
+
+  /* Dark Mode Border Colors */
+  --border-light: #394150;
+  --border-medium: #4E5563;
+  --border-strong: #6B7280;
+
+  /* Glass card background for dark mode */
+  --glass-bg: var(--background-primary);
+  --glass-border: var(--border-light);
 }
 
 /* Mobile-first responsive breakpoints */

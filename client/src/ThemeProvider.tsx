@@ -19,119 +19,125 @@ interface Props {
   children: ReactNode;
 }
 
+// Helper function to get computed CSS variable values
+const getCSSVariableValue = (variable: string): string => {
+  if (typeof window !== 'undefined') {
+    return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+  }
+  // Fallback values for SSR
+  const fallbacks: Record<string, string> = {
+    '--accent-blue': '#2563EB',
+    '--accent-blue-light': '#3B82F6',
+    '--accent-green': '#16A34A',
+    '--accent-green-light': '#22C55E',
+    '--accent-amber': '#D97706',
+    '--accent-amber-light': '#F59E0B',
+    '--accent-red': '#DC2626',
+    '--accent-red-light': '#EF4444',
+    '--gray-700': '#394150',
+    '--gray-600': '#4E5563',
+    '--gray-800': '#252A33',
+    '--background-primary': '#FFFFFF',
+    '--background-secondary': '#FAFBFC',
+    '--text-primary': '#252A33',
+    '--text-secondary': '#4E5563',
+    '--text-tertiary': '#6B7280',
+    '--border-light': '#E7E8EA',
+  };
+  return fallbacks[variable] || '#000000';
+};
+
 // Design System Theme Configuration
 const createDesignSystemTheme = (mode: ThemeMode) => {
   const isLight = mode === 'light';
   
-  // Extract actual color values from design tokens
+  // Get actual color values from CSS variables for MUI theme
+  // This maintains single source of truth while providing MUI-compatible values
   const colors = {
-    light: {
-      accentBlue: '#2563EB',
-      accentBlueLight: '#3B82F6',
-      accentGreen: '#16A34A',
-      accentGreenLight: '#22C55E',
-      accentAmber: '#D97706',
-      accentAmberLight: '#F59E0B',
-      accentRed: '#DC2626',
-      accentRedLight: '#EF4444',
-      gray700: '#394150',
-      gray600: '#4E5563',
-      gray800: '#252A33',
-      backgroundPrimary: '#FFFFFF',
-      backgroundSecondary: '#FAFBFC',
-      textPrimary: '#252A33',
-      textSecondary: '#4E5563',
-      textTertiary: '#6B7280',
-      borderLight: '#E7E8EA',
-    },
-    dark: {
-      accentBlue: '#3B82F6',
-      accentBlueLight: '#60A5FA',
-      accentGreen: '#22C55E',
-      accentGreenLight: '#4ADE80',
-      accentAmber: '#F59E0B',
-      accentAmberLight: '#FBBF24',
-      accentRed: '#EF4444',
-      accentRedLight: '#F87171',
-      gray700: '#6B7280',
-      gray600: '#9AA0A6',
-      gray800: '#374151',
-      backgroundPrimary: '#252A33',
-      backgroundSecondary: '#1A1F26',
-      textPrimary: '#FFFFFF',
-      textSecondary: '#9AA0A6',
-      textTertiary: '#6B7280',
-      borderLight: '#394150',
-    },
+    accentBlue: getCSSVariableValue('--accent-blue'),
+    accentBlueLight: getCSSVariableValue('--accent-blue-light'),
+    accentGreen: getCSSVariableValue('--accent-green'),
+    accentGreenLight: getCSSVariableValue('--accent-green-light'),
+    accentAmber: getCSSVariableValue('--accent-amber'),
+    accentAmberLight: getCSSVariableValue('--accent-amber-light'),
+    accentRed: getCSSVariableValue('--accent-red'),
+    accentRedLight: getCSSVariableValue('--accent-red-light'),
+    gray700: getCSSVariableValue('--gray-700'),
+    gray600: getCSSVariableValue('--gray-600'),
+    gray800: getCSSVariableValue('--gray-800'),
+    backgroundPrimary: getCSSVariableValue('--background-primary'),
+    backgroundSecondary: getCSSVariableValue('--background-secondary'),
+    textPrimary: getCSSVariableValue('--text-primary'),
+    textSecondary: getCSSVariableValue('--text-secondary'),
+    textTertiary: getCSSVariableValue('--text-tertiary'),
+    borderLight: getCSSVariableValue('--border-light'),
   };
-  
-  const currentColors = isLight ? colors.light : colors.dark;
   
   return createTheme({
     palette: {
       mode,
       // Align MUI palette to design token values
       primary: {
-        main: currentColors.accentBlue,
-        light: currentColors.accentBlueLight,
-        dark: currentColors.accentBlue,
-        contrastText: currentColors.backgroundPrimary,
+        main: colors.accentBlue,
+        light: colors.accentBlueLight,
+        dark: colors.accentBlue,
+        contrastText: colors.backgroundPrimary,
       },
       secondary: {
-        main: currentColors.gray700,
-        light: currentColors.gray600,
-        dark: currentColors.gray800,
-        contrastText: currentColors.backgroundPrimary,
+        main: colors.gray700,
+        light: colors.gray600,
+        dark: colors.gray800,
+        contrastText: colors.backgroundPrimary,
       },
       background: {
-        default: currentColors.backgroundSecondary,   // Page background
-        paper: currentColors.backgroundPrimary,       // Card background
+        default: colors.backgroundSecondary,   // Page background
+        paper: colors.backgroundPrimary,       // Card background
       },
       text: {
-        primary: currentColors.textPrimary,
-        secondary: currentColors.textSecondary,
-        disabled: currentColors.textTertiary,
+        primary: colors.textPrimary,
+        secondary: colors.textSecondary,
+        disabled: colors.textTertiary,
       },
-      divider: currentColors.borderLight,
+      divider: colors.borderLight,
       
       // Semantic colors using actual values
       success: {
-        main: currentColors.accentGreen,
-        light: currentColors.accentGreenLight,
-        dark: currentColors.accentGreen,
-        contrastText: currentColors.backgroundPrimary,
+        main: colors.accentGreen,
+        light: colors.accentGreenLight,
+        dark: colors.accentGreen,
+        contrastText: colors.backgroundPrimary,
       },
       warning: {
-        main: currentColors.accentAmber,
-        light: currentColors.accentAmberLight,
-        dark: currentColors.accentAmber,
-        contrastText: currentColors.backgroundPrimary,
+        main: colors.accentAmber,
+        light: colors.accentAmberLight,
+        dark: colors.accentAmber,
+        contrastText: colors.backgroundPrimary,
       },
       error: {
-        main: currentColors.accentRed,
-        light: currentColors.accentRedLight,
-        dark: currentColors.accentRed,
-        contrastText: currentColors.backgroundPrimary,
+        main: colors.accentRed,
+        light: colors.accentRedLight,
+        dark: colors.accentRed,
+        contrastText: colors.backgroundPrimary,
       },
       info: {
-        main: currentColors.accentBlue,
-        light: currentColors.accentBlueLight,
-        dark: currentColors.accentBlue,
-        contrastText: currentColors.backgroundPrimary,
+        main: colors.accentBlue,
+        light: colors.accentBlueLight,
+        dark: colors.accentBlue,
+        contrastText: colors.backgroundPrimary,
       },
       
-      // Custom greys reference tokens for consistency
+      // Reference design token greys for consistency
       grey: {
-        50: '#FAFBFC',
-        100: '#F4F5F7',
-        200: '#E7E8EA',
-        300: '#D3D5D9',
-        400: '#9AA0A6',
-        500: '#6B7280',
-        600: '#4E5563',
-        700: '#394150',
-        800: '#252A33',
-        900: '#1A1F26',
+        50: 'var(--gray-50)',
+        100: 'var(--gray-100)',
+        200: 'var(--gray-200)',
+        300: 'var(--gray-300)',
+        400: 'var(--gray-400)',
+        500: 'var(--gray-500)',
+        600: 'var(--gray-600)',
+        700: 'var(--gray-700)',
+        800: 'var(--gray-800)',
+        900: 'var(--gray-900)',
       },
     },
     
@@ -146,74 +152,74 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
         'sans-serif'
       ].join(','),
       
-      // Typography scale using actual values
+      // Typography scale using design token values
       h1: { 
-        fontSize: '2.5rem',    // 40px
-        fontWeight: 600, 
-        color: currentColors.textPrimary,
+        fontSize: 'var(--font-size-h1)',
+        fontWeight: 'var(--font-weight-semibold)', 
+        color: colors.textPrimary,
         lineHeight: 1.2,
       },
       h2: { 
-        fontSize: '2rem',      // 32px
-        fontWeight: 600, 
-        color: currentColors.textPrimary,
+        fontSize: 'var(--font-size-h2)',
+        fontWeight: 'var(--font-weight-semibold)', 
+        color: colors.textPrimary,
         lineHeight: 1.3,
       },
       h3: { 
-        fontSize: '1.5rem',    // 24px
-        fontWeight: 600, 
-        color: currentColors.textPrimary,
+        fontSize: 'var(--font-size-h3)',
+        fontWeight: 'var(--font-weight-semibold)', 
+        color: colors.textPrimary,
         lineHeight: 1.4,
       },
       h4: { 
-        fontSize: '1.25rem',   // 20px
-        fontWeight: 500, 
-        color: currentColors.textPrimary,
+        fontSize: 'var(--font-size-h4)',
+        fontWeight: 'var(--font-weight-medium)', 
+        color: colors.textPrimary,
         lineHeight: 1.4,
       },
       h5: { 
-        fontSize: '1.125rem',  // 18px
-        fontWeight: 500, 
-        color: isLight ? '#252A33' : '#FFFFFF',
+        fontSize: 'var(--font-size-h5)',
+        fontWeight: 'var(--font-weight-medium)', 
+        color: colors.textPrimary,
         lineHeight: 1.5,
       },
       h6: { 
-        fontSize: '1rem',      // 16px
-        fontWeight: 500, 
-        color: isLight ? '#252A33' : '#FFFFFF',
+        fontSize: 'var(--font-size-h6)',
+        fontWeight: 'var(--font-weight-medium)', 
+        color: colors.textPrimary,
         lineHeight: 1.5,
       },
       body1: { 
-        fontSize: '1rem',      // 16px
-        color: isLight ? '#4E5563' : '#9AA0A6',
+        fontSize: 'var(--font-size-base)',
+        color: colors.textSecondary,
         lineHeight: 1.6,
       },
       body2: { 
-        fontSize: '0.875rem',  // 14px
-        color: isLight ? '#6B7280' : '#9AA0A6',
+        fontSize: 'var(--font-size-sm)',
+        color: colors.textSecondary,
         lineHeight: 1.6,
       },
       caption: {
-        fontSize: '0.75rem',   // 12px
-        color: isLight ? '#6B7280' : '#9AA0A6',
+        fontSize: 'var(--font-size-xs)',
+        color: colors.textTertiary,
       },
     },
     
     shape: {
-      borderRadius: 16,  // Modern look from design system
+      borderRadius: 'var(--border-radius-large)',  // Reference design token
     },
     
-    spacing: 8, // Base spacing unit (8px)
+    spacing: 8, // Base spacing unit (8px) - MUI expects number
     
     shadows: [
       'none',
-      '0 1px 2px rgba(0, 0, 0, 0.04)',
-      '0 2px 8px rgba(0, 0, 0, 0.08)',
-      '0 4px 12px rgba(0, 0, 0, 0.12)',
-      '0 8px 16px rgba(0, 0, 0, 0.16)',
-      '0 12px 24px rgba(0, 0, 0, 0.20)',
-      // ... extend as needed with subtle shadows
-      ...Array(19).fill('0 12px 24px rgba(0, 0, 0, 0.20)'), // Fill remaining slots
+      'var(--shadow-light)',
+      'var(--shadow-medium)',
+      'var(--shadow-heavy)',
+      'var(--shadow-heavy)',
+      'var(--shadow-heavy)',
+      // Fill remaining slots with design token values
+      ...Array(19).fill('var(--shadow-heavy)'),
     ] as any,
     
     components: {
@@ -227,19 +233,19 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
             transition: 'all 0.2s ease-in-out',
           },
           containedPrimary: {
-            backgroundColor: '#252A33',
-            color: '#FFFFFF',
+            backgroundColor: 'var(--gray-800)',
+            color: 'var(--background-primary)',
             '&:hover': {
-              backgroundColor: '#394150',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+              backgroundColor: 'var(--gray-700)',
+              boxShadow: 'var(--shadow-medium)',
             },
           },
           outlined: {
-            borderColor: '#E7E8EA',
-            color: '#4E5563',
+            borderColor: 'var(--border-light)',
+            color: 'var(--text-secondary)',
             '&:hover': {
-              borderColor: '#D3D5D9',
-              backgroundColor: '#FAFBFC',
+              borderColor: 'var(--border-medium)',
+              backgroundColor: 'var(--background-secondary)',
             },
           },
         },
@@ -249,13 +255,13 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
       MuiCard: {
         styleOverrides: {
           root: {
-            borderRadius: 16,
-            border: `1px solid ${isLight ? '#E7E8EA' : '#394150'}`,
-            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
-            transition: 'all 0.2s ease-in-out',
+            borderRadius: 'var(--border-radius-large)',
+            border: `1px solid var(--border-light)`,
+            boxShadow: 'var(--shadow-light)',
+            transition: 'var(--transition-normal)',
             '&:hover': {
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-              borderColor: isLight ? '#D3D5D9' : '#4E5563',
+              boxShadow: 'var(--shadow-medium)',
+              borderColor: 'var(--border-medium)',
             },
           },
         },
@@ -265,9 +271,9 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: 8,    // --border-radius-small
-            fontSize: '0.75rem', // --font-size-xs (12px)
-            fontWeight: 500,
+            borderRadius: 'var(--border-radius-small)',
+            fontSize: 'var(--font-size-xs)',
+            fontWeight: 'var(--font-weight-medium)',
             textTransform: 'uppercase',
             letterSpacing: '0.025em',
           },
@@ -278,7 +284,7 @@ const createDesignSystemTheme = (mode: ThemeMode) => {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: 16,   // --border-radius-large
+            borderRadius: 'var(--border-radius-large)',
           },
         },
       },
@@ -340,31 +346,39 @@ const ThemeProviderWrapper: React.FC<Props> = ({ children }) => {
   const setMode = (newMode: ThemeMode) => {
     localStorage.setItem('themeMode', newMode);
     setModeState(newMode);
+    
+    // Set data-theme attribute on document root for CSS variable switching
+    document.documentElement.setAttribute('data-theme', newMode);
   };
 
   const toggleMode = () => {
     setMode(mode === 'light' ? 'dark' : 'light');
   };
 
+  // Set initial theme attribute on mount
+  React.useEffect(() => {
+    document.documentElement.setAttribute('data-theme', mode);
+  }, [mode]);
+
   const theme = useMemo(() => {
     const baseTheme = createDesignSystemTheme(mode);
     
-    // Add our custom design system colors
+    // Add our custom design system colors using CSS variables
     return createTheme(baseTheme, {
       designSystem: {
         colors: {
           accent: {
-            green: { main: '#16A34A', light: '#22C55E', bg: '#F0FDF4' },
-            amber: { main: '#D97706', light: '#F59E0B', bg: '#FFFBEB' },
-            red: { main: '#DC2626', light: '#EF4444', bg: '#FEF2F2' },
-            blue: { main: '#2563EB', light: '#3B82F6', bg: '#EFF6FF' },
-            purple: { main: '#7C3AED', light: '#8B5CF6', bg: '#F5F3FF' },
-            orange: { main: '#EA580C', light: '#F97316', bg: '#FFF7ED' },
+            green: { main: 'var(--accent-green)', light: 'var(--accent-green-light)', bg: 'var(--accent-green-bg)' },
+            amber: { main: 'var(--accent-amber)', light: 'var(--accent-amber-light)', bg: 'var(--accent-amber-bg)' },
+            red: { main: 'var(--accent-red)', light: 'var(--accent-red-light)', bg: 'var(--accent-red-bg)' },
+            blue: { main: 'var(--accent-blue)', light: 'var(--accent-blue-light)', bg: 'var(--accent-blue-bg)' },
+            purple: { main: 'var(--accent-purple)', light: 'var(--accent-purple-light)', bg: 'var(--accent-purple-bg)' },
+            orange: { main: 'var(--accent-orange)', light: 'var(--accent-orange-light)', bg: 'var(--accent-orange-bg)' },
           },
           backgrounds: {
-            primary: mode === 'light' ? '#FFFFFF' : '#252A33',
-            secondary: mode === 'light' ? '#FAFBFC' : '#1A1F26',
-            tertiary: mode === 'light' ? '#F4F5F7' : '#394150',
+            primary: 'var(--background-primary)',
+            secondary: 'var(--background-secondary)',
+            tertiary: 'var(--background-tertiary)',
           },
         },
       },
