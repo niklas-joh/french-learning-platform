@@ -732,11 +732,11 @@ export const QuickActionsGrid = React.memo<QuickActionsGridProps>(({
         gap: 2,
         // Responsive breakpoints for lesson cards
         '@media (max-width: 640px)': {
-          gridTemplateColumns: 'repeat(2, 1fr)', // 2 columns on mobile
+          gridTemplateColumns: 'repeat(1, 1fr)', // 1 columns on mobile
           gap: 1.5
         },
         '@media (min-width: 641px) and (max-width: 1024px)': {
-          gridTemplateColumns: 'repeat(3, 1fr)' // 3 columns on tablet
+          gridTemplateColumns: 'repeat(2, 1fr)' // 2 columns on tablet
         },
         '@media (min-width: 1025px)': {
           gridTemplateColumns: 'repeat(2, 1fr)' // 2 columns on desktop
