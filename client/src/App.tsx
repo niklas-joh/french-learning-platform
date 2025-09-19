@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material';
 import { AuthProvider } from './context/AuthContext';
 import CustomThemeProvider from './ThemeProvider'; // Assuming theme is a default export
 import MainLayout from './components/layout/MainLayout';
@@ -24,7 +22,6 @@ import { ReactPlugin } from '@21st-extension/react';
 function App() {
   return (
     <CustomThemeProvider>
-      <CssBaseline />
       <TwentyFirstToolbar
         config={{
           plugins: [ReactPlugin],
