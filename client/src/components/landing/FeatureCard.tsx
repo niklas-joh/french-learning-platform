@@ -3,53 +3,45 @@ import {
   Card,
   Typography,
   Box,
-  useTheme,
-  alpha,
   Zoom,
 } from '@mui/material';
+import { FeatureCategory } from '../../config/contentConfiguration';
 
 interface FeatureCardProps {
   icon: React.ReactElement;
   title: string;
   description: string;
-  color: string;
+  category: FeatureCategory;
   index: number;
 }
 
 /**
- * Reusable feature card component with glassmorphism effects
- * Uses existing glass-card utility and design tokens
+ * Reusable feature card component with CSS-first architecture
+ * Uses data attributes for styling and design tokens for consistency
+ * Eliminates JavaScript color calculations and MUI theme usage
  */
 const FeatureCard: React.FC<FeatureCardProps> = ({
   icon,
   title,
   description,
-  color,
+  category,
   index,
 }) => {
-  const theme = useTheme();
-
   return (
     <Zoom in timeout={600 + index * 100}>
       <Card
-        className="glass-card"
+        className="card-variant-feature feature-card"
+        data-category={category}
         sx={{
           height: '100%',
           p: 3,
-          border: `1px solid ${alpha(color, 0.1)}`,
-          boxShadow: `0 8px 25px ${alpha(color, 0.1)}`,
-          borderRadius: 'var(--border-radius-medium)',
-          transition: 'var(--transition-normal)',
           position: 'relative',
           overflow: 'visible',
-          '&:hover': {
-            transform: 'translateY(-8px)',
-            boxShadow: `0 16px 40px ${alpha(color, 0.2)}`,
-            borderColor: alpha(color, 0.3),
-          },
         }}
       >
         <Box
+          className="feature-header"
+          data-category={category}
           sx={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -57,8 +49,6 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             width: 80,
             height: 80,
             borderRadius: 'var(--border-radius-medium)',
-            background: `linear-gradient(135deg, ${alpha(color, 0.1)} 0%, ${alpha(color, 0.2)} 100%)`,
-            color: color,
             mb: 3,
             fontSize: 40,
           }}
@@ -68,9 +58,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         <Typography
           variant="h6"
           sx={{
-            fontWeight: 700,
+            fontWeight: 'var(--font-weight-bold)',
             mb: 2,
-            color: theme.palette.text.primary,
+            color: 'var(--text-primary)',
           }}
         >
           {title}
@@ -78,7 +68,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
         <Typography
           variant="body2"
           sx={{
-            color: theme.palette.text.secondary,
+            color: 'var(--text-secondary)',
             lineHeight: 1.6,
           }}
         >

@@ -25,7 +25,7 @@ import {
 } from '@mui/material';
 import { AIDashboardLayout, AIEnhancedHeader } from '../components/ai-dashboard/AIDashboardLayout.js';
 import { QuickActionsGrid } from '../components/ai-dashboard/QuickActionCard.js';
-import type { DifficultyLevel, LessonStatus } from '../components/ai-dashboard/QuickActionCard.js';
+import type { DifficultyLevel, LessonStatus } from '../config/contentConfiguration';
 import { AITutorCard } from '../components/ai-dashboard/AITutorCard.js';
 import { DashboardSkeleton } from '../components/ai-dashboard/LoadingStates.js';
 import { useOfflineDetection } from '../hooks/useOfflineDetection.js';

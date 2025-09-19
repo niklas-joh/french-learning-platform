@@ -20,6 +20,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { Card, CardContent, Typography, Box, Button, Chip } from '@mui/material';
 import { useOfflineDetection } from '../../hooks/useOfflineDetection.js';
+import { getComponentDataAttributes } from '../../config/contentConfiguration';
 
 /**
  * Props for AITutorCard component
@@ -149,22 +150,13 @@ export const AITutorCard = React.memo<AITutorCardProps>(({
 
   return (
     <Card
-      className="glass-card"
+      className="glass-card ai-tutor-card"
+      data-render-mode="ai-tutor-card"
+      data-status={isOffline ? 'offline' : 'online'}
       sx={{
-        background: isOffline ? 
-          'var(--gradient-muted)' : 
-          'var(--gradient-primary)',
         color: 'var(--text-inverse)',
         p: 'var(--spacing-2)',
         transition: 'all var(--transition-normal)',
-        // Subtle animation for online status
-        ...(isOffline ? {} : {
-          animation: 'pulse 2s infinite alternate',
-          '@keyframes pulse': {
-            '0%': { opacity: 0.9 },
-            '100%': { opacity: 1.0 }
-          }
-        }),
         ...sx
       }}
       role="region"

@@ -24,16 +24,14 @@
 import React, { useCallback } from 'react';
 import { Card, CardContent, Typography, Box, Chip, LinearProgress, Button } from '@mui/material';
 import { ContentType } from '../../config/aiDashboardConfig.js';
+import { 
+  LessonStatus, 
+  DifficultyLevel, 
+  getStatusContent, 
+  getDifficultyContent,
+  getComponentDataAttributes 
+} from '../../config/contentConfiguration';
 
-/**
- * Lesson completion status types
- */
-export type LessonStatus = 'not_started' | 'in_progress' | 'completed' | 'locked' | 'review';
-
-/**
- * Difficulty levels with corresponding color coding
- */
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
 
 /**
  * Render modes for the card component
@@ -80,81 +78,9 @@ interface QuickActionCardProps {
   showProgress?: boolean;
 }
 
-/**
- * Gets difficulty badge configuration using design system tokens
- * Returns color and styling configuration for difficulty levels
- * 
- * @param difficulty - The difficulty level
- * @returns Configuration object with design system colors and styling
- */
-const getDifficultyConfig = (difficulty: DifficultyLevel) => {
-  const configs = {
-    beginner: {
-      color: 'var(--difficulty-beginner-text)',
-      backgroundColor: 'var(--difficulty-beginner-bg)',
-      borderColor: 'var(--difficulty-beginner-border)',
-      label: 'Beginner'
-    },
-    intermediate: {
-      color: 'var(--difficulty-intermediate-text)',
-      backgroundColor: 'var(--difficulty-intermediate-bg)',
-      borderColor: 'var(--difficulty-intermediate-border)',
-      label: 'Intermediate'
-    },
-    advanced: {
-      color: 'var(--difficulty-advanced-text)',
-      backgroundColor: 'var(--difficulty-advanced-bg)',
-      borderColor: 'var(--difficulty-advanced-border)',
-      label: 'Advanced'
-    }
-  };
-  
-  return configs[difficulty] || configs.beginner;
-};
-
-/**
- * Gets lesson status configuration using design system tokens
- * Returns color, icon, and button text for lesson status
- * 
- * @param status - The lesson status
- * @returns Configuration object with design system status properties
- */
-const getStatusConfig = (status: LessonStatus) => {
-  const configs = {
-    not_started: {
-      color: 'var(--status-not-started)',
-      icon: '▶️',
-      buttonText: 'Start',
-      progressColor: 'var(--status-not-started)'
-    },
-    in_progress: {
-      color: 'var(--status-in-progress)',
-      icon: '⏯️',
-      buttonText: 'Continue',
-      progressColor: 'var(--status-in-progress)'
-    },
-    completed: {
-      color: 'var(--status-completed)',
-      icon: '✅',
-      buttonText: 'Review',
-      progressColor: 'var(--status-completed)'
-    },
-    locked: {
-      color: 'var(--status-locked)',
-      icon: '🔒',
-      buttonText: 'Locked',
-      progressColor: 'var(--status-locked)'
-    },
-    review: {
-      color: 'var(--status-review)',
-      icon: '🔄',
-      buttonText: 'Review',
-      progressColor: 'var(--status-review)'
-    }
-  };
-  
-  return configs[status] || configs.not_started;
-};
+// Anti-pattern functions removed - using CSS-first architecture instead
+// All styling is now handled by CSS via data attributes
+// Content is handled by pure configuration objects
 
 /**
  * Progress Ring SVG Component
@@ -340,9 +266,17 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
     return `${title}: ${description}${timeText}${xpText}${progressText}${difficultyText}`;
   }, [title, description, estimatedTime, xpReward, progress, showProgress, difficulty, renderMode]);
 
-  // Get configuration based on current status
-  const statusConfig = getStatusConfig(status);
-  const difficultyConfig = getDifficultyConfig(difficulty);
+  // Get pure content configuration - no styling logic
+  const statusContent = getStatusContent(status);
+  const difficultyContent = getDifficultyContent(difficulty);
+  
+  // Generate data attributes for CSS styling
+  const cardDataAttrs = getComponentDataAttributes({
+    'data-status': status,
+    'data-difficulty': difficulty,
+    'data-render-mode': renderMode,
+    'data-disabled': disabled
+  });
   
   return (
     <Card
@@ -431,7 +365,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                   progress={progress}
                   size={48}
                   strokeWidth={4}
-                  color={statusConfig.progressColor}
+                  // Color will be controlled by CSS via data attributes
                 />
               </div>
             )}
@@ -474,14 +408,13 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             flexWrap: 'wrap',
             alignItems: 'center'
           }}>
-            {/* Difficulty Badge */}
+            {/* Difficulty Badge - styled via CSS data attributes */}
             <Chip
               size="small"
-              label={difficultyConfig.label}
+              label={difficultyContent.label}
+              className="difficulty-badge"
+              data-difficulty={difficulty}
               sx={{
-                backgroundColor: difficultyConfig.backgroundColor,
-                color: difficultyConfig.color,
-                border: `1px solid ${difficultyConfig.borderColor}`,
                 fontSize: 'var(--font-size-xs)',
                 height: 24,
                 fontWeight: 500,
@@ -528,19 +461,21 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             )}
           </Box>
 
-          {/* Progress Bar (Alternative to Ring) */}
+          {/* Progress Bar (Alternative to Ring) - styled via CSS data attributes */}
           {!showProgress && progress > 0 && (
             <Box sx={{ mb: 1.5 }}>
               <LinearProgress
                 variant="determinate"
                 value={progress}
+                className="lesson-progress-bar"
+                data-status={status}
                 sx={{
                   height: 6,
                   borderRadius: 3,
                   backgroundColor: 'var(--gray-200)',
+                  // Color controlled by CSS via data-status attribute
                   '& .MuiLinearProgress-bar': {
-                    borderRadius: 3,
-                    backgroundColor: statusConfig.progressColor
+                    borderRadius: 3
                   }
                 }}
               />
@@ -577,7 +512,9 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
               variant={status === 'completed' ? 'outlined' : 'contained'}
               size="small"
               disabled={status === 'locked' || disabled}
-              startIcon={<span style={{ fontSize: '14px' }}>{statusConfig.icon}</span>}
+              startIcon={<span style={{ fontSize: '14px' }}>{statusContent.icon}</span>}
+              className="status-button"
+              data-status={status}
               sx={{
                 minWidth: 80,
                 fontSize: 'var(--font-size-sm)',
@@ -592,7 +529,7 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
                 }
               }}
             >
-              {statusConfig.buttonText}
+              {statusContent.buttonText}
             </Button>
           </Box>
         </CardContent>
