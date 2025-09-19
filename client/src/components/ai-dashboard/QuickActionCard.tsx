@@ -22,7 +22,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { Card, CardContent, Typography, Box, Chip, LinearProgress } from '@mui/material';
+import { Card, CardContent, Typography, Box, Chip, LinearProgress, Button } from '@mui/material';
 import { ContentType } from '../../config/aiDashboardConfig.js';
 
 /**
@@ -355,12 +355,13 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
         opacity: disabled ? 0.6 : 1,
         transition: 'all var(--transition-normal)',
         
-        // Lesson card styling using design tokens
+        // Lesson card styling - Clean modern design matching mockup
         ...(renderMode === 'lesson-card' && {
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-medium)',
-          borderRadius: 'var(--border-radius-large)',
-          boxShadow: 'var(--shadow-medium)',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: '12px',
+          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          overflow: 'hidden',
         }),
         
         // Enhanced hover effects using design tokens
@@ -399,8 +400,8 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
       data-lesson-status={status}
     >
       {renderMode === 'lesson-card' ? (
-        // Modern Lesson Card Layout
-        <CardContent sx={{ p: 2.5, position: 'relative', minHeight: 140 }}>
+        // Modern Lesson Card Layout - Matching Mockup Design
+        <CardContent sx={{ p: 3, position: 'relative', minHeight: 160 }}>
           {/* Card Header with Icon and Progress Ring */}
           <Box sx={{ 
             display: 'flex', 
@@ -572,31 +573,27 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
             justifyContent: 'center',
             mt: 'auto'
           }}>
-            <Typography
-              variant="button"
+            <Button
+              variant={status === 'completed' ? 'outlined' : 'contained'}
+              size="small"
+              disabled={status === 'locked' || disabled}
+              startIcon={<span style={{ fontSize: '14px' }}>{statusConfig.icon}</span>}
               sx={{
-                px: 2,
-                py: 1,
-                borderRadius: 1,
-                backgroundColor: status === 'completed' ? 'transparent' : 'primary.main',
-                color: status === 'completed' ? 'primary.main' : 'primary.contrastText',
-                border: status === 'completed' ? '1px solid' : 'none',
-                borderColor: status === 'completed' ? 'primary.main' : 'transparent',
+                minWidth: 80,
                 fontSize: 'var(--font-size-sm)',
                 fontWeight: 'var(--font-weight-semibold)',
                 textTransform: 'none',
-                minWidth: 80,
-                textAlign: 'center',
-                cursor: 'inherit',
-                transition: 'all 0.2s ease',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 0.5
+                borderRadius: '8px',
+                '&:hover': {
+                  transform: 'translateY(-1px)',
+                },
+                '&.Mui-disabled': {
+                  opacity: 0.6,
+                }
               }}
             >
-              <span style={{ fontSize: 'var(--font-size-sm)' }}>{statusConfig.icon}</span>
               {statusConfig.buttonText}
-            </Typography>
+            </Button>
           </Box>
         </CardContent>
       ) : (
@@ -805,7 +802,7 @@ export const QuickActionsGrid = React.memo<QuickActionsGridProps>(({
           gridTemplateColumns: 'repeat(3, 1fr)' // 3 columns on tablet
         },
         '@media (min-width: 1025px)': {
-          gridTemplateColumns: 'repeat(4, 1fr)' // 4 columns on desktop
+          gridTemplateColumns: 'repeat(2, 1fr)' // 2 columns on desktop
         }
       };
     } else {
@@ -859,6 +856,3 @@ export const QuickActionsGrid = React.memo<QuickActionsGridProps>(({
 });
 
 QuickActionsGrid.displayName = 'QuickActionsGrid';
-
-
-

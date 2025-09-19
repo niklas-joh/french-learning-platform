@@ -22,7 +22,8 @@ interface Props {
 // Helper function to get computed CSS variable values
 const getCSSVariableValue = (variable: string): string => {
   if (typeof window !== 'undefined') {
-    return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+    const value = getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+    return value;
   }
   // Fallback values for SSR
   const fallbacks: Record<string, string> = {
