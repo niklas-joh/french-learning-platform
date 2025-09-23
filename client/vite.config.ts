@@ -2,6 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
+// Determine backend port: use env override, else OS-based default
+const backendPort: number = process.env.BACKEND_PORT
+  ? Number(process.env.BACKEND_PORT)
+  : (process.platform === 'win32' ? 5001 : 3001);
+
 export default defineConfig({
   plugins: [react()],
   server: {
@@ -10,7 +15,7 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to the backend server
       '/api': {
-        target: 'http://localhost:3001', // FIXED: Match actual server port (5001)
+        target: `http://localhost:${backendPort}`,
         changeOrigin: true,
         secure: false,
       },
