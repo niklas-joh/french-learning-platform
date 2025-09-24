@@ -13,7 +13,15 @@ import {
   getAssignedContent, 
   getUserPreferences, 
   updateUserPreferences,
-  recordContentItemProgress // This might be deprecated by recordActivityCompleted
+  recordContentItemProgress, // This might be deprecated by recordActivityCompleted
+  sendFriendRequest,
+  acceptFriendRequest,
+  rejectFriendRequest,
+  removeFriend,
+  blockUser,
+  getUserFriends,
+  getFriendRequests,
+  getFriendshipStatus
 } from '../controllers/user.controller.js';
 
 import { 
@@ -76,6 +84,63 @@ router.get('/me/social/leaderboard', protect, async (req, res) => {
     });
   }
 });
+
+// === FRIEND MANAGEMENT ENDPOINTS ===
+/**
+ * @route POST /api/users/me/friends/request/:friendId
+ * @desc Send a friend request to another user
+ * @access Private
+ */
+router.post('/me/friends/request/:friendId', protect, sendFriendRequest);
+
+/**
+ * @route PUT /api/users/me/friends/accept/:friendshipId
+ * @desc Accept a pending friend request
+ * @access Private
+ */
+router.put('/me/friends/accept/:friendshipId', protect, acceptFriendRequest);
+
+/**
+ * @route DELETE /api/users/me/friends/reject/:friendshipId
+ * @desc Reject a pending friend request
+ * @access Private
+ */
+router.delete('/me/friends/reject/:friendshipId', protect, rejectFriendRequest);
+
+/**
+ * @route DELETE /api/users/me/friends/remove/:friendId
+ * @desc Remove an existing friend
+ * @access Private
+ */
+router.delete('/me/friends/remove/:friendId', protect, removeFriend);
+
+/**
+ * @route POST /api/users/me/friends/block/:friendId
+ * @desc Block a user
+ * @access Private
+ */
+router.post('/me/friends/block/:friendId', protect, blockUser);
+
+/**
+ * @route GET /api/users/me/friends
+ * @desc Get all friends for the authenticated user
+ * @access Private
+ */
+router.get('/me/friends', protect, getUserFriends);
+
+/**
+ * @route GET /api/users/me/friends/requests
+ * @desc Get all pending friend requests for the authenticated user
+ * @access Private
+ */
+router.get('/me/friends/requests', protect, getFriendRequests);
+
+/**
+ * @route GET /api/users/me/friends/status/:friendId
+ * @desc Get friendship status with another user
+ * @access Private
+ */
+router.get('/me/friends/status/:friendId', protect, getFriendshipStatus);
 
 // === Legacy & Admin Routes ===
 // @desc    Get assigned content for the current user (Legacy, may be replaced by learning path)

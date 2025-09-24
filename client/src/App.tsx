@@ -10,6 +10,7 @@ import LessonPage from './pages/LessonPage';
 import PracticePage from './pages/PracticePage';
 import ProgressPage from './pages/ProgressPage';
 import ProfilePage from './pages/ProfilePage';
+import FriendsPage from './pages/FriendsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminRoute from './components/AdminRoute';
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/practice" element={<PracticePage />} />
                 <Route path="/progress" element={<ProgressPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/friends" element={<FriendsPage />} />
               </Route>
             </Route>
 

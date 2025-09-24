@@ -41,9 +41,9 @@ If you have found tasks for future implementation, add them to @/docs/developmen
 To avoid losing the analysis if the context window is condensed, capture the full approach in the @/docs/development_docs/tasks/subtasks/learning-path-integration-missing.md before doing anything else, which we can reference as we go along. Next, capture any future tasks outside this scope in  @/docs/development_docs/future_implementation_considerations.md.
 
 Once captured, follow the below approach for each task, one at a time. If you context window is condensed or your task is interrupted, read the task document again to now what to do, and continue where you left off following these steps:
-
+1. Capture your approach as subtasks in the given documentation file, or if not existing, create it with proper numbering in the @/docs/development_docs/tasks/phase-4_dashboard_transformation/subtasks/ and @/docs/development_docs/tasks/phase-4_dashboard_transformation/dashboard-transformation-tracking.md
 2. Implement the code as per your suggestion for the first task, adding comprehensive JSDOCs/DOCstring as you go along
-3. Regularly review your code for consistency, logic and potential flaws
+3. Regularly review your code for consistency, logic and potential flaws, and check that there are no @problems
 4. Analyse if changes are needed to other files
 5. Update the task document and other documentation plans with our progress
 6. Update system architecture and your memory bank.

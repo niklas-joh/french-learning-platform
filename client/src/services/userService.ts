@@ -76,3 +76,132 @@ export const recordContentCompletion = async (contentId: number): Promise<void> 
     // For now, we log the error but don't throw, so the UI doesn't show a breaking error.
   }
 };
+
+// === FRIEND MANAGEMENT FUNCTIONS ===
+
+/**
+ * Sends a friend request to another user.
+ * @param friendId - The ID of the user to send a friend request to
+ * @returns A promise that resolves with the friendship data
+ */
+export const sendFriendRequest = async (friendId: number): Promise<any> => {
+  try {
+    const response = await api.post(`/users/me/friends/request/${friendId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to send friend request:', error);
+    throw new Error('Failed to send friend request.');
+  }
+};
+
+/**
+ * Accepts a pending friend request.
+ * @param friendshipId - The ID of the friendship to accept
+ * @returns A promise that resolves with the updated friendship data
+ */
+export const acceptFriendRequest = async (friendshipId: number): Promise<any> => {
+  try {
+    const response = await api.put(`/users/me/friends/accept/${friendshipId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to accept friend request:', error);
+    throw new Error('Failed to accept friend request.');
+  }
+};
+
+/**
+ * Rejects a pending friend request.
+ * @param friendshipId - The ID of the friendship to reject
+ * @returns A promise that resolves when the request is rejected
+ */
+export const rejectFriendRequest = async (friendshipId: number): Promise<any> => {
+  try {
+    const response = await api.delete(`/users/me/friends/reject/${friendshipId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to reject friend request:', error);
+    throw new Error('Failed to reject friend request.');
+  }
+};
+
+/**
+ * Removes an existing friend.
+ * @param friendId - The ID of the friend to remove
+ * @returns A promise that resolves when the friend is removed
+ */
+export const removeFriend = async (friendId: number): Promise<any> => {
+  try {
+    const response = await api.delete(`/users/me/friends/remove/${friendId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to remove friend:', error);
+    throw new Error('Failed to remove friend.');
+  }
+};
+
+/**
+ * Blocks a user.
+ * @param userId - The ID of the user to block
+ * @returns A promise that resolves with the friendship data
+ */
+export const blockUser = async (userId: number): Promise<any> => {
+  try {
+    const response = await api.post(`/users/me/friends/block/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to block user:', error);
+    throw new Error('Failed to block user.');
+  }
+};
+
+/**
+ * Gets all friends for the authenticated user.
+ * @param includePending - Whether to include pending requests (default: false)
+ * @param includeBlocked - Whether to include blocked users (default: false)
+ * @returns A promise that resolves with the user's friends list
+ */
+export const getUserFriends = async (includePending: boolean = false, includeBlocked: boolean = false): Promise<any> => {
+  try {
+    const params = new URLSearchParams();
+    if (includePending) params.append('includePending', 'true');
+    if (includeBlocked) params.append('includeBlocked', 'true');
+    
+    const queryString = params.toString();
+    const url = queryString ? `/users/me/friends?${queryString}` : '/users/me/friends';
+    
+    const response = await api.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch user friends:', error);
+    throw new Error('Failed to fetch user friends.');
+  }
+};
+
+/**
+ * Gets all pending friend requests for the authenticated user.
+ * @returns A promise that resolves with the pending friend requests
+ */
+export const getFriendRequests = async (): Promise<any> => {
+  try {
+    const response = await api.get('/users/me/friends/requests');
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch friend requests:', error);
+    throw new Error('Failed to fetch friend requests.');
+  }
+};
+
+/**
+ * Gets friendship status with another user.
+ * @param friendId - The ID of the user to check friendship status with
+ * @returns A promise that resolves with the friendship status
+ */
+export const getFriendshipStatus = async (friendId: number): Promise<any> => {
+  try {
+    const response = await api.get(`/users/me/friends/status/${friendId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to get friendship status:', error);
+    throw new Error('Failed to get friendship status.');
+  }
+};
