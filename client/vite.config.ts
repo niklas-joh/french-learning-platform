@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 // Determine backend port: use env override, else OS-based default
 const backendPort: number = process.env.BACKEND_PORT
   ? Number(process.env.BACKEND_PORT)
-  : (process.platform === 'win32' ? 5001 : 3001);
+  : (process.platform === 'win32' ? 3001 : 5001);
 
 export default defineConfig({
   plugins: [react()],
