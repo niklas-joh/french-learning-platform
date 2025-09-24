@@ -18,5 +18,6 @@
     "types": ["vite/client", "jest", "@testing-library/jest-dom"]
   },
   "include": ["src"], // Ensure this includes your source files
+  "exclude": ["src/_archive/**/*"], // Exclude archived files from TypeScript compilation
   "references": [{ "path": "./tsconfig.node.json" }] // If you have a tsconfig.node.json for Vite config
 }

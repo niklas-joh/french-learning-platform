@@ -425,7 +425,8 @@ export const FormStatesDemo: Story = {
           gap: '20px',
           gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
           padding: '20px',
-          maxWidth: '124
+          maxWidth: '1400px'
+        }}>
           <div>
             <h4>Default State</h4>
             <AIContentRequest 

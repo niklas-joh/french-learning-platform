@@ -15,20 +15,21 @@ import {
   EmojiObjects
 } from '@mui/icons-material';
 import React from 'react';
+import { FeatureCategory } from '../../../config/contentConfiguration';
 
 // Mock function for onClick handlers
 const fn = () => () => {};
 
 /**
- * FeatureCard is a reusable card component for showcasing product features with glassmorphism effects.
+ * FeatureCard is a reusable card component for showcasing product features with CSS-first architecture.
  * 
  * **Key Features:**
- * - Glassmorphism design with subtle transparency effects
+ * - CSS-first design with data attribute styling
  * - Animated zoom entrance with staggered timing
- * - Color-coded icon backgrounds with gradients
+ * - Category-based theming via CSS data attributes
  * - Hover animations with lift and shadow effects
  * - Responsive design that works in grid layouts
- * - Customizable colors, icons, and content
+ * - Customizable categories, icons, and content
  * - Professional typography hierarchy
  */
 const meta: Meta<typeof FeatureCard> = {
@@ -38,7 +39,7 @@ const meta: Meta<typeof FeatureCard> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Modern feature card with glassmorphism effects, customizable colors, and smooth animations for showcasing product capabilities.'
+        component: 'Modern feature card with CSS-first architecture, category-based theming, and smooth animations for showcasing product capabilities.'
       }
     }
   },
@@ -68,9 +69,10 @@ const meta: Meta<typeof FeatureCard> = {
       control: 'text',
       description: 'Feature description content'
     },
-    color: {
-      control: 'color',
-      description: 'Primary color for icon background and accents'
+    category: {
+      control: 'select',
+      options: ['ai', 'gamification', 'content', 'social'],
+      description: 'Feature category for styling and theming'
     },
     index: {
       control: { type: 'range', min: 0, max: 10, step: 1 },
@@ -90,7 +92,7 @@ export const Default: Story = {
     icon: <Psychology />,
     title: 'AI-Powered Learning',
     description: 'Advanced AI creates personalized lessons tailored to your learning style and pace.',
-    color: '#6366F1',
+    category: 'ai' as FeatureCategory,
     index: 0
   }
 };
@@ -103,7 +105,7 @@ export const DynamicContent: Story = {
     icon: <AutoAwesome />,
     title: 'Dynamic Content Generation',
     description: 'Fresh, engaging content generated on-demand to keep your learning experience exciting.',
-    color: '#8B5CF6',
+    category: 'ai' as FeatureCategory,
     index: 1
   }
 };
@@ -116,7 +118,7 @@ export const ProgressTracking: Story = {
     icon: <TrendingUp />,
     title: 'Adaptive Progress Tracking',
     description: 'Intelligent analytics track your progress and identify areas for improvement.',
-    color: '#06B6D4',
+    category: 'gamification' as FeatureCategory,
     index: 2
   }
 };
@@ -129,7 +131,7 @@ export const ConversationPractice: Story = {
     icon: <Groups />,
     title: 'AI Conversation Partner',
     description: 'Practice speaking with an AI tutor available 24/7 for realistic conversations.',
-    color: '#10B981',
+    category: 'social' as FeatureCategory,
     index: 3
   }
 };
@@ -142,7 +144,7 @@ export const AcceleratedLearning: Story = {
     icon: <Speed />,
     title: 'Accelerated Learning',
     description: 'Learn 3x faster with AI-optimized spaced repetition and memory techniques.',
-    color: '#F59E0B',
+    category: 'gamification' as FeatureCategory,
     index: 4
   }
 };
@@ -155,15 +157,15 @@ export const ExpertCurriculum: Story = {
     icon: <School />,
     title: 'Expert Curriculum',
     description: 'Curriculum designed by language experts and enhanced by cutting-edge AI.',
-    color: '#EF4444',
+    category: 'content' as FeatureCategory,
     index: 5
   }
 };
 
 /**
- * Custom colors demonstration
+ * Category showcase demonstration
  */
-export const CustomColors: Story = {
+export const CategoryShowcase: Story = {
   render: () => (
     <ThemeProvider>
       <Box sx={{ 
@@ -175,23 +177,23 @@ export const CustomColors: Story = {
       }}>
         <FeatureCard
           icon={<Favorite />}
-          title="Passion for Learning"
-          description="Cultivate a deep love for the French language and culture."
-          color="#E91E63"
+          title="Social Learning"
+          description="Connect with other learners and cultivate a deep love for the French language."
+          category={'social' as FeatureCategory}
           index={0}
         />
         <FeatureCard
           icon={<Security />}
-          title="Secure & Private"
-          description="Your learning data is protected with enterprise-grade security."
-          color="#607D8B"
+          title="Rich Content"
+          description="Your learning data is protected with comprehensive content and materials."
+          category={'content' as FeatureCategory}
           index={1}
         />
         <FeatureCard
           icon={<Language />}
-          title="Multi-Language Support"
-          description="Learn French while maintaining support for your native language."
-          color="#FF9800"
+          title="AI-Powered Features"
+          description="Learn French with advanced AI assistance and personalized learning paths."
+          category={'ai' as FeatureCategory}
           index={2}
         />
       </Box>
@@ -242,17 +244,17 @@ export const AnimationTiming: Story = {
             borderRadius: 2
           }}>
             {[
-              { icon: <Psychology />, title: 'First Card', color: '#6366F1', delay: 0 },
-              { icon: <AutoAwesome />, title: 'Second Card', color: '#8B5CF6', delay: 1 },
-              { icon: <TrendingUp />, title: 'Third Card', color: '#06B6D4', delay: 2 },
-              { icon: <EmojiObjects />, title: 'Fourth Card', color: '#10B981', delay: 3 }
+              { icon: <Psychology />, title: 'AI Card', category: 'ai', delay: 0 },
+              { icon: <AutoAwesome />, title: 'AI Features', category: 'ai', delay: 1 },
+              { icon: <TrendingUp />, title: 'Progress Tracking', category: 'gamification', delay: 2 },
+              { icon: <EmojiObjects />, title: 'Smart Content', category: 'content', delay: 3 }
             ].map((card, index) => (
               <FeatureCard
                 key={index}
                 icon={card.icon}
                 title={card.title}
                 description={`This card appears with a ${card.delay * 100}ms delay, creating a smooth staggered animation effect.`}
-                color={card.color}
+                category={card.category as FeatureCategory}
                 index={card.delay}
               />
             ))}
@@ -297,14 +299,14 @@ export const HoverEffects: Story = {
             icon={<Psychology />}
             title="Hover Me!"
             description="Notice the smooth lift animation, increased shadow depth, and border color change on hover."
-            color="#6366F1"
+            category={'ai' as FeatureCategory}
             index={0}
           />
           <FeatureCard
             icon={<AutoAwesome />}
             title="Interactive Design"
             description="The hover effects provide visual feedback and create an engaging user experience."
-            color="#8B5CF6"
+            category={'ai' as FeatureCategory}
             index={1}
           />
         </Box>
@@ -342,7 +344,7 @@ export const ResponsiveBehavior: Story = {
                 icon={<Psychology />}
                 title="Mobile Card"
                 description="Cards stack vertically on mobile devices for optimal readability."
-                color="#6366F1"
+                category={'ai' as FeatureCategory}
                 index={0}
               />
             </Box>
@@ -363,14 +365,14 @@ export const ResponsiveBehavior: Story = {
                   icon={<Psychology />}
                   title="Tablet Card 1"
                   description="Two cards per row on tablet screens."
-                  color="#6366F1"
+                  category={'ai' as FeatureCategory}
                   index={0}
                 />
                 <FeatureCard
                   icon={<AutoAwesome />}
                   title="Tablet Card 2"
                   description="Maintains proper spacing and proportions."
-                  color="#8B5CF6"
+                  category={'ai' as FeatureCategory}
                   index={1}
                 />
               </Box>
@@ -392,21 +394,21 @@ export const ResponsiveBehavior: Story = {
                   icon={<Psychology />}
                   title="Desktop Card 1"
                   description="Three cards per row on desktop."
-                  color="#6366F1"
+                  category={'ai' as FeatureCategory}
                   index={0}
                 />
                 <FeatureCard
                   icon={<AutoAwesome />}
                   title="Desktop Card 2"
                   description="Optimal use of screen real estate."
-                  color="#8B5CF6"
+                  category={'ai' as FeatureCategory}
                   index={1}
                 />
                 <FeatureCard
                   icon={<TrendingUp />}
                   title="Desktop Card 3"
                   description="Consistent card heights and spacing."
-                  color="#06B6D4"
+                  category={'gamification' as FeatureCategory}
                   index={2}
                 />
               </Box>
@@ -422,14 +424,14 @@ export const ResponsiveBehavior: Story = {
 };
 
 /**
- * Color palette showcase
+ * Category palette showcase
  */
-export const ColorPalette: Story = {
+export const CategoryPalette: Story = {
   render: () => (
     <ThemeProvider>
       <Box sx={{ p: 3 }}>
         <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 4 }}>
-          Color Palette Options
+          Feature Category Options
         </Typography>
         
         <Box sx={{ 
@@ -441,19 +443,17 @@ export const ColorPalette: Story = {
           borderRadius: 2
         }}>
           {[
-            { color: '#6366F1', name: 'French Blue', icon: <Psychology /> },
-            { color: '#8B5CF6', name: 'Purple', icon: <AutoAwesome /> },
-            { color: '#06B6D4', name: 'Cyan', icon: <TrendingUp /> },
-            { color: '#10B981', name: 'Emerald', icon: <Groups /> },
-            { color: '#F59E0B', name: 'Amber', icon: <Speed /> },
-            { color: '#EF4444', name: 'Red', icon: <School /> }
+            { category: 'ai', name: 'AI Features', icon: <Psychology /> },
+            { category: 'gamification', name: 'Gamification', icon: <TrendingUp /> },
+            { category: 'content', name: 'Rich Content', icon: <School /> },
+            { category: 'social', name: 'Social Learning', icon: <Groups /> }
           ].map((item, index) => (
             <FeatureCard
               key={index}
               icon={item.icon}
               title={`${item.name} Theme`}
-              description={`Feature card styled with ${item.name.toLowerCase()} color (${item.color})`}
-              color={item.color}
+              description={`Feature card styled with ${item.name.toLowerCase()} category theming`}
+              category={item.category as FeatureCategory}
               index={index}
             />
           ))}
@@ -474,7 +474,7 @@ export const LongContent: Story = {
     icon: <Psychology />,
     title: 'Very Long Feature Title That Might Wrap to Multiple Lines',
     description: 'This is a much longer description that demonstrates how the feature card handles extended content. The card should maintain its proportions and readability even with more text content. The layout should remain balanced and the typography should continue to be readable and well-spaced.',
-    color: '#6366F1',
+    category: 'ai' as FeatureCategory,
     index: 0
   }
 };
@@ -487,7 +487,7 @@ export const MinimalContent: Story = {
     icon: <Psychology />,
     title: 'Brief',
     description: 'Short description.',
-    color: '#6366F1',
+    category: 'ai' as FeatureCategory,
     index: 0
   }
 };
@@ -515,15 +515,15 @@ export const DarkBackground: Story = {
           <FeatureCard
             icon={<Psychology />}
             title="Dark Theme Ready"
-            description="Feature cards adapt beautifully to dark backgrounds with glassmorphism effects."
-            color="#6366F1"
+            description="Feature cards adapt beautifully to dark backgrounds with CSS-first theming."
+            category={'ai' as FeatureCategory}
             index={0}
           />
           <FeatureCard
             icon={<AutoAwesome />}
             title="Visual Contrast"
             description="Maintains excellent readability and visual hierarchy on dark surfaces."
-            color="#8B5CF6"
+            category={'ai' as FeatureCategory}
             index={1}
           />
         </Box>

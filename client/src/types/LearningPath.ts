@@ -8,7 +8,7 @@ export type LessonStatus = 'locked' | 'available' | 'in_progress' | 'completed';
 /**
  * Represents the type of content a lesson contains.
  */
-export type LessonType = 'vocabulary' | 'grammar' | 'conversation' | 'culture' | 'pronunciation';
+export type LessonType = 'vocabulary' | 'grammar' | 'conversation' | 'culture' | 'pronunciation' | 'quiz' | 'practice';
 
 /**
  * Client-side representation of a single lesson, including its status for the current user.

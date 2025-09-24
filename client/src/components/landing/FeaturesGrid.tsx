@@ -14,12 +14,13 @@ import {
   School,
 } from '@mui/icons-material';
 import FeatureCard from './FeatureCard';
+import { FeatureCategory } from '../../config/contentConfiguration';
 
 interface Feature {
   icon: React.ReactElement;
   title: string;
   description: string;
-  color: string;
+  category: FeatureCategory;
 }
 
 /**
@@ -34,37 +35,37 @@ const FeaturesGrid: React.FC = () => {
       icon: <Psychology />,
       title: 'AI-Powered Learning',
       description: 'Advanced AI creates personalized lessons tailored to your learning style and pace.',
-      color: '#6366F1',
+      category: 'ai',
     },
     {
       icon: <AutoAwesome />,
       title: 'Dynamic Content Generation',
       description: 'Fresh, engaging content generated on-demand to keep your learning experience exciting.',
-      color: '#8B5CF6',
+      category: 'ai',
     },
     {
       icon: <TrendingUp />,
       title: 'Adaptive Progress Tracking',
       description: 'Intelligent analytics track your progress and identify areas for improvement.',
-      color: '#06B6D4',
+      category: 'gamification',
     },
     {
       icon: <Groups />,
       title: 'AI Conversation Partner',
       description: 'Practice speaking with an AI tutor available 24/7 for realistic conversations.',
-      color: '#10B981',
+      category: 'social',
     },
     {
       icon: <Speed />,
       title: 'Accelerated Learning',
       description: 'Learn 3x faster with AI-optimized spaced repetition and memory techniques.',
-      color: '#F59E0B',
+      category: 'gamification',
     },
     {
       icon: <School />,
       title: 'Expert Curriculum',
       description: 'Curriculum designed by language experts and enhanced by cutting-edge AI.',
-      color: '#EF4444',
+      category: 'content',
     },
   ];
 
@@ -115,7 +116,7 @@ const FeaturesGrid: React.FC = () => {
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
-              color={feature.color}
+              category={feature.category}
               index={index}
             />
           ))}

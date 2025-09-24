@@ -90,9 +90,91 @@ export const getButtonStyles = (variant: 'primary' | 'secondary' | 'text' = 'pri
   }
 };
 
-// REMOVED: getBadgeStyles() and getProgressColor() functions
-// Badge/chip styling now handled by CSS via data-difficulty and data-category attributes
-// Progress colors now handled by CSS via data-status attributes
+// Legacy functions maintained for story compatibility
+// These return basic styles - full styling handled by CSS via data attributes
+
+export const getBadgeStyles = (variant: 'difficulty' | 'category' | 'status' = 'difficulty', theme: Theme) => {
+  return {
+    borderRadius: borderRadius.sm,
+    padding: `${spacing.xs}px ${spacing.sm}px`,
+    fontSize: '0.75rem',
+    fontWeight: 500,
+    backgroundColor: theme.palette.grey[100],
+    color: theme.palette.text.secondary,
+    border: `1px solid ${theme.palette.divider}`,
+  };
+};
+
+export const getDifficultyColor = (difficulty: 'beginner' | 'intermediate' | 'advanced' = 'beginner', theme?: Theme) => {
+  // Return color object structure for story compatibility - actual colors handled by CSS data attributes
+  // Theme parameter accepted for compatibility but not used (CSS handles styling)
+  const colors = {
+    beginner: {
+      main: '#10B981',
+      light: '#34D399',
+      bg: '#D1FAE5'
+    },
+    intermediate: {
+      main: '#F59E0B',
+      light: '#FBBF24', 
+      bg: '#FEF3C7'
+    },
+    advanced: {
+      main: '#EF4444',
+      light: '#F87171',
+      bg: '#FEE2E2'
+    }
+  };
+  return colors[difficulty];
+};
+
+export const getFeatureCategoryColor = (category: string = 'general', theme?: Theme) => {
+  // Return color object structure for story compatibility - actual colors handled by CSS data attributes
+  // Theme parameter accepted for compatibility but not used (CSS handles styling)
+  const categoryColors: Record<string, any> = {
+    ai: {
+      main: '#6366F1',
+      light: '#818CF8',
+      bg: '#EEF2FF'
+    },
+    language: {
+      main: '#8B5CF6',
+      light: '#A78BFA', 
+      bg: '#F3E8FF'
+    },
+    social: {
+      main: '#06B6D4',
+      light: '#22D3EE',
+      bg: '#CFFAFE'
+    },
+    progress: {
+      main: '#10B981',
+      light: '#34D399',
+      bg: '#D1FAE5'
+    },
+    content: {
+      main: '#F59E0B',
+      light: '#FBBF24',
+      bg: '#FEF3C7'
+    },
+    grammar: {
+      main: '#8B5CF6',
+      light: '#A78BFA',
+      bg: '#F3E8FF'
+    },
+    interactive: {
+      main: '#06B6D4',
+      light: '#22D3EE',
+      bg: '#CFFAFE'
+    },
+    general: {
+      main: '#64748B',
+      light: '#94A3B8',
+      bg: '#F1F5F9'
+    }
+  };
+  return categoryColors[category] || categoryColors.general;
+};
 
 // Common spacing values from design system (multiples of 8px base)
 export const spacing = {
