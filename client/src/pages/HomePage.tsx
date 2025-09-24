@@ -324,7 +324,8 @@ const HomePage: React.FC = () => {
   const loadFriends = useCallback(async () => {
     try {
       const friendsData = await getUserFriends();
-      setFriends(friendsData || []);
+      // Backend returns { friends: [...] }, extract the friends array
+      setFriends(friendsData?.friends || []);
     } catch (error) {
       console.error('[HomePage] Error loading friends:', error);
       setFriends([]);
@@ -342,7 +343,8 @@ const HomePage: React.FC = () => {
   const loadFriendRequests = useCallback(async () => {
     try {
       const requestsData = await getFriendRequests();
-      setFriendRequests(requestsData || []);
+      // Handle structured response, extract incoming requests for homepage count
+      setFriendRequests(requestsData?.incoming || []);
     } catch (error) {
       console.error('[HomePage] Error loading friend requests:', error);
       setFriendRequests([]);
@@ -614,43 +616,51 @@ const HomePage: React.FC = () => {
         
         {friends.length > 0 ? (
           <Stack spacing={1.5}>
-            {friends.slice(0, 4).map((friend) => (
-              <Box 
-                key={friend.userId} 
-                sx={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center',
-                  p: 1.5,
-                  backgroundColor: 'var(--accent-green-bg)',
-                  borderRadius: 'var(--border-radius-small)',
-                  border: '1px solid var(--border-light)',
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <Box sx={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--accent-green)',
-                    display: 'flex',
+            {friends.slice(0, 4).map((friend) => {
+              // Extract friend information from backend response structure  
+              const friendName = friend.friendInfo 
+                ? `${friend.friendInfo.firstName || ''} ${friend.friendInfo.lastName || ''}`.trim() || 'Friend'
+                : 'Friend';
+              const friendInitial = friendName.charAt(0).toUpperCase() || 'F';
+              
+              return (
+                <Box 
+                  key={friend.id} 
+                  sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
                     alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: 'var(--font-weight-semibold)',
-                    fontSize: 'var(--font-size-sm)'
-                  }}>
-                    {friend.displayName?.charAt(0)?.toUpperCase() || 'F'}
+                    p: 1.5,
+                    backgroundColor: 'var(--accent-green-bg)',
+                    borderRadius: 'var(--border-radius-small)',
+                    border: '1px solid var(--border-light)',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Box sx={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--accent-green)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      fontWeight: 'var(--font-weight-semibold)',
+                      fontSize: 'var(--font-size-sm)'
+                    }}>
+                      {friendInitial}
+                    </Box>
+                    <Typography variant="body2" sx={{ fontWeight: 'var(--font-weight-medium)', color: 'var(--text-primary)' }}>
+                      {friendName}
+                    </Typography>
                   </Box>
-                  <Typography variant="body2" sx={{ fontWeight: 'var(--font-weight-medium)', color: 'var(--text-primary)' }}>
-                    {friend.displayName || 'Friend'}
+                  <Typography variant="body2" sx={{ color: 'var(--text-tertiary)', fontWeight: 'var(--font-weight-medium)' }}>
+                    Friend
                   </Typography>
                 </Box>
-                <Typography variant="body2" sx={{ color: 'var(--accent-green)', fontWeight: 'var(--font-weight-semibold)' }}>
-                  {friend.weeklyXp || 0} XP
-                </Typography>
-              </Box>
-            ))}
+              );
+            })}
             
             {friends.length > 4 && (
               <Button

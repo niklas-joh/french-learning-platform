@@ -77,6 +77,34 @@ export const recordContentCompletion = async (contentId: number): Promise<void> 
   }
 };
 
+// === USER SEARCH FUNCTION ===
+
+/**
+ * Searches for users by name or email for friend discovery.
+ * @param searchQuery - The search query string (minimum 2 characters)
+ * @param limit - Maximum number of results to return (default: 20, max: 50)
+ * @returns A promise that resolves with the search results
+ */
+export const searchUsers = async (searchQuery: string, limit: number = 20): Promise<any> => {
+  try {
+    // Validate search query
+    if (!searchQuery || searchQuery.trim().length < 2) {
+      throw new Error('Search query must be at least 2 characters long');
+    }
+
+    // Build query parameters
+    const params = new URLSearchParams();
+    params.append('q', searchQuery.trim());
+    params.append('limit', limit.toString());
+    
+    const response = await api.get(`/users/search?${params.toString()}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to search users:', error);
+    throw new Error('Failed to search users.');
+  }
+};
+
 // === FRIEND MANAGEMENT FUNCTIONS ===
 
 /**

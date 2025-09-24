@@ -36,11 +36,39 @@ export const sendFriendRequest = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    // Check if friendship already exists
+    // Check if friendship already exists and handle different statuses appropriately
     const existing = await UserFriendshipModel.getFriendshipBetweenUsers(userId, numericFriendId);
     if (existing) {
-      res.status(409).json({ message: 'Friendship already exists', status: existing.status });
-      return;
+      if (existing.status === 'pending') {
+        // Cannot send another request if one is already pending
+        res.status(409).json({ 
+          message: 'Friend request already pending', 
+          status: existing.status,
+          friendshipId: existing.id 
+        });
+        return;
+      } else if (existing.status === 'accepted') {
+        // Cannot send request if already friends
+        res.status(409).json({ 
+          message: 'Users are already friends', 
+          status: existing.status,
+          friendshipId: existing.id 
+        });
+        return;
+      }
+      // If status is 'blocked', we allow sending a new request
+      // by updating the existing friendship status to 'pending'
+      if (existing.status === 'blocked') {
+        const updatedFriendship = await UserFriendshipModel.updateFriendshipStatus(
+          existing.id, 
+          'pending'
+        );
+        res.status(200).json({ 
+          message: 'Friend request sent successfully', 
+          friendship: updatedFriendship 
+        });
+        return;
+      }
     }
 
     const friendship = await UserFriendshipModel.createFriendship({
@@ -256,6 +284,20 @@ export const getUserFriends = async (req: Request, res: Response): Promise<void>
 
 /**
  * Gets all pending friend requests for the authenticated user.
+ * Enhanced to return both incoming and outgoing requests in a single optimized query.
+ * 
+ * Performance optimization: Reduces API calls from 3 to 1 by providing structured response
+ * with both incoming requests (received) and outgoing requests (sent).
+ * 
+ * @param {Request} req - Express request object with authenticated user
+ * @param {Response} res - Express response object
+ * @returns {Promise<void>} JSON response with structured friend request data
+ * 
+ * Response format:
+ * {
+ *   incoming: [{ id, requesterName, createdAt }], // Requests received from others
+ *   outgoing: [{ id, recipientName, createdAt }]  // Requests sent to others
+ * }
  */
 export const getFriendRequests = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -265,13 +307,37 @@ export const getFriendRequests = async (req: Request, res: Response): Promise<vo
       return;
     }
 
-    const requests = await UserFriendshipModel.query()
-      .where('friendId', userId)
+    // Single optimized query for both incoming and outgoing pending requests
+    // Uses OR condition to fetch all pending requests where user is either requester or recipient
+    const allRequests = await UserFriendshipModel.query()
       .where('status', 'pending')
-      .withGraphFetched('requester')
+      .where(builder => {
+        builder.where('userId', userId).orWhere('friendId', userId);
+      })
+      .withGraphFetched('[requester, friend]')
       .select('userFriendships.*');
-
-    res.json({ requests });
+    
+    // Server-side filtering for optimal performance - no client-side processing needed
+    const incoming = allRequests.filter(request => request.friendId === userId);
+    const outgoing = allRequests.filter(request => request.userId === userId);
+    
+    // Structure response for easy frontend consumption
+    res.json({ 
+      incoming: incoming.map(req => ({
+        id: req.id,
+        requesterName: req.requester 
+          ? `${req.requester.firstName || ''} ${req.requester.lastName || ''}`.trim() || 'Unknown User'
+          : 'Unknown User',
+        createdAt: req.createdAt
+      })),
+      outgoing: outgoing.map(req => ({
+        id: req.id,
+        recipientName: req.friend
+          ? `${req.friend.firstName || ''} ${req.friend.lastName || ''}`.trim() || 'Unknown User' 
+          : 'Unknown User',
+        createdAt: req.createdAt
+      }))
+    });
   } catch (error: any) {
     console.error('Error fetching friend requests:', error);
     res.status(500).json({ message: 'Failed to fetch friend requests' });

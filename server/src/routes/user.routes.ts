@@ -9,7 +9,8 @@ import { isAdmin } from '../middleware/admin.middleware.js';
 import { 
   getCurrentUserProfile, 
   updateUserProfile, 
-  getAllUsers, 
+  getAllUsers,
+  searchUsers,
   getAssignedContent, 
   getUserPreferences, 
   updateUserPreferences,
@@ -88,6 +89,16 @@ router.get('/me/social/leaderboard', protect, async (req, res) => {
     });
   }
 });
+
+/**
+ * @route GET /api/users/search
+ * @desc Search for users by name or email for friend discovery
+ * @access Private
+ * @param {string} q - Search query string (minimum 2 characters)
+ * @param {number} limit - Maximum number of results to return (default 20, max 50)
+ * @returns {Object} JSON response with filtered users array
+ */
+router.get('/search', protect, searchUsers);
 
 // === FRIEND MANAGEMENT ENDPOINTS ===
 /**

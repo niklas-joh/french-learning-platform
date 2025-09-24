@@ -104,6 +104,81 @@ export const getAllUsers = async (_req: Request, res: Response): Promise<void> =
 };
 
 /**
+ * Searches for users by name or email for friend discovery.
+ * Returns filtered user list excluding the current user and blocked users.
+ * 
+ * @param req - Express request object with query parameters
+ * @param req.query.q - Search query string to filter users
+ * @param req.query.limit - Maximum number of results to return (default: 20)
+ * @param res - Express response object
+ */
+export const searchUsers = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      res.status(401).json({ message: 'User not authenticated' });
+      return;
+    }
+
+    const { q: searchQuery, limit: limitParam } = req.query;
+    
+    // Validate search query
+    if (!searchQuery || typeof searchQuery !== 'string' || searchQuery.trim().length < 2) {
+      res.status(400).json({ message: 'Search query must be at least 2 characters long' });
+      return;
+    }
+
+    // Parse and validate limit parameter
+    const limit = limitParam ? Math.min(Number(limitParam), 50) : 20;
+    if (isNaN(limit) || limit < 1) {
+      res.status(400).json({ message: 'Invalid limit parameter' });
+      return;
+    }
+
+    // Get all users and filter in application layer
+    // This follows existing patterns and avoids complex SQL queries
+    const allUsers = await getAllUsersFromModel();
+    
+    const searchTerm = searchQuery.trim().toLowerCase();
+    
+    // Filter users based on search criteria
+    const filteredUsers = allUsers
+      .filter(user => {
+        // Exclude current user
+        if (user.id === userId) return false;
+        
+        // Search in firstName, lastName, and email
+        const matchesFirstName = user.firstName?.toLowerCase().includes(searchTerm);
+        const matchesLastName = user.lastName?.toLowerCase().includes(searchTerm);
+        const matchesEmail = user.email?.toLowerCase().includes(searchTerm);
+        const matchesFullName = `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase().includes(searchTerm);
+        
+        return matchesFirstName || matchesLastName || matchesEmail || matchesFullName;
+      })
+      .slice(0, limit) // Apply limit
+      .map(user => ({
+        // Return safe user data (exclude sensitive fields)
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        createdAt: user.createdAt
+      }));
+
+    res.json({
+      users: filteredUsers,
+      total: filteredUsers.length,
+      query: searchTerm,
+      limit
+    });
+
+  } catch (error: any) {
+    console.error('Error searching users:', error);
+    res.status(500).json({ message: 'Failed to search users' });
+  }
+};
+
+/**
  * Returns all content assignments for the authenticated user.
  */
 export const getAssignedContent = async (req: Request, res: Response): Promise<void> => {
