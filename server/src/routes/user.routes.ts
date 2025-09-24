@@ -13,7 +13,11 @@ import {
   getAssignedContent, 
   getUserPreferences, 
   updateUserPreferences,
-  recordContentItemProgress, // This might be deprecated by recordActivityCompleted
+  recordContentItemProgress // This might be deprecated by recordActivityCompleted
+} from '../controllers/user.controller.js';
+
+// Import friend management controllers (separated for SRP compliance)
+import {
   sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
@@ -22,7 +26,7 @@ import {
   getUserFriends,
   getFriendRequests,
   getFriendshipStatus
-} from '../controllers/user.controller.js';
+} from '../controllers/friends.controller.js';
 
 import { 
   getUserProgress, 
