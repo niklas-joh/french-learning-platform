@@ -315,7 +315,7 @@ export const ResponsiveDemo: Story = {
             gap: '20px',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             padding: '20px',
-            maxWidth: '1200px'
+            maxWidth: '1400px'
           }}>
             <div style={{ width: '300px' }}>
               <h4>Mobile (300px)</h4>

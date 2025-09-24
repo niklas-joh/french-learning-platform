@@ -188,7 +188,7 @@ export const ContentGenerationTypes: StoryObj<typeof ContentGenerationLoader> = 
           gap: '20px',
           gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
           padding: '20px',
-          maxWidth: '1200px'
+          maxWidth: '1400px'
         }}>
           <div>
             <Typography variant="h6" gutterBottom>Lesson Generation</Typography>
@@ -489,7 +489,7 @@ export const ResponsiveLoadingStates: Story = {
           gap: '20px',
           gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
           padding: '20px',
-          maxWidth: '1200px'
+          maxWidth: '1400px'
         }}>
           <Box>
             <Typography variant="subtitle2" gutterBottom>Mobile (250px)</Typography>

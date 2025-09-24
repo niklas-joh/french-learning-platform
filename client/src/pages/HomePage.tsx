@@ -19,6 +19,7 @@
  */
 
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Box, Alert, Snackbar, Typography, Card, CardContent, Button, 
   CircularProgress, Stack, Chip, ButtonGroup
@@ -31,6 +32,7 @@ import { DashboardSkeleton } from '../components/ai-dashboard/LoadingStates.js';
 import { useOfflineDetection } from '../hooks/useOfflineDetection.js';
 import { useAIDashboard } from '../hooks/useAIDashboard.js';
 import api from '../services/api.js';
+import { getUserFriends, getFriendRequests } from '../services/userService.js';
 
 /**
  * Enhanced lesson card data structure
@@ -128,6 +130,7 @@ const FALLBACK_LESSON_DATA = [
  */
 const HomePage: React.FC = () => {
   const { isOffline } = useOfflineDetection();
+  const navigate = useNavigate();
   
   // REUSE: Existing AI Dashboard state management hook with full feature set
   const {
@@ -155,6 +158,11 @@ const HomePage: React.FC = () => {
   // PHASE 4.3.1: Simple leaderboard state management
   const [leaderboard, setLeaderboard] = useState<any[]>([]);
   const [showLeaderboard, setShowLeaderboard] = useState(true);
+
+  // SOCIAL FRIENDS: Friends list state management using existing patterns
+  const [friends, setFriends] = useState<any[]>([]);
+  const [friendRequests, setFriendRequests] = useState<any[]>([]);
+  const [showFriends, setShowFriends] = useState(true);
 
   // Show loading skeleton during initial dashboard load
   const showSkeleton = dashboardLoading && !recommendations.length;
@@ -245,6 +253,7 @@ const HomePage: React.FC = () => {
   }, [isOffline]);
 
   /**
+   * TODO
    * TRANSFORMATION: Enhanced lesson card data with gamification
    * APPROACH: Transform existing recommendations into sophisticated lesson cards, with fallback data
    * FEATURES: Progress tracking, difficulty badges, XP rewards, AI personalization
@@ -305,6 +314,42 @@ const HomePage: React.FC = () => {
   }, []);
 
   /**
+   * SOCIAL FRIENDS: Load friends data using existing API patterns
+   * 
+   * Simple friends loading function that uses existing userService infrastructure
+   * and error handling patterns. Gracefully handles failures by setting empty array.
+   * 
+   * @returns Promise resolving when friends data is loaded or failed
+   */
+  const loadFriends = useCallback(async () => {
+    try {
+      const friendsData = await getUserFriends();
+      setFriends(friendsData || []);
+    } catch (error) {
+      console.error('[HomePage] Error loading friends:', error);
+      setFriends([]);
+    }
+  }, []);
+
+  /**
+   * SOCIAL FRIENDS: Load friend requests using existing API patterns
+   * 
+   * Simple friend requests loading function that uses existing userService infrastructure
+   * and error handling patterns. Gracefully handles failures by setting empty array.
+   * 
+   * @returns Promise resolving when friend requests data is loaded or failed
+   */
+  const loadFriendRequests = useCallback(async () => {
+    try {
+      const requestsData = await getFriendRequests();
+      setFriendRequests(requestsData || []);
+    } catch (error) {
+      console.error('[HomePage] Error loading friend requests:', error);
+      setFriendRequests([]);
+    }
+  }, []);
+
+  /**
    * PHASE 4.3.1: Load leaderboard on component mount
    * 
    * Uses existing useEffect pattern to load leaderboard data when component mounts.
@@ -312,7 +357,9 @@ const HomePage: React.FC = () => {
    */
   useEffect(() => {
     loadLeaderboard();
-  }, [loadLeaderboard]);
+    loadFriends();
+    loadFriendRequests();
+  }, [loadLeaderboard, loadFriends, loadFriendRequests]);
 
   /**
    * Enhanced AI tutor interaction with context awareness
@@ -344,6 +391,29 @@ const HomePage: React.FC = () => {
       console.error('[AI Tutor] Failed to start interaction:', error);
     }
   }, [isOffline, sophisticatedLessonCards, userData.dailyGoalProgress]);
+
+  /**
+   * SOCIAL FRIENDS: Handle find friends navigation
+   * Simple navigation handler for friend discovery functionality
+   * Updated to navigate to dedicated friends page following KISS principles
+   */
+  const handleFindFriends = useCallback(() => {
+    if (isOffline) {
+      console.warn('[Social] Offline - find friends blocked');
+      return;
+    }
+    
+    console.log('[Social] Navigate to find friends - button clicked!');
+    
+    try {
+      // Navigate to dedicated friends page for comprehensive friend management
+      navigate('/friends');
+      console.log('[Social] Navigating to /friends page');
+      
+    } catch (error) {
+      console.error('[Social] Failed to navigate to find friends:', error);
+    }
+  }, [isOffline, navigate]);
 
   if (showSkeleton) {
     return <DashboardSkeleton />;
@@ -518,6 +588,126 @@ const HomePage: React.FC = () => {
     </Card>
   );
 
+  // SOCIAL FRIENDS: FriendsCard component using existing LeaderboardCard pattern
+  const FriendsCard = () => (
+    <Card className="glass-card" data-category="social" sx={{ mb: 3 }}>
+      <CardContent>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 'var(--font-weight-semibold)', color: 'var(--text-primary)' }}>
+            Friends
+          </Typography>
+          {friendRequests.length > 0 && (
+            <Chip 
+              label={friendRequests.length}
+              size="small"
+              sx={{
+                backgroundColor: 'var(--accent-green)',
+                color: 'white',
+                fontWeight: 'var(--font-weight-semibold)',
+                minWidth: 24,
+                height: 20,
+                fontSize: 'var(--font-size-xs)'
+              }}
+            />
+          )}
+        </Box>
+        
+        {friends.length > 0 ? (
+          <Stack spacing={1.5}>
+            {friends.slice(0, 4).map((friend) => (
+              <Box 
+                key={friend.userId} 
+                sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  p: 1.5,
+                  backgroundColor: 'var(--accent-green-bg)',
+                  borderRadius: 'var(--border-radius-small)',
+                  border: '1px solid var(--border-light)',
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <Box sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: 'var(--accent-green)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontWeight: 'var(--font-weight-semibold)',
+                    fontSize: 'var(--font-size-sm)'
+                  }}>
+                    {friend.displayName?.charAt(0)?.toUpperCase() || 'F'}
+                  </Box>
+                  <Typography variant="body2" sx={{ fontWeight: 'var(--font-weight-medium)', color: 'var(--text-primary)' }}>
+                    {friend.displayName || 'Friend'}
+                  </Typography>
+                </Box>
+                <Typography variant="body2" sx={{ color: 'var(--accent-green)', fontWeight: 'var(--font-weight-semibold)' }}>
+                  {friend.weeklyXp || 0} XP
+                </Typography>
+              </Box>
+            ))}
+            
+            {friends.length > 4 && (
+              <Button
+                variant="outlined"
+                size="small"
+                fullWidth
+                sx={{
+                  mt: 1,
+                  borderColor: 'var(--accent-green)',
+                  color: 'var(--accent-green)',
+                  '&:hover': {
+                    borderColor: 'var(--accent-green-light)',
+                    backgroundColor: 'var(--accent-green-bg)',
+                  }
+                }}
+              >
+                View All ({friends.length})
+              </Button>
+            )}
+          </Stack>
+        ) : (
+          <Box sx={{ textAlign: 'center', py: 2 }}>
+            <Typography variant="body2" sx={{ color: 'var(--text-secondary)', mb: 1 }}>
+              No friends yet
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'var(--text-tertiary)' }}>
+              Add friends to compete and learn together!
+            </Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={handleFindFriends}
+              sx={{
+                mt: 2,
+                borderColor: 'var(--accent-green)',
+                color: 'var(--accent-green)',
+                '&:hover': {
+                  borderColor: 'var(--accent-green-light)',
+                  backgroundColor: 'var(--accent-green-bg)',
+                }
+              }}
+            >
+              Find Friends
+            </Button>
+          </Box>
+        )}
+        
+        {/* Debug info for development */}
+        {process.env.NODE_ENV === 'development' && (
+          <Typography variant="caption" sx={{ color: 'var(--text-tertiary)', mt: 1, display: 'block', fontSize: 'var(--font-size-xs)' }}>
+            Debug: Friends = {friends.length}, Requests = {friendRequests.length}
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+  );
+
   return (
     <AIDashboardLayout>
       {/* REUSE: Existing enhanced header with dynamic content */}
@@ -528,7 +718,7 @@ const HomePage: React.FC = () => {
       />
 
       {/* RESPONSIVE GRID LAYOUT: Main content + Sidebar */}
-      <Box sx={{ p: 2, maxWidth: '1200px', margin: '0 auto' }}>
+      <Box sx={{ p: 0, width: '100%', margin: '0 auto' }}>
         <Box sx={{ 
           display: 'flex',
           flexDirection: { xs: 'column', lg: 'row' },
@@ -606,6 +796,7 @@ const HomePage: React.FC = () => {
           }}>
             <DailyGoalCard />
             <QuickActionsCard />
+            {showFriends && <FriendsCard />}
             {showLeaderboard && <LeaderboardCard />}
           </Box>
         </Box>

@@ -366,7 +366,7 @@ export const ResponsiveDemo: Story = {
             gap: '20px',
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             padding: '20px',
-            maxWidth: '1200px'
+            maxWidth: '1400px'
           }}>
             <div style={{ width: '300px' }}>
               <h4>Mobile (300px)</h4>
@@ -425,8 +425,7 @@ export const FormStatesDemo: Story = {
           gap: '20px',
           gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
           padding: '20px',
-          maxWidth: '1200px'
-        }}>
+          maxWidth: '124
           <div>
             <h4>Default State</h4>
             <AIContentRequest 

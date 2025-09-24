@@ -132,8 +132,8 @@
   /* Responsive Layout Constraints */
   --layout-max-width-mobile: 430px;        /* Mobile-first constraint */
   --layout-max-width-tablet: 100%;         /* Full width on tablet+ */
-  --layout-max-width-desktop: 100%;        /* Full width on desktop+ */
-  --layout-max-width-large-desktop: 100%;  /* Full width on large screens */
+  --layout-max-width-desktop: 1280px;        /* Full width on desktop+ */
+  --layout-max-width-large-desktop: 1536px;  /* Full width on large screens */
   
   /* Border Radius - Design System Specification */
   --border-radius-small: 8px;   /* Small radius */
@@ -191,7 +191,7 @@
   --focus-ring-color: var(--accent-blue);
   
   /* Legacy layout variables for backward compatibility */
-  --content-max-width: 1200px;
+  --content-max-width: 1400px;
   --card-min-width: 280px;
   --card-min-height: 200px;
 }

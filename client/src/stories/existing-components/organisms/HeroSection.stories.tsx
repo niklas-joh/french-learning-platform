@@ -391,7 +391,7 @@ export const ResponsiveComparison: Story = {
         {/* Desktop */}
         <Box>
           <Typography variant="h6" gutterBottom sx={{ textAlign: 'center' }}>
-            Desktop (1200px+)
+            Desktop (1400px+)
           </Typography>
           <MemoryRouter>
             <ThemeProvider>
