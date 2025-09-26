@@ -23,11 +23,14 @@ import { ReactPlugin } from '@21st-extension/react';
 function App() {
   return (
     <CustomThemeProvider>
-      <TwentyFirstToolbar
-        config={{
-          plugins: [ReactPlugin],
-        }}
-      />
+      {import.meta.env.DEV && (
+        <TwentyFirstToolbar
+          enabled
+          config={{
+            plugins: [ReactPlugin],
+          }}
+        />
+      )}
       <Router>
         <AuthProvider>
           <Routes>
