@@ -506,23 +506,30 @@ export const QuickActionCard = React.memo<QuickActionCardProps>(({
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'center',
-            mt: 'auto'
+            mt: 'auto',
+            width: '100%'
           }}>
             <Button
               variant={status === 'completed' ? 'outlined' : 'contained'}
               size="small"
               disabled={status === 'locked' || disabled}
-              startIcon={<span style={{ fontSize: '14px' }}>{statusContent.icon}</span>}
               className="status-button"
               data-status={status}
+              fullWidth
               sx={{
                 minWidth: 80,
                 fontSize: 'var(--font-size-sm)',
                 fontWeight: 'var(--font-weight-semibold)',
                 textTransform: 'none',
                 borderRadius: '8px',
+                boxShadow: 'none',
+                backgroundColor: '#252A33',
+                color: '#FFFFFF',
+                borderColor: '#252A33',
                 '&:hover': {
                   transform: 'translateY(-1px)',
+                  backgroundColor: '#1f232b',
+                  borderColor: '#1f232b'
                 },
                 '&.Mui-disabled': {
                   opacity: 0.6,
